@@ -1,3 +1,4 @@
+import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 
 class ScoringTab extends StatefulWidget {
@@ -56,11 +57,16 @@ class _ScoringTabState extends State<ScoringTab> {
                               ],),
                           ),
                           ),
-                      Container(
-                        height: 100,
-                        width: 2,
-                        color: Colors.grey,
+                      const DottedLine(
+                        dashGapColor: Colors.grey,
+                        direction: Axis.vertical, // Draw a vertical line
+                        lineLength: 100, // Specify the length of the line
+                        lineThickness: 1, // Specify the thickness of the line
+                        dashColor: Colors.black, // Specify the color of the dots
+                        dashLength: 5, // Specify the length of each dot
+                        dashGapLength: 2, // Specify the gap between dots
                       ),
+
                       ClipRRect( borderRadius: BorderRadius.circular(5),
                           child: Padding(
                             padding: EdgeInsets.all(12),
@@ -97,6 +103,7 @@ class _ScoringTabState extends State<ScoringTab> {
                   ],
 
                 ),
+                Container(height: 15,),
                 Column(
                   children: [
                     Stack(
