@@ -32,6 +32,7 @@ class AppColor {
   static const Color iconColour = Color(0xffD78108);
   static const Color textFieldBg = Color(0xffF9F8F5);
   static const Color hintColour = Color(0xffA7A7A7);
+  static const Color themebg = Color(0xffA7A7A7);
 
 
 }

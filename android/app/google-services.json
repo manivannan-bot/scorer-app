@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "91137003612",
+    "project_id": "fir-scorer",
+    "storage_bucket": "fir-scorer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:91137003612:android:85cd02e3580ac55b37d699",
+        "android_client_info": {
+          "package_name": "com.eleven.scorer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFvI6uwIZIXYYmp5hxtnO87a-qxrHhoIU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

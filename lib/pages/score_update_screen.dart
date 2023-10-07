@@ -50,7 +50,7 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
                       },
                     ),
                     Container(width: 120,),
-                    Center(
+                    const Center(
                       child: Text(
                         'Team',
                         style: TextStyle(
