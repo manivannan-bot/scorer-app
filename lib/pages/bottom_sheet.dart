@@ -6,6 +6,7 @@ import 'package:sizer/sizer.dart';
 import '../utils/colors.dart';
 import '../utils/images.dart';
 import '../utils/sizes.dart';
+import 'cricket_wagon_wheel.dart';
 
 class ScoreBottomSheet extends StatefulWidget {
   const ScoreBottomSheet({super.key});
@@ -27,6 +28,16 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
   int selectedRow = -1;
   int selectedColumn = -1;
 
+
+  List<String> partNumbers = List.generate(8, (index) => 'Part ${index + 1}');
+  String tappedPart = ''; // Initialize with an empty string
+
+  void onTap(int partNumberIndex) {
+    setState(() {
+      tappedPart = partNumbers[partNumberIndex];
+    });
+    print('Tapped on $tappedPart');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -165,81 +176,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                     )
                   ],
                 ),
-                Center(
-                  child: GestureDetector(
-                    onTapDown: (TapDownDetails details) {
-                      final center = Size(300, 300).center(Offset.zero);
-                      final radiusInner = 150.0; // Radius of the inner circle
-                      final radiusOuter = 300.0; // Radius of the outer circle
 
-                      final tapPosition = details.localPosition;
-                      final angle = atan2(tapPosition.dy - center.dy,
-                          tapPosition.dx - center.dx);
-
-                      final distanceToCenter = (tapPosition - center).distance;
-
-                      String circlePart;
-
-                      if (distanceToCenter <= radiusInner) {
-                        // Clicked in the inner circle
-                        final angle = atan2(tapPosition.dy - center.dy,
-                            tapPosition.dx - center.dx);
-                        final degrees = (angle * 180 / pi + 180) %
-                            360; // Convert radians to degrees
-
-                        final partSize = 360 / 8; // 8 parts in the inner circle
-                        final partNumber = (degrees / partSize).floor() + 1;
-                        circlePart = 'Inner Part $partNumber';
-                      } else if (distanceToCenter > radiusInner &&
-                          distanceToCenter <= radiusOuter) {
-                        // Clicked in the outer circle
-                        final angle = atan2(tapPosition.dy - center.dy,
-                            tapPosition.dx - center.dx);
-                        final degrees = (angle * 180 / pi + 180) %
-                            360; // Convert radians to degrees
-
-                        final partSize = 360 / 8; // 8 parts in the outer circle
-                        final partNumber = (degrees / partSize).floor() + 1;
-                        circlePart = 'Outer Part $partNumber';
-                      } else {
-                        // Clicked outside both circles
-                        circlePart = 'Outside Circles';
-                      }
-
-                      print('Clicked on $circlePart');
-                    },
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Container(
-                          width:
-                              300, // Diameter of the outer circle (2 * radius)
-                          height:
-                              300, // Diameter of the outer circle (2 * radius)
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.green, // Color of the outer circle
-                          ),
-                        ),
-                        Container(
-                          width:
-                              150, // Diameter of the inner circle (2 * radius)
-                          height:
-                              150, // Diameter of the inner circle (2 * radius)
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color:
-                                Colors.lightGreen, // Color of the inner circle
-                          ),
-                        ),
-                        CustomPaint(
-                          size: Size(300, 300), // Size of the outer circle
-                          painter: MyPainter(),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
@@ -808,37 +745,85 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                     ),
                   ),
                 ),
+                SizedBox(
+                  height: 500,
+                  width:500,
+                  child:Center(
+                    child: ThreeCircles(),
+                  ),
+                ),
+
 
               ],
             ),
           ]),
     );
   }
+
+  // Navigator.of(context).push(MaterialPageRoute(
+  // builder: (context) => SlicedPizzaApp(),
+  // ));
 }
 
-class MyPainter extends CustomPainter {
+
+
+class PizzaSlice extends StatefulWidget {
   @override
-  void paint(Canvas canvas, Size size) {
-    final center = size.center(Offset.zero);
-    final radius = size.width / 2;
+  _PizzaSliceState createState() => _PizzaSliceState();
+}
 
-    final paint = Paint()
-      ..color = Colors.white
-      ..strokeWidth = 2.0;
+class _PizzaSliceState extends State<PizzaSlice> {
+  bool isTapped = false;
 
-    // Draw lines to divide both the inner and outer circles into 8 equal parts
-    for (int i = 0; i < 8; i++) {
-      final angle = 2 * pi * i / 8;
-      final x = center.dx + radius * cos(angle);
-      final y = center.dy + radius * sin(angle);
-      final startPoint = Offset(center.dx, center.dy);
-      final endPoint = Offset(x, y);
-      canvas.drawLine(startPoint, endPoint, paint);
-    }
+  void toggleTapped() {
+    setState(() {
+      isTapped = !isTapped;
+    });
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: toggleTapped,
+      child: CustomPaint(
+        size: Size(200, 200),
+        painter: PizzaSlicePainter(isTapped: isTapped),
+        child: Center(
+          child: Text(
+            isTapped ? 'one' : '',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class PizzaSlicePainter extends CustomPainter {
+  final bool isTapped;
+
+  PizzaSlicePainter({required this.isTapped});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Paint paint = Paint()
+      ..color = isTapped ? Colors.black : Colors.orange
+      ..style = PaintingStyle.fill;
+
+    final Path path = Path()
+      ..moveTo(100, 100)
+      ..lineTo(100, 0)
+      ..arcTo(Rect.fromCircle(center: Offset(100, 100), radius: 100), -0.25, 1.5, false)
+      ..close();
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return false;
   }
 }
