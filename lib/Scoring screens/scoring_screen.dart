@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:scorer/Scoring%20screens/Scoring_tab.dart';
+import 'package:scorer/provider/scoring_provider.dart';
 import 'package:scorer/utils/colours.dart';
 import 'package:scorer/utils/styles.dart';
 import 'package:sizer/sizer.dart';
 
+import '../models/all_matches_model.dart';
 import '../utils/images.dart';
 
 
@@ -17,11 +19,15 @@ class ScoringScreen extends StatefulWidget {
 
 class _ScoringScreenState extends State<ScoringScreen> with SingleTickerProviderStateMixin {
   late TabController tabController;
+  AllMatchesModel allMatchesModel =AllMatchesModel();
+
   void initState() {
     // TODO: implement initState
     super.initState();
     tabController = TabController(length: 2, vsync: this);
+
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

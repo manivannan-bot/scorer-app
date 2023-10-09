@@ -4,7 +4,6 @@ import 'package:scorer/pages/scoring_tab.dart';
 import 'package:scorer/utils/sizes.dart';
 import 'package:sizer/sizer.dart';
 
-import '../utils/colors.dart';
 import '../utils/images.dart';
 
 class ScoreUpdateScreen extends StatefulWidget  {

@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 
 import 'package:sizer/sizer.dart';
 
-import '../utils/colors.dart';
 import '../utils/images.dart';
 import '../utils/sizes.dart';
 import 'bottom_sheet.dart';

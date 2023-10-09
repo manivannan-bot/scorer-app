@@ -1,8 +1,9 @@
 class AppConstants {
-//   static const String baseUrl = 'https://11s-dev.rezndus.com/api';
+
+  static const String baseUrl = 'https://storm.rezendus.in/api';
 //   static const String imageBaseUrl = 'https://11s.staging-sg.com/';
 //
-//   static const String playerRegister = '$baseUrl/auth/player/register';
+  static const String Allmatches = '$baseUrl/matches';
 //   static const String playerLogin = '$baseUrl/auth/player/login';
 //   static const String playerRegisterOtpVerify = '$baseUrl/auth/player/register-otp-check';
 //   static const String playerLoginOtpVerify = '$baseUrl/auth/player/login-otp-check';

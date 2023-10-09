@@ -89,7 +89,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
-
   dotted_border:
     dependency: "direct main"
     description:
@@ -98,7 +97,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
-
   dotted_line:
     dependency: "direct main"
     description:
@@ -330,7 +328,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.3"
-
   path_drawing:
     dependency: transitive
     description:
@@ -339,7 +336,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
-
   path_parsing:
     dependency: transitive
     description:
@@ -428,7 +424,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.5"
-
   r_dotted_line_border:
     dependency: "direct main"
     description:

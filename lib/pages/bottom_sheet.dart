@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-import '../utils/colors.dart';
+import '../utils/colours.dart';
 import '../utils/images.dart';
 import '../utils/sizes.dart';
 import 'cricket_wagon_wheel.dart';
