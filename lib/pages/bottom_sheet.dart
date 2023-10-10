@@ -18,11 +18,11 @@ class ScoreBottomSheet extends StatefulWidget {
 class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
 
   List<Color> rowColors = [
-    Colors.red,
-    Colors.grey,
-    Colors.blue,
-    Colors.orange,
-    Colors.purple,
+    Color(0xff797873),
+    Color(0xffF7B199),
+    Color(0xffF48F6D),
+    Color(0xffBC8BA0),
+    Color(0xffCAB59A),
   ];
 
   int selectedRow = -1;
@@ -175,6 +175,14 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                       style: TextStyle(color: AppColor.iconColour),
                     )
                   ],
+                ),
+
+                SizedBox(
+                  height: 550,
+                  width:500,
+                  child:Center(
+                    child: ThreeCircles(),
+                  ),
                 ),
 
                 ElevatedButton(
@@ -745,13 +753,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 500,
-                  width:500,
-                  child:Center(
-                    child: ThreeCircles(),
-                  ),
-                ),
+
 
 
               ],
@@ -827,3 +829,4 @@ class PizzaSlicePainter extends CustomPainter {
     return false;
   }
 }
+

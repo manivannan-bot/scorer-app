@@ -4,6 +4,8 @@ import 'package:scorer/pages/scoring_tab.dart';
 import 'package:scorer/utils/sizes.dart';
 import 'package:sizer/sizer.dart';
 
+import '../models/all_matches_model.dart';
+import '../provider/scoring_provider.dart';
 import '../utils/images.dart';
 
 class ScoreUpdateScreen extends StatefulWidget  {
@@ -15,21 +17,33 @@ class ScoreUpdateScreen extends StatefulWidget  {
 
 class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTickerProviderStateMixin{
    late TabController tabController;
-
+   List<Matches>? matchlist;
    @override
   void initState() {
-    // TODO: implement initState
+     matchlist=null;
     super.initState();
     tabController = TabController(length: 4, vsync: this);
+    ScoringProvider().getAllMatches().then((value) {
+      setState(() {
+        matchlist=value.matches;
+      });
+
+    } );
   }
+
   @override
   Widget build(BuildContext context) {
+    if (matchlist == null) {
+      return const SizedBox(
+          height: 100,
+          width: 100,
+          child: Center(child: CircularProgressIndicator())); // Example of a loading indicator
+    }
     return Scaffold(
       body: Stack(
         children: [
           // Background image
           Image.asset(
-
             Images.bannerBg,
             fit: BoxFit.cover, // You can choose how the image should be scaled
             width: double.infinity,
@@ -45,7 +59,7 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
                     IconButton(
                       icon: Icon(Icons.arrow_back,color: Colors.white,),
                       onPressed: () {
-                        // Handle arrow back button press here
+                        Navigator.pop(context);
                       },
                     ),
                     Container(width: 120,),
@@ -86,7 +100,7 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
                           ),
                         ),
                         Text(
-                          'Csk',
+                          '${matchlist!.first.team1Name}',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 12, // Adjust the font size as needed
@@ -100,15 +114,15 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
                         children: [
 
                               Text(
-                                'Dhoni CC won the Toss ',
+                                '${matchlist!.first.tossWinnerName} won the Toss ',
                                 style: TextStyle(color: Colors.white),
                               ),
                           Text(
-                            'and Choose to bat ',
+                            'and Choose to ${matchlist!.first.choseTo} ',
                             style: TextStyle(color: Colors.white),
                           ),
 
-                          Text('0/0',style: TextStyle(color: Colors.white,fontSize: 24),),
+                          Text('${matchlist!.first.teams!.first.totalRuns}/${matchlist!.first.teams!.first.totalWickets}',style: TextStyle(color: Colors.white,fontSize: 24),),
                           ElevatedButton(
                             onPressed: () {
                               // Handle button press here
@@ -120,7 +134,7 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
                               ),
                             ),
                             child: Text(
-                              'Overs: 0/10',
+                              'Overs: ${matchlist!.first.teams!.first.overNumber}.${matchlist!.first.teams!.first.ballNumber}/${matchlist!.first.overs}',
                               style: TextStyle(
                                 color: Colors.black,
                               ),

@@ -412,6 +412,7 @@ class _DOScoringState extends State<DOScoring> {
                               matchId:int.parse(widget.matchId),
                               teamId: int.parse(widget.team1id),
                               playerId: items![localSelectedIndex!].playerId,
+                              striker: true
                             ),
                           ],
                         );
@@ -803,6 +804,7 @@ class _DOScoringState extends State<DOScoring> {
                                 matchId:int.parse(widget.matchId),
                                 teamId: int.parse(widget.team1id),
                                 playerId: items![localSelectedIndex!].playerId,
+                                  striker: false
                               ),
                             ],
                           );

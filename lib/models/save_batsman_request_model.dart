@@ -25,13 +25,15 @@ class Batsman {
   int? matchId;
   int? teamId;
   int? playerId;
+  bool? striker;
 
-  Batsman({this.matchId, this.teamId, this.playerId});
+  Batsman({this.matchId, this.teamId, this.playerId, this.striker});
 
   Batsman.fromJson(Map<String, dynamic> json) {
     matchId = json['match_id'];
     teamId = json['team_id'];
     playerId = json['player_id'];
+    striker = json['striker'];
   }
 
   Map<String, dynamic> toJson() {
@@ -39,6 +41,7 @@ class Batsman {
     data['match_id'] = this.matchId;
     data['team_id'] = this.teamId;
     data['player_id'] = this.playerId;
+    data['striker'] = this.striker;
     return data;
   }
 }

@@ -18,8 +18,8 @@ class Images{
    static const String plusIcon = 'assets/images/plusIcon.svg';
   //
   // //bottom nav
-   //static const String home = 'assets/images/home_icon.svg';
-  // static const String myTeams = 'assets/images/my_teams_icon.svg';
+  static const String four = 'assets/images/four.png';
+  static const String six = 'assets/images/six.png';
   // static const String playVs = 'assets/images/play_vs_icon.svg';
   // static const String more = 'assets/images/more_icon.svg';
   //
