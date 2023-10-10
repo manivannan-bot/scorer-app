@@ -30,7 +30,7 @@ class _LiveScreenState extends State<LiveScreen> {
    ScoringProvider().getAllMatches().then((value) {
      setState(() {
        matchlist=[];
-       matchlist=value!.matches;
+       matchlist=value.matches;
      });
 
    } );
@@ -195,7 +195,7 @@ class _LiveScreenState extends State<LiveScreen> {
                                 padding:  EdgeInsets.symmetric(horizontal: 1.w)+EdgeInsets.only(top: 2.h),
                                 child: GestureDetector(
                                     onTap: (){
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => DOScoring()));
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => DOScoring(matchlist![index].matchId.toString(),matchlist![index].team1Id.toString(),matchlist![index].team2Id.toString())));
                                     },
                                     child: DoScoringBtn()),
                               ),

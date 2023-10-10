@@ -4,9 +4,9 @@ class AppConstants {
 //   static const String imageBaseUrl = 'https://11s.staging-sg.com/';
 //
   static const String Allmatches = '$baseUrl/matches';
-//   static const String playerLogin = '$baseUrl/auth/player/login';
-//   static const String playerRegisterOtpVerify = '$baseUrl/auth/player/register-otp-check';
-//   static const String playerLoginOtpVerify = '$baseUrl/auth/player/login-otp-check';
+  static const String getPlayerList = '$baseUrl/get-players';
+  static const String saveBatsman = '$baseUrl/batsman-save';
+  static const String saveBowler = '$baseUrl/bowler-save';
 //   static const String register = "$baseUrl/auth/player/register";
 //
 //   static const String playerLogout = '$baseUrl/player/logout';
