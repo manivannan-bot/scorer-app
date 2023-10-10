@@ -218,7 +218,7 @@ class _DOScoringState extends State<DOScoring> {
                 GestureDetector(
                     child: OkBtn("Ok"),
                 onTap:(){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ScoreUpdateScreen()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ScoreUpdateScreen(widget.matchId,widget.team1id)));
             }),
                 ],
               ),
@@ -228,6 +228,9 @@ class _DOScoringState extends State<DOScoring> {
       )
     );
   }
+
+
+
 
    _displayBottomSheet (BuildContext context, int? initialSelectedIndex,Function(int?) onItemSelected) async{
      int? localSelectedIndex = initialSelectedIndex;

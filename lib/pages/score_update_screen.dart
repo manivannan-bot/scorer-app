@@ -1,15 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:scorer/models/get_live_score.dart';
 import 'package:scorer/pages/scoring_tab.dart';
 import 'package:scorer/utils/sizes.dart';
 import 'package:sizer/sizer.dart';
 
-import '../models/all_matches_model.dart';
 import '../provider/scoring_provider.dart';
 import '../utils/images.dart';
 
 class ScoreUpdateScreen extends StatefulWidget  {
-  const ScoreUpdateScreen({super.key});
+  final String matchId; // Add matchId as a parameter
+  final String team1id;
+  const ScoreUpdateScreen(this.matchId, this.team1id, {super.key});
 
   @override
   State<ScoreUpdateScreen> createState() => _ScoreUpdateScreenState();
@@ -23,7 +25,8 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
      matchlist=null;
     super.initState();
     tabController = TabController(length: 4, vsync: this);
-    ScoringProvider().getAllMatches().then((value) {
+    ScoringProvider().getLiveScore(
+      widget.matchId,widget.team1id).then((value) {
       setState(() {
         matchlist=value.matches;
       });

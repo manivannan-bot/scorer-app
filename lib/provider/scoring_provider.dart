@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import '../models/all_matches_model.dart';
+import '../models/get_live_score.dart';
 import '../models/player_list_model.dart';
 import '../models/save_batsman_request_model.dart';
 import '../models/save_batsman_response_model.dart';
@@ -19,6 +20,7 @@ class ScoringProvider extends ChangeNotifier{
   SaveBatsmanResponseModel saveBatsmanResponseModel =SaveBatsmanResponseModel();
 
   SaveBowlerResponseModel saveBowlerResponseModel = SaveBowlerResponseModel();
+  GetLiveScoreResponseModel getLiveScoreResponseModel=GetLiveScoreResponseModel();
 
   Future<AllMatchesModel> getAllMatches() async {
 
@@ -36,7 +38,6 @@ class ScoringProvider extends ChangeNotifier{
       print(decodedJson);
       if (response.statusCode == 200) {
         allMatchesModel = AllMatchesModel.fromJson(decodedJson);
-        allMatchesModel = AllMatchesModel.fromJson(decodedJson);
 
         notifyListeners();
       } else {
@@ -52,6 +53,40 @@ class ScoringProvider extends ChangeNotifier{
       print(e);
     }
     return allMatchesModel;
+  }
+
+
+  Future<GetLiveScoreResponseModel> getLiveScore(String matchId,String teamId) async {
+
+    // SharedPreferences preferences = await SharedPreferences.getInstance();
+    // String? accToken = preferences.getString("access_token");
+    try {
+      final response = await http.get(
+        Uri.parse('${AppConstants.getLiveScore}/$matchId/$teamId'),
+        // headers: {
+        //   // 'Content-Type': 'application/json; charset=UTF-8',
+        //   // 'Authorization': 'Bearer $accToken',
+        // },
+      );
+      var decodedJson = json.decode(response.body);
+      print(decodedJson);
+      if (response.statusCode == 200) {
+        getLiveScoreResponseModel = GetLiveScoreResponseModel.fromJson(decodedJson);
+
+        notifyListeners();
+      } else {
+        throw const HttpException('Failed to load data');
+      }
+    } on SocketException {
+      print('No internet connection');
+    } on HttpException {
+      print('Failed to load data');
+    } on FormatException {
+      print('All Matches  - Invalid data format');
+    } catch (e) {
+      print(e);
+    }
+    return getLiveScoreResponseModel;
   }
 
 

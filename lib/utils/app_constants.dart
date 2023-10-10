@@ -7,7 +7,7 @@ class AppConstants {
   static const String getPlayerList = '$baseUrl/get-players';
   static const String saveBatsman = '$baseUrl/batsman-save';
   static const String saveBowler = '$baseUrl/bowler-save';
-//   static const String register = "$baseUrl/auth/player/register";
+   static const String getLiveScore = "$baseUrl/live-scorecard";
 //
 //   static const String playerLogout = '$baseUrl/player/logout';
 //   static const String getPlayerProfile = '$baseUrl/player/profile-details';
