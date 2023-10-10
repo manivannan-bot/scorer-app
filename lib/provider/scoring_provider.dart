@@ -4,11 +4,12 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import '../models/all_matches_model.dart';
-import '../models/get_live_score.dart';
+import '../models/get_live_score_model.dart';
 import '../models/player_list_model.dart';
 import '../models/save_batsman_request_model.dart';
 import '../models/save_batsman_response_model.dart';
-import '../models/save_bowler_response_modal.dart';
+import '../models/save_bowler_response_model.dart';
+import '../models/scoring_detail_response_model.dart';
 import '../utils/app_constants.dart';
 
 class ScoringProvider extends ChangeNotifier{
@@ -21,6 +22,7 @@ class ScoringProvider extends ChangeNotifier{
 
   SaveBowlerResponseModel saveBowlerResponseModel = SaveBowlerResponseModel();
   GetLiveScoreResponseModel getLiveScoreResponseModel=GetLiveScoreResponseModel();
+  ScoringDeatailResponseModel scoringDeatailResponseModel=ScoringDeatailResponseModel();
 
   Future<AllMatchesModel> getAllMatches() async {
 
@@ -201,6 +203,40 @@ class ScoringProvider extends ChangeNotifier{
     }
     return saveBowlerResponseModel;
   }
+
+  Future<ScoringDeatailResponseModel> getScoringDetail(String matchId) async {
+
+    // SharedPreferences preferences = await SharedPreferences.getInstance();
+    // String? accToken = preferences.getString("access_token");
+    try {
+      final response = await http.get(
+        Uri.parse('${AppConstants.scoringDetail}/$matchId'),
+        // headers: {
+        //   // 'Content-Type': 'application/json; charset=UTF-8',
+        //   // 'Authorization': 'Bearer $accToken',
+        // },
+      );
+      var decodedJson = json.decode(response.body);
+      print(decodedJson);
+      if (response.statusCode == 200) {
+        scoringDeatailResponseModel = ScoringDeatailResponseModel.fromJson(decodedJson);
+
+        notifyListeners();
+      } else {
+        throw const HttpException('Failed to load data');
+      }
+    } on SocketException {
+      print('No internet connection');
+    } on HttpException {
+      print('Failed to load data');
+    } on FormatException {
+      print('All Matches  - Invalid data format');
+    } catch (e) {
+      print(e);
+    }
+    return scoringDeatailResponseModel;
+  }
+
 
 
 }

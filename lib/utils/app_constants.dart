@@ -9,7 +9,7 @@ class AppConstants {
   static const String saveBowler = '$baseUrl/bowler-save';
    static const String getLiveScore = "$baseUrl/live-scorecard";
 //
-//   static const String playerLogout = '$baseUrl/player/logout';
+   static const String scoringDetail = '$baseUrl/scoring-details';
 //   static const String getPlayerProfile = '$baseUrl/player/profile-details';
 //
 //   static const String profileUpdate = '$baseUrl/player/player_profile_update';

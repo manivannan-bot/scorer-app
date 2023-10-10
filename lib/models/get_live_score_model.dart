@@ -35,7 +35,7 @@ class Matches {
   int? umpireId;
   String? date;
   String? venue;
-  Null? result;
+  dynamic result;
   String? slotStartTime;
   String? slotEndTime;
   String? organiser;

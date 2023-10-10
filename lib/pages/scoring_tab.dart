@@ -17,13 +17,16 @@ import 'bottom_sheet.dart';
 
 
 class ScoringTab extends StatefulWidget {
-  const ScoringTab({super.key});
+  final String matchId;
+  const ScoringTab(this.matchId, {super.key});
 
   @override
   State<ScoringTab> createState() => _ScoringTabState();
 }
 
 class _ScoringTabState extends State<ScoringTab> {
+
+
   @override
   Widget build(BuildContext context) {
     return Column(

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:scorer/models/get_live_score.dart';
+import 'package:scorer/models/get_live_score_model.dart';
 import 'package:scorer/pages/scoring_tab.dart';
 import 'package:scorer/utils/sizes.dart';
 import 'package:sizer/sizer.dart';
@@ -207,7 +207,7 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
                   child: TabBarView(
                       controller: tabController,
                       children:  [
-                        ScoringTab(),
+                        ScoringTab(widget.matchId),
                         Container(height: 50,width: 50,color: Colors.blue,),
                         Container(height: 50,width: 50,color: Colors.red,),
                         Container(height: 50,width: 50,color: Colors.blue,)
