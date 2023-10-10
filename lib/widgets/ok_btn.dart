@@ -11,7 +11,7 @@ class OkBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return   Container(
-      padding: EdgeInsets.symmetric(horizontal: 8.5.w,vertical: 0.5.h),
+      padding: EdgeInsets.symmetric(horizontal: 8.5.w,vertical: 0.8.h),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           color: AppColor.blackColour
