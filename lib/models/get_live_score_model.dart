@@ -133,8 +133,8 @@ class Matches {
 
 class Teams {
   String? teamName;
-  String? totalRuns;
-  String? totalWickets;
+  int? totalRuns;
+  int? totalWickets;
   int? ballNumber;
   int? overNumber;
 

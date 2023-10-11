@@ -1,21 +1,28 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:scorer/models/scoring_detail_response_model.dart';
 import 'package:sizer/sizer.dart';
 
+import '../models/score_update_request_model.dart';
+import '../provider/scoring_provider.dart';
 import '../utils/colours.dart';
 import '../utils/images.dart';
 import '../utils/sizes.dart';
 import 'cricket_wagon_wheel.dart';
 
 class ScoreBottomSheet extends StatefulWidget {
-  const ScoreBottomSheet({super.key});
+  final int run;
+  final Data data;
+  const ScoreBottomSheet(this.run, this.data, {super.key});
 
   @override
   State<ScoreBottomSheet> createState() => _ScoreBottomSheetState();
 }
 
 class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
+  ScoreUpdateRequestModel scoreUpdateRequestModel=ScoreUpdateRequestModel();
+
 
   List<Color> rowColors = [
     Color(0xff797873),
@@ -44,6 +51,12 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
     bool _isSwitch = false;
     double screenHeight = MediaQuery.of(context).size.height;
     double sheetHeight = screenHeight * 0.9;
+    if(widget.data.batting!.isEmpty){
+      return const Center(child: Text('Please Select Batsman'));
+    }
+    if(widget.data.bowling ==null){
+      return const Center(child: Text('Please Select Bowler'));
+    }
     return Container(
       height: sheetHeight,
       padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
@@ -141,7 +154,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                             children: [
                               Container(
                                 child: Center(
-                                    child: Text('Murugan',
+                                    child: Text('${widget.data.batting![0].playerName??'-'}',
                                         style: TextStyle(fontSize: 18))),
                               ),
                             ],
@@ -150,7 +163,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                             children: [
                               Container(
                                 child: Center(
-                                    child: Text('6',
+                                    child: Text('${widget.data.batting![0].runsScored??'0'}',
                                         style: TextStyle(fontSize: 18))),
                               ),
                             ],
@@ -266,14 +279,14 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                           Column(
                             children: [
                               Center(
-                                  child: Text('Vinayagam',
+                                  child: Text('${widget.data.bowling!.playerName??'-'}',
                                       style: TextStyle(fontSize: 18))),
                             ],
                           ),
                           Column(
                             children: [
                               Center(
-                                  child: Text('6-1-0-2',
+                                  child: Text('${widget.data.bowling!.oversBowled}-${widget.data.bowling!.wickets}-${widget.data.bowling!.runsConceded}-${widget.data.bowling!.economy}',
                                       style: TextStyle(fontSize: 18))),
                             ],
                           ),
@@ -738,7 +751,34 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                     alignment: Alignment.topRight,
                     child: ElevatedButton(
                       onPressed: () {
-                        // Handle button press here
+                        scoreUpdateRequestModel.ballTypeId=1;
+                        scoreUpdateRequestModel.matchId=widget.data!.batting![0].matchId;
+                        scoreUpdateRequestModel.scorerId=1;
+                        scoreUpdateRequestModel.strikerId=widget.data!.batting![0].playerId??0;
+                        scoreUpdateRequestModel.nonStrikerId=widget.data!.batting![1].playerId??0;
+                        scoreUpdateRequestModel.wicketKeeperId=23;
+                        scoreUpdateRequestModel.bowlerId=widget.data!.bowling!.playerId??0;
+                        scoreUpdateRequestModel.overNumber=(widget.data!.over!.isEmpty)?0:widget.data!.over!.first!.overNumber??1;
+                        scoreUpdateRequestModel.ballNumber=(widget.data!.over!.isEmpty)?0:widget.data!.over!.first!.ballNumber??0;
+                        scoreUpdateRequestModel.ballNumber=1;
+                        scoreUpdateRequestModel.runsScored=widget.run;
+                        scoreUpdateRequestModel.extras=0;
+                        scoreUpdateRequestModel.wicket=0;
+                        scoreUpdateRequestModel.dismissalType=0;
+                        scoreUpdateRequestModel.commentary=0;
+                        scoreUpdateRequestModel.innings=1;
+                        scoreUpdateRequestModel.battingTeamId=widget.data!.batting![0].teamId??0;
+                        scoreUpdateRequestModel.bowlingTeamId=widget.data!.bowling!.teamId??0;
+                        scoreUpdateRequestModel.overBowled=0;
+                        scoreUpdateRequestModel.totalOverBowled=0;
+                        scoreUpdateRequestModel.outByPlayer=0;
+                        scoreUpdateRequestModel.outPlayer=0;
+                        scoreUpdateRequestModel.totalWicket=0;
+                        scoreUpdateRequestModel.fieldingPositionsId=0;
+                        scoreUpdateRequestModel.endInnings=false;
+                        ScoringProvider().scoreUpdate(scoreUpdateRequestModel);
+
+                       Navigator.pop(context);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.black,

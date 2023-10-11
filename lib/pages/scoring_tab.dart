@@ -3,10 +3,13 @@ import 'dart:ui';
 
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
+import 'package:scorer/models/scoring_detail_response_model.dart';
 import 'package:scorer/widgets/custom_vertical_dottedLine.dart';
 
 import 'package:sizer/sizer.dart';
 
+import '../models/score_update_request_model.dart';
+import '../provider/scoring_provider.dart';
 import '../utils/colours.dart';
 import '../utils/images.dart';
 import '../utils/sizes.dart';
@@ -26,9 +29,37 @@ class ScoringTab extends StatefulWidget {
 
 class _ScoringTabState extends State<ScoringTab> {
 
+  Data? data;
+  int index1=0;
+  int index2=1;
+  int totalBallId = 0;
+  ScoreUpdateRequestModel scoreUpdateRequestModel=ScoreUpdateRequestModel();
+
+
+  @override
+  void initState() {
+    data=null;
+    super.initState();
+    ScoringProvider().getScoringDetail(widget.matchId).then((value) {
+      setState(() {
+        data=value.data;
+      });
+
+    } );
+  }
 
   @override
   Widget build(BuildContext context) {
+    if(data==null){
+      return const SizedBox(
+          height: 100,
+          width: 100,
+          child: Center(child: CircularProgressIndicator()));
+    }
+
+    for (int index = 0; index < data!.over!.length; index++) {
+      totalBallId += data!.over![index].ballId ??0; // Sum the ballIds
+    }
     return Column(
       children: [
         ClipRRect(
@@ -61,7 +92,16 @@ class _ScoringTabState extends State<ScoringTab> {
                                     ),
                                     ElevatedButton(
                                       onPressed: () {
-                                        // Handle button press here
+                                        print('index changed');
+                                        setState(() {
+                                          if(index1==0){
+                                          index2=1;
+                                          index1=0;
+                                          }else{
+                                            index2=0;
+                                            index1=1;
+                                          }
+                                        });
                                       },
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.black,
@@ -78,27 +118,17 @@ class _ScoringTabState extends State<ScoringTab> {
                                       ),
                                     ),
                                   ]),
-                                  Text('Arun    0(0)',
+                                  Text('${data!.batting![index1].playerName??'-'}    ${data!.batting![index1].runsScored??'0'}(${data!.batting![index1].ballsFaced??'0'})',
                                       style: TextStyle(
                                           color: Colors.black, fontSize: 16)),
-                                  Text('Dinesh    0(0)',
+                                  Text((data!.batting?[index2]!=null)?'${data!.batting![index2].playerName??'-'}    ${data!.batting![index2].runsScored??'0'}(${data!.batting![index2].ballsFaced??'0'})':'-',
                                       style: TextStyle(
                                           color: Colors.black, fontSize: 16)),
                                 ],
                               ),
                             ),
                           ),
-                          const DottedLine(
-                            dashGapColor: Colors.grey,
-                            direction: Axis.vertical, // Draw a vertical line
-                            lineLength: 100, // Specify the length of the line
-                            lineThickness:
-                                1, // Specify the thickness of the line
-                            dashColor:
-                                Colors.black, // Specify the color of the dots
-                            dashLength: 5, // Specify the length of each dot
-                            dashGapLength: 2, // Specify the gap between dots
-                          ),
+                          const CustomVerticalDottedLine(),
                           ClipRRect(
                             borderRadius: BorderRadius.circular(5),
                             child: Padding(
@@ -133,12 +163,10 @@ class _ScoringTabState extends State<ScoringTab> {
                                       ),
                                     ),
                                   ]),
-                                  Text('Arun   0(0)',
+                                  Text('${data!.bowling!.playerName??'-'}    ${data!.bowling!.totalBalls??'0'}(${data!.bowling!.wickets??'0'})',
                                       style: TextStyle(
                                           color: Colors.black, fontSize: 16)),
-                                  Text('Dinesh    0(0)',
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 16)),
+
                                 ],
                               ),
                             ),
@@ -163,133 +191,53 @@ class _ScoringTabState extends State<ScoringTab> {
                                   height: 100,
                                   width: 400,
                                   color: Colors.yellow,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        width: 40,
-                                        height: 40,
-                                        margin:
-                                            EdgeInsets.symmetric(horizontal: 5),
-                                        decoration: BoxDecoration(
-                                          color: Colors.black,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            '1', // Display index as text
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 16,
+                                  child:(data!.over!.isNotEmpty)? ListView(
+                                    scrollDirection: Axis.horizontal,
+                                    children: <Widget>[
+                                      for (int index = 0; index < data!.over!.length; index++)
+
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              width: 40,
+                                              height: 40,
+                                              margin: EdgeInsets.symmetric(horizontal: 5),
+                                              decoration: BoxDecoration(
+                                                color: Colors.black,
+                                                shape: BoxShape.circle,
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  data!.over![index].ballId.toString(),
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                              ),
                                             ),
-                                          ),
+                                          ],
                                         ),
-                                      ),
-                                      Container(
-                                        width: 40,
-                                        height: 40,
-                                        margin:
-                                            EdgeInsets.symmetric(horizontal: 5),
-                                        decoration: BoxDecoration(
-                                          color: Colors.black,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            '2', // Display index as text
+                                       Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Text('=',
                                             style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 16,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        width: 40,
-                                        height: 40,
-                                        margin:
-                                            EdgeInsets.symmetric(horizontal: 5),
-                                        decoration: BoxDecoration(
-                                          color: Colors.black,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            '3', // Display index as text
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 16,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        width: 40,
-                                        height: 40,
-                                        margin:
-                                            EdgeInsets.symmetric(horizontal: 5),
-                                        decoration: BoxDecoration(
-                                          color: Colors.black,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            '4', // Display index as text
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 16,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        width: 40,
-                                        height: 40,
-                                        margin:
-                                            EdgeInsets.symmetric(horizontal: 5),
-                                        decoration: BoxDecoration(
-                                          color: Colors.black,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            '5', // Display index as text
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 16,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        width: 40,
-                                        height: 40,
-                                        margin:
-                                            EdgeInsets.symmetric(horizontal: 5),
-                                        decoration: BoxDecoration(
-                                          color: Colors.black,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            '6', // Display index as text
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 16,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Text('=',
-                                          style: TextStyle(
                                               color: Colors.black,
-                                              fontSize: 24)),
-                                      Text('14',
-                                          style: TextStyle(
+                                              fontSize: 24,
+                                            ),
+                                          ),
+                                          Text(totalBallId.toString() ?? 'N/A',
+                                            style: TextStyle(
                                               color: Colors.black,
-                                              fontSize: 24)),
+                                              fontSize: 24,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ],
-                                  ),
+                                  ):const Text(''),
                                 ),
                               ),
                             ],
@@ -297,11 +245,11 @@ class _ScoringTabState extends State<ScoringTab> {
                           Center(
                             child: Container(
                               color: Colors.yellow,
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 8, vertical: 4),
                               child: Text(
-                                'over 1',
-                                style: TextStyle(
+                                'over ${(data!.over!.isNotEmpty)?data!.over!.first.overNumber:'0'}',
+                                style: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 16,
                                 ),
@@ -325,14 +273,43 @@ class _ScoringTabState extends State<ScoringTab> {
                   children: [
                     Column(
                         children:[
-                          _buildGridItem('0','DOT', context),
+                          GestureDetector(
+                            onTap:(){
+                              scoreUpdateRequestModel.ballTypeId=1;
+                              scoreUpdateRequestModel.matchId=int.parse(widget.matchId);
+                              scoreUpdateRequestModel.scorerId=1;
+                              scoreUpdateRequestModel.strikerId=data!.batting![index1].playerId??0;
+                              scoreUpdateRequestModel.nonStrikerId=data!.batting![index2].playerId??0;
+                              scoreUpdateRequestModel.wicketKeeperId=23;
+                              scoreUpdateRequestModel.bowlerId=data!.bowling!.playerId??0;
+                              scoreUpdateRequestModel.overNumber=(data!.over!.isEmpty)?0:data!.over!.first!.overNumber??1;
+                              scoreUpdateRequestModel.ballNumber=(data!.over!.isEmpty)?0:data!.over!.first!.ballNumber??0;
+                              scoreUpdateRequestModel.ballNumber=1;
+                              scoreUpdateRequestModel.extras=0;
+                              scoreUpdateRequestModel.wicket=0;
+                              scoreUpdateRequestModel.dismissalType=0;
+                              scoreUpdateRequestModel.commentary=0;
+                              scoreUpdateRequestModel.innings=1;
+                              scoreUpdateRequestModel.battingTeamId=data!.batting![index1].teamId??0;
+                              scoreUpdateRequestModel.bowlingTeamId=data!.bowling!.teamId??0;
+                              scoreUpdateRequestModel.overBowled=0;
+                              scoreUpdateRequestModel.totalOverBowled=0;
+                              scoreUpdateRequestModel.outByPlayer=0;
+                              scoreUpdateRequestModel.outPlayer=0;
+                              scoreUpdateRequestModel.totalWicket=0;
+                              scoreUpdateRequestModel.fieldingPositionsId=0;
+                              scoreUpdateRequestModel.endInnings=false;
+                              ScoringProvider().scoreUpdate(scoreUpdateRequestModel);
+                              },
+                              child: _buildGridItem('0','DOT', context)),
+
                           const CustomHorizantalDottedLine(),]),
 
                     const CustomVerticalDottedLine(),
                     Column(
                         children:[
                           GestureDetector(onTap:(){
-                            _displayBottomSheet(context);
+                            _displayBottomSheet(context,1,data);
                           }, child: _buildGridItem('1','', context)),
 
                           const CustomHorizantalDottedLine(),]),
@@ -340,21 +317,21 @@ class _ScoringTabState extends State<ScoringTab> {
                     Column(
                         children:[
                           GestureDetector(onTap:(){
-                            _displayBottomSheet(context);
+                            _displayBottomSheet(context,2,data);
                           }, child:_buildGridItem('2','', context)),
                           const CustomHorizantalDottedLine(),]),
                     const CustomVerticalDottedLine(),
                     Column(
                         children:[
                           GestureDetector(onTap:(){
-                            _displayBottomSheet(context);
+                            _displayBottomSheet(context,3,data);
                           }, child:_buildGridItem('3','', context)),
                           const CustomHorizantalDottedLine(),]),
                     const CustomVerticalDottedLine(),
                     Column(
                         children:[
                           GestureDetector(onTap:(){
-                            _displayBottomSheet(context);
+                            _displayBottomSheet(context,4,data);
                           }, child:_buildGridItemFour(Images.four,'FOUR', context)),
                           const CustomHorizantalDottedLine(),]),
                   ],
@@ -364,7 +341,7 @@ class _ScoringTabState extends State<ScoringTab> {
                   children: [
                     Column(
                         children:[  GestureDetector(onTap:(){
-                          _displayBottomSheet(context);
+                          _displayBottomSheet(context,6,data);
                         }, child:_buildGridItemFour(Images.six,'SIX', context)),
                           const CustomHorizantalDottedLine(),]),
                     const CustomVerticalDottedLine(),
@@ -496,7 +473,7 @@ Widget _buildGridItemOut(String index,String text, BuildContext context) {
   );
 }
 
-void _displayBottomSheet(BuildContext context) {
+void _displayBottomSheet(BuildContext context, int run, Data? data) {
   double screenHeight = MediaQuery.of(context).size.height;
   double sheetHeight = screenHeight * 0.9;
   showModalBottomSheet(
@@ -504,7 +481,7 @@ void _displayBottomSheet(BuildContext context) {
     isScrollControlled: true,
     builder: (BuildContext context) {
       return SizedBox(height: sheetHeight,
-        child: ScoreBottomSheet(),
+        child: ScoreBottomSheet(run,data!),
       ); // Create and return the GroundCircle widget here.
     },
   );
