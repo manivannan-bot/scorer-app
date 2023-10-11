@@ -58,7 +58,7 @@ class _ScoringTabState extends State<ScoringTab> {
     }
 
     for (int index = 0; index < data!.over!.length; index++) {
-      totalBallId += data!.over![index].ballId ??0; // Sum the ballIds
+      totalBallId += data!.over![index].runsScored ??0; // Sum the ballIds
     }
     return Column(
       children: [
@@ -209,7 +209,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                               ),
                                               child: Center(
                                                 child: Text(
-                                                  data!.over![index].ballId.toString(),
+                                                  data!.over![index].runsScored.toString(),
                                                   style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 16,
@@ -348,7 +348,7 @@ class _ScoringTabState extends State<ScoringTab> {
                     Column(
                         children:[ GestureDetector(
                           onTap: (){
-                            _displayBottomSheetWide(context);
+                            _displayBottomSheetWide(context,7,data);
                           },
                             child: _buildGridItem('WD','WIDE', context)),
                           const CustomHorizantalDottedLine(),]),
@@ -356,7 +356,7 @@ class _ScoringTabState extends State<ScoringTab> {
                     Column(
                         children:[ GestureDetector(
                           onTap: (){
-                            _displayBottomSheetNoBall(context);
+                            _displayBottomSheetNoBall(context,8,data);
                           },
                             child: _buildGridItem('NB','NO BALL', context)),
                           const CustomHorizantalDottedLine(),]),
@@ -364,7 +364,7 @@ class _ScoringTabState extends State<ScoringTab> {
                     Column(
                         children:[ GestureDetector(
                           onTap:(){
-                            _displayBottomSheetLegBye(context);
+                            _displayBottomSheetLegBye(context,9,data);
                           },
                             child: _buildGridItem('LB','LEG-BYE', context)),
                           const CustomHorizantalDottedLine(),]),
@@ -372,7 +372,7 @@ class _ScoringTabState extends State<ScoringTab> {
                     Column(
                         children:[ GestureDetector(
                           onTap: (){
-                            _displayBottomSheetByes(context);
+                            _displayBottomSheetByes(context,10,data);
                           },
                             child: _buildGridItem('BYE','', context)),
                           const CustomHorizantalDottedLine(),]),
@@ -387,7 +387,7 @@ class _ScoringTabState extends State<ScoringTab> {
                         child: _buildGridItem('B/P','B/P', context)),
                     const CustomVerticalDottedLine(),
                     GestureDetector(onTap: (){
-                      _displayBottomSheetMoreRuns(context);
+                      _displayBottomSheetMoreRuns(context,5,data);
                     },
                         child: _buildGridItem('5,7..','RUNS', context)),
                     const CustomVerticalDottedLine(),
@@ -487,7 +487,7 @@ void _displayBottomSheet(BuildContext context, int run, Data? data) {
   );
 }
 
-Future<void> _displayBottomSheetWide (BuildContext context) async{
+Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Data? data) async{
   int? isOffSideSelected ;
   int? isWideSelected ;
   List<Map<String, dynamic>> chipData =[
@@ -649,11 +649,45 @@ Future<void> _displayBottomSheetWide (BuildContext context) async{
               Expanded(
                 child: Padding(
                   padding:  EdgeInsets.symmetric(horizontal: 5.w,vertical: 3.h),
-                  child: const Row(
+                  child:  Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      OkBtn("Save"),
+                      GestureDetector(
+                          onTap:(){
+                            ScoreUpdateRequestModel scoreUpdateRequestModel=ScoreUpdateRequestModel();
+                            scoreUpdateRequestModel.ballTypeId=1;
+                            scoreUpdateRequestModel.matchId=data!.batting![0].matchId;
+                            scoreUpdateRequestModel.scorerId=1;
+                            scoreUpdateRequestModel.strikerId=data!.batting![0].playerId??0;
+                            scoreUpdateRequestModel.nonStrikerId=data!.batting![1].playerId??0;
+                            scoreUpdateRequestModel.wicketKeeperId=23;
+                            scoreUpdateRequestModel.bowlerId=data!.bowling!.playerId??0;
+                            scoreUpdateRequestModel.overNumber=(data!.over!.isEmpty)?0:data!.over!.first!.overNumber??1;
+                            scoreUpdateRequestModel.ballNumber=(data!.over!.isEmpty)?0:data!.over!.first!.ballNumber??0;
+                            scoreUpdateRequestModel.ballNumber=1;
+                            scoreUpdateRequestModel.runsScored=isWideSelected??0;
+                            scoreUpdateRequestModel.extras=0;
+                            scoreUpdateRequestModel.wicket=0;
+                            scoreUpdateRequestModel.dismissalType=0;
+                            scoreUpdateRequestModel.commentary=0;
+                            scoreUpdateRequestModel.innings=1;
+                            scoreUpdateRequestModel.battingTeamId=data!.batting![0].teamId??0;
+                            scoreUpdateRequestModel.bowlingTeamId=data!.bowling!.teamId??0;
+                            scoreUpdateRequestModel.overBowled=0;
+                            scoreUpdateRequestModel.totalOverBowled=0;
+                            scoreUpdateRequestModel.outByPlayer=0;
+                            scoreUpdateRequestModel.outPlayer=0;
+                            scoreUpdateRequestModel.totalWicket=0;
+                            scoreUpdateRequestModel.fieldingPositionsId=0;
+                            scoreUpdateRequestModel.endInnings=false;
+                            ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) {
+                              Navigator.pop(context);
+                            });
+
+
+                          },
+                          child: OkBtn("Save")),
                     ],
                   ),
                 ),
@@ -667,7 +701,7 @@ Future<void> _displayBottomSheetWide (BuildContext context) async{
 }
 
 
-Future<void> _displayBottomSheetLegBye (BuildContext context) async{
+Future<void> _displayBottomSheetLegBye (BuildContext context, int ballType,Data? data) async{
   int? isOffSideSelected ;
   int? isWideSelected ;
   List<Map<String, dynamic>> chipData =[
@@ -767,11 +801,41 @@ Future<void> _displayBottomSheetLegBye (BuildContext context) async{
               Expanded(
                 child: Padding(
                   padding:  EdgeInsets.symmetric(horizontal: 2.w,vertical: 1.h),
-                  child: const Row(
+                  child:  Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      OkBtn("Save"),
+                      GestureDetector(onTap:(){
+                        ScoreUpdateRequestModel scoreUpdateRequestModel=ScoreUpdateRequestModel();
+                        scoreUpdateRequestModel.ballTypeId=ballType??0;
+                        scoreUpdateRequestModel.matchId=data!.batting![0].matchId;
+                        scoreUpdateRequestModel.scorerId=1;
+                        scoreUpdateRequestModel.strikerId=data!.batting![0].playerId??0;
+                        scoreUpdateRequestModel.nonStrikerId=data!.batting![1].playerId??0;
+                        scoreUpdateRequestModel.wicketKeeperId=23;
+                        scoreUpdateRequestModel.bowlerId=data!.bowling!.playerId??0;
+                        scoreUpdateRequestModel.overNumber=(data!.over!.isEmpty)?0:data!.over!.first!.overNumber??1;
+                        scoreUpdateRequestModel.ballNumber=(data!.over!.isEmpty)?0:data!.over!.first!.ballNumber??0;
+                        scoreUpdateRequestModel.ballNumber=1;
+                        scoreUpdateRequestModel.runsScored=isWideSelected??0;
+                        scoreUpdateRequestModel.extras=0;
+                        scoreUpdateRequestModel.wicket=0;
+                        scoreUpdateRequestModel.dismissalType=0;
+                        scoreUpdateRequestModel.commentary=0;
+                        scoreUpdateRequestModel.innings=1;
+                        scoreUpdateRequestModel.battingTeamId=data!.batting![0].teamId??0;
+                        scoreUpdateRequestModel.bowlingTeamId=data!.bowling!.teamId??0;
+                        scoreUpdateRequestModel.overBowled=0;
+                        scoreUpdateRequestModel.totalOverBowled=0;
+                        scoreUpdateRequestModel.outByPlayer=0;
+                        scoreUpdateRequestModel.outPlayer=0;
+                        scoreUpdateRequestModel.totalWicket=0;
+                        scoreUpdateRequestModel.fieldingPositionsId=0;
+                        scoreUpdateRequestModel.endInnings=false;
+                        ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) {
+                          Navigator.pop(context);
+                        });
+                      },child: OkBtn("Save")),
                     ],
                   ),
                 ),
@@ -784,7 +848,7 @@ Future<void> _displayBottomSheetLegBye (BuildContext context) async{
   );
 }
 
-Future<void> _displayBottomSheetNoBall (BuildContext context) async{
+Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,Data? data) async{
   int? isOffSideSelected ;
   int? isWideSelected ;
   List<Map<String, dynamic>> chipData =[
@@ -975,7 +1039,37 @@ Future<void> _displayBottomSheetNoBall (BuildContext context) async{
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      OkBtn("Save"),
+                      GestureDetector(onTap:(){
+                        ScoreUpdateRequestModel scoreUpdateRequestModel=ScoreUpdateRequestModel();
+                        scoreUpdateRequestModel.ballTypeId=ballType??0;
+                        scoreUpdateRequestModel.matchId=data!.batting![0].matchId;
+                        scoreUpdateRequestModel.scorerId=1;
+                        scoreUpdateRequestModel.strikerId=data!.batting![0].playerId??0;
+                        scoreUpdateRequestModel.nonStrikerId=data!.batting![1].playerId??0;
+                        scoreUpdateRequestModel.wicketKeeperId=23;
+                        scoreUpdateRequestModel.bowlerId=data!.bowling!.playerId??0;
+                        scoreUpdateRequestModel.overNumber=(data!.over!.isEmpty)?0:data!.over!.first!.overNumber??1;
+                        scoreUpdateRequestModel.ballNumber=(data!.over!.isEmpty)?0:data!.over!.first!.ballNumber??0;
+                        scoreUpdateRequestModel.ballNumber=1;
+                        scoreUpdateRequestModel.runsScored=isWideSelected??0;
+                        scoreUpdateRequestModel.extras=0;
+                        scoreUpdateRequestModel.wicket=0;
+                        scoreUpdateRequestModel.dismissalType=0;
+                        scoreUpdateRequestModel.commentary=0;
+                        scoreUpdateRequestModel.innings=1;
+                        scoreUpdateRequestModel.battingTeamId=data!.batting![0].teamId??0;
+                        scoreUpdateRequestModel.bowlingTeamId=data!.bowling!.teamId??0;
+                        scoreUpdateRequestModel.overBowled=0;
+                        scoreUpdateRequestModel.totalOverBowled=0;
+                        scoreUpdateRequestModel.outByPlayer=0;
+                        scoreUpdateRequestModel.outPlayer=0;
+                        scoreUpdateRequestModel.totalWicket=0;
+                        scoreUpdateRequestModel.fieldingPositionsId=0;
+                        scoreUpdateRequestModel.endInnings=false;
+                        ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) {
+                          Navigator.pop(context);
+                        });
+                      },child: OkBtn("Save")),
                     ],
                   ),
                 ),
@@ -988,7 +1082,7 @@ Future<void> _displayBottomSheetNoBall (BuildContext context) async{
   );
 }
 
-Future<void> _displayBottomSheetByes (BuildContext context) async{
+Future<void> _displayBottomSheetByes (BuildContext context,int ballType,Data? data) async{
   int? isOffSideSelected ;
   int? isWideSelected ;
   List<Map<String, dynamic>> chipData =[
@@ -1092,7 +1186,37 @@ Future<void> _displayBottomSheetByes (BuildContext context) async{
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      OkBtn("Save"),
+                      GestureDetector(onTap:(){
+                        ScoreUpdateRequestModel scoreUpdateRequestModel=ScoreUpdateRequestModel();
+                        scoreUpdateRequestModel.ballTypeId=ballType??0;
+                        scoreUpdateRequestModel.matchId=data!.batting![0].matchId;
+                        scoreUpdateRequestModel.scorerId=1;
+                        scoreUpdateRequestModel.strikerId=data!.batting![0].playerId??0;
+                        scoreUpdateRequestModel.nonStrikerId=data!.batting![1].playerId??0;
+                        scoreUpdateRequestModel.wicketKeeperId=23;
+                        scoreUpdateRequestModel.bowlerId=data!.bowling!.playerId??0;
+                        scoreUpdateRequestModel.overNumber=(data!.over!.isEmpty)?0:data!.over!.first!.overNumber??1;
+                        scoreUpdateRequestModel.ballNumber=(data!.over!.isEmpty)?0:data!.over!.first!.ballNumber??0;
+                        scoreUpdateRequestModel.ballNumber=1;
+                        scoreUpdateRequestModel.runsScored=isWideSelected??0;
+                        scoreUpdateRequestModel.extras=0;
+                        scoreUpdateRequestModel.wicket=0;
+                        scoreUpdateRequestModel.dismissalType=0;
+                        scoreUpdateRequestModel.commentary=0;
+                        scoreUpdateRequestModel.innings=1;
+                        scoreUpdateRequestModel.battingTeamId=data!.batting![0].teamId??0;
+                        scoreUpdateRequestModel.bowlingTeamId=data!.bowling!.teamId??0;
+                        scoreUpdateRequestModel.overBowled=0;
+                        scoreUpdateRequestModel.totalOverBowled=0;
+                        scoreUpdateRequestModel.outByPlayer=0;
+                        scoreUpdateRequestModel.outPlayer=0;
+                        scoreUpdateRequestModel.totalWicket=0;
+                        scoreUpdateRequestModel.fieldingPositionsId=0;
+                        scoreUpdateRequestModel.endInnings=false;
+                        ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) {
+                          Navigator.pop(context);
+                        });
+                      },child: OkBtn("Save")),
                     ],
                   ),
                 ),
@@ -1105,7 +1229,7 @@ Future<void> _displayBottomSheetByes (BuildContext context) async{
   );
 }
 
-Future<void> _displayBottomSheetMoreRuns (BuildContext context) async{
+Future<void> _displayBottomSheetMoreRuns (BuildContext context,int ballType,Data? data) async{
   int? isOffSideSelected ;
   int? isWideSelected ;
   List<Map<String, dynamic>> chipData =[
@@ -1205,11 +1329,41 @@ Future<void> _displayBottomSheetMoreRuns (BuildContext context) async{
               Expanded(
                 child: Padding(
                   padding:  EdgeInsets.symmetric(horizontal: 5.w,vertical: 3.h),
-                  child: const Row(
+                  child:  Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      OkBtn("Save"),
+                      GestureDetector(onTap:(){
+                        ScoreUpdateRequestModel scoreUpdateRequestModel=ScoreUpdateRequestModel();
+                        scoreUpdateRequestModel.ballTypeId=ballType??0;
+                        scoreUpdateRequestModel.matchId=data!.batting![0].matchId;
+                        scoreUpdateRequestModel.scorerId=1;
+                        scoreUpdateRequestModel.strikerId=data!.batting![0].playerId??0;
+                        scoreUpdateRequestModel.nonStrikerId=data!.batting![1].playerId??0;
+                        scoreUpdateRequestModel.wicketKeeperId=23;
+                        scoreUpdateRequestModel.bowlerId=data!.bowling!.playerId??0;
+                        scoreUpdateRequestModel.overNumber=(data!.over!.isEmpty)?0:data!.over!.first!.overNumber??1;
+                        scoreUpdateRequestModel.ballNumber=(data!.over!.isEmpty)?0:data!.over!.first!.ballNumber??0;
+                        scoreUpdateRequestModel.ballNumber=1;
+                        scoreUpdateRequestModel.runsScored=isWideSelected??0;
+                        scoreUpdateRequestModel.extras=0;
+                        scoreUpdateRequestModel.wicket=0;
+                        scoreUpdateRequestModel.dismissalType=0;
+                        scoreUpdateRequestModel.commentary=0;
+                        scoreUpdateRequestModel.innings=1;
+                        scoreUpdateRequestModel.battingTeamId=data!.batting![0].teamId??0;
+                        scoreUpdateRequestModel.bowlingTeamId=data!.bowling!.teamId??0;
+                        scoreUpdateRequestModel.overBowled=0;
+                        scoreUpdateRequestModel.totalOverBowled=0;
+                        scoreUpdateRequestModel.outByPlayer=0;
+                        scoreUpdateRequestModel.outPlayer=0;
+                        scoreUpdateRequestModel.totalWicket=0;
+                        scoreUpdateRequestModel.fieldingPositionsId=0;
+                        scoreUpdateRequestModel.endInnings=false;
+                        ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) {
+                          Navigator.pop(context);
+                        });
+                      },child: OkBtn("Save")),
                     ],
                   ),
                 ),

@@ -1,7 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:laravel_flutter_pusher/laravel_flutter_pusher.dart';
 import 'package:scorer/models/get_live_score_model.dart';
 import 'package:scorer/pages/scoring_tab.dart';
+import 'package:scorer/utils/pusher_service.dart';
 import 'package:scorer/utils/sizes.dart';
 import 'package:sizer/sizer.dart';
 
@@ -12,6 +16,8 @@ class ScoreUpdateScreen extends StatefulWidget  {
   final String matchId; // Add matchId as a parameter
   final String team1id;
   const ScoreUpdateScreen(this.matchId, this.team1id, {super.key});
+  //const ScoreUpdateScreen(this.matchId, this.team1id, {Key? key}) : super(key: key);
+
 
   @override
   State<ScoreUpdateScreen> createState() => _ScoreUpdateScreenState();
@@ -20,8 +26,11 @@ class ScoreUpdateScreen extends StatefulWidget  {
 class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTickerProviderStateMixin{
    late TabController tabController;
    List<Matches>? matchlist;
+
+
    @override
   void initState() {
+     setUpServices();
      matchlist=null;
     super.initState();
     tabController = TabController(length: 4, vsync: this);
@@ -33,6 +42,16 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
 
     } );
   }
+   void setUpServices() {
+     var options = PusherOptions(
+         host: '10.0.2.2', port: 6001, encrypted: false, cluster: 'eu');
+
+     LaravelFlutterPusher pusher =
+     LaravelFlutterPusher('app_key', options, enableLogging: true);
+     pusher.subscribe('channel')
+         .bind('event', (event) => log('event =>' + event.toString()));
+   }
+
 
   @override
   Widget build(BuildContext context) {

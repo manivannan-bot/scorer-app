@@ -1,6 +1,6 @@
 class GetLiveScoreResponseModel {
   bool? status;
-  String? message;
+  dynamic message;
   List<Matches>? matches;
 
   GetLiveScoreResponseModel({this.status, this.message, this.matches});
@@ -28,26 +28,26 @@ class GetLiveScoreResponseModel {
 }
 
 class Matches {
-  int? matchId;
-  int? team1Id;
-  int? team2Id;
-  int? scorerId;
-  int? umpireId;
-  String? date;
-  String? venue;
+  dynamic matchId;
+  dynamic team1Id;
+  dynamic team2Id;
+  dynamic scorerId;
+  dynamic umpireId;
+  dynamic date;
+  dynamic venue;
   dynamic result;
-  String? slotStartTime;
-  String? slotEndTime;
-  String? organiser;
-  String? ground;
-  String? toss;
-  int? wonBy;
-  String? choseTo;
-  String? overs;
-  String? team1Name;
-  String? team2Name;
-  String? tossWinnerName;
-  String? status;
+  dynamic slotStartTime;
+  dynamic slotEndTime;
+  dynamic organiser;
+  dynamic ground;
+  dynamic toss;
+  dynamic wonBy;
+  dynamic choseTo;
+  dynamic overs;
+  dynamic team1Name;
+  dynamic team2Name;
+  dynamic tossWinnerName;
+  dynamic status;
   List<Teams>? teams;
 
   Matches(
@@ -132,11 +132,11 @@ class Matches {
 }
 
 class Teams {
-  String? teamName;
-  int? totalRuns;
-  int? totalWickets;
-  int? ballNumber;
-  int? overNumber;
+  dynamic teamName;
+  dynamic totalRuns;
+  dynamic totalWickets;
+  dynamic ballNumber;
+  dynamic overNumber;
 
   Teams(
       {this.teamName,
