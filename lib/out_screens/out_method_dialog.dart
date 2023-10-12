@@ -5,8 +5,8 @@ import 'package:sizer/sizer.dart';
 import '../utils/colours.dart';
 import '../utils/images.dart';
 import '../utils/sizes.dart';
-import 'ok_btn.dart';
-import 'out_button.dart';
+import '../widgets/ok_btn.dart';
+import '../widgets/out_button.dart';
 
 class OutMethodDialog extends StatefulWidget {
   final String label;

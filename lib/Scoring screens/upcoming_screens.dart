@@ -20,7 +20,7 @@ class UpcomingScreen extends StatefulWidget {
 
 class _UpcomingScreenState extends State<UpcomingScreen> {
   final List<Map<String,dynamic>>itemList=[
-    {},{},{},
+    {},{},
    ];
   @override
   Widget build(BuildContext context) {

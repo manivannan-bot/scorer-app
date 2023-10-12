@@ -130,8 +130,7 @@ class _DOScoringState extends State<DOScoring> {
                            });
                          },
                            child: ChooseContainer(selectedIndex != null
-                               ? selectedPlayerName
-                               : "Striker")),
+                               ? selectedPlayerName : "Striker")),
                         SizedBox(width: 8.w,),
                         GestureDetector(
                             onTap:(){
