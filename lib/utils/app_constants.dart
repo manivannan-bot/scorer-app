@@ -10,9 +10,9 @@ class AppConstants {
    static const String getLiveScore = "$baseUrl/live-scorecard";
 //
    static const String scoringDetail = '$baseUrl/scoring-details';
-//   static const String getPlayerProfile = '$baseUrl/player/profile-details';
+   static const String scoreUpdate = '$baseUrl/score-update';
 //
-//   static const String profileUpdate = '$baseUrl/player/player_profile_update';
+  static const String getBallType = '$baseUrl/ball-type';
 //
 //   static const String cityList = '$baseUrl/city-list';
 //

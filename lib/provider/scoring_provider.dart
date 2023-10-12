@@ -3,12 +3,16 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/all_matches_model.dart';
+import '../models/get_ball_type_response_model.dart';
 import '../models/get_live_score_model.dart';
 import '../models/player_list_model.dart';
 import '../models/save_batsman_request_model.dart';
 import '../models/save_batsman_response_model.dart';
 import '../models/save_bowler_response_model.dart';
+import '../models/score_update_request_model.dart';
+import '../models/score_update_response_model.dart';
 import '../models/scoring_detail_response_model.dart';
 import '../utils/app_constants.dart';
 
@@ -23,6 +27,8 @@ class ScoringProvider extends ChangeNotifier{
   SaveBowlerResponseModel saveBowlerResponseModel = SaveBowlerResponseModel();
   GetLiveScoreResponseModel getLiveScoreResponseModel=GetLiveScoreResponseModel();
   ScoringDeatailResponseModel scoringDeatailResponseModel=ScoringDeatailResponseModel();
+  ScoreUpdateResponseModel scoreUpdateResponseModel=ScoreUpdateResponseModel();
+  GetBallTypeResponseModel getBallTypeResponseModel=GetBallTypeResponseModel();
 
   Future<AllMatchesModel> getAllMatches() async {
 
@@ -135,12 +141,13 @@ class ScoringProvider extends ChangeNotifier{
 
   Future<SaveBatsmanResponseModel> saveBatsman( SaveBatsmanDetailRequestModel batsman) async {
     var body = json.encode(batsman);
+    print('${batsman.batsman},${batsman.batsman!.first.matchId},${batsman.batsman!.first.teamId}');
     try {
       final response = await http.post(
         Uri.parse(AppConstants.saveBatsman),
-        // headers: {
-        //   'Content-Type': 'application/json; charset=UTF-8',
-        // },
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
         body: body,
       );
       var decodedJson = json.decode(response.body);
@@ -235,6 +242,69 @@ class ScoringProvider extends ChangeNotifier{
       print(e);
     }
     return scoringDeatailResponseModel;
+  }
+
+//score update
+  Future<ScoreUpdateResponseModel> scoreUpdate( ScoreUpdateRequestModel scoreUpdate) async {
+    var body = json.encode(scoreUpdate);
+    print(json.decode(body));
+    try {
+      final response = await http.post(
+        Uri.parse(AppConstants.scoreUpdate),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: body,
+      );
+      var decodedJson = json.decode(response.body);
+      print(decodedJson);
+      if (response.statusCode == 200) {
+        scoreUpdateResponseModel = ScoreUpdateResponseModel.fromJson(decodedJson);
+        notifyListeners();
+      } else {
+        throw const HttpException('Failed to load data');
+      }
+    } on SocketException {
+      print('No internet connection');
+    } on HttpException {
+      print('Failed to load data');
+    } on FormatException {
+      print('Batsman save- Invalid data format');
+    } catch (e) {
+      print(e);
+    }
+    return scoreUpdateResponseModel;
+  }
+
+  Future<GetBallTypeResponseModel> getBallType() async {
+
+    try {
+      final response = await http.get(
+        Uri.parse(AppConstants.getBallType),
+        // headers: {
+        //   // 'Content-Type': 'application/json; charset=UTF-8',
+        //   // 'Authorization': 'Bearer $accToken',
+        // },
+      );
+      var decodedJson = json.decode(response.body);
+      print(decodedJson);
+      if (response.statusCode == 200) {
+        getBallTypeResponseModel = GetBallTypeResponseModel.fromJson(decodedJson);
+
+        notifyListeners();
+      } else {
+        throw const HttpException('Failed to load data');
+      }
+    } on SocketException {
+      print('No internet connection');
+    } on HttpException {
+      print('Failed to load data');
+    } on FormatException {
+      print('All Matches  - Invalid data format');
+    } catch (e) {
+      print(e);
+    }
+    return getBallTypeResponseModel;
   }
 
 
