@@ -94,7 +94,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                       onPressed: () {
                                         print('index changed');
                                         setState(() {
-                                          if(index1==0){
+                                          if(index1==1){
                                           index2=1;
                                           index1=0;
                                           }else{
@@ -119,10 +119,10 @@ class _ScoringTabState extends State<ScoringTab> {
                                     ),
                                   ]),
                                   Text('${data!.batting![index1].playerName??'-'}    ${data!.batting![index1].runsScored??'0'}(${data!.batting![index1].ballsFaced??'0'})',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           color: Colors.black, fontSize: 16)),
                                   Text((data!.batting?[index2]!=null)?'${data!.batting![index2].playerName??'-'}    ${data!.batting![index2].runsScored??'0'}(${data!.batting![index2].ballsFaced??'0'})':'-',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           color: Colors.black, fontSize: 16)),
                                 ],
                               ),
