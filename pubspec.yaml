@@ -53,6 +53,7 @@ dependencies:
   dotted_border: ^2.1.0
   r_dotted_line_border: ^0.1.1
   laravel_flutter_pusher: ^0.0.4
+  pull_to_refresh: ^2.0.0
 
 
 dev_dependencies:
