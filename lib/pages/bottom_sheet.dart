@@ -2,9 +2,11 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:scorer/models/scoring_detail_response_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 import '../models/score_update_request_model.dart';
+import '../models/score_update_response_model.dart';
 import '../provider/scoring_provider.dart';
 import '../utils/colours.dart';
 import '../utils/images.dart';
@@ -13,8 +15,9 @@ import 'cricket_wagon_wheel.dart';
 
 class ScoreBottomSheet extends StatefulWidget {
   final int run;
-  final Data data;
-  const ScoreBottomSheet(this.run, this.data, {super.key});
+  final ScoringDeatailResponseModel scoringData;
+  final void Function(ScoreUpdateResponseModel) onSave;
+  const ScoreBottomSheet(this.run, this.scoringData, {super.key,required this.onSave});
 
   @override
   State<ScoreBottomSheet> createState() => _ScoreBottomSheetState();
@@ -51,10 +54,10 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
     bool _isSwitch = false;
     double screenHeight = MediaQuery.of(context).size.height;
     double sheetHeight = screenHeight * 0.9;
-    if(widget.data.batting!.isEmpty){
+    if(widget.scoringData.data!.batting!.isEmpty){
       return const Center(child: Text('Please Select Batsman'));
     }
-    if(widget.data.bowling ==null){
+    if(widget.scoringData.data!.bowling ==null){
       return const Center(child: Text('Please Select Bowler'));
     }
     return Container(
@@ -154,7 +157,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                             children: [
                               Container(
                                 child: Center(
-                                    child: Text('${widget.data.batting![0].playerName??'-'}',
+                                    child: Text('${widget.scoringData.data!.batting![0].playerName??'-'}',
                                         style: TextStyle(fontSize: 18))),
                               ),
                             ],
@@ -163,7 +166,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                             children: [
                               Container(
                                 child: Center(
-                                    child: Text('${widget.data.batting![0].runsScored??'0'}',
+                                    child: Text('${widget.scoringData.data!.batting![0].runsScored??'0'}',
                                         style: TextStyle(fontSize: 18))),
                               ),
                             ],
@@ -279,14 +282,14 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                           Column(
                             children: [
                               Center(
-                                  child: Text('${widget.data.bowling!.playerName??'-'}',
+                                  child: Text('${widget.scoringData.data!.bowling!.playerName??'-'}',
                                       style: TextStyle(fontSize: 18))),
                             ],
                           ),
                           Column(
                             children: [
                               Center(
-                                  child: Text('${widget.data.bowling!.oversBowled}-${widget.data.bowling!.wickets}-${widget.data.bowling!.runsConceded}-${widget.data.bowling!.economy}',
+                                  child: Text('${widget.scoringData.data!.bowling!.oversBowled}-${widget.scoringData.data!.bowling!.wickets}-${widget.scoringData.data!.bowling!.runsConceded}-${widget.scoringData.data!.bowling!.economy}',
                                       style: TextStyle(fontSize: 18))),
                             ],
                           ),
@@ -750,25 +753,28 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                   child: Align(
                     alignment: Alignment.topRight,
                     child: ElevatedButton(
-                      onPressed: () {
-                        scoreUpdateRequestModel.ballTypeId=1;
-                        scoreUpdateRequestModel.matchId=widget.data!.batting![0].matchId;
+                      onPressed: () async{
+                        SharedPreferences prefs = await SharedPreferences.getInstance();
+                        int overNumber= prefs.getInt('over_number')??0;
+                        int ballNumber= prefs.getInt('ball_number')??0;
+
+                        scoreUpdateRequestModel.ballTypeId=widget.run;
+                        scoreUpdateRequestModel.matchId=widget.scoringData.data!.batting![0].matchId;
                         scoreUpdateRequestModel.scorerId=1;
-                        scoreUpdateRequestModel.strikerId=widget.data!.batting![0].playerId??0;
-                        scoreUpdateRequestModel.nonStrikerId=widget.data!.batting![1].playerId??0;
+                        scoreUpdateRequestModel.strikerId=widget.scoringData.data!.batting![0].playerId??0;
+                        scoreUpdateRequestModel.nonStrikerId=widget.scoringData.data!.batting![1].playerId??0;
                         scoreUpdateRequestModel.wicketKeeperId=23;
-                        scoreUpdateRequestModel.bowlerId=widget.data!.bowling!.playerId??0;
-                        scoreUpdateRequestModel.overNumber=(widget.data!.over!.isEmpty)?0:widget.data!.over!.first!.overNumber??1;
-                        scoreUpdateRequestModel.ballNumber=(widget.data!.over!.isEmpty)?0:widget.data!.over!.first!.ballNumber??0;
-                        scoreUpdateRequestModel.ballNumber=1;
+                        scoreUpdateRequestModel.bowlerId=widget.scoringData.data!.bowling!.playerId??0;
+                        scoreUpdateRequestModel.overNumber=overNumber;
+                        scoreUpdateRequestModel.ballNumber=ballNumber;
                         scoreUpdateRequestModel.runsScored=widget.run;
                         scoreUpdateRequestModel.extras=0;
                         scoreUpdateRequestModel.wicket=0;
                         scoreUpdateRequestModel.dismissalType=0;
                         scoreUpdateRequestModel.commentary=0;
                         scoreUpdateRequestModel.innings=1;
-                        scoreUpdateRequestModel.battingTeamId=widget.data!.batting![0].teamId??0;
-                        scoreUpdateRequestModel.bowlingTeamId=widget.data!.bowling!.teamId??0;
+                        scoreUpdateRequestModel.battingTeamId=widget.scoringData.data!.batting![0].teamId??0;
+                        scoreUpdateRequestModel.bowlingTeamId=widget.scoringData.data!.bowling!.teamId??0;
                         scoreUpdateRequestModel.overBowled=0;
                         scoreUpdateRequestModel.totalOverBowled=0;
                         scoreUpdateRequestModel.outByPlayer=0;
@@ -776,7 +782,12 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                         scoreUpdateRequestModel.totalWicket=0;
                         scoreUpdateRequestModel.fieldingPositionsId=0;
                         scoreUpdateRequestModel.endInnings=false;
-                        ScoringProvider().scoreUpdate(scoreUpdateRequestModel);
+                        ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
+                          widget.onSave(value);
+                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                          await prefs.setInt('over_number', value.data!.overNumber??0);
+                          await prefs.setInt('ball_number', value.data!.ballNumber??1);
+                        });
 
                        Navigator.pop(context);
                       },
