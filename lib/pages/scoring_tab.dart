@@ -10,8 +10,11 @@ import 'package:sizer/sizer.dart';
 import '../utils/colours.dart';
 import '../utils/images.dart';
 import '../utils/sizes.dart';
+import '../widgets/cancel_btn.dart';
 import '../widgets/custom_horizondal_dottedLine.dart';
+import '../widgets/dialog_others.dart';
 import '../widgets/ok_btn.dart';
+import '../widgets/out_method_dialog.dart';
 import 'bottom_sheet.dart';
 
 
@@ -416,9 +419,13 @@ class _ScoringTabState extends State<ScoringTab> {
                     const CustomVerticalDottedLine(),
                     _buildGridItem('','UNDO', context),
                     const CustomVerticalDottedLine(),
-                    _buildGridItem('','OTHER', context),
+                    GestureDetector(
+                        onTap: (){_displayBottomSheetOther(context);},
+                        child: _buildGridItem('','OTHER', context)),
                     const CustomVerticalDottedLine(),
-                    _buildGridItemOut('OUT','', context),
+                    GestureDetector(
+                        onTap: (){_displayBottomOut(context);},
+                        child: _buildGridItemOut('OUT','', context)),
                   ],
                 ),
               ],
@@ -785,8 +792,6 @@ Future<void> _displayBottomSheetLegBye (BuildContext context) async{
                   }).toList(),
                 ),
               ),
-
-
               Expanded(
                 child: Padding(
                   padding:  EdgeInsets.symmetric(horizontal: 2.w,vertical: 1.h),
@@ -799,7 +804,6 @@ Future<void> _displayBottomSheetLegBye (BuildContext context) async{
                   ),
                 ),
               )
-
             ],
           ),
         );
@@ -1423,3 +1427,471 @@ Future<void> _displayBottomSheetBonus (BuildContext context) async{
       })
   );
 }
+
+Future<void> _displayBottomSheetSettings (BuildContext context) async{
+  bool value1=false;bool value2=false;bool value3=false;bool value4=false;
+  showModalBottomSheet(context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context)=> StatefulBuilder(builder: (context, setState){
+        return Container(
+          height: 45.h,
+          // padding: EdgeInsets.symmetric(horizontal: 2.w),
+          decoration: const BoxDecoration(
+              color: AppColor.lightColor,
+              borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
+          ),
+          child: Padding(
+            padding:  EdgeInsets.symmetric(horizontal: 4.w,vertical: 2.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                        onTap: (){
+                          Navigator.pop(context);
+                        },
+                        child: Icon(Icons.arrow_back,size: 7.w,)),
+                    Text("Settings",style: fontMedium.copyWith(
+                      fontSize: 17.sp,
+                      color: AppColor.blackColour,
+                    ),),
+                    SizedBox(width: 7.w,),
+                  ],
+                ),
+                SizedBox(height: 1.h,),
+                const Divider(
+                  color: Color(0xffD3D3D3),
+                ),
+                SizedBox(height: 1.h,),
+                Row(
+                  children: [
+                    Text("Scoring area",style: fontMedium.copyWith(
+                      fontSize: 14.sp,
+                      color: AppColor.blackColour,
+                    ),),
+                    Spacer(),
+                    Switch(value: value1,
+                        onChanged:(bool newValue) {
+                          setState(() {
+                            value1 = newValue;
+                          });
+                        })
+                  ],
+                ),
+                SizedBox(height: 0.5.h,),
+                DottedLine(
+                  dashColor: Color(0xffD2D2D2),
+                ),
+                Row(
+                  children: [
+                    Text("Bowling area",style: fontMedium.copyWith(
+                      fontSize: 14.sp,
+                      color: AppColor.blackColour,
+                    ),),
+                    Spacer(),
+                    Switch(value: value2,
+                        onChanged:(bool newValue) {
+                          setState(() {
+                            value2 = newValue;
+                          });
+                        })
+                  ],
+                ),
+                SizedBox(height: 0.5.h,),
+                DottedLine(
+                  dashColor: Color(0xffD2D2D2),
+                ),
+                Row(
+                  children: [
+                    Text("Extras wide",style: fontMedium.copyWith(
+                      fontSize: 14.sp,
+                      color: AppColor.blackColour,
+                    ),),
+                    Spacer(),
+                    Switch(value: value3,
+                        onChanged:(bool newValue) {
+                          setState(() {
+                            value3 = newValue;
+                          });
+                        })
+                  ],
+                ),
+                SizedBox(height: 0.5.h,),
+                DottedLine(
+                  dashColor: Color(0xffD2D2D2),
+                ),
+                Row(
+                  children: [
+                    Text("No ball run",style: fontMedium.copyWith(
+                      fontSize: 14.sp,
+                      color: AppColor.blackColour,
+                    ),),
+                    Spacer(),
+                    Switch(value: value4,
+                        onChanged:(bool newValue) {
+                          setState(() {
+                            value4 = newValue;
+                          });
+                        })
+                  ],
+                ),
+                SizedBox(height: 0.5.h,),
+                DottedLine(
+                  dashColor: Color(0xffD2D2D2),
+                ),
+                Expanded(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      GestureDetector(
+                          onTap:(){
+                            Navigator.pop(context);
+                          },
+                          child: CancelBtn("Reset")),
+                      SizedBox(width: 4.w,),
+                      OkBtn("Save"),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      })
+  );
+}
+
+Future<void> _displayBottomSheetOther (BuildContext context) async{
+  int? isOffSideSelected ;
+  int? isWideSelected ;
+  List<Map<String, dynamic>> chipData =[
+    {
+      'label': "Match break",
+    },
+    {
+      'label': 'Settings',
+    },
+    {
+      'label': 'End Innings',
+    },
+    {
+      'label': 'D/L Method',
+    },
+    {
+      'label': 'Change keeper',
+    },
+    {
+      'label': 'Abandon',
+    },
+    {
+      'label': 'Change target',
+    },
+
+  ];
+  showModalBottomSheet(context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context)=> StatefulBuilder(builder: (context, setState){
+        return Container(
+          height: 33.h,
+          // padding: EdgeInsets.symmetric(horizontal: 2.w),
+          decoration: const BoxDecoration(
+              color: AppColor.lightColor,
+              borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding:  EdgeInsets.symmetric(horizontal: 5.w,)+EdgeInsets.only(top: 2.h,),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                        onTap: (){
+                          Navigator.pop(context);
+                        },
+                        child: Icon(Icons.arrow_back,size: 7.w,)),
+                    Text("Other",style: fontMedium.copyWith(
+                      fontSize: 17.sp,
+                      color: AppColor.blackColour,
+                    ),),
+                    SizedBox(width: 7.w,),
+                  ],
+                ),
+              ),
+              SizedBox(height: 1.h,),
+              const Divider(
+                color: Color(0xffD3D3D3),
+              ),
+              SizedBox(height: 1.h,),
+              Padding(
+                padding:  EdgeInsets.only(left: 2.w,right: 2.w),
+                child: Wrap(
+                  spacing: 2.w, // Horizontal spacing between items
+                  runSpacing: 1.h, // Vertical spacing between lines
+                  alignment: WrapAlignment.center, // Alignment of items
+                  children:chipData.map((data) {
+                    final index = chipData.indexOf(data);
+                    return GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          isWideSelected=index;
+                        });
+                        if (data['label'] == 'Match break'){
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return DialogsOthers();
+                            },
+                          );
+                        }
+                        if (data['label'] == 'Change target'){
+                        showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                        return ChangeTargetDialog();
+                        },
+                        );
+                        }
+                        if (data['label'] == 'D/L Method'){
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return DlMethodDialog();
+                            },
+                          );
+                        }
+                        if (data['label'] == 'Settings'){
+                          _displayBottomSheetSettings(context);
+                        }
+
+                      },
+                      child: Chip(
+                        padding: EdgeInsets.symmetric(horizontal: 2.w,vertical: 0.8.h),
+                        label: Text(data['label'],style: fontSemiBold.copyWith(
+                            fontSize: 12.sp,
+                            color: AppColor.blackColour
+                        ),),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                          side: const BorderSide(
+                            color: Color(0xffDADADA),
+                          ),
+                        ),
+                        backgroundColor: isWideSelected==index? AppColor.primaryColor : Color(0xffF8F9FA),
+                        // backgroundColor:AppColor.lightColor
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
+            ],
+          ),
+        );
+      })
+  );
+}
+
+//Out
+Future<void> _displayBottomOut (BuildContext context) async{
+  int? isOffSideSelected ;
+  int? isWideSelected ;
+  List<Map<String, dynamic>> chipData =[
+    {
+      'label': "Bowled",
+    },
+    {
+      'label': 'Caught',
+    },
+    {
+      'label': 'Stumped',
+    },
+    {
+      'label': 'LBW',
+    },
+    {
+      'label': 'Caught Behind',
+    },
+    {
+      'label': 'Caught & Bowled',
+    },
+    {
+      'label': ' Run Out',
+    },
+    {
+      'label': 'Run out (Mankaded)',
+    },
+    {
+      'label': 'Retired Hurt',
+    },
+    {
+      'label': 'Hit Wicket',
+    },
+    {
+      'label': 'Retired',
+    },
+    {
+      'label': 'Retired Out',
+    },
+    {
+      'label': 'Handling the Ball',
+    },
+    {
+      'label': 'Hit the Ball Twice',
+    },
+    {
+      'label': 'Obstruct the field',
+    },
+    {
+      'label': 'Timed Out',
+    },
+    {
+      'label': 'Absence Hurt',
+    },
+
+  ];
+  showModalBottomSheet(context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context)=> StatefulBuilder(builder: (context, setState){
+        return Container(
+          // height: 33.h,
+          // padding: EdgeInsets.symmetric(horizontal: 2.w),
+          decoration: const BoxDecoration(
+              color: AppColor.lightColor,
+              borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding:  EdgeInsets.symmetric(horizontal: 5.w,)+EdgeInsets.only(top: 2.h,),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                        onTap: (){
+                          Navigator.pop(context);
+                        },
+                        child: Icon(Icons.arrow_back,size: 7.w,)),
+                    Text("Select out method",style: fontMedium.copyWith(
+                      fontSize: 17.sp,
+                      color: AppColor.blackColour,
+                    ),),
+                    SizedBox(width: 7.w,),
+                  ],
+                ),
+              ),
+              SizedBox(height: 1.h,),
+              const Divider(
+                color: Color(0xffD3D3D3),
+              ),
+              SizedBox(height: 1.h,),
+              Padding(
+                padding:  EdgeInsets.only(left: 2.w,right: 2.w),
+                child: Wrap(
+                  spacing: 2.w, // Horizontal spacing between items
+                  runSpacing: 1.h, // Vertical spacing between lines
+                  alignment: WrapAlignment.center, // Alignment of items
+                  children:chipData.map((data) {
+                    final index = chipData.indexOf(data);
+                    return GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          isWideSelected=index;
+                        });
+                        if (data['label'] == 'Bowled'){
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return OutMethodDialog(label: 'Bowled',);
+                            },
+                          );
+                        }
+                        if (data['label'] == 'LBW'){
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return OutMethodDialog(label: 'LBW',);
+                            },
+                          );
+                        }
+                        if (data['label'] == 'Caught Behind'){
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return OutMethodDialog(label: 'Caught Behind',);
+                            },
+                          );
+                        }
+                        if (data['label'] == 'Caught & Bowled'){
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return OutMethodDialog(label: 'Caught & Bowled',);
+                            },
+                          );
+                        }
+                        if (data['label'] == 'Run out (Mankaded)'){
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return OutMethodDialog(label: 'Mankaded',);
+                            },
+                          );
+                        }
+                        if (data['label'] == 'Hit Wicket'){
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return OutMethodDialog(label: 'Hit Wicket',);
+                            },
+                          );
+                        }
+                        if (data['label'] == 'Handling the Ball'){
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return OutMethodDialog(label: 'Handling the Ball',);
+                            },
+                          );
+                        }
+                        if (data['label'] == 'Hit the Ball Twice'){
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return OutMethodDialog(label: 'Hit the Ball Twice',);
+                            },
+                          );
+                        }
+
+                      },
+                      child: Chip(
+                        padding: EdgeInsets.symmetric(horizontal: 2.w,vertical: 0.8.h),
+                        label: Text(data['label'],style: fontSemiBold.copyWith(
+                            fontSize: 12.sp,
+                            color: AppColor.blackColour
+                        ),),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                          side: const BorderSide(
+                            color: Color(0xffDADADA),
+                          ),
+                        ),
+                        backgroundColor: isWideSelected==index? AppColor.primaryColor : Color(0xffF8F9FA),
+                        // backgroundColor:AppColor.lightColor
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
+            ],
+          ),
+        );
+      })
+  );
+}
+
+

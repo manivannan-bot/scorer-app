@@ -20,8 +20,8 @@ class Images{
   // //bottom nav
   static const String four = 'assets/images/four.png';
   static const String six = 'assets/images/six.png';
-  // static const String playVs = 'assets/images/play_vs_icon.svg';
-  // static const String more = 'assets/images/more_icon.svg';
+   static const String outBg = 'assets/images/out_bg.png';
+   static const String outProfileimage = 'assets/images/out_profile_image.png';
   //
   // //auth
   // static const String authCurveImg = 'assets/images/auth_curve_img.svg';

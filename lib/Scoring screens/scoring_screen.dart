@@ -1,3 +1,4 @@
+import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:scorer/Scoring%20screens/Scoring_tab.dart';
@@ -8,6 +9,9 @@ import 'package:sizer/sizer.dart';
 
 import '../models/all_matches_model.dart';
 import '../utils/images.dart';
+import '../widgets/cancel_btn.dart';
+import '../widgets/dialog_others.dart';
+import '../widgets/ok_btn.dart';
 
 
 class ScoringScreen extends StatefulWidget {
@@ -56,10 +60,15 @@ class _ScoringScreenState extends State<ScoringScreen> with SingleTickerProvider
                           ),
                         ),
                         SizedBox(width: 4.w,),
-                        Text('Hello!\n prasanth',style: fontMedium.copyWith(
-                          fontSize: 15.sp,
-                          color: AppColor.lightColor
-                        ),),
+                        GestureDetector(
+                          onTap: (){
+                            _displayBottomSheetSettings(context);
+                          },
+                          child: Text('Hello!\n prasanth',style: fontMedium.copyWith(
+                            fontSize: 15.sp,
+                            color: AppColor.lightColor
+                          ),),
+                        ),
                         Spacer(),
                         SvgPicture.asset(Images.notificationIcon,color: AppColor.lightColor,)
                       ],
@@ -136,4 +145,141 @@ class _ScoringScreenState extends State<ScoringScreen> with SingleTickerProvider
       ),
     );
   }
+
+  Future<void> _displayBottomSheetSettings (BuildContext context) async{
+    bool value1=false;bool value2=false;bool value3=false;bool value4=false;
+    showModalBottomSheet(context: context,
+        backgroundColor: Colors.transparent,
+        builder: (context)=> StatefulBuilder(builder: (context, setState){
+          return Container(
+            height: 45.h,
+            // padding: EdgeInsets.symmetric(horizontal: 2.w),
+            decoration: const BoxDecoration(
+                color: AppColor.lightColor,
+                borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
+            ),
+            child: Padding(
+              padding:  EdgeInsets.symmetric(horizontal: 4.w,vertical: 2.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                          onTap: (){
+                            Navigator.pop(context);
+                          },
+                          child: Icon(Icons.arrow_back,size: 7.w,)),
+                      Text("Settings",style: fontMedium.copyWith(
+                        fontSize: 17.sp,
+                        color: AppColor.blackColour,
+                      ),),
+                      SizedBox(width: 7.w,),
+                    ],
+                  ),
+                  SizedBox(height: 1.h,),
+                  const Divider(
+                    color: Color(0xffD3D3D3),
+                  ),
+                  SizedBox(height: 1.h,),
+                  Row(
+                    children: [
+                      Text("Scoring area",style: fontMedium.copyWith(
+                        fontSize: 14.sp,
+                        color: AppColor.blackColour,
+                      ),),
+                      Spacer(),
+                      Switch(value: value1,
+                          onChanged:(bool newValue) {
+                            setState(() {
+                              value1 = newValue;
+                            });
+                          })
+                    ],
+                  ),
+                  SizedBox(height: 0.5.h,),
+                  DottedLine(
+                    dashColor: Color(0xffD2D2D2),
+                  ),
+                  Row(
+                    children: [
+                      Text("Bowling area",style: fontMedium.copyWith(
+                        fontSize: 14.sp,
+                        color: AppColor.blackColour,
+                      ),),
+                      Spacer(),
+                      Switch(value: value2,
+                          onChanged:(bool newValue) {
+                            setState(() {
+                              value2 = newValue;
+                            });
+                          })
+                    ],
+                  ),
+                  SizedBox(height: 0.5.h,),
+                  DottedLine(
+                    dashColor: Color(0xffD2D2D2),
+                  ),
+                  Row(
+                    children: [
+                      Text("Extras wide",style: fontMedium.copyWith(
+                        fontSize: 14.sp,
+                        color: AppColor.blackColour,
+                      ),),
+                      Spacer(),
+                      Switch(value: value3,
+                          onChanged:(bool newValue) {
+                            setState(() {
+                              value3 = newValue;
+                            });
+                          })
+                    ],
+                  ),
+                  SizedBox(height: 0.5.h,),
+                  DottedLine(
+                    dashColor: Color(0xffD2D2D2),
+                  ),
+                  Row(
+                    children: [
+                      Text("No ball run",style: fontMedium.copyWith(
+                        fontSize: 14.sp,
+                        color: AppColor.blackColour,
+                      ),),
+                      Spacer(),
+                      Switch(value: value4,
+                          onChanged:(bool newValue) {
+                            setState(() {
+                              value4 = newValue;
+                            });
+                          })
+                    ],
+                  ),
+                  SizedBox(height: 0.5.h,),
+                  DottedLine(
+                    dashColor: Color(0xffD2D2D2),
+                  ),
+                  Expanded(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        GestureDetector(
+                            onTap:(){
+                              Navigator.pop(context);
+                            },
+                            child: CancelBtn("Reset")),
+                        SizedBox(width: 4.w,),
+                        OkBtn("Save"),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        })
+    );
+  }
+
 }
