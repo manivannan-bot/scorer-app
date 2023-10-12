@@ -102,6 +102,7 @@ class _ScoringTabState extends State<ScoringTab> {
     for (int index = 0; index < scoringData!.data!.over!.length; index++) {
       totalBallId += int.parse(scoringData!.data!.over![index].runsScored==null?'0':scoringData!.data!.over![index].runsScored.toString()); // Sum the ballIds
     }
+
     return SmartRefresher(
       controller: _refreshController,
       enablePullDown: true,
@@ -109,10 +110,10 @@ class _ScoringTabState extends State<ScoringTab> {
       child: Column(
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Container(
-                height: 250,
-                width: 800,
+            borderRadius: BorderRadius.circular(1.h),
+            child: SizedBox(
+                height: 30.h,
+                width: 100.w,
                 child: Column(
                   children: [
                     Row(
@@ -122,7 +123,7 @@ class _ScoringTabState extends State<ScoringTab> {
                             ClipRRect(
                               borderRadius: BorderRadius.circular(5),
                               child: Padding(
-                                padding: const EdgeInsets.all(12),
+                                padding:  EdgeInsets.all(0.4.h),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -134,7 +135,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                             color: Colors.orange, fontSize: 24),
                                       ),
                                       Container(
-                                        width: 20,
+                                        width: 0.5.w,
                                       ),
                                       ElevatedButton(
                                         onPressed: () {
@@ -188,7 +189,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                               color: Colors.orange,
                                               fontSize: 24)),
                                       Container(
-                                        width: 20,
+                                        width: 0.5.w,
                                       ),
                                       ElevatedButton(
                                         onPressed: () {
@@ -222,7 +223,7 @@ class _ScoringTabState extends State<ScoringTab> {
                       ],
                     ),
                     Container(
-                      height: 15,
+                      height: 0.5.h,
                     ),
                     Column(
                       children: [
@@ -234,8 +235,8 @@ class _ScoringTabState extends State<ScoringTab> {
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(5),
                                   child: Container(
-                                    height: 100,
-                                    width: 400,
+                                    height: 12.h,
+                                    width: 90.w,
                                     color: Colors.yellow,
                                     child:(scoringData!.data!.over!.isNotEmpty)? ListView(
                                       scrollDirection: Axis.horizontal,
@@ -249,14 +250,14 @@ class _ScoringTabState extends State<ScoringTab> {
                                                 width: 40,
                                                 height: 40,
                                                 margin: EdgeInsets.symmetric(horizontal: 5),
-                                                decoration: BoxDecoration(
+                                                decoration: const BoxDecoration(
                                                   color: Colors.black,
                                                   shape: BoxShape.circle,
                                                 ),
                                                 child: Center(
                                                   child: Text(
                                                     scoringData!.data!.over![index].runsScored.toString(),
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 16,
                                                     ),
@@ -309,8 +310,11 @@ class _ScoringTabState extends State<ScoringTab> {
                   ],
                 )),
           ),
+
           Expanded(
             child: Container(
+              height: 100.h,
+              width: 100.w,
               color: Colors.black,
               child: Column(
                 children: [
@@ -498,21 +502,21 @@ class _ScoringTabState extends State<ScoringTab> {
 
 Widget _buildGridItem(String index,String text, BuildContext context) {
   return Container(
-    height: 100,
-    width: 80,
+    height: 10.h,
+    width: 19.w,
     decoration: const BoxDecoration(shape: BoxShape.rectangle,color: Colors.black,),
     child: Column(
       children: [
-        const SizedBox(height: 20,),
+         SizedBox(height: 0.5.h,),
           CircleAvatar(
-          radius: 25, // Adjust the radius as needed for the circle size
+          radius: 6.w, // Adjust the radius as needed for the circle size
           backgroundColor: Colors.white,
           child: Text(
             "$index",
-            style: const TextStyle(color: Colors.black, fontSize: 24),
+            style:  TextStyle(color: Colors.black, fontSize: 2.h),
           ),
         ),
-        const SizedBox(height: 5,),
+         SizedBox(height:  0.5.h,),
         Text('$text', style: const TextStyle(color: Colors.white)),
       ],
     ),
@@ -520,18 +524,18 @@ Widget _buildGridItem(String index,String text, BuildContext context) {
 }
 Widget _buildGridItemFour(String index,String text, BuildContext context) {
   return Container(
-    height: 100,
-    width: 80,
+    height: 10.h,
+    width: 19.w,
     decoration: const BoxDecoration(shape: BoxShape.rectangle,color: Colors.black,),
     child: Column(
       children: [
-        const SizedBox(height: 20,),
+         SizedBox(height: 0.5.h,),
         CircleAvatar(
-          radius: 25, // Adjust the radius as needed for the circle size
+          radius: 6.w, // Adjust the radius as needed for the circle size
           backgroundColor: Colors.white,
           child: Image.asset(index)
         ),
-        const SizedBox(height: 5,),
+         SizedBox(height: 0.5.h,),
         Text('$text', style: const TextStyle(color: Colors.white)),
       ],
     ),
@@ -540,22 +544,22 @@ Widget _buildGridItemFour(String index,String text, BuildContext context) {
 
 Widget _buildGridItemOut(String index,String text, BuildContext context) {
   return Container(
-    height: 100,
-    width: 80,
+    height: 10.h,
+    width: 19.w,
     decoration: const BoxDecoration(shape: BoxShape.rectangle,color: Colors.black,),
     child: Column(
       children: [
-        const SizedBox(height: 20,),
+         SizedBox(height: 0.5.h,),
         CircleAvatar(
-          radius: 25, // Adjust the radius as needed for the circle size
+          radius: 6.w, // Adjust the radius as needed for the circle size
           backgroundColor: Colors.red,
           child: Text(
             "$index",
-            style: const TextStyle(color: Colors.white, fontSize: 24),
+            style:  TextStyle(color: Colors.white, fontSize: 2.h),
           ),
         ),
-        const SizedBox(height: 5,),
-        Text('$text', style: const TextStyle(color: Colors.white)),
+         SizedBox(height: 0.5.h,),
+        Text('$text', style:  TextStyle(color: Colors.white)),
       ],
     ),
   );
