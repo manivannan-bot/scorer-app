@@ -49,11 +49,13 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
      var overNumber=data.matches!.first.teams!.first.overNumber??0;
      var ballNumber=data.matches!.first.teams!.first.ballNumber??0;
      if(overNumber ==0 && ballNumber==0){overNumber=0;ballNumber=1;
-     }else if(overNumber>=0 && ballNumber==6) {
+     }else if(ballNumber==6) {
        overNumber += 1;
-       ballNumber += 1;
-     }else{
+       ballNumber = 1;
+     }else if(ballNumber<6){
        ballNumber+=1;
+     }else if(ballNumber>6){
+       ballNumber=1;
      }
 
      SharedPreferences prefs = await SharedPreferences.getInstance();
