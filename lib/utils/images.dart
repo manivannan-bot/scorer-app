@@ -24,8 +24,9 @@ class Images{
    static const String outProfileimage = 'assets/images/out_profile_image.png';
   //
   // //auth
-  // static const String authCurveImg = 'assets/images/auth_curve_img.svg';
-  // static const String loginTopImg = 'assets/images/login_top_img.svg';
+   static const String playerImg = 'assets/images/player_image.png';
+   static const String batLogo = 'assets/images/bat_logo.svg';
+  static const String stumpLogo = 'assets/images/bowl_logo.svg';
   //
   //
   // //homescreen

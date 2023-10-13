@@ -13,7 +13,8 @@ import 'package:sizer/sizer.dart';
 
 import '../models/score_update_request_model.dart';
 
-import '../models/score_update_response_model.dart';
+import '../out_screens/retired _hurt_screen.dart';
+import '../out_screens/run_out_screens.dart';
 import '../provider/scoring_provider.dart';
 import '../utils/colours.dart';
 import '../utils/images.dart';
@@ -22,7 +23,7 @@ import '../widgets/cancel_btn.dart';
 import '../widgets/custom_horizondal_dottedLine.dart';
 import '../widgets/dialog_others.dart';
 import '../widgets/ok_btn.dart';
-import '../widgets/out_method_dialog.dart';
+import '../out_screens/out_method_dialog.dart';
 import 'bottom_sheet.dart';
 
 
@@ -2167,7 +2168,12 @@ Future<void> _displayBottomOut (BuildContext context) async{
                             },
                           );
                         }
-
+                        if (data['label'] == ' Run Out'){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => RunOutScreen()));
+                        }
+                        if (data['label'] == 'Retired Hurt'){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen()));
+                        }
                       },
                       child: Chip(
                         padding: EdgeInsets.symmetric(horizontal: 2.w,vertical: 0.8.h),
