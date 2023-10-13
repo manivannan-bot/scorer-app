@@ -1,6 +1,6 @@
 class ScoringDeatailResponseModel {
   bool? status;
-  String? message;
+  dynamic message;
   Data? data;
 
   ScoringDeatailResponseModel({this.status, this.message, this.data});
@@ -62,16 +62,16 @@ class Data {
 }
 
 class Batting {
-  int? matchId;
-  int? playerId;
-  int? teamId;
-  int? runsScored;
-  int? ballsFaced;
-  int? fours;
-  int? sixes;
-  String? strikeRate;
-  int? stricker;
-  String? playerName;
+  dynamic matchId;
+  dynamic playerId;
+  dynamic teamId;
+  dynamic runsScored;
+  dynamic ballsFaced;
+  dynamic fours;
+  dynamic sixes;
+  dynamic strikeRate;
+  dynamic stricker;
+  dynamic playerName;
 
   Batting(
       {this.matchId,
@@ -115,20 +115,20 @@ class Batting {
 }
 
 class Bowling {
-  int? bowlingId;
-  int? matchId;
-  int? playerId;
-  int? teamId;
-  int? oversBowled;
-  String? overBall;
-  int? runsConceded;
-  int? wickets;
-  int? extras;
-  int? maiden;
-  int? totalBalls;
-  String? economy;
-  String? createdAt;
-  String? updatedAt;
+  dynamic bowlingId;
+  dynamic matchId;
+  dynamic playerId;
+  dynamic teamId;
+  dynamic oversBowled;
+  dynamic overBall;
+  dynamic runsConceded;
+  dynamic wickets;
+  dynamic extras;
+  dynamic maiden;
+  dynamic totalBalls;
+  dynamic economy;
+  dynamic createdAt;
+  dynamic updatedAt;
   dynamic playerName;
 
   Bowling(
@@ -188,29 +188,29 @@ class Bowling {
 }
 
 class Over {
-  int? ballId;
-  int? ballTypeId;
-  int? matchId;
-  int? battingTeamId;
-  int? bowlingTeamId;
-  int? scorerId;
-  int? strikerId;
-  int? nonStrikerId;
-  int? wicketKeeperId;
-  int? bowlerId;
-  int? overNumber;
-  int? ballNumber;
-  int? runsScored;
-  int? extras;
+  dynamic ballId;
+  dynamic ballTypeId;
+  dynamic matchId;
+  dynamic battingTeamId;
+  dynamic bowlingTeamId;
+  dynamic scorerId;
+  dynamic strikerId;
+  dynamic nonStrikerId;
+  dynamic wicketKeeperId;
+  dynamic bowlerId;
+  dynamic overNumber;
+  dynamic ballNumber;
+  dynamic runsScored;
+  dynamic extras;
   dynamic extrasType;
-  int? wicket;
-  int? wicketById;
-  String? dismissalType;
-  String? commentary;
-  int? fieldingPositionsId;
-  int? innings;
-  String? createdAt;
-  String? updatedAt;
+  dynamic wicket;
+  dynamic wicketById;
+  dynamic dismissalType;
+  dynamic commentary;
+  dynamic fieldingPositionsId;
+  dynamic innings;
+  dynamic createdAt;
+  dynamic updatedAt;
 
   Over(
       {this.ballId,
