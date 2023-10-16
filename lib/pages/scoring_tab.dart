@@ -116,220 +116,260 @@ class _ScoringTabState extends State<ScoringTab> {
       child: Column(
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(1.h),
-            child: SizedBox(
-                height: 30.h,
-                width: 100.w,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Row(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(5),
-                              child: Padding(
-                                padding:  EdgeInsets.all(0.4.h),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(children: [
-                                      const Text(
-                                        'Batsman',
-                                        style: TextStyle(
-                                            color: Colors.orange, fontSize: 24),
-                                      ),
-                                      Container(
-                                        width: 0.5.w,
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          print('index changed');
-                                          setState(() {
-                                            if(index1==1){
-                                            index2=1;
-                                            index1=0;
-                                            }else{
-                                              index2=0;
-                                              index1=1;
-                                            }
-                                          });
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.black,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(25),
-                                          ),
-                                        ),
-                                        child: const Text(
-                                          'swap',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ]),
-                                    Text('${scoringData!.data!.batting![index1].playerName??'-'}    ${scoringData!.data!.batting![index1].runsScored??'0'}(${scoringData!.data!.batting![index1].ballsFaced??'0'})',
-                                        style: const TextStyle(
-                                            color: Colors.black, fontSize: 16)),
-                                    Text((scoringData!.data!.batting?[index2]!=null)?'${scoringData!.data!.batting![index2].playerName??'-'}    ${scoringData!.data!.batting![index2].runsScored??'0'}(${scoringData!.data!.batting![index2].ballsFaced??'0'})':'-',
-                                        style: const TextStyle(
-                                            color: Colors.black, fontSize: 16)),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            const CustomVerticalDottedLine(),
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(5),
-                              child: Padding(
-                                padding: EdgeInsets.all(12),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(children: [
-                                      const Text('Bowler',
-                                          style: TextStyle(
-                                              color: Colors.orange,
-                                              fontSize: 24)),
-                                      Container(
-                                        width: 0.5.w,
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () async{
+            borderRadius: BorderRadius.circular(5.h),
+            child: Padding(
+              padding: EdgeInsets.only(left: 18),
+              child: SizedBox(
+                  height: 30.h,
+                  width: 100.w,
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Row(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(5),
+                                child: Padding(
+                                  padding:  EdgeInsets.only(right:4.w),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(children: [
 
-                                          final response = await ScoringProvider().getPlayerList(widget.matchId,widget.team2Id);
-                                          setState(() {
-                                            itemsBowler = response.data!.players;
-                                            selectedBTeamName= response.data!.teamName;
-                                          });
-                                          _displayBowlerBottomSheet (context,selectedBowler,(bowlerIndex) {
+                                        const Text(
+                                          'Batsman',
+                                          style: TextStyle(
+                                              color: Colors.orange, fontSize: 24),
+                                        ),
+                                        Container(
+                                          width: 0.5.w,
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () async{
+                                            print('index changed');
+                                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                                            var strikerId=prefs.getInt('striker_id')??0;
+                                            var nonStrikerId=prefs.getInt('non_striker_id')??0;
+                                            await prefs.setInt('non_striker_id',strikerId);
+                                            await prefs.setInt('striker_id',nonStrikerId);
 
                                             setState(() {
-                                              selectedBowler = bowlerIndex;
-                                              if (selectedBowler != null) {
-                                                selectedBowlerName = itemsBowler![selectedBowler!].playerName ?? "";
+                                              if(index1==1){
+                                              index2=1;
+                                              index1=0;
+                                              }else{
+                                                index2=0;
+                                                index1=1;
                                               }
                                             });
-                                          });
-
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.black,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(25),
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.black,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(25),
+                                            ),
+                                          ),
+                                          child: const Text(
+                                            'swap',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
                                           ),
                                         ),
-                                        child: const Text(
-                                          'change',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ]),
-                                    Text('${scoringData!.data!.bowling!.playerName??'-'}    ${scoringData!.data!.bowling!.totalBalls??'0'}(${scoringData!.data!.bowling!.wickets??'0'})',
-                                        style: const TextStyle(
-                                            color: Colors.black, fontSize: 16)),
-
-                                  ],
+                                      ]),
+                                      Text('${scoringData!.data!.batting![index1].playerName??'-'}    ${scoringData!.data!.batting![index1].runsScored??'0'}(${scoringData!.data!.batting![index1].ballsFaced??'0'})',
+                                          style: const TextStyle(
+                                              color: Colors.black, fontSize: 16)),
+                                      Text((scoringData!.data!.batting?[index2]!=null)?'${scoringData!.data!.batting![index2].playerName??'-'}    ${scoringData!.data!.batting![index2].runsScored??'0'}(${scoringData!.data!.batting![index2].ballsFaced??'0'})':'-',
+                                          style: const TextStyle(
+                                              color: Colors.black, fontSize: 16)),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                    Container(
-                      height: 0.5.h,
-                    ),
-                    Column(
-                      children: [
-                        Stack(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(5),
-                                  child: Container(
-                                    height: 12.h,
-                                    width: 90.w,
-                                    color: Colors.yellow,
-                                    child:(scoringData!.data!.over!.isNotEmpty)? ListView(
-                                      scrollDirection: Axis.horizontal,
-                                      children: <Widget>[
-                                        for (int index = 0; index < scoringData!.data!.over!.length; index++)
+                              const CustomVerticalDottedLine(),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(5),
+                                child: Padding(
+                                  padding: EdgeInsets.only(left:4.w),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(children: [
+                                        const Text('Bowler',
+                                            style: TextStyle(
+                                                color: Colors.orange,
+                                                fontSize: 24)),
+                                        Container(
+                                          width: 0.5.w,
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () async{
 
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                width: 40,
-                                                height: 40,
-                                                margin: EdgeInsets.symmetric(horizontal: 5),
-                                                decoration: const BoxDecoration(
-                                                  color: Colors.black,
-                                                  shape: BoxShape.circle,
-                                                ),
-                                                child: Center(
-                                                  child: Text(
-                                                    scoringData!.data!.over![index].runsScored.toString(),
-                                                    style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 16,
+                                            final response = await ScoringProvider().getPlayerList(widget.matchId,widget.team2Id);
+                                            setState(() {
+                                              itemsBowler = response.data!.players;
+                                              selectedBTeamName= response.data!.teamName;
+                                            });
+                                            changeBowler();
+
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.black,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(25),
+                                            ),
+                                          ),
+                                          child: const Text(
+                                            'change',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ]),
+                                      Text('${scoringData!.data!.bowling!.playerName??'-'}    ${scoringData!.data!.bowling!.totalBalls??'0'}(${scoringData!.data!.bowling!.wickets??'0'})',
+                                          style: const TextStyle(
+                                              color: Colors.black, fontSize: 16)),
+                                      SizedBox(height:0.8.h),
+                                      Row(children:[
+                                        SvgPicture.asset(Images.stumpIcon1,width:3.w,height: 3.h,),
+                                        Padding(padding: EdgeInsets.only(left: 2.w,),
+                                            child: const Text('OW',style: TextStyle(fontSize: 16),)),
+                                        SizedBox(width:15.w),
+                                        Padding(padding: EdgeInsets.only(right: 2.w,),
+                                            child: const Text('RW',style: TextStyle(fontSize: 16),)),
+                                        SvgPicture.asset(Images.stumpIcon2,width:3.w,height: 3.h,)
+                                      ]),
+
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 3.h,
+                      ),
+                      Column(
+                        children: [
+                          Stack(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(15),
+                                    child: Container(
+                                      height: 12.h,
+                                      width: 90.w,
+                                      color: Colors.yellow,
+                                      child:(scoringData!.data!.over!.isNotEmpty)? ListView(
+                                        scrollDirection: Axis.horizontal,
+                                        children: <Widget>[
+                                          for (int index = 0; index < scoringData!.data!.over!.length; index++)
+
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              children: [
+                                                (scoringData!.data!.over![index].runsScored==4 || scoringData!.data!.over![index].runsScored==6)?
+                                                (scoringData!.data!.over![index].runsScored==4)?Container(
+                                                  width: 40,
+                                                  height: 40,
+                                                  margin: const EdgeInsets.symmetric(horizontal: 5),
+                                                  decoration: const BoxDecoration(
+                                                    color: Colors.black,
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  child:  CircleAvatar(
+                                                      radius: 4.w, // Adjust the radius as needed for the circle size
+                                                      backgroundColor: Colors.white,
+                                                      child: Image.asset(Images.four)
+                                                  ),
+                                                ):Container(
+                                                  width: 40,
+                                                  height: 40,
+                                                  margin: const EdgeInsets.symmetric(horizontal: 5),
+                                                  decoration: const BoxDecoration(
+                                                    color: Colors.black,
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  child:  CircleAvatar(
+                                                      radius: 4.w, // Adjust the radius as needed for the circle size
+                                                      backgroundColor: Colors.white,
+                                                      child: Image.asset(Images.six)
+                                                  ),
+                                                ):
+                                                Container(
+                                                  width: 40,
+                                                  height: 40,
+                                                  margin: const EdgeInsets.symmetric(horizontal: 5),
+                                                  decoration: const BoxDecoration(
+                                                    color: Colors.black,
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  child: Center(
+                                                    child: Text(
+                                                      scoringData!.data!.over![index].runsScored.toString(),
+                                                      style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 16,
+                                                      ),
                                                     ),
                                                   ),
+                                                ),
+                                              ],
+                                            ),
+                                           Row(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            children: [
+                                              Text('=',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 24,
+                                                ),
+                                              ),
+                                              Text(totalBallId.toString() ?? 'N/A',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 24,
                                                 ),
                                               ),
                                             ],
                                           ),
-                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          children: [
-                                            Text('=',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 24,
-                                              ),
-                                            ),
-                                            Text(totalBallId.toString() ?? 'N/A',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 24,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ):const Text(''),
+                                        ],
+                                      ):const Text(''),
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            Center(
-                              child: Container(
-                                color: Colors.yellow,
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 4),
-                                child: Text(
-                                  'over ${(scoringData!.data!.over!.isNotEmpty)?scoringData!.data!.over!.first.overNumber:'0'}',
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
+                                ],
+                              ),
+                              Center(
+                                child: Container(
+                                  color: Colors.yellow,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 4),
+                                  child: Text(
+                                    'over ${(scoringData!.data!.over!.isNotEmpty)?scoringData!.data!.over!.first.overNumber:'0'}',
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    )
-                  ],
-                )),
+                            ],
+                          ),
+                        ],
+                      )
+                    ],
+                  )),
+            ),
           ),
 
           Expanded(
@@ -487,18 +527,15 @@ class _ScoringTabState extends State<ScoringTab> {
                           child: _buildGridItem('','OTHER', context)),
                       const CustomVerticalDottedLine(),
                       GestureDetector(
-                          onTap: (){
-                            _displayBottomOut(context,scoringData).then((value){
-                                  _displayBatsmanBottomSheet (context,selectedBatsman,(bowlerIndex) {
+                          onTap: ()async{
 
-                                    setState(() {
-                                      selectedBatsman = bowlerIndex;
-                                      if (selectedBatsman != null) {
-                                        selectedBatsmanName = itemsBowler![selectedBowler!].playerName ?? "";
-                                      }
-                                    });
-                              });
-                            });
+                        _displayBottomOut(context,scoringData);
+                        SharedPreferences prefs = await SharedPreferences.getInstance();
+                        var strikerId=prefs.getInt('striker_id')??0;
+                        var nonStrikerId=prefs.getInt('non_striker_id')??0;
+                      if(strikerId==0 || nonStrikerId==0 ) {
+                        //changeBatsman();
+                      }
                             },
                           child: _buildGridItemOut('OUT','', context)),
                     ],
@@ -532,7 +569,6 @@ class _ScoringTabState extends State<ScoringTab> {
       },
     );
   }
-
 
   _displayBowlerBottomSheet (BuildContext context, int? selectedBowler,Function(int?) onItemSelected) async{
     int? localBowlerIndex = selectedBowler;
@@ -697,13 +733,18 @@ class _ScoringTabState extends State<ScoringTab> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        CancelBtn("Cancel"),
+                        GestureDetector(onTap:(){
+                          Navigator.pop(context);
+                        },
+                            child: CancelBtn("Cancel")),
                         SizedBox(width: 2.w,),
                         GestureDetector(onTap:()async {
                           ScoringProvider().saveBowler(widget.matchId,widget.team2Id,itemsBowler![localBowlerIndex!].playerId.toString());
                           SharedPreferences prefs = await SharedPreferences.getInstance();
-                          await prefs.setInt('bowler_id', itemsBowler![selectedBowler!].playerId!);
-                          Navigator.pop(context);
+                          await prefs.setInt('bowler_id', itemsBowler![selectedBowler!].playerId!).then((value) {
+                            Navigator.pop(context);
+                          });
+
                         },child: OkBtn("Ok")),
                       ],
                     ),
@@ -716,7 +757,7 @@ class _ScoringTabState extends State<ScoringTab> {
     );
   }
 
-  _displayBatsmanBottomSheet (BuildContext context, int? selectedBatsman,Function(int?) onItemSelected) async{
+  Future<void> _displayBatsmanBottomSheet (BuildContext context, int? selectedBatsman,Function(int?) onItemSelected) async{
     int? localBowlerIndex = selectedBowler;
     showModalBottomSheet(context: context,
         backgroundColor: Colors.transparent,
@@ -898,9 +939,8 @@ class _ScoringTabState extends State<ScoringTab> {
     );
   }
 
-
 //Out
-  Future<int> _displayBottomOut (BuildContext context,ScoringDeatailResponseModel? scoringData) async{
+  Future<void> _displayBottomOut (BuildContext context,ScoringDeatailResponseModel? scoringData) async{
     int? isOffSideSelected ;
     int? isWideSelected ;
     List<Map<String, dynamic>> chipData =[
@@ -1102,7 +1142,37 @@ class _ScoringTabState extends State<ScoringTab> {
         })
     );
 
-    return 1;
+
+  }
+
+  void changeBatsman() {
+      _displayBatsmanBottomSheet (context,selectedBatsman,(bowlerIndex) {
+
+        setState(() {
+          selectedBatsman = bowlerIndex;
+          if (selectedBatsman != null) {
+            selectedBatsmanName = itemsBowler![selectedBowler!].playerName ?? "";
+          }
+        });
+      });
+    }
+
+  void changeBowler() {
+    _displayBowlerBottomSheet (context,selectedBowler,(bowlerIndex) {
+
+      setState(() {
+        selectedBowler = bowlerIndex;
+        if (selectedBowler != null) {
+          selectedBowlerName = itemsBowler![selectedBowler!].playerName ?? "";
+        }
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _refreshController.dispose();
   }
 
 }
