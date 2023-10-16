@@ -2,7 +2,16 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 
-class ThreeCircles extends StatelessWidget {
+class ThreeCircles extends StatefulWidget {
+   final Function(int) onOkButtonPressed;
+  ThreeCircles({super.key, required this.onOkButtonPressed}) ;
+
+  @override
+  State<ThreeCircles> createState() => _ThreeCirclesState();
+}
+
+class _ThreeCirclesState extends State<ThreeCircles> {
+  int? fieldType=0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +69,7 @@ class ThreeCircles extends StatelessWidget {
             top: MediaQuery.of(context).size.height / 2.6,
             child: GestureDetector(
               onTap: (){
-                openConfirmDialog("Short Third Man", context);
+                openConfirmDialog("Short Third Man",1, context);
               },
               child: const Text("SHORT\nTHIRD\nMAN",
                 textAlign: TextAlign.center,
@@ -76,7 +85,7 @@ class ThreeCircles extends StatelessWidget {
             top: MediaQuery.of(context).size.height / 2.2,
             child: GestureDetector(
               onTap: (){
-                openConfirmDialog("Point", context);
+                openConfirmDialog("Point",2, context);
               },
               child: const Text("POINT",
                 textAlign: TextAlign.center,
@@ -92,7 +101,7 @@ class ThreeCircles extends StatelessWidget {
             top: MediaQuery.of(context).size.height / 2.6,
             child: GestureDetector(
               onTap: (){
-                openConfirmDialog("Fine Leg", context);
+                openConfirmDialog("Fine Leg",3, context);
               },
               child: const Text("FINE\nLEG",
                 textAlign: TextAlign.center,
@@ -108,7 +117,7 @@ class ThreeCircles extends StatelessWidget {
             top: MediaQuery.of(context).size.height / 2.2,
             child: GestureDetector(
               onTap: (){
-                openConfirmDialog("Square Leg", context);
+                openConfirmDialog("Square Leg",4, context);
               },
               child: const Text("SQUARE\nLEG",
                 textAlign: TextAlign.center,
@@ -125,7 +134,7 @@ class ThreeCircles extends StatelessWidget {
             bottom: MediaQuery.of(context).size.height / 2.5,
             child: GestureDetector(
               onTap: (){
-                openConfirmDialog("Mid Off", context);
+                openConfirmDialog("Mid Off",5, context);
               },
               child: const Text("MID\nOFF",
                 textAlign: TextAlign.center,
@@ -141,7 +150,7 @@ class ThreeCircles extends StatelessWidget {
             bottom: MediaQuery.of(context).size.height / 2.15,
             child: GestureDetector(
               onTap: (){
-                openConfirmDialog("Cover", context);
+                openConfirmDialog("Cover",6, context);
               },
               child: const Text("COVER",
                 textAlign: TextAlign.center,
@@ -157,7 +166,7 @@ class ThreeCircles extends StatelessWidget {
             bottom: MediaQuery.of(context).size.height / 2.5,
             child: GestureDetector(
               onTap: (){
-                openConfirmDialog("Mid On", context);
+                openConfirmDialog("Mid On",7, context);
               },
               child: const Text("MID\nON",
                 textAlign: TextAlign.center,
@@ -173,7 +182,7 @@ class ThreeCircles extends StatelessWidget {
             bottom: MediaQuery.of(context).size.height / 2.2,
             child: GestureDetector(
               onTap: (){
-                openConfirmDialog("Mid Wicket", context);
+                openConfirmDialog("Mid Wicket",8, context);
               },
               child: const Text("MID\nWICKET",
                 textAlign: TextAlign.center,
@@ -191,7 +200,7 @@ class ThreeCircles extends StatelessWidget {
             bottom: MediaQuery.of(context).size.height / 3.1,
             child: GestureDetector(
               onTap: (){
-                openConfirmDialog("Long On", context);
+                openConfirmDialog("Long On",9, context);
               },
               child: const Text("LONG\nON",
                 textAlign: TextAlign.center,
@@ -207,7 +216,7 @@ class ThreeCircles extends StatelessWidget {
             bottom: MediaQuery.of(context).size.height / 3.1,
             child: GestureDetector(
               onTap: (){
-                openConfirmDialog("Long Off", context);
+                openConfirmDialog("Long Off",10, context);
               },
               child: const Text("LONG\nOFF",
                 textAlign: TextAlign.center,
@@ -223,7 +232,7 @@ class ThreeCircles extends StatelessWidget {
             bottom: MediaQuery.of(context).size.height / 2.4,
             child: GestureDetector(
               onTap: (){
-                openConfirmDialog("Deep Mid Wicket", context);
+                openConfirmDialog("Deep Mid Wicket",11, context);
               },
               child: const Text("DEEP MID\nWICKET",
                 textAlign: TextAlign.center,
@@ -239,7 +248,7 @@ class ThreeCircles extends StatelessWidget {
             bottom: MediaQuery.of(context).size.height / 2.4,
             child: GestureDetector(
               onTap: (){
-                openConfirmDialog("Deep Cover", context);
+                openConfirmDialog("Deep Cover",12, context);
               },
               child: const Text("DEEP\nCOVER",
                 textAlign: TextAlign.center,
@@ -256,7 +265,7 @@ class ThreeCircles extends StatelessWidget {
             top: MediaQuery.of(context).size.height / 3,
             child: GestureDetector(
               onTap: (){
-                openConfirmDialog("Deep Fine Leg", context);
+                openConfirmDialog("Deep Fine Leg",13, context);
               },
               child: const Text("DEEP FINE\nLEG",
                 textAlign: TextAlign.center,
@@ -272,7 +281,7 @@ class ThreeCircles extends StatelessWidget {
             top: MediaQuery.of(context).size.height / 3,
             child: GestureDetector(
               onTap: (){
-                openConfirmDialog("Third Man", context);
+                openConfirmDialog("Third Man",14, context);
               },
               child: const Text("THIRD\nMAN",
                 textAlign: TextAlign.center,
@@ -288,7 +297,7 @@ class ThreeCircles extends StatelessWidget {
             top: MediaQuery.of(context).size.height / 2.4,
             child: GestureDetector(
               onTap: (){
-                openConfirmDialog("Deep Square Leg", context);
+                openConfirmDialog("Deep Square Leg",15, context);
               },
               child: const Text("DEEP\nSQUARE\nLEG",
                 textAlign: TextAlign.center,
@@ -304,7 +313,7 @@ class ThreeCircles extends StatelessWidget {
             top: MediaQuery.of(context).size.height / 2.4,
             child: GestureDetector(
               onTap: (){
-                openConfirmDialog("Deep Point", context);
+                openConfirmDialog("Deep Point",16, context);
               },
               child: const Text("DEEP\nPOINT",
                 textAlign: TextAlign.center,
@@ -319,25 +328,28 @@ class ThreeCircles extends StatelessWidget {
       ),
     );
   }
+
+  openConfirmDialog(String position,int fieldType, BuildContext context){
+    return showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text("Confirm Position?"),
+        content: Text("You chose $position"),
+        actions: <Widget>[
+          ElevatedButton(
+            onPressed: () {
+              widget.onOkButtonPressed(fieldType);
+              Navigator.of(ctx).pop();
+            },
+            child: const Text("Ok"),
+          ),
+        ],
+      ),
+    );
+  }
+
 }
 
-openConfirmDialog(String position, BuildContext context){
-  return showDialog(
-    context: context,
-    builder: (ctx) => AlertDialog(
-      title: const Text("Confirm Position?"),
-      content: Text("You chose $position"),
-      actions: <Widget>[
-        ElevatedButton(
-          onPressed: () {
-            Navigator.of(ctx).pop();
-          },
-          child: const Text("Ok"),
-        ),
-      ],
-    ),
-  );
-}
 
 class CirclePainter extends CustomPainter {
   @override

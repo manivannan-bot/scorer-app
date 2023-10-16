@@ -29,6 +29,8 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
    late TabController tabController;
    List<Matches>? matchlist;
    RefreshController _refreshController = RefreshController();
+   int? team1Id;
+   int? team2Id;
 
 
 
@@ -45,6 +47,8 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
      var data = await ScoringProvider().getLiveScore(widget.matchId, widget.team1id);
      setState(() {
        matchlist = data.matches;
+       team1Id=data.matches!.first.team1Id;
+       team2Id=data.matches!.first.team2Id;
      });
      var overNumber=data.matches!.first.teams!.first.overNumber??0;
      var ballNumber=data.matches!.first.teams!.first.ballNumber??0;
@@ -241,7 +245,7 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
                     child: TabBarView(
                         controller: tabController,
                         children:  [
-                          ScoringTab(widget.matchId),
+                          ScoringTab(widget.matchId,team1Id.toString(),team2Id.toString()),
                           Container(height: 50,width: 50,color: Colors.blue,),
                           Container(height: 50,width: 50,color: Colors.red,),
                           Container(height: 50,width: 50,color: Colors.blue,)

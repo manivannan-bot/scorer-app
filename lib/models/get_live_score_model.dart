@@ -137,13 +137,15 @@ class Teams {
   dynamic totalWickets;
   dynamic ballNumber;
   dynamic overNumber;
+  dynamic overs;
 
   Teams(
       {this.teamName,
         this.totalRuns,
         this.totalWickets,
         this.ballNumber,
-        this.overNumber});
+        this.overNumber,
+        this.overs});
 
   Teams.fromJson(Map<String, dynamic> json) {
     teamName = json['team_name'];
@@ -151,6 +153,7 @@ class Teams {
     totalWickets = json['total_wickets'];
     ballNumber = json['ball_number'];
     overNumber = json['over_number'];
+    overs = json['overs'];
   }
 
   Map<String, dynamic> toJson() {
@@ -160,6 +163,7 @@ class Teams {
     data['total_wickets'] = this.totalWickets;
     data['ball_number'] = this.ballNumber;
     data['over_number'] = this.overNumber;
+    data['overs'] = this.overs;
     return data;
   }
 }

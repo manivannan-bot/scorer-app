@@ -32,8 +32,8 @@ class Images{
   // //homescreen
   static const String searchIcon = 'assets/images/search_icon.svg';
    static const String playersImage = 'assets/images/players_images.png';
-  // static const String location = 'assets/images/location_icon.svg';
-  // static const String search = 'assets/images/search_icon.svg';
+   static const String stumpIcon1 = 'assets/images/stump_icon1.svg';
+   static const String stumpIcon2 = 'assets/images/stump_icon2.svg';
   //
   // //grounds
   // static const String groundIcon = 'assets/images/ground_icon.svg';
