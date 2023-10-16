@@ -11,10 +11,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:sizer/sizer.dart';
 
+import '../out_screens/obstruct_field_screen.dart';
+import '../Scoring screens/retired_screen.dart';
 import '../models/score_update_request_model.dart';
 
+import '../models/score_update_response_model.dart';
 import '../out_screens/retired _hurt_screen.dart';
 import '../out_screens/run_out_screens.dart';
+import '../out_screens/timeout_absence.dart';
+import '../out_screens/undo_screen.dart';
 import '../provider/scoring_provider.dart';
 import '../utils/colours.dart';
 import '../utils/images.dart';
@@ -458,7 +463,16 @@ class _ScoringTabState extends State<ScoringTab> {
                       },
                           child: _buildGridItem('5,7..','RUNS', context)),
                       const CustomVerticalDottedLine(),
-                      _buildGridItem('','UNDO', context),
+                      GestureDetector(
+                          onTap: (){
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return UndoScreen();
+                              },
+                            );
+                          },
+                          child: _buildGridItem('','UNDO', context)),
                       const CustomVerticalDottedLine(),
                       GestureDetector(
                           onTap: (){_displayBottomSheetOther(context);},
@@ -630,7 +644,7 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
               ),
               SizedBox(height: 1.h,),
               Padding(
-                padding:  EdgeInsets.only(left: 10.w,right: 10.w),
+                padding:  EdgeInsets.only(left: 5.w,right: 5.w),
                 child: Wrap(
                   spacing: 2.5.w, // Horizontal spacing between items
                   runSpacing: 0.5.h, // Vertical spacing between lines
@@ -775,8 +789,6 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
                               await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
                               Navigator.pop(context);
                             });
-
-
                           },
                           child: OkBtn("Save")),
                     ],
@@ -855,9 +867,9 @@ Future<void> _displayBottomSheetLegBye (BuildContext context, int ballType,Scori
               ),
               SizedBox(height: 1.h,),
               Padding(
-                padding:  EdgeInsets.only(left: 15.w,right: 5.w),
+                padding:  EdgeInsets.only(left: 5.w,right: 8.w),
                 child: Wrap(
-                  spacing: 8.w, // Horizontal spacing between items
+                  spacing: 6.w, // Horizontal spacing between items
                   runSpacing: 1.h, // Vertical spacing between lines
                   alignment: WrapAlignment.center, // Alignment of items
                   children:chipData.map((data) {
@@ -1223,7 +1235,7 @@ Future<void> _displayBottomSheetByes (BuildContext context,int ballType,ScoringD
       backgroundColor: Colors.transparent,
       builder: (context)=> StatefulBuilder(builder: (context, setState){
         return Container(
-          height: 33.h,
+          height: 35.h,
           // padding: EdgeInsets.symmetric(horizontal: 2.w),
           decoration: BoxDecoration(
               color: AppColor.lightColor,
@@ -1256,7 +1268,7 @@ Future<void> _displayBottomSheetByes (BuildContext context,int ballType,ScoringD
               ),
               SizedBox(height: 1.h,),
               Padding(
-                padding:  EdgeInsets.only(left: 15.w,right: 15.w),
+                padding:  EdgeInsets.only(left: 5.w,right: 5.w),
                 child: Wrap(
                   spacing: 4.w, // Horizontal spacing between items
                   runSpacing: 1.h, // Vertical spacing between lines
@@ -1381,7 +1393,7 @@ Future<void> _displayBottomSheetMoreRuns (BuildContext context,int ballType,Scor
       backgroundColor: Colors.transparent,
       builder: (context)=> StatefulBuilder(builder: (context, setState){
         return Container(
-          height: 33.h,
+          height: 35.h,
           // padding: EdgeInsets.symmetric(horizontal: 2.w),
           decoration: const BoxDecoration(
               color: AppColor.lightColor,
@@ -1414,7 +1426,7 @@ Future<void> _displayBottomSheetMoreRuns (BuildContext context,int ballType,Scor
               ),
               SizedBox(height: 1.h,),
               Padding(
-                padding:  EdgeInsets.only(left: 10.w,right: 5.w),
+                padding:  EdgeInsets.only(left: 5.w,right: 5.w),
                 child: Wrap(
                   spacing: 10.w, // Horizontal spacing between items
                   runSpacing: 1.h, // Vertical spacing between lines
@@ -1563,7 +1575,7 @@ Future<void> _displayBottomSheetBonus (BuildContext context, int? ballType, Scor
       backgroundColor: Colors.transparent,
       builder: (context)=> StatefulBuilder(builder: (context, setState){
         return Container(
-          height: 33.h,
+          height: 35.h,
           // padding: EdgeInsets.symmetric(horizontal: 2.w),
           decoration: BoxDecoration(
               color: AppColor.lightColor,
@@ -1950,6 +1962,14 @@ Future<void> _displayBottomSheetOther (BuildContext context) async{
                             },
                           );
                         }
+                        if (data['label'] == 'Change keeper'){
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return ChangeKeeper();
+                            },
+                          );
+                        }
                         if (data['label'] == 'Change target'){
                         showDialog(
                         context: context,
@@ -2172,7 +2192,25 @@ Future<void> _displayBottomOut (BuildContext context) async{
                       Navigator.push(context, MaterialPageRoute(builder: (context) => RunOutScreen()));
                         }
                         if (data['label'] == 'Retired Hurt'){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: 'Retired Hurt', checkcount: "Don't count the ball",)));
+                        }
+                        if (data['label'] == 'Retired Out'){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: 'Retired Out', checkcount: "Don't count the ball",)));
+                        }
+                        if (data['label'] == 'Timed Out'){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => TimeOutAbsence(label: 'Timed out', )));
+                        }
+                        if (data['label'] == 'Absence Hurt'){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => TimeOutAbsence(label: 'Absence hurt',)));
+                        }
+                        if (data['label'] == 'Stumped'){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: 'Absence hurt', checkcount: "Wide Ball?",)));
+                        }
+                        if (data['label'] == 'Retired'){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredScreens()));
+                        }
+                        if (data['label'] == 'Obstruct the field' ){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => ObstructTheField()));
                         }
                       },
                       child: Chip(

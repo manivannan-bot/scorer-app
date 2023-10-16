@@ -323,7 +323,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
                               ])),
                           SizedBox(height: 1.5.h,),
                           Padding(
-                            padding:  EdgeInsets.only(left: 2.w,right: 2.w),
+                            padding:  EdgeInsets.only(left: 0.w,right: 0.w),
                             child: Wrap(
                               spacing: 2.w, // Horizontal spacing between items
                               runSpacing: 1.h, // Vertical spacing between lines
@@ -337,7 +337,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
                                     });
                                   },
                                   child: Chip(
-                                    padding: EdgeInsets.symmetric(horizontal: 2.w,vertical: 0.8.h),
+                                    padding: EdgeInsets.symmetric(horizontal: 1.5.w,vertical: 0.8.h),
                                     label: Text(data['label'],style: fontRegular.copyWith(
                                         fontSize: 12.sp,
                                         color: AppColor.blackColour
