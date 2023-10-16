@@ -1130,8 +1130,27 @@ class _ScoringTabState extends State<ScoringTab> {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => RunOutScreen()));
                           }
                           if (data['label'] == 'Retired Hurt'){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: '', checkcount: '',)));
                           }
+                          if (data['label'] == 'Retired Out'){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: 'Retired Out', checkcount: "Don't count the ball",)));
+                          }
+                          if (data['label'] == 'Timed Out'){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => TimeOutAbsence(label: 'Timed out', )));
+                          }
+                          if (data['label'] == 'Absence Hurt'){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => TimeOutAbsence(label: 'Absence hurt',)));
+                          }
+                          if (data['label'] == 'Stumped'){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: 'Absence hurt', checkcount: "Wide Ball?",)));
+                          }
+                          if (data['label'] == 'Retired'){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredScreens()));
+                          }
+                          if (data['label'] == 'Obstruct the field' ){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => ObstructTheField()));
+                          }
+
                         },
                         child: Chip(
                           padding: EdgeInsets.symmetric(horizontal: 2.w,vertical: 0.8.h),
@@ -2706,229 +2725,5 @@ Future<void> _displayBottomSheetOther (BuildContext context) async{
       })
   );
 }
-
-
-//Out
-Future<void> _displayBottomOut (BuildContext context) async{
-  int? isOffSideSelected ;
-  int? isWideSelected ;
-  List<Map<String, dynamic>> chipData =[
-    {
-      'label': "Bowled",
-    },
-    {
-      'label': 'Caught',
-    },
-    {
-      'label': 'Stumped',
-    },
-    {
-      'label': 'LBW',
-    },
-    {
-      'label': 'Caught Behind',
-    },
-    {
-      'label': 'Caught & Bowled',
-    },
-    {
-      'label': ' Run Out',
-    },
-    {
-      'label': 'Run out (Mankaded)',
-    },
-    {
-      'label': 'Retired Hurt',
-    },
-    {
-      'label': 'Hit Wicket',
-    },
-    {
-      'label': 'Retired',
-    },
-    {
-      'label': 'Retired Out',
-    },
-    {
-      'label': 'Handling the Ball',
-    },
-    {
-      'label': 'Hit the Ball Twice',
-    },
-    {
-      'label': 'Obstruct the field',
-    },
-    {
-      'label': 'Timed Out',
-    },
-    {
-      'label': 'Absence Hurt',
-    },
-
-  ];
-  showModalBottomSheet(context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context)=> StatefulBuilder(builder: (context, setState){
-        return Container(
-          // height: 33.h,
-          // padding: EdgeInsets.symmetric(horizontal: 2.w),
-          decoration: const BoxDecoration(
-              color: AppColor.lightColor,
-              borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding:  EdgeInsets.symmetric(horizontal: 5.w,)+EdgeInsets.only(top: 2.h,),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                        onTap: (){
-                          Navigator.pop(context);
-                        },
-                        child: Icon(Icons.arrow_back,size: 7.w,)),
-                    Text("Select out method",style: fontMedium.copyWith(
-                      fontSize: 17.sp,
-                      color: AppColor.blackColour,
-                    ),),
-                    SizedBox(width: 7.w,),
-                  ],
-                ),
-              ),
-              SizedBox(height: 1.h,),
-              const Divider(
-                color: Color(0xffD3D3D3),
-              ),
-              SizedBox(height: 1.h,),
-              Padding(
-                padding:  EdgeInsets.only(left: 2.w,right: 2.w),
-                child: Wrap(
-                  spacing: 2.w, // Horizontal spacing between items
-                  runSpacing: 1.h, // Vertical spacing between lines
-                  alignment: WrapAlignment.center, // Alignment of items
-                  children:chipData.map((data) {
-                    final index = chipData.indexOf(data);
-                    return GestureDetector(
-                      onTap: (){
-                        setState(() {
-                          isWideSelected=index;
-                        });
-                        if (data['label'] == 'Bowled'){
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return OutMethodDialog(label: 'Bowled',);
-                            },
-                          );
-                        }
-                        if (data['label'] == 'LBW'){
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return OutMethodDialog(label: 'LBW',);
-                            },
-                          );
-                        }
-                        if (data['label'] == 'Caught Behind'){
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return OutMethodDialog(label: 'Caught Behind',);
-                            },
-                          );
-                        }
-                        if (data['label'] == 'Caught & Bowled'){
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return OutMethodDialog(label: 'Caught & Bowled',);
-                            },
-                          );
-                        }
-                        if (data['label'] == 'Run out (Mankaded)'){
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return OutMethodDialog(label: 'Mankaded',);
-                            },
-                          );
-                        }
-                        if (data['label'] == 'Hit Wicket'){
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return OutMethodDialog(label: 'Hit Wicket',);
-                            },
-                          );
-                        }
-                        if (data['label'] == 'Handling the Ball'){
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return OutMethodDialog(label: 'Handling the Ball',);
-                            },
-                          );
-                        }
-                        if (data['label'] == 'Hit the Ball Twice'){
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return OutMethodDialog(label: 'Hit the Ball Twice',);
-                            },
-                          );
-                        }
-                        if (data['label'] == ' Run Out'){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => RunOutScreen()));
-                        }
-                        if (data['label'] == 'Retired Hurt'){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: 'Retired Hurt', checkcount: "Don't count the ball",)));
-                        }
-                        if (data['label'] == 'Retired Out'){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: 'Retired Out', checkcount: "Don't count the ball",)));
-                        }
-                        if (data['label'] == 'Timed Out'){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => TimeOutAbsence(label: 'Timed out', )));
-                        }
-                        if (data['label'] == 'Absence Hurt'){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => TimeOutAbsence(label: 'Absence hurt',)));
-                        }
-                        if (data['label'] == 'Stumped'){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: 'Absence hurt', checkcount: "Wide Ball?",)));
-                        }
-                        if (data['label'] == 'Retired'){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredScreens()));
-                        }
-                        if (data['label'] == 'Obstruct the field' ){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => ObstructTheField()));
-                        }
-                      },
-                      child: Chip(
-                        padding: EdgeInsets.symmetric(horizontal: 2.w,vertical: 0.8.h),
-                        label: Text(data['label'],style: fontSemiBold.copyWith(
-                            fontSize: 12.sp,
-                            color: AppColor.blackColour
-                        ),),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                          side: const BorderSide(
-                            color: Color(0xffDADADA),
-                          ),
-                        ),
-                        backgroundColor: isWideSelected==index? AppColor.primaryColor : Color(0xffF8F9FA),
-                        // backgroundColor:AppColor.lightColor
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ),
-            ],
-          ),
-        );
-      })
-  );
-}
-
 
 
