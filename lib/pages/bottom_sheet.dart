@@ -37,6 +37,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
 
   int selectedRow = -1;
   int selectedColumn = -1;
+  int fieldPositionId=0;
 
 
   List<String> partNumbers = List.generate(8, (index) => 'Part ${index + 1}');
@@ -47,6 +48,14 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
       tappedPart = partNumbers[partNumberIndex];
     });
     print('Tapped on $tappedPart');
+  }
+
+  void callbackFunction(int value) {
+    setState(() {
+      fieldPositionId=value;
+    });
+    print("Received value from ThreeCircles: $value");
+
   }
 
   @override
@@ -120,11 +129,11 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                 Container(
                   width: 600.0,
                   height: 100, // Adjust the width as needed
-                  padding: EdgeInsets.all(20.0), // Spacing inside the card
+                  padding:  EdgeInsets.all(20.0), // Spacing inside the card
                   decoration: BoxDecoration(
-                    color: Colors.grey, // Grey background color
+                    color: Colors.grey,
                     borderRadius:
-                        BorderRadius.circular(10.0), // Rounded corners
+                        BorderRadius.circular(10.0),
                   ),
                   child: Column(
                     children: [
@@ -197,7 +206,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                   height: 550,
                   width:500,
                   child:Center(
-                    child: ThreeCircles(),
+                    child: ThreeCircles(onOkButtonPressed:callbackFunction,),
                   ),
                 ),
 
@@ -757,14 +766,18 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                         SharedPreferences prefs = await SharedPreferences.getInstance();
                         int overNumber= prefs.getInt('over_number')??0;
                         int ballNumber= prefs.getInt('ball_number')??0;
+                        var strikerId=prefs.getInt('striker_id')??0;
+                        var nonStrikerId=prefs.getInt('non_striker_id')??0;
+                        var bowlerId=prefs.getInt('bowler_id')??0;
+                        var keeperId=prefs.getInt('wicket_keeper_id')??0;
 
                         scoreUpdateRequestModel.ballTypeId=widget.run;
                         scoreUpdateRequestModel.matchId=widget.scoringData.data!.batting![0].matchId;
                         scoreUpdateRequestModel.scorerId=1;
-                        scoreUpdateRequestModel.strikerId=widget.scoringData.data!.batting![0].playerId??0;
-                        scoreUpdateRequestModel.nonStrikerId=widget.scoringData.data!.batting![1].playerId??0;
-                        scoreUpdateRequestModel.wicketKeeperId=23;
-                        scoreUpdateRequestModel.bowlerId=widget.scoringData.data!.bowling!.playerId??0;
+                        scoreUpdateRequestModel.strikerId=strikerId;
+                        scoreUpdateRequestModel.nonStrikerId=nonStrikerId;
+                        scoreUpdateRequestModel.wicketKeeperId=keeperId;
+                        scoreUpdateRequestModel.bowlerId=bowlerId;
                         scoreUpdateRequestModel.overNumber=overNumber;
                         scoreUpdateRequestModel.ballNumber=ballNumber;
                         scoreUpdateRequestModel.runsScored=widget.run;
@@ -780,13 +793,15 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                         scoreUpdateRequestModel.outByPlayer=0;
                         scoreUpdateRequestModel.outPlayer=0;
                         scoreUpdateRequestModel.totalWicket=0;
-                        scoreUpdateRequestModel.fieldingPositionsId=0;
+                        scoreUpdateRequestModel.fieldingPositionsId=fieldPositionId;
                         scoreUpdateRequestModel.endInnings=false;
                         ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
                           widget.onSave(value);
                           SharedPreferences prefs = await SharedPreferences.getInstance();
                           await prefs.setInt('over_number', value.data!.overNumber??0);
                           await prefs.setInt('ball_number', value.data!.ballNumber??1);
+                          await prefs.setInt('striker_id', value.data!.strikerId??0);
+                          await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
                         });
 
                        Navigator.pop(context);
@@ -816,68 +831,5 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
   // Navigator.of(context).push(MaterialPageRoute(
   // builder: (context) => SlicedPizzaApp(),
   // ));
-}
-
-
-
-class PizzaSlice extends StatefulWidget {
-  @override
-  _PizzaSliceState createState() => _PizzaSliceState();
-}
-
-class _PizzaSliceState extends State<PizzaSlice> {
-  bool isTapped = false;
-
-  void toggleTapped() {
-    setState(() {
-      isTapped = !isTapped;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: toggleTapped,
-      child: CustomPaint(
-        size: Size(200, 200),
-        painter: PizzaSlicePainter(isTapped: isTapped),
-        child: Center(
-          child: Text(
-            isTapped ? 'one' : '',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class PizzaSlicePainter extends CustomPainter {
-  final bool isTapped;
-
-  PizzaSlicePainter({required this.isTapped});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final Paint paint = Paint()
-      ..color = isTapped ? Colors.black : Colors.orange
-      ..style = PaintingStyle.fill;
-
-    final Path path = Path()
-      ..moveTo(100, 100)
-      ..lineTo(100, 0)
-      ..arcTo(Rect.fromCircle(center: Offset(100, 100), radius: 100), -0.25, 1.5, false)
-      ..close();
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
-  }
 }
 

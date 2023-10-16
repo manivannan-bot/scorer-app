@@ -6,6 +6,7 @@ import 'package:scorer/utils/styles.dart';
 import 'package:scorer/widgets/cancel_btn.dart';
 import 'package:scorer/widgets/ok_btn.dart';
 import 'package:scorer/widgets/stricker%20container.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 import '../models/player_list_model.dart';
@@ -30,12 +31,14 @@ class _DOScoringState extends State<DOScoring> {
   List<Players>? itemsBowler= [];
   int? selectedIndex;
   int? selectedBowler;
+  int? selectedWicketKeeper;
   int? player2Index;
   String selectedPlayerName = "";
   String? selectedTeamName ="";
   String? selectedBTeamName ="";
   String selectedBowlerName = "";
   String? selectedPlayer2Name='';
+  String selectedWicketKeeperName = "";
 
   @override
   void initState() {
@@ -43,6 +46,7 @@ class _DOScoringState extends State<DOScoring> {
     selectedIndex = null;
     selectedBowler=null;
     player2Index=null;
+    selectedWicketKeeper=null;
     _fetchPlayers(widget.matchId, widget.team1id,widget.team2id);
   }
 
@@ -118,32 +122,39 @@ class _DOScoringState extends State<DOScoring> {
                       children: [
                        GestureDetector(
                          onTap:(){
-                           _displayBottomSheet (context,selectedIndex,(newIndex) {
-                             // Update the selectedIndex when an item is selected
+                           _displayBottomSheet (context,selectedIndex,(newIndex) async{
+
                              setState(() {
                                selectedIndex = newIndex;
                                if (selectedIndex != null) {
-                                 // Update the selectedPlayerName when a player is selected
+
                                  selectedPlayerName = items![selectedIndex!].playerName ?? "";
                                }
                              });
+                             SharedPreferences prefs = await SharedPreferences.getInstance();
+                             await prefs.setInt('striker_id', items![selectedIndex!].playerId!);
                            });
+
                          },
                            child: ChooseContainer(selectedIndex != null
                                ? selectedPlayerName : "Striker")),
                         SizedBox(width: 8.w,),
                         GestureDetector(
                             onTap:(){
-                              _displayPlayer2BottomSheet (context,player2Index,(newIndex) {
-                                // Update the selectedIndex when an item is selected
+                              _displayPlayer2BottomSheet (context,player2Index,(newIndex) async{
+
                                 setState(() {
                                   player2Index = newIndex;
                                   if (player2Index != null) {
-                                    // Update the selectedPlayerName when a player is selected
+
                                     selectedPlayer2Name = items![player2Index!].playerName ?? "";
                                   }
                                 });
+
+                                SharedPreferences prefs = await SharedPreferences.getInstance();
+                                await prefs.setInt('non_striker_id', items![player2Index!].playerId!);
                               });
+
                             },
                             child: ChooseContainer(player2Index==null?"Non-Stricker":selectedPlayer2Name!)),
                       ],
@@ -182,20 +193,37 @@ class _DOScoringState extends State<DOScoring> {
                       children: [
                         GestureDetector(
                             onTap:(){
-                              _displayBowlerBottomSheet (context,selectedBowler,(bowlerIndex) {
-                                // Update the selectedIndex when an item is selected
+                              _displayBowlerBottomSheet (context,selectedBowler,(bowlerIndex) async{
+
                                 setState(() {
                                   selectedBowler = bowlerIndex;
                                   if (selectedBowler != null) {
-                                    // Update the selectedPlayerName when a player is selected
+
                                     selectedBowlerName = itemsBowler![selectedBowler!].playerName ?? "";
                                   }
                                 });
+                                SharedPreferences prefs = await SharedPreferences.getInstance();
+                                await prefs.setInt('bowler_id', itemsBowler![selectedBowler!].playerId!);
                               });
                             },
                             child: ChooseContainer(selectedBowler==null?"Bowler":selectedBowlerName)),
                         SizedBox(width: 8.w,),
-                        ChooseContainer("Wicket Keeper"),
+                        GestureDetector(
+                          onTap:(){
+
+                            _displayKeeperBottomSheet (context,selectedWicketKeeper,(bowlerIndex) async{
+
+                              setState(() {
+                                selectedWicketKeeper = bowlerIndex;
+                                if (selectedWicketKeeper != null) {
+                                  selectedWicketKeeperName = itemsBowler![selectedWicketKeeper!].playerName ?? "";
+                                }
+                              });
+                              SharedPreferences prefs = await SharedPreferences.getInstance();
+                              await prefs.setInt('wicket_keeper_id', itemsBowler![selectedWicketKeeper!].playerId!);
+                            });
+                          },
+                            child: ChooseContainer(selectedWicketKeeper==null?"Wicket Keeper":selectedWicketKeeperName)),
                       ],
                     )
                   ],
@@ -241,7 +269,7 @@ class _DOScoringState extends State<DOScoring> {
             return Container(
             height: 90.h,
             padding: EdgeInsets.symmetric(vertical: 2.h),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 color: AppColor.lightColor,
                 borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
             ),
@@ -339,7 +367,7 @@ class _DOScoringState extends State<DOScoring> {
                                   shape: BoxShape.circle,
                                   color: localSelectedIndex  == index ? Colors.blue : Colors.grey, // Change colors based on selected index
                                 ),
-                                child: Center(
+                                child:  Center(
                                   child: Icon(
                                     Icons.circle_outlined, // You can change the icon as needed
                                     color: Colors.white, // Icon color
@@ -611,6 +639,196 @@ class _DOScoringState extends State<DOScoring> {
                         SizedBox(width: 2.w,),
                         GestureDetector(onTap:()async {
                           ScoringProvider().saveBowler(widget.matchId,widget.team2id,itemsBowler![localBowlerIndex!].playerId.toString());
+                          Navigator.pop(context);
+                        },child: OkBtn("Ok")),
+                      ],
+                    ),
+                  ),
+
+                ],
+              ),
+            );},
+        )
+    );
+  }
+  _displayKeeperBottomSheet (BuildContext context, int? selectedBowler,Function(int?) onItemSelected) async{
+    int? localBowlerIndex = selectedBowler;
+    showModalBottomSheet(context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (context)=> StatefulBuilder(
+          builder: (context, setState) {
+            return Container(
+              height: 90.h,
+              padding: EdgeInsets.symmetric(vertical: 2.h),
+              decoration: BoxDecoration(
+                  color: AppColor.lightColor,
+                  borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding:  EdgeInsets.symmetric(horizontal: 5.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                            onTap: (){
+                              Navigator.pop(context);
+                            },
+                            child: Icon(Icons.arrow_back,size: 7.w,)),
+                        Text("Select Players",style: fontMedium.copyWith(
+                          fontSize: 18.sp,
+                          color: AppColor.blackColour,
+                        ),),
+                        SizedBox(width: 7.w,),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 1.h,),
+                  Divider(
+                    thickness: 1,
+                    color: Color(0xffD3D3D3),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 5.w,vertical: 1.h),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Color(0xffF8F9FA),
+                      ),
+                      child: Padding(
+                        padding:  EdgeInsets.symmetric(horizontal: 5.w,vertical: 1.2.h),
+                        child: Row(
+                          children: [
+                            Text("Search players",style: fontRegular.copyWith(
+                              fontSize: 12.sp,
+                              color: Color(0xff707B81),
+                            ),),
+                            Spacer(),
+                            SvgPicture.asset(Images.searchIcon)
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 5.w),
+                    child: Text('${selectedBTeamName}',style: fontMedium.copyWith(
+                        fontSize:14.sp,
+                        color: AppColor.pri
+                    ),),
+                  ),
+                  // Divider(
+                  //   color: Color(0xffD3D3D3),
+                  // ),
+                  Divider(
+                    thickness: 0.5,
+                    color: Color(0xffD3D3D3),
+                  ),
+                  Expanded(
+                    child:   ListView.separated(
+                      separatorBuilder:(context ,_) {
+                        return const Divider(
+                          thickness: 0.6,
+                        );
+                      },
+                      itemCount: itemsBowler!.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              if (localBowlerIndex  == index) {
+                                localBowlerIndex  = null; // Deselect the item if it's already selected
+                              } else {
+                                localBowlerIndex  = index; // Select the item if it's not selected
+                              }
+                              onItemSelected(localBowlerIndex);
+                            });
+                          },
+                          child:Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 2.5.w,vertical: 1.h),
+                            child: Row(
+                              children: [
+                                //circular button
+                                Container(
+                                  height: 20.0, // Adjust the height as needed
+                                  width: 20.0,  // Adjust the width as needed
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: localBowlerIndex  == index ? Colors.blue : Colors.grey, // Change colors based on selected index
+                                  ),
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.circle_outlined, // You can change the icon as needed
+                                      color: Colors.white, // Icon color
+                                      size: 20.0, // Icon size
+                                    ),
+                                  ),
+                                ), SizedBox(width: 3.w,),
+                                Image.asset(Images.playersImage,width: 10.w,),
+                                SizedBox(width: 2.w,),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("${itemsBowler![index].playerName??'-'}",style: fontMedium.copyWith(
+                                      fontSize: 12.sp,
+                                      color: AppColor.blackColour,
+                                    ),),
+                                    Row(
+                                      children: [
+                                        Container(
+                                          height:1.h,
+                                          width: 2.w,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(50),
+                                            color: AppColor.pri,
+                                          ),
+                                        ),
+                                        SizedBox(width: 2.w,),
+                                        Text("Right hand batsman",style: fontMedium.copyWith(
+                                            fontSize: 11.sp,
+                                            color: Color(0xff555555)
+                                        ),),
+                                      ],
+                                    ),
+
+                                  ],
+                                ),
+                                Spacer(),
+                                // Row(
+                                //   children: [
+                                //     Text("25 ",style: fontRegular.copyWith(
+                                //       fontSize: 11.sp,
+                                //       color: AppColor.blackColour,
+                                //     ),),
+                                //     Text("(10) ",style: fontRegular.copyWith(
+                                //       fontSize: 11.sp,
+                                //       color: AppColor.blackColour,
+                                //     ),)
+                                //   ],
+                                // )
+                              ],
+                            ),
+                          ),
+
+                        );
+                      },
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 2.h,horizontal: 5.w),
+                    decoration: BoxDecoration(
+                      color: AppColor.lightColor,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        CancelBtn("Cancel"),
+                        SizedBox(width: 2.w,),
+                        GestureDetector(onTap:()async {
+
                           Navigator.pop(context);
                         },child: OkBtn("Ok")),
                       ],
