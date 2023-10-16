@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -38,10 +39,12 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
   int selectedRow = -1;
   int selectedColumn = -1;
   int fieldPositionId=0;
+   int? isFourOrSix;
+   bool _isSwitch=false ;
 
 
   List<String> partNumbers = List.generate(8, (index) => 'Part ${index + 1}');
-  String tappedPart = ''; // Initialize with an empty string
+  String tappedPart = '';
 
   void onTap(int partNumberIndex) {
     setState(() {
@@ -57,10 +60,29 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
     print("Received value from ThreeCircles: $value");
 
   }
+  @override
+  void initState() {
+    super.initState();
+    getSwitch();
+  }
+
+  void getSwitch()async{
+    SharedPreferences pref=await SharedPreferences.getInstance();
+   isFourOrSix= pref.getInt('fourOrSix');
+   if(isFourOrSix==1) {
+     setState(() {
+       _isSwitch = true;
+     });
+   }else{
+     setState(() {
+       _isSwitch = false;
+     });
+   }
+  }
 
   @override
   Widget build(BuildContext context) {
-    bool _isSwitch = false;
+
     double screenHeight = MediaQuery.of(context).size.height;
     double sheetHeight = screenHeight * 0.9;
     if(widget.scoringData.data!.batting!.isEmpty){
@@ -123,7 +145,20 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                       '4s & 6s',
                       style: TextStyle(color: AppColor.iconColour),
                     ),
-                    Switch(value: _isSwitch, onChanged: (bool value) {}),
+                    Switch(value: _isSwitch!, onChanged: (bool value) async{
+
+                      SharedPreferences pref=await SharedPreferences.getInstance();
+                      isFourOrSix=pref.getInt('fourOrSix');
+                      if(isFourOrSix==1){
+                        await pref.setInt('fourOrSix',0);
+                      }else{
+                        await pref.setInt('fourOrSix',1);
+                      }
+                      setState(() {
+                        _isSwitch=value;
+                      });
+
+                    }),
                   ],
                 ),
                 Container(
@@ -202,13 +237,13 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                   ],
                 ),
 
-                SizedBox(
+                ((widget.run==4 || widget.run==6)|| isFourOrSix!=1 )?SizedBox(
                   height: 550,
                   width:500,
                   child:Center(
                     child: ThreeCircles(onOkButtonPressed:callbackFunction,),
                   ),
-                ),
+                ):Text(''),
 
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -827,6 +862,8 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
           ]),
     );
   }
+
+
 
   // Navigator.of(context).push(MaterialPageRoute(
   // builder: (context) => SlicedPizzaApp(),
