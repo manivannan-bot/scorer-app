@@ -8,21 +8,20 @@ import '../widgets/cancel_btn.dart';
 import '../widgets/ok_btn.dart';
 
 
-class RetiredHurtScreen extends StatefulWidget {
-  final String label;
-  final String checkcount;
+class RetiredScreens extends StatefulWidget {
+  const RetiredScreens({super.key});
 
-  const RetiredHurtScreen({required this.label,required this.checkcount,super.key});
   @override
-  State<RetiredHurtScreen> createState() => _RetiredHurtScreenState();
+  State<RetiredScreens> createState() => _RetiredScreensState();
 }
 
-class _RetiredHurtScreenState extends State<RetiredHurtScreen> {
+class _RetiredScreensState extends State<RetiredScreens> {
   int? isSelected=0;
+   int? selectedValue;
   bool isChecked = false;
   @override
   Widget build(BuildContext context) {
-    return  SafeArea(
+    return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xffF8F9FA),
         body: Column(
@@ -38,7 +37,7 @@ class _RetiredHurtScreenState extends State<RetiredHurtScreen> {
                         Navigator.pop(context);
                       },
                       child: Icon(Icons.arrow_back,size: 7.w,)),
-                  Text(widget.label,style: fontMedium.copyWith(
+                  Text("Retired",style: fontMedium.copyWith(
                     fontSize: 17.sp,
                     color: AppColor.blackColour,
                   ),),
@@ -130,6 +129,63 @@ class _RetiredHurtScreenState extends State<RetiredHurtScreen> {
                               ],
                             ),
                           ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 2.h,),
+                    Container(
+                      // padding: EdgeInsets.only(left: 6.w,right: 4.w,top: 2.h,bottom: 3.h),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: AppColor.lightColor,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(left: 6.w,right: 4.w,top: 2.h,bottom: 0.h),
+                            child: Text("Can batter can bat again with exisitng runs? *",style: fontMedium.copyWith(
+                              fontSize: 14.sp,
+                              color: AppColor.blackColour,
+                            ),),
+                          ),
+                          SizedBox(height: 1.5.h,),
+                          Padding(
+                            padding:EdgeInsets.only(left: 6.w,right: 4.w,top: 0.h,bottom: 2.5.h),
+                            child:  Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Radio(
+                                  value: 1,
+                                  groupValue: selectedValue,
+                                  activeColor: Color(0xffE8A514),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      selectedValue = value as int?;
+                                    });
+                                  },
+                                ),
+                                Text("Yes",style: fontMedium.copyWith(
+                                  fontSize: 16.sp,
+                                  color: AppColor.blackColour,
+                                ),),
+                                Radio(
+                                  value: 2,
+                                  groupValue: selectedValue,
+                                  activeColor: Color(0xffE8A514),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      selectedValue = value as int?;
+                                    });
+                                  },
+                                ),
+                                Text("No",style: fontMedium.copyWith(
+                                  fontSize: 16.sp,
+                                  color: AppColor.blackColour,
+                                ),),
+                              ],
+                            )
+                          ),
                           Container(
                             decoration: BoxDecoration(
                               color: AppColor.blackColour,
@@ -153,7 +209,7 @@ class _RetiredHurtScreenState extends State<RetiredHurtScreen> {
                                     visualDensity: VisualDensity.adaptivePlatformDensity,
                                   ),
                                 ),
-                                Text(widget.checkcount,style: fontRegular.copyWith(
+                                Text("Don’t count the ball",style: fontRegular.copyWith(
                                   fontSize: 12.sp,
                                   color: AppColor.lightColor,
                                 ),),

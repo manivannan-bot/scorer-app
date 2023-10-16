@@ -8,21 +8,20 @@ import '../widgets/cancel_btn.dart';
 import '../widgets/ok_btn.dart';
 
 
-class RetiredHurtScreen extends StatefulWidget {
+class TimeOutAbsence extends StatefulWidget {
   final String label;
-  final String checkcount;
+  const TimeOutAbsence({required this.label,super.key});
 
-  const RetiredHurtScreen({required this.label,required this.checkcount,super.key});
   @override
-  State<RetiredHurtScreen> createState() => _RetiredHurtScreenState();
+  State<TimeOutAbsence> createState() => _TimeOutAbsenceState();
 }
 
-class _RetiredHurtScreenState extends State<RetiredHurtScreen> {
+class _TimeOutAbsenceState extends State<TimeOutAbsence> {
   int? isSelected=0;
   bool isChecked = false;
   @override
   Widget build(BuildContext context) {
-    return  SafeArea(
+    return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xffF8F9FA),
         body: Column(
@@ -127,37 +126,6 @@ class _RetiredHurtScreenState extends State<RetiredHurtScreen> {
                                     ),
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: AppColor.blackColour,
-                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(20),bottomLeft: Radius.circular(20)),
-                            ),
-                            child: Row(
-                              children: <Widget>[
-                                Theme(
-                                  data: ThemeData(
-                                    unselectedWidgetColor: Color(0xffFBC041), // Change color here
-                                  ),
-                                  child: Checkbox(
-                                    value: isChecked,
-                                    onChanged: ( value) {
-                                      setState(() {
-                                        isChecked = value!;
-                                      });
-                                    },
-                                    activeColor: Color(0xffE8A514),// Change active color to yellow
-                                    materialTapTargetSize: MaterialTapTargetSize.padded,
-                                    visualDensity: VisualDensity.adaptivePlatformDensity,
-                                  ),
-                                ),
-                                Text(widget.checkcount,style: fontRegular.copyWith(
-                                  fontSize: 12.sp,
-                                  color: AppColor.lightColor,
-                                ),),
-
                               ],
                             ),
                           ),
