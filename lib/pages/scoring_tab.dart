@@ -1130,7 +1130,7 @@ class _ScoringTabState extends State<ScoringTab> {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => RunOutScreen()));
                           }
                           if (data['label'] == 'Retired Hurt'){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: '', checkcount: '',)));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: 'Retired Hurt', checkcount: "Don't count the ball",)));
                           }
                           if (data['label'] == 'Retired Out'){
                             Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: 'Retired Out', checkcount: "Don't count the ball",)));
@@ -1142,7 +1142,7 @@ class _ScoringTabState extends State<ScoringTab> {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => TimeOutAbsence(label: 'Absence hurt',)));
                           }
                           if (data['label'] == 'Stumped'){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: 'Absence hurt', checkcount: "Wide Ball?",)));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: 'Stumped', checkcount: "Wide Ball?",)));
                           }
                           if (data['label'] == 'Retired'){
                             Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredScreens()));
@@ -1454,40 +1454,55 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
                             var bowlerId=prefs.getInt('bowler_id')??0;
                             var keeperId=prefs.getInt('wicket_keeper_id')??0;
 
-                            ScoreUpdateRequestModel scoreUpdateRequestModel=ScoreUpdateRequestModel();
-                            scoreUpdateRequestModel.ballTypeId=1;
-                            scoreUpdateRequestModel.matchId=scoringData!.data!.batting![0].matchId;
-                            scoreUpdateRequestModel.scorerId=1;
-                            scoreUpdateRequestModel.strikerId=strikerId;
-                            scoreUpdateRequestModel.nonStrikerId=nonStrikerId;
-                            scoreUpdateRequestModel.wicketKeeperId=keeperId;
-                            scoreUpdateRequestModel.bowlerId=bowlerId;
-                            scoreUpdateRequestModel.overNumber=overNumber;
-                            scoreUpdateRequestModel.ballNumber=ballNumber;
+                            if(isWideSelected!=null) {
+                              ScoreUpdateRequestModel scoreUpdateRequestModel = ScoreUpdateRequestModel();
+                              scoreUpdateRequestModel.ballTypeId = 1;
+                              scoreUpdateRequestModel.matchId =
+                                  scoringData!.data!.batting![0].matchId;
+                              scoreUpdateRequestModel.scorerId = 1;
+                              scoreUpdateRequestModel.strikerId = strikerId;
+                              scoreUpdateRequestModel.nonStrikerId =
+                                  nonStrikerId;
+                              scoreUpdateRequestModel.wicketKeeperId = keeperId;
+                              scoreUpdateRequestModel.bowlerId = bowlerId;
+                              scoreUpdateRequestModel.overNumber = overNumber;
+                              scoreUpdateRequestModel.ballNumber = ballNumber;
 
-                            scoreUpdateRequestModel.runsScored=isWideSelected??0;
-                            scoreUpdateRequestModel.extras=0;
-                            scoreUpdateRequestModel.wicket=0;
-                            scoreUpdateRequestModel.dismissalType=0;
-                            scoreUpdateRequestModel.commentary=0;
-                            scoreUpdateRequestModel.innings=1;
-                            scoreUpdateRequestModel.battingTeamId=scoringData!.data!.batting![0].teamId??0;
-                            scoreUpdateRequestModel.bowlingTeamId=scoringData!.data!.bowling!.teamId??0;
-                            scoreUpdateRequestModel.overBowled=0;
-                            scoreUpdateRequestModel.totalOverBowled=0;
-                            scoreUpdateRequestModel.outByPlayer=0;
-                            scoreUpdateRequestModel.outPlayer=0;
-                            scoreUpdateRequestModel.totalWicket=0;
-                            scoreUpdateRequestModel.fieldingPositionsId=0;
-                            scoreUpdateRequestModel.endInnings=false;
-                            ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
-                              SharedPreferences prefs = await SharedPreferences.getInstance();
-                              await prefs.setInt('over_number', value.data!.overNumber??0);
-                              await prefs.setInt('ball_number', value.data!.ballNumber??1);
-                              await prefs.setInt('striker_id', value.data!.strikerId??0);
-                              await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
-                              Navigator.pop(context);
-                            });
+                              scoreUpdateRequestModel.runsScored =
+                                  1 + (isWideSelected ?? 0);
+                              scoreUpdateRequestModel.extras = 1;
+                              scoreUpdateRequestModel.wicket = 0;
+                              scoreUpdateRequestModel.dismissalType = 0;
+                              scoreUpdateRequestModel.commentary = 0;
+                              scoreUpdateRequestModel.innings = 1;
+                              scoreUpdateRequestModel.battingTeamId =
+                                  scoringData!.data!.batting![0].teamId ?? 0;
+                              scoreUpdateRequestModel.bowlingTeamId =
+                                  scoringData!.data!.bowling!.teamId ?? 0;
+                              scoreUpdateRequestModel.overBowled = 0;
+                              scoreUpdateRequestModel.totalOverBowled = 0;
+                              scoreUpdateRequestModel.outByPlayer = 0;
+                              scoreUpdateRequestModel.outPlayer = 0;
+                              scoreUpdateRequestModel.totalWicket = 0;
+                              scoreUpdateRequestModel.fieldingPositionsId = 0;
+                              scoreUpdateRequestModel.endInnings = false;
+                              ScoringProvider().scoreUpdate(
+                                  scoreUpdateRequestModel).then((value) async {
+                                SharedPreferences prefs = await SharedPreferences
+                                    .getInstance();
+                                await prefs.setInt(
+                                    'over_number', value.data!.overNumber ?? 0);
+                                await prefs.setInt(
+                                    'ball_number', value.data!.ballNumber ?? 1);
+                                await prefs.setInt(
+                                    'striker_id', value.data!.strikerId ?? 0);
+                                await prefs.setInt('non_striker_id',
+                                    value.data!.nonStrikerId ?? 0);
+                                Navigator.pop(context);
+                              });
+                            }else{
+                              showSnackBar(context);
+                            }
                           },
                           child: OkBtn("Save")),
                     ],
@@ -1860,40 +1875,55 @@ Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,Scorin
                         var bowlerId=prefs.getInt('bowler_id')??0;
                         var keeperId=prefs.getInt('wicket_keeper_id')??0;
 
-                        ScoreUpdateRequestModel scoreUpdateRequestModel=ScoreUpdateRequestModel();
-                        scoreUpdateRequestModel.ballTypeId=ballType??0;
-                        scoreUpdateRequestModel.matchId=scoringData!.data!.batting![0].matchId;
-                        scoreUpdateRequestModel.scorerId=1;
-                        scoreUpdateRequestModel.strikerId=strikerId;
-                        scoreUpdateRequestModel.nonStrikerId=nonStrikerId;
-                        scoreUpdateRequestModel.wicketKeeperId=keeperId;
-                        scoreUpdateRequestModel.bowlerId=bowlerId;
-                        scoreUpdateRequestModel.overNumber=overNumber;
-                        scoreUpdateRequestModel.ballNumber=ballNumber;
-                        scoreUpdateRequestModel.runsScored=isWideSelected??0;
-                        scoreUpdateRequestModel.extras=0;
-                        scoreUpdateRequestModel.wicket=0;
-                        scoreUpdateRequestModel.dismissalType=0;
-                        scoreUpdateRequestModel.commentary=0;
-                        scoreUpdateRequestModel.innings=1;
-                        scoreUpdateRequestModel.battingTeamId=scoringData!.data!.batting![0].teamId??0;
-                        scoreUpdateRequestModel.bowlingTeamId=scoringData!.data!.bowling!.teamId??0;
-                        scoreUpdateRequestModel.overBowled=0;
-                        scoreUpdateRequestModel.totalOverBowled=0;
-                        scoreUpdateRequestModel.outByPlayer=0;
-                        scoreUpdateRequestModel.outPlayer=0;
-                        scoreUpdateRequestModel.totalWicket=0;
-                        scoreUpdateRequestModel.fieldingPositionsId=0;
-                        scoreUpdateRequestModel.endInnings=false;
-                        ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
-                          SharedPreferences prefs = await SharedPreferences.getInstance();
-                          await prefs.setInt('over_number', value.data!.overNumber??0);
-                          await prefs.setInt('ball_number', value.data!.ballNumber??1);
-                          await prefs.setInt('striker_id', value.data!.strikerId??0);
-                          await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
+                        if(isWideSelected!=null) {
+                          ScoreUpdateRequestModel scoreUpdateRequestModel = ScoreUpdateRequestModel();
+                          scoreUpdateRequestModel.ballTypeId = ballType ?? 0;
+                          scoreUpdateRequestModel.matchId =
+                              scoringData!.data!.batting![0].matchId;
+                          scoreUpdateRequestModel.scorerId = 1;
+                          scoreUpdateRequestModel.strikerId = strikerId;
+                          scoreUpdateRequestModel.nonStrikerId = nonStrikerId;
+                          scoreUpdateRequestModel.wicketKeeperId = keeperId;
+                          scoreUpdateRequestModel.bowlerId = bowlerId;
+                          scoreUpdateRequestModel.overNumber = overNumber;
+                          scoreUpdateRequestModel.ballNumber = ballNumber;
+                          scoreUpdateRequestModel.runsScored =
+                              1 + (isWideSelected ?? 0);
+                          scoreUpdateRequestModel.extras = 1;
+                          scoreUpdateRequestModel.wicket = 0;
+                          scoreUpdateRequestModel.dismissalType = 0;
+                          scoreUpdateRequestModel.commentary = 0;
+                          scoreUpdateRequestModel.innings = 1;
+                          scoreUpdateRequestModel.battingTeamId =
+                              scoringData!.data!.batting![0].teamId ?? 0;
+                          scoreUpdateRequestModel.bowlingTeamId =
+                              scoringData!.data!.bowling!.teamId ?? 0;
+                          scoreUpdateRequestModel.overBowled = 0;
+                          scoreUpdateRequestModel.totalOverBowled = 0;
+                          scoreUpdateRequestModel.outByPlayer = 0;
+                          scoreUpdateRequestModel.outPlayer = 0;
+                          scoreUpdateRequestModel.totalWicket = 0;
+                          scoreUpdateRequestModel.fieldingPositionsId = 0;
+                          scoreUpdateRequestModel.endInnings = false;
+                          ScoringProvider()
+                              .scoreUpdate(scoreUpdateRequestModel)
+                              .then((value) async {
+                            SharedPreferences prefs = await SharedPreferences
+                                .getInstance();
+                            await prefs.setInt(
+                                'over_number', value.data!.overNumber ?? 0);
+                            await prefs.setInt(
+                                'ball_number', value.data!.ballNumber ?? 1);
+                            await prefs.setInt(
+                                'striker_id', value.data!.strikerId ?? 0);
+                            await prefs.setInt('non_striker_id',
+                                value.data!.nonStrikerId ?? 0);
 
-                          Navigator.pop(context);
-                        });
+                            Navigator.pop(context);
+                          });
+                        }else{
+                          showSnackBar(context);
+                        }
                       },child: OkBtn("Save")),
                     ],
                   ),
@@ -2179,41 +2209,59 @@ Future<void> _displayBottomSheetMoreRuns (BuildContext context,int ballType,Scor
                         var nonStrikerId=prefs.getInt('non_striker_id')??0;
                         var bowlerId=prefs.getInt('bowler_id')??0;
                         var keeperId=prefs.getInt('wicket_keeper_id')??0;
+                        if(isWideSelected !=null) {
+                          ScoreUpdateRequestModel scoreUpdateRequestModel = ScoreUpdateRequestModel();
+                          scoreUpdateRequestModel.ballTypeId = ballType ?? 0;
+                          scoreUpdateRequestModel.matchId =
+                              scoringData!.data!.batting![0].matchId;
+                          scoreUpdateRequestModel.scorerId = 1;
+                          scoreUpdateRequestModel.strikerId = strikerId;
+                          scoreUpdateRequestModel.nonStrikerId = nonStrikerId;
+                          scoreUpdateRequestModel.wicketKeeperId = keeperId;
+                          scoreUpdateRequestModel.bowlerId = bowlerId;
+                          scoreUpdateRequestModel.overNumber = overNumber;
+                          scoreUpdateRequestModel.ballNumber = ballNumber;
 
-                        ScoreUpdateRequestModel scoreUpdateRequestModel=ScoreUpdateRequestModel();
-                        scoreUpdateRequestModel.ballTypeId=ballType??0;
-                        scoreUpdateRequestModel.matchId=scoringData!.data!.batting![0].matchId;
-                        scoreUpdateRequestModel.scorerId=1;
-                        scoreUpdateRequestModel.strikerId=strikerId;
-                        scoreUpdateRequestModel.nonStrikerId=nonStrikerId;
-                        scoreUpdateRequestModel.wicketKeeperId=keeperId;
-                        scoreUpdateRequestModel.bowlerId=bowlerId;
-                        scoreUpdateRequestModel.overNumber=overNumber;
-                        scoreUpdateRequestModel.ballNumber=ballNumber;
+                          scoreUpdateRequestModel.runsScored =
+                          (isWideSelected == null) ? 0 : isWideSelected ??
+                              0 + 1;
+                          scoreUpdateRequestModel.extras =
+                          (isWideSelected == null) ? 0 : isWideSelected ??
+                              0 + 1;
+                          scoreUpdateRequestModel.wicket = 0;
+                          scoreUpdateRequestModel.dismissalType = 0;
+                          scoreUpdateRequestModel.commentary = 0;
+                          scoreUpdateRequestModel.innings = 1;
+                          scoreUpdateRequestModel.battingTeamId =
+                              scoringData!.data!.batting![0].teamId ?? 0;
+                          scoreUpdateRequestModel.bowlingTeamId =
+                              scoringData!.data!.bowling!.teamId ?? 0;
+                          scoreUpdateRequestModel.overBowled = 0;
+                          scoreUpdateRequestModel.totalOverBowled = 0;
+                          scoreUpdateRequestModel.outByPlayer = 0;
+                          scoreUpdateRequestModel.outPlayer = 0;
+                          scoreUpdateRequestModel.totalWicket = 0;
+                          scoreUpdateRequestModel.fieldingPositionsId = 0;
+                          scoreUpdateRequestModel.endInnings = false;
+                          ScoringProvider()
+                              .scoreUpdate(scoreUpdateRequestModel)
+                              .then((value) async {
+                            SharedPreferences prefs = await SharedPreferences
+                                .getInstance();
+                            await prefs.setInt(
+                                'over_number', value.data!.overNumber ?? 0);
+                            await prefs.setInt(
+                                'ball_number', value.data!.ballNumber ?? 1);
+                            await prefs.setInt(
+                                'striker_id', value.data!.strikerId ?? 0);
+                            await prefs.setInt('non_striker_id',
+                                value.data!.nonStrikerId ?? 0);
+                            Navigator.pop(context);
+                          });
+                        }else{
+                          showSnackBar(context);
+                        }
 
-                        scoreUpdateRequestModel.runsScored=isWideSelected??0;
-                        scoreUpdateRequestModel.extras=0;
-                        scoreUpdateRequestModel.wicket=0;
-                        scoreUpdateRequestModel.dismissalType=0;
-                        scoreUpdateRequestModel.commentary=0;
-                        scoreUpdateRequestModel.innings=1;
-                        scoreUpdateRequestModel.battingTeamId=scoringData!.data!.batting![0].teamId??0;
-                        scoreUpdateRequestModel.bowlingTeamId=scoringData!.data!.bowling!.teamId??0;
-                        scoreUpdateRequestModel.overBowled=0;
-                        scoreUpdateRequestModel.totalOverBowled=0;
-                        scoreUpdateRequestModel.outByPlayer=0;
-                        scoreUpdateRequestModel.outPlayer=0;
-                        scoreUpdateRequestModel.totalWicket=0;
-                        scoreUpdateRequestModel.fieldingPositionsId=0;
-                        scoreUpdateRequestModel.endInnings=false;
-                        ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
-                          SharedPreferences prefs = await SharedPreferences.getInstance();
-                          await prefs.setInt('over_number', value.data!.overNumber??0);
-                          await prefs.setInt('ball_number', value.data!.ballNumber??1);
-                          await prefs.setInt('striker_id', value.data!.strikerId??0);
-                          await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
-                          Navigator.pop(context);
-                        });
                       },child: OkBtn("Save")),
                     ],
                   ),
@@ -2396,48 +2444,55 @@ Future<void> _displayBottomSheetBonus (BuildContext context, int? ballType, Scor
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       GestureDetector(onTap:()async{
-                        SharedPreferences prefs = await SharedPreferences.getInstance();
-                        var overNumber= prefs.getInt('over_number')??0;
-                        var ballNumber= prefs.getInt('ball_number')??0;
-                        var strikerId=prefs.getInt('striker_id')??0;
-                        var nonStrikerId=prefs.getInt('non_striker_id')??0;
-                        var bowlerId=prefs.getInt('bowler_id')??0;
-                        var keeperId=prefs.getInt('wicket_keeper_id')??0;
+                              SharedPreferences prefs = await SharedPreferences.getInstance();
+                              var overNumber= prefs.getInt('over_number')??0;
+                              var ballNumber= prefs.getInt('ball_number')??0;
+                              var strikerId=prefs.getInt('striker_id')??0;
+                              var nonStrikerId=prefs.getInt('non_striker_id')??0;
+                              var bowlerId=prefs.getInt('bowler_id')??0;
+                              var keeperId=prefs.getInt('wicket_keeper_id')??0;
+                              if(isWideSelected!=null){
 
-                        ScoreUpdateRequestModel scoreUpdateRequestModel=ScoreUpdateRequestModel();
-                        scoreUpdateRequestModel.ballTypeId=ballType??0;
-                        scoreUpdateRequestModel.matchId=scoringData!.data!.batting![0].matchId;
-                        scoreUpdateRequestModel.scorerId=1;
-                        scoreUpdateRequestModel.strikerId=strikerId;
-                        scoreUpdateRequestModel.nonStrikerId=nonStrikerId;
-                        scoreUpdateRequestModel.wicketKeeperId=keeperId;
-                        scoreUpdateRequestModel.bowlerId=bowlerId;
-                        scoreUpdateRequestModel.overNumber=overNumber;
-                        scoreUpdateRequestModel.ballNumber=ballNumber;
 
-                        scoreUpdateRequestModel.runsScored=(isWideSelected??0)+1;
-                        scoreUpdateRequestModel.extras=0;
-                        scoreUpdateRequestModel.wicket=0;
-                        scoreUpdateRequestModel.dismissalType=0;
-                        scoreUpdateRequestModel.commentary=0;
-                        scoreUpdateRequestModel.innings=1;
-                        scoreUpdateRequestModel.battingTeamId=scoringData!.data!.batting![0].teamId??0;
-                        scoreUpdateRequestModel.bowlingTeamId=scoringData!.data!.bowling!.teamId??0;
-                        scoreUpdateRequestModel.overBowled=0;
-                        scoreUpdateRequestModel.totalOverBowled=0;
-                        scoreUpdateRequestModel.outByPlayer=0;
-                        scoreUpdateRequestModel.outPlayer=0;
-                        scoreUpdateRequestModel.totalWicket=0;
-                        scoreUpdateRequestModel.fieldingPositionsId=0;
-                        scoreUpdateRequestModel.endInnings=false;
-                        ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
-                          SharedPreferences prefs = await SharedPreferences.getInstance();
-                          await prefs.setInt('over_number', value.data!.overNumber??0);
-                          await prefs.setInt('ball_number', value.data!.ballNumber??1);
-                          await prefs.setInt('striker_id', value.data!.strikerId??0);
-                          await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
-                          Navigator.pop(context);
-                        });
+
+                              ScoreUpdateRequestModel scoreUpdateRequestModel=ScoreUpdateRequestModel();
+                              scoreUpdateRequestModel.ballTypeId=ballType??0;
+                              scoreUpdateRequestModel.matchId=scoringData!.data!.batting![0].matchId;
+                              scoreUpdateRequestModel.scorerId=1;
+                              scoreUpdateRequestModel.strikerId=strikerId;
+                              scoreUpdateRequestModel.nonStrikerId=nonStrikerId;
+                              scoreUpdateRequestModel.wicketKeeperId=keeperId;
+                              scoreUpdateRequestModel.bowlerId=bowlerId;
+                              scoreUpdateRequestModel.overNumber=overNumber;
+                              scoreUpdateRequestModel.ballNumber=ballNumber;
+
+                              scoreUpdateRequestModel.runsScored=(isWideSelected==null)?0:(isWideSelected??0)+1;
+                              scoreUpdateRequestModel.extras=(isWideSelected==null)?0:(isWideSelected??0)+1;
+                              scoreUpdateRequestModel.wicket=0;
+                              scoreUpdateRequestModel.dismissalType=0;
+                              scoreUpdateRequestModel.commentary=0;
+                              scoreUpdateRequestModel.innings=1;
+                              scoreUpdateRequestModel.battingTeamId=scoringData!.data!.batting![0].teamId??0;
+                              scoreUpdateRequestModel.bowlingTeamId=scoringData!.data!.bowling!.teamId??0;
+                              scoreUpdateRequestModel.overBowled=0;
+                              scoreUpdateRequestModel.totalOverBowled=0;
+                              scoreUpdateRequestModel.outByPlayer=0;
+                              scoreUpdateRequestModel.outPlayer=0;
+                              scoreUpdateRequestModel.totalWicket=0;
+                              scoreUpdateRequestModel.fieldingPositionsId=0;
+                              scoreUpdateRequestModel.endInnings=false;
+                              ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
+                              SharedPreferences prefs = await SharedPreferences.getInstance();
+                              await prefs.setInt('over_number', value.data!.overNumber??0);
+                              await prefs.setInt('ball_number', value.data!.ballNumber??1);
+                              await prefs.setInt('striker_id', value.data!.strikerId??0);
+                              await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
+                              Navigator.pop(context);
+                              });
+
+                              }else{
+                                         showSnackBar(context);
+                              }
                       },child: OkBtn("Save")),
                     ],
                   ),
@@ -2724,6 +2779,15 @@ Future<void> _displayBottomSheetOther (BuildContext context) async{
         );
       })
   );
+}
+
+void showSnackBar(BuildContext context) {
+  final snackBar = const SnackBar(
+    content: Text('Please select one option'),
+    duration: Duration(seconds: 2), // Adjust the duration as needed
+  );
+
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
 
 
