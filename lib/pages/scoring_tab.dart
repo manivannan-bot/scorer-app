@@ -1138,19 +1138,19 @@ class _ScoringTabState extends State<ScoringTab> {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: 'Retired Out', checkcount: "Don't count the ball",ballType:data['id'],scoringData: scoringData!,)));
                           }
                           if (data['label'] == 'Timed Out'){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => TimeOutAbsence(label: 'Timed out', )));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => TimeOutAbsence(label: 'Timed out',ballType:data['id'],scoringData: scoringData!, )));
                           }
                           if (data['label'] == 'Absence Hurt'){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => TimeOutAbsence(label: 'Absence hurt',)));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => TimeOutAbsence(label: 'Absence hurt',ballType:data['id'],scoringData: scoringData!,)));
                           }
                           if (data['label'] == 'Stumped'){
                             Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: 'Stumped', checkcount: "Wide Ball?",ballType:data['id'],scoringData: scoringData!,)));
                           }
                           if (data['label'] == 'Retired'){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredScreens()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredScreens(ballType:data['id'],scoringData: scoringData!,)));
                           }
                           if (data['label'] == 'Obstruct the field' ){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => ObstructTheField()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => ObstructTheField(ballType:data['id'],scoringData: scoringData!,)));
                           }
 
                         },

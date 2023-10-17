@@ -16,7 +16,7 @@ class RetiredHurtScreen extends StatefulWidget {
   final String label;
   final String checkcount;
   final int ballType;
-  final ScoringDetailResponseModel scoringData;
+  final ScoringDetailResponseModel? scoringData;
 
   const RetiredHurtScreen({required this.label,required this.checkcount,required this.ballType,required this.scoringData,super.key});
   @override
@@ -24,7 +24,7 @@ class RetiredHurtScreen extends StatefulWidget {
 }
 
 class _RetiredHurtScreenState extends State<RetiredHurtScreen> {
-  int? isSelected=0;
+  int isSelected=-1;
   bool isChecked = false;
   @override
   Widget build(BuildContext context) {
@@ -82,6 +82,34 @@ class _RetiredHurtScreenState extends State<RetiredHurtScreen> {
                                 GestureDetector(
                                   onTap: (){
                                     setState(() {
+                                      isSelected =0;
+                                    });
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal:8.w,vertical: 2.h),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Color(0xffDFDFDF)),
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: ( isSelected ==0)?AppColor.primaryColor:AppColor.lightColor,
+
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Image.asset(Images.playerImg,width: 20.w,),
+                                        SizedBox(height: 1.h,),
+                                        Text("${widget.scoringData!.data!.batting![0].playerName}",style: fontMedium.copyWith(
+                                          fontSize: 10.sp,
+                                          color: AppColor.blackColour,
+                                        ),),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 5.w,),
+                                GestureDetector(
+                                  onTap: (){
+                                    setState(() {
+
                                       isSelected =1;
                                     });
                                   },
@@ -97,36 +125,8 @@ class _RetiredHurtScreenState extends State<RetiredHurtScreen> {
                                       children: [
                                         Image.asset(Images.playerImg,width: 20.w,),
                                         SizedBox(height: 1.h,),
-                                        Text("Pandi",style: fontMedium.copyWith(
-                                          fontSize: 17.sp,
-                                          color: AppColor.blackColour,
-                                        ),),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: 5.w,),
-                                GestureDetector(
-                                  onTap: (){
-                                    setState(() {
-
-                                      isSelected =2;
-                                    });
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(horizontal:8.w,vertical: 2.h),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(color: Color(0xffDFDFDF)),
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: ( isSelected ==2)?AppColor.primaryColor:AppColor.lightColor,
-
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        Image.asset(Images.playerImg,width: 20.w,),
-                                        SizedBox(height: 1.h,),
-                                        Text("Pandi",style: fontMedium.copyWith(
-                                          fontSize: 17.sp,
+                                        Text("${widget.scoringData!.data!.batting![1].playerName}",style: fontMedium.copyWith(
+                                          fontSize: 10.sp,
                                           color: AppColor.blackColour,
                                         ),),
                                       ],
@@ -198,8 +198,8 @@ class _RetiredHurtScreenState extends State<RetiredHurtScreen> {
                       var bowlerId=prefs.getInt('bowler_id')??0;
                       var keeperId=prefs.getInt('wicket_keeper_id')??0;
                       ScoreUpdateRequestModel scoreUpdateRequestModel=ScoreUpdateRequestModel();
-                      scoreUpdateRequestModel.ballTypeId=widget.ballType;
-                      scoreUpdateRequestModel.matchId=widget.scoringData.data!.batting![0].matchId;
+                      scoreUpdateRequestModel.ballTypeId=14;
+                      scoreUpdateRequestModel.matchId=widget.scoringData!.data!.batting![0].matchId;
                       scoreUpdateRequestModel.scorerId=1;
                       scoreUpdateRequestModel.strikerId=strikerId;
                       scoreUpdateRequestModel.nonStrikerId=nonStrikerId;
@@ -210,15 +210,15 @@ class _RetiredHurtScreenState extends State<RetiredHurtScreen> {
                       scoreUpdateRequestModel.runsScored=0;
                       scoreUpdateRequestModel.extras=0;
                       scoreUpdateRequestModel.wicket=0;
-                      scoreUpdateRequestModel.dismissalType=0;
+                      scoreUpdateRequestModel.dismissalType=widget.ballType;
                       scoreUpdateRequestModel.commentary=0;
                       scoreUpdateRequestModel.innings=1;
-                      scoreUpdateRequestModel.battingTeamId=widget.scoringData.data!.batting![0].teamId??0;
-                      scoreUpdateRequestModel.bowlingTeamId=widget.scoringData.data!.bowling!.teamId??0;
+                      scoreUpdateRequestModel.battingTeamId=widget.scoringData!.data!.batting![0].teamId??0;
+                      scoreUpdateRequestModel.bowlingTeamId=widget.scoringData!.data!.bowling!.teamId??0;
                       scoreUpdateRequestModel.overBowled=0;
                       scoreUpdateRequestModel.totalOverBowled=0;
                       scoreUpdateRequestModel.outByPlayer=0;
-                      scoreUpdateRequestModel.outPlayer=0;
+                      scoreUpdateRequestModel.outPlayer=widget.scoringData!.data!.batting![isSelected].playerId;
                       scoreUpdateRequestModel.totalWicket=0;
                       scoreUpdateRequestModel.fieldingPositionsId=0;
                       scoreUpdateRequestModel.endInnings=false;
