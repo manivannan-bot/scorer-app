@@ -9,7 +9,7 @@ import 'package:scorer/provider/scoring_provider.dart';
 
 import 'package:sizer/sizer.dart';
 
-import 'Scoring screens/scoring_screen.dart';
+import 'Scoring screens/home_screen.dart';
 
 // void main() {
 //   runApp(const MyApp());
@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
             //   useMaterial3: true,
             // ),
             debugShowCheckedModeBanner: false,
-            home: ScoringScreen(),
+            home: HomeScreen(),
             
           );
         }

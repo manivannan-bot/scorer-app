@@ -8,14 +8,14 @@ import 'package:sizer/sizer.dart';
 import '../utils/styles.dart';
 import 'completed_screen.dart';
 
-class ScoringTab extends StatefulWidget {
+class HomeTab extends StatefulWidget {
 
 
   @override
-  State<ScoringTab> createState() => _ScoringTabState();
+  State<HomeTab> createState() => _HomeTabState();
 }
 
-class _ScoringTabState extends State<ScoringTab> with SingleTickerProviderStateMixin {
+class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
   late TabController tabController;
   void initState() {
     // TODO: implement initState

@@ -1,7 +1,7 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:scorer/Scoring%20screens/Scoring_tab.dart';
+import 'package:scorer/Scoring%20screens/home_tab.dart';
 import 'package:scorer/provider/scoring_provider.dart';
 import 'package:scorer/utils/colours.dart';
 import 'package:scorer/utils/styles.dart';
@@ -14,14 +14,14 @@ import '../widgets/dialog_others.dart';
 import '../widgets/ok_btn.dart';
 
 
-class ScoringScreen extends StatefulWidget {
-  const ScoringScreen({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  State<ScoringScreen> createState() => _ScoringScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _ScoringScreenState extends State<ScoringScreen> with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   late TabController tabController;
   AllMatchesModel allMatchesModel =AllMatchesModel();
 
@@ -136,8 +136,8 @@ class _ScoringScreenState extends State<ScoringScreen> with SingleTickerProvider
               child: TabBarView(
                   controller: tabController,
                   children:  [
-                   ScoringTab(),
-                    ScoringTab(),
+                   HomeTab(),
+                    HomeTab(),
                   ]),
             )
           ],
