@@ -6,6 +6,7 @@ import 'package:laravel_flutter_pusher/laravel_flutter_pusher.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:scorer/models/get_live_score_model.dart';
 import 'package:scorer/pages/scoring_tab.dart';
+import 'package:scorer/utils/colours.dart';
 import 'package:scorer/utils/pusher_service.dart';
 import 'package:scorer/utils/sizes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -81,187 +82,156 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
         enablePullDown: true,
         onRefresh: fetchData,
         controller: _refreshController,
-        child: Stack(
-          children: [
-            // Background image
-            Image.asset(
-              Images.bannerBg,
-              fit: BoxFit.cover, // You can choose how the image should be scaled
-              width: double.infinity,
-              height: 250,
-            ),
-            Container(
-              child: Column(
+        child: SafeArea(
+          child: Column(
+            children: [
+              Stack(
                 children: [
-                  Container(height: 40,width: 20,),
-                  // Arrow and Text
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.arrow_back,color: Colors.white,),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      Container(width: 120,),
-                      const Center(
-                        child: Text(
-                          'Team',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24, // Adjust the font size as needed
-                          ),
-                        ),
-                      ),
-                    ],
+                  // Background image
+                  Image.asset(
+                    Images.bannerBg,
+                    fit: BoxFit.cover, // You can choose how the image should be scaled
+                    width: double.infinity,
+                     height: 24.5.h,
                   ),
-
-                  Row(
-                    children: [
-                      Container(width: 20,),
-                      Column(
-                        children: [
-                          Container(
-                            width: 80, // Set the desired width
-                            height: 80, // Set the desired height
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: Colors.white,
-                                width: 2.0, // Adjust the border width as needed
-                              ),
-                            ),
-                            child: ClipOval(
-                              child: Image.asset(
-                                Images.csk_team_logo,
-                                width: 100, // Match the container's width
-                                height: 100, // Match the container's height
-                                fit: BoxFit.cover, // Adjust the fit as needed
-                              ),
-                            ),
-                          ),
-                          Text(
-                            '${matchlist!.first.team1Name}',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12, // Adjust the font size as needed
-                            ),
-                          ),
-                        ],
-                      ),
-                      Container(width: 20,),
-                      Center(
-                        child: Column(
+                  Padding(
+                    padding:  EdgeInsets.symmetric(horizontal: 5.w),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-
-                                Text(
-                                  '${matchlist!.first.tossWinnerName} won the Toss ',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                            Text(
-                              'and Choose to ${matchlist!.first.choseTo} ',
-                              style: TextStyle(color: Colors.white),
-                            ),
-
-                            Text('${matchlist!.first.teams!.first.totalRuns}/${matchlist!.first.teams!.first.totalWickets}',style: TextStyle(color: Colors.white,fontSize: 24),),
-                            ElevatedButton(
+                            IconButton(
+                              icon: Icon(Icons.arrow_back,color: AppColor.lightColor,),
                               onPressed: () {
-                                // Handle button press here
+                                Navigator.pop(context);
                               },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.yellow,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25),
-                                ),
-                              ),
-                              child: Text(
-                                'Overs: ${matchlist!.first.teams!.first.overNumber}.${matchlist!.first.teams!.first.ballNumber}/${matchlist!.first.overs}',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                ),
-                              ),
                             ),
-
-                            Text('1st Innings',style: TextStyle(color: Colors.white))
+                            Text(
+                              'Team',
+                              style: fontMedium.copyWith(
+                                fontSize: 18.sp,
+                                color: AppColor.lightColor
+                              )
+                            ),
+                            SizedBox(
+                              width: 15.w,
+                            ),
                           ],
                         ),
-                      ),
-                      Container(width: 20,),
-                      Column(
-                        children: [
-                          Container(
-                            width: 80, // Set the desired width
-                            height: 80, // Set the desired height
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: Colors.white,
-                                width: 2.0, // Adjust the border width as needed
-                              ),
+                         SizedBox(height: 1.h,),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              children: [
+                               Image.asset(Images.teamaLogo,width: 20.w,),
+                                Text(
+                                  '${matchlist!.first.team1Name}',
+                                  style: fontMedium.copyWith(
+                                      fontSize: 14.sp,
+                                      color: AppColor.lightColor
+                                  ),
+                                ),
+                              ],
                             ),
-                            child: ClipOval(
-                              child: Image.asset(
-                                Images.mi_team_logo,
-                                width: 100, // Match the container's width
-                                height: 100, // Match the container's height
-                                fit: BoxFit.cover, // Adjust the fit as needed
-                              ),
+                            Column(
+                              children: [
+                                Text(
+                                  '${matchlist!.first.tossWinnerName} won the Toss ',
+                                  style: fontRegular.copyWith(
+                                      fontSize: 11.sp,
+                                      color: AppColor.lightColor
+                                  )
+                                ),
+                                Text(
+                                  'and Choose to ${matchlist!.first.choseTo} ',
+                                  style: fontRegular.copyWith(
+                                      fontSize: 11.sp,
+                                      color: AppColor.lightColor
+                                  )
+                                ),
+                                Text('${matchlist!.first.teams!.first.totalRuns}/${matchlist!.first.teams!.first.totalWickets}',style: fontMedium.copyWith(
+                                    fontSize: 25.sp,
+                                    color: AppColor.lightColor
+                                )),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.8.h),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: AppColor.primaryColor,
+                                  ),
+                                  child: Text(
+                                    'Overs: ${matchlist!.first.teams!.first.overNumber}.${matchlist!.first.teams!.first.ballNumber}/${matchlist!.first.overs}',
+                                    style: fontMedium.copyWith(
+                                      fontSize: 10.sp,
+                                      color: AppColor.blackColour,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 1.h,),
+                                Text("1st Innings",style: fontRegular.copyWith(
+                                  fontSize: 12.sp,
+                                  color: AppColor.lightColor,
+                                ),)
+                              ],
                             ),
-                          ),
-                          const Text(
-                            'MI',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12, // Adjust the font size as needed
+                            Column(
+                              children: [
+                                Image.asset(Images.teamaLogo,width: 20.w,),
+                                 Text(
+                                     '${matchlist!.first.team2Name}',
+                                  style:fontMedium.copyWith(
+                                      fontSize: 14.sp,
+                                      color: AppColor.lightColor)
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-              Container(height: 50,width: 200,),
-                  Padding(
-                    padding:  EdgeInsets.only(bottom: 2.h,),
-                    child: TabBar(
-                        labelPadding: EdgeInsets.symmetric(vertical: 0.4.h,horizontal: 3.5.w),
-                        labelColor: Colors.orange,
-                        unselectedLabelColor: Colors.grey,
-                        isScrollable: true,
-
-                        dividerColor: Colors.transparent,
-                        indicatorSize: TabBarIndicatorSize.tab,
-                        controller: tabController,
-                        tabs: [
-                          Text('Scoring',style: fontRegular.copyWith(fontSize: 12.sp,),),
-                          Text('Score Card',style: fontRegular.copyWith(fontSize: 12.sp,),),
-                          Text('Commentary',style: fontRegular.copyWith(fontSize: 12.sp,),),
-                          Text('Info',style: fontRegular.copyWith(fontSize: 12.sp,),),
-
-
-                        ]
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                  Expanded(
-                    child: TabBarView(
-                        controller: tabController,
-                        children:  [
-                          ScoringTab(widget.matchId,team1Id.toString(),team2Id.toString()),
-                          Container(height: 50,width: 50,color: Colors.blue,),
-                          Container(height: 50,width: 50,color: Colors.red,),
-                          Container(height: 50,width: 50,color: Colors.blue,)
-                        ]),
-                  )
-
-
                 ],
               ),
-            ),
-
-
-
-
-
-          ],
+              SizedBox(height: 1.h,),
+              Padding(
+                padding:  EdgeInsets.only(bottom: 2.h,),
+                child: TabBar(
+                    unselectedLabelColor: AppColor.unselectedTabColor,
+                    labelColor:  Color(0xffD78108),
+                    indicatorColor: Color(0xffD78108),
+                    isScrollable: true,
+                    controller: tabController,
+                    indicatorWeight: 2.0,
+                     labelPadding: EdgeInsets.symmetric(vertical: 0.4.h,horizontal: 3.5.w),
+                    // labelColor: Colors.orange,
+                    // unselectedLabelColor: Colors.grey,
+                    // isScrollable: true,
+                    // dividerColor: Colors.transparent,
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    // controller: tabController,
+                    tabs: [
+                      Text('Scoring',style: fontRegular.copyWith(fontSize: 12.sp,),),
+                      Text('Score Card',style: fontRegular.copyWith(fontSize: 12.sp,),),
+                      Text('Commentary',style: fontRegular.copyWith(fontSize: 12.sp,),),
+                      Text('Info',style: fontRegular.copyWith(fontSize: 12.sp,),),
+                    ]
+                ),
+              ),
+              Expanded(
+                child: TabBarView(
+                    controller: tabController,
+                    children:  [
+                      ScoringTab(widget.matchId,team1Id.toString(),team2Id.toString()),
+                      Container(height: 50,width: 50,color: Colors.blue,),
+                      Container(height: 50,width: 50,color: Colors.red,),
+                      Container(height: 50,width: 50,color: Colors.blue,)
+                    ]),
+              )
+            ],
+          ),
         ),
       ),
     );
