@@ -11,7 +11,7 @@ class CustomVerticalDottedLine extends StatelessWidget {
     return  DottedLine(
       dashGapColor: Colors.grey,
       direction: Axis.vertical,
-      lineLength: 10.h,
+      lineLength: 12.h,
       lineThickness: 1,
       dashColor: Colors.black,
       dashLength: 5,

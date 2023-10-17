@@ -390,8 +390,10 @@ class _ScoringTabState extends State<ScoringTab> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+
                       Column(
                           children:[
+
                             GestureDetector(
                               onTap:()async {
                                 SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -441,7 +443,6 @@ class _ScoringTabState extends State<ScoringTab> {
                                 child: _buildGridItem('0','DOT', context)),
 
                             const CustomHorizantalDottedLine(),]),
-
                       const CustomVerticalDottedLine(),
                       Column(
                           children:[
@@ -1215,12 +1216,12 @@ class _ScoringTabState extends State<ScoringTab> {
 
 Widget _buildGridItem(String index,String text, BuildContext context) {
   return Container(
-    height: 10.h,
+    height: 12.h,
     width: 19.w,
     decoration: const BoxDecoration(shape: BoxShape.rectangle,color: Colors.black,),
     child: Column(
       children: [
-         SizedBox(height: 0.5.h,),
+         SizedBox(height: 2.h,),
           CircleAvatar(
           radius: 6.w, // Adjust the radius as needed for the circle size
           backgroundColor: Colors.white,
@@ -1237,12 +1238,12 @@ Widget _buildGridItem(String index,String text, BuildContext context) {
 }
 Widget _buildGridItemFour(String index,String text, BuildContext context) {
   return Container(
-    height: 10.h,
+    height: 12.h,
     width: 19.w,
     decoration: const BoxDecoration(shape: BoxShape.rectangle,color: Colors.black,),
     child: Column(
       children: [
-         SizedBox(height: 0.5.h,),
+         SizedBox(height: 2.h,),
         CircleAvatar(
           radius: 6.w, // Adjust the radius as needed for the circle size
           backgroundColor: Colors.white,
@@ -1254,15 +1255,14 @@ Widget _buildGridItemFour(String index,String text, BuildContext context) {
     ),
   );
 }
-
 Widget _buildGridItemOut(String index,String text, BuildContext context) {
   return Container(
-    height: 10.h,
+    height: 12.h,
     width: 19.w,
     decoration: const BoxDecoration(shape: BoxShape.rectangle,color: Colors.black,),
     child: Column(
       children: [
-         SizedBox(height: 0.5.h,),
+         SizedBox(height: 02.h,),
         CircleAvatar(
           radius: 6.w, // Adjust the radius as needed for the circle size
           backgroundColor: Colors.red,
