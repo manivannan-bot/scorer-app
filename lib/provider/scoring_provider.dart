@@ -26,7 +26,7 @@ class ScoringProvider extends ChangeNotifier{
 
   SaveBowlerResponseModel saveBowlerResponseModel = SaveBowlerResponseModel();
   GetLiveScoreResponseModel getLiveScoreResponseModel=GetLiveScoreResponseModel();
-  ScoringDetailResponseModel scoringDeatailResponseModel=ScoringDetailResponseModel();
+  ScoringDetailResponseModel scoringDetailResponseModel=ScoringDetailResponseModel();
   ScoreUpdateResponseModel scoreUpdateResponseModel=ScoreUpdateResponseModel();
   GetBallTypeResponseModel getBallTypeResponseModel=GetBallTypeResponseModel();
 
@@ -226,7 +226,7 @@ class ScoringProvider extends ChangeNotifier{
       var decodedJson = json.decode(response.body);
       print(decodedJson);
       if (response.statusCode == 200) {
-        scoringDeatailResponseModel = ScoringDetailResponseModel.fromJson(decodedJson);
+        scoringDetailResponseModel = ScoringDetailResponseModel.fromJson(decodedJson);
 
         notifyListeners();
       } else {
@@ -241,7 +241,7 @@ class ScoringProvider extends ChangeNotifier{
     } catch (e) {
       print(e);
     }
-    return scoringDeatailResponseModel;
+    return scoringDetailResponseModel;
   }
 
 //score update

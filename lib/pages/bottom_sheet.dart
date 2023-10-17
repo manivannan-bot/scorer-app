@@ -823,7 +823,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                         scoreUpdateRequestModel.innings=1;
                         scoreUpdateRequestModel.battingTeamId=widget.scoringData.data!.batting![0].teamId??0;
                         scoreUpdateRequestModel.bowlingTeamId=widget.scoringData.data!.bowling!.teamId??0;
-                        scoreUpdateRequestModel.overBowled=0;
+                        scoreUpdateRequestModel.overBowled=overNumber;
                         scoreUpdateRequestModel.totalOverBowled=0;
                         scoreUpdateRequestModel.outByPlayer=0;
                         scoreUpdateRequestModel.outPlayer=0;

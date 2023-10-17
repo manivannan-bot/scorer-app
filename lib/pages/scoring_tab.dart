@@ -421,7 +421,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                 scoreUpdateRequestModel.innings=1;
                                 scoreUpdateRequestModel.battingTeamId=scoringData!.data!.batting![index1].teamId??0;
                                 scoreUpdateRequestModel.bowlingTeamId=scoringData!.data!.bowling!.teamId??0;
-                                scoreUpdateRequestModel.overBowled=0;
+                                scoreUpdateRequestModel.overBowled=overNumber=0;
                                 scoreUpdateRequestModel.totalOverBowled=0;
                                 scoreUpdateRequestModel.outByPlayer=0;
                                 scoreUpdateRequestModel.outPlayer=0;
@@ -759,9 +759,9 @@ class _ScoringTabState extends State<ScoringTab> {
                         GestureDetector(onTap:()async {
                           ScoringProvider().saveBowler(widget.matchId,widget.team2Id,itemsBowler![localBowlerIndex!].playerId.toString());
                           SharedPreferences prefs = await SharedPreferences.getInstance();
-                          await prefs.setInt('bowler_id', itemsBowler![selectedBowler!].playerId!).then((value) {
+                          await prefs.setInt('bowler_id', itemsBowler![selectedBowler!].playerId!);
                             Navigator.pop(context);
-                          });
+
 
                         },child: OkBtn("Ok")),
                       ],
@@ -1488,7 +1488,7 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
                                   scoringData!.data!.batting![0].teamId ?? 0;
                               scoreUpdateRequestModel.bowlingTeamId =
                                   scoringData!.data!.bowling!.teamId ?? 0;
-                              scoreUpdateRequestModel.overBowled = 0;
+                              scoreUpdateRequestModel.overBowled=overNumber = 0;
                               scoreUpdateRequestModel.totalOverBowled = 0;
                               scoreUpdateRequestModel.outByPlayer = 0;
                               scoreUpdateRequestModel.outPlayer = 0;
@@ -1766,7 +1766,7 @@ Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,Scorin
                               scoringData!.data!.batting![0].teamId ?? 0;
                           scoreUpdateRequestModel.bowlingTeamId =
                               scoringData!.data!.bowling!.teamId ?? 0;
-                          scoreUpdateRequestModel.overBowled = 0;
+                          scoreUpdateRequestModel.overBowled=overNumber = 0;
                           scoreUpdateRequestModel.totalOverBowled = 0;
                           scoreUpdateRequestModel.outByPlayer = 0;
                           scoreUpdateRequestModel.outPlayer = 0;
@@ -1943,7 +1943,7 @@ Future<void> _displayBottomSheetLegBye (BuildContext context, int ballType,Scori
                         scoreUpdateRequestModel.innings=1;
                         scoreUpdateRequestModel.battingTeamId=scoringData!.data!.batting![0].teamId??0;
                         scoreUpdateRequestModel.bowlingTeamId=scoringData!.data!.bowling!.teamId??0;
-                        scoreUpdateRequestModel.overBowled=0;
+                        scoreUpdateRequestModel.overBowled=overNumber=0;
                         scoreUpdateRequestModel.totalOverBowled=0;
                         scoreUpdateRequestModel.outByPlayer=0;
                         scoreUpdateRequestModel.outPlayer=0;
@@ -2103,7 +2103,7 @@ Future<void> _displayBottomSheetByes (BuildContext context,int ballType,ScoringD
                         scoreUpdateRequestModel.innings=1;
                         scoreUpdateRequestModel.battingTeamId=scoringData!.data!.batting![0].teamId??0;
                         scoreUpdateRequestModel.bowlingTeamId=scoringData!.data!.bowling!.teamId??0;
-                        scoreUpdateRequestModel.overBowled=0;
+                        scoreUpdateRequestModel.overBowled=overNumber=0;
                         scoreUpdateRequestModel.totalOverBowled=0;
                         scoreUpdateRequestModel.outByPlayer=0;
                         scoreUpdateRequestModel.outPlayer=0;
@@ -2334,7 +2334,7 @@ Future<void> _displayBottomSheetBonus (BuildContext context, int? ballType, Scor
                           scoreUpdateRequestModel.innings=1;
                           scoreUpdateRequestModel.battingTeamId=scoringData!.data!.batting![0].teamId??0;
                           scoreUpdateRequestModel.bowlingTeamId=scoringData!.data!.bowling!.teamId??0;
-                          scoreUpdateRequestModel.overBowled=0;
+                          scoreUpdateRequestModel.overBowled=overNumber=0;
                           scoreUpdateRequestModel.totalOverBowled=0;
                           scoreUpdateRequestModel.outByPlayer=0;
                           scoreUpdateRequestModel.outPlayer=0;
@@ -2524,7 +2524,7 @@ Future<void> _displayBottomSheetMoreRuns (BuildContext context,int ballType,Scor
                               scoringData!.data!.batting![0].teamId ?? 0;
                           scoreUpdateRequestModel.bowlingTeamId =
                               scoringData!.data!.bowling!.teamId ?? 0;
-                          scoreUpdateRequestModel.overBowled = 0;
+                          scoreUpdateRequestModel.overBowled=overNumber = 0;
                           scoreUpdateRequestModel.totalOverBowled = 0;
                           scoreUpdateRequestModel.outByPlayer = 0;
                           scoreUpdateRequestModel.outPlayer = 0;

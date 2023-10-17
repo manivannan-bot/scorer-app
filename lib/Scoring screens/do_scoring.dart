@@ -1015,7 +1015,8 @@ class _DOScoringState extends State<DOScoring> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        CancelBtn("Cancel"),
+                        GestureDetector(
+                            child: CancelBtn("Cancel")),
                         SizedBox(width: 2.w,),
                         GestureDetector(onTap:()async {
                           SaveBatsmanDetailRequestModel requestModel = SaveBatsmanDetailRequestModel(
@@ -1029,7 +1030,7 @@ class _DOScoringState extends State<DOScoring> {
                             ],
                           );
 
-                          // Call the saveBatsman function with the request model
+
                           await ScoringProvider().saveBatsman(requestModel);
                           Navigator.pop(context);
                         },child: OkBtn("Ok")),

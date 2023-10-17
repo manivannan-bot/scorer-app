@@ -165,7 +165,7 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
                                   child: Text(
                                     'Overs: ${matchlist!.first.teams!.first.overNumber}.${matchlist!.first.teams!.first.ballNumber}/${matchlist!.first.overs}',
                                     style: fontMedium.copyWith(
-                                      fontSize: 10.sp,
+                                      fontSize: 11.sp,
                                       color: AppColor.blackColour,
                                     ),
                                   ),
