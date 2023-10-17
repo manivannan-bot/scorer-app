@@ -1,11 +1,11 @@
-class ScoringDeatailResponseModel {
+class ScoringDetailResponseModel {
   bool? status;
   dynamic message;
   Data? data;
 
-  ScoringDeatailResponseModel({this.status, this.message, this.data});
+  ScoringDetailResponseModel({this.status, this.message, this.data});
 
-  ScoringDeatailResponseModel.fromJson(Map<String, dynamic> json) {
+  ScoringDetailResponseModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     data = json['data'] != null ? new Data.fromJson(json['data']) : null;

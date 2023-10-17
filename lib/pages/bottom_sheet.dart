@@ -16,7 +16,7 @@ import 'cricket_wagon_wheel.dart';
 
 class ScoreBottomSheet extends StatefulWidget {
   final int run;
-  final ScoringDeatailResponseModel scoringData;
+  final ScoringDetailResponseModel scoringData;
   final void Function(ScoreUpdateResponseModel) onSave;
   const ScoreBottomSheet(this.run, this.scoringData, {super.key,required this.onSave});
 

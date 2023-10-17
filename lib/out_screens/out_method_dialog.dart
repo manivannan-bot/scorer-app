@@ -18,7 +18,7 @@ import '../widgets/out_button.dart';
 class OutMethodDialog extends StatefulWidget {
   final String label;
   final int Id;
-  final ScoringDeatailResponseModel scoringData;
+  final ScoringDetailResponseModel scoringData;
   const OutMethodDialog({required this.label,required this.Id,required this.scoringData,super.key});
 
   @override

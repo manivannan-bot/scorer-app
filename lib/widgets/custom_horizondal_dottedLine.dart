@@ -11,7 +11,7 @@ class CustomHorizantalDottedLine extends StatelessWidget {
     return  DottedLine(
       dashGapColor: Colors.grey,
       direction: Axis.horizontal,
-      lineLength: 18.w,
+      lineLength: 19.w,
       lineThickness:
       1,
       dashColor:

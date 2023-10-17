@@ -51,7 +51,7 @@ class ScoringTab extends StatefulWidget {
 
 class _ScoringTabState extends State<ScoringTab> {
 
-  ScoringDeatailResponseModel? scoringData;
+  ScoringDetailResponseModel? scoringData;
   int index1=0;
   int index2=1;
   int totalBallId = 0;
@@ -64,7 +64,7 @@ class _ScoringTabState extends State<ScoringTab> {
   int? selectedBatsman;
   String selectedBatsmanName = "";
 
-  ScoringDeatailResponseModel scoringDeatailResponseModel=ScoringDeatailResponseModel();
+  ScoringDetailResponseModel scoringDeatailResponseModel=ScoringDetailResponseModel();
   ScoreUpdateRequestModel scoreUpdateRequestModel=ScoreUpdateRequestModel();
 
   ScoreUpdateResponseModel scoreUpdateResponseModel=ScoreUpdateResponseModel();
@@ -568,7 +568,7 @@ class _ScoringTabState extends State<ScoringTab> {
     );
   }
 
-  Future<ScoreUpdateResponseModel?> _displayBottomSheet(BuildContext context, int run, ScoringDeatailResponseModel? scoringData) async {
+  Future<ScoreUpdateResponseModel?> _displayBottomSheet(BuildContext context, int run, ScoringDetailResponseModel? scoringData) async {
     double screenHeight = MediaQuery.of(context).size.height;
     double sheetHeight = screenHeight * 0.9;
     showModalBottomSheet(
@@ -958,7 +958,7 @@ class _ScoringTabState extends State<ScoringTab> {
   }
 
 //Out
-  Future<void> _displayBottomOut (BuildContext context,ScoringDeatailResponseModel? scoringData) async{
+  Future<void> _displayBottomOut (BuildContext context,ScoringDetailResponseModel? scoringData) async{
     int? isOffSideSelected ;
     int? isWideSelected ;
     List<Map<String, dynamic>> chipData =[
@@ -1132,10 +1132,10 @@ class _ScoringTabState extends State<ScoringTab> {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => RunOutScreen()));
                           }
                           if (data['label'] == 'Retired Hurt'){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: 'Retired Hurt', checkcount: "Don't count the ball",)));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: 'Retired Hurt', checkcount: "Don't count the ball",ballType:data['id'],scoringData: scoringData!,)));
                           }
                           if (data['label'] == 'Retired Out'){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: 'Retired Out', checkcount: "Don't count the ball",)));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: 'Retired Out', checkcount: "Don't count the ball",ballType:data['id'],scoringData: scoringData!,)));
                           }
                           if (data['label'] == 'Timed Out'){
                             Navigator.push(context, MaterialPageRoute(builder: (context) => TimeOutAbsence(label: 'Timed out', )));
@@ -1144,7 +1144,7 @@ class _ScoringTabState extends State<ScoringTab> {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => TimeOutAbsence(label: 'Absence hurt',)));
                           }
                           if (data['label'] == 'Stumped'){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: 'Stumped', checkcount: "Wide Ball?",)));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: 'Stumped', checkcount: "Wide Ball?",ballType:data['id'],scoringData: scoringData!,)));
                           }
                           if (data['label'] == 'Retired'){
                             Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredScreens()));
@@ -1279,7 +1279,7 @@ Widget _buildGridItemOut(String index,String text, BuildContext context) {
 }
 
 
-Future<void> _displayBottomSheetWide (BuildContext context, int balltype, ScoringDeatailResponseModel? scoringData) async{
+Future<void> _displayBottomSheetWide (BuildContext context, int balltype, ScoringDetailResponseModel? scoringData) async{
   int? isOffSideSelected ;
   int? isWideSelected ;
   bool showError =false;
@@ -1535,7 +1535,7 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
   );
 }
 
-Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,ScoringDeatailResponseModel? scoringData) async{
+Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,ScoringDetailResponseModel? scoringData) async{
   int? isOffSideSelected ;
   int? isWideSelected ;
   bool showError =false;
@@ -1814,7 +1814,7 @@ Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,Scorin
   );
 }
 
-Future<void> _displayBottomSheetLegBye (BuildContext context, int ballType,ScoringDeatailResponseModel? scoringData) async{
+Future<void> _displayBottomSheetLegBye (BuildContext context, int ballType,ScoringDetailResponseModel? scoringData) async{
   int? isOffSideSelected ;
   int? isWideSelected ;
   List<Map<String, dynamic>> chipData =[
@@ -1971,7 +1971,7 @@ Future<void> _displayBottomSheetLegBye (BuildContext context, int ballType,Scori
   );
 }
 
-Future<void> _displayBottomSheetByes (BuildContext context,int ballType,ScoringDeatailResponseModel? scoringData) async{
+Future<void> _displayBottomSheetByes (BuildContext context,int ballType,ScoringDetailResponseModel? scoringData) async{
   int? isOffSideSelected ;
   int? isWideSelected ;
   List<Map<String, dynamic>> chipData =[
@@ -2131,7 +2131,7 @@ Future<void> _displayBottomSheetByes (BuildContext context,int ballType,ScoringD
   );
 }
 
-Future<void> _displayBottomSheetBonus (BuildContext context, int? ballType, ScoringDeatailResponseModel? scoringData,) async{
+Future<void> _displayBottomSheetBonus (BuildContext context, int? ballType, ScoringDetailResponseModel? scoringData,) async{
   int? isOffSideSelected=1 ;
   int? isWideSelected ;
   bool showError=false;
@@ -2377,7 +2377,7 @@ Future<void> _displayBottomSheetBonus (BuildContext context, int? ballType, Scor
 
 }
 
-Future<void> _displayBottomSheetMoreRuns (BuildContext context,int ballType,ScoringDeatailResponseModel? scoringData) async{
+Future<void> _displayBottomSheetMoreRuns (BuildContext context,int ballType,ScoringDetailResponseModel? scoringData) async{
   int? isOffSideSelected ;
   int? isWideSelected ;
   bool showError =false;

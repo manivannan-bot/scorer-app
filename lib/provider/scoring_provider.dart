@@ -26,7 +26,7 @@ class ScoringProvider extends ChangeNotifier{
 
   SaveBowlerResponseModel saveBowlerResponseModel = SaveBowlerResponseModel();
   GetLiveScoreResponseModel getLiveScoreResponseModel=GetLiveScoreResponseModel();
-  ScoringDeatailResponseModel scoringDeatailResponseModel=ScoringDeatailResponseModel();
+  ScoringDetailResponseModel scoringDeatailResponseModel=ScoringDetailResponseModel();
   ScoreUpdateResponseModel scoreUpdateResponseModel=ScoreUpdateResponseModel();
   GetBallTypeResponseModel getBallTypeResponseModel=GetBallTypeResponseModel();
 
@@ -211,7 +211,7 @@ class ScoringProvider extends ChangeNotifier{
     return saveBowlerResponseModel;
   }
 
-  Future<ScoringDeatailResponseModel> getScoringDetail(String matchId) async {
+  Future<ScoringDetailResponseModel> getScoringDetail(String matchId) async {
 
     // SharedPreferences preferences = await SharedPreferences.getInstance();
     // String? accToken = preferences.getString("access_token");
@@ -226,7 +226,7 @@ class ScoringProvider extends ChangeNotifier{
       var decodedJson = json.decode(response.body);
       print(decodedJson);
       if (response.statusCode == 200) {
-        scoringDeatailResponseModel = ScoringDeatailResponseModel.fromJson(decodedJson);
+        scoringDeatailResponseModel = ScoringDetailResponseModel.fromJson(decodedJson);
 
         notifyListeners();
       } else {
