@@ -16,6 +16,7 @@ import 'package:sizer/sizer.dart';
 
 import '../models/player_list_model.dart';
 
+import '../out_screens/caught_out_screen.dart';
 import '../out_screens/obstruct_field_screen.dart';
 import '../Scoring screens/retired_screen.dart';
 
@@ -1131,6 +1132,9 @@ class _ScoringTabState extends State<ScoringTab> {
                           }
                           if (data['label'] == ' Run Out'){
                             Navigator.push(context, MaterialPageRoute(builder: (context) => RunOutScreen(ballType:data['id'],scoringData: scoringData!)));
+                          }
+                          if (data['label'] == 'Caught'){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => CaughtOutScreen(ballType:data['id'],scoringData: scoringData!)));
                           }
                           if (data['label'] == 'Retired Hurt'){
                             Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: 'Retired Hurt', checkcount: "Don't count the ball",ballType:data['id'],scoringData: scoringData!,)));
