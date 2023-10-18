@@ -128,7 +128,7 @@ class _ScoringTabState extends State<ScoringTab> {
             child: Padding(
               padding: EdgeInsets.only(left: 18),
               child: SizedBox(
-                  height: 30.h,
+                  height: 26.h,
                   width: 100.w,
                   child: Column(
                     children: [
@@ -263,7 +263,7 @@ class _ScoringTabState extends State<ScoringTab> {
                         ],
                       ),
                       SizedBox(
-                        height: 3.h,
+                        height: 1.h,
                       ),
                       Column(
                         children: [
@@ -324,7 +324,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                                   ),
                                                   child: Center(
                                                     child: Text(
-                                                      scoringData!.data!.over![index].runsScored.toString(),
+                                                      scoringData!.data!.over![index].slug.toString(),
                                                       style: const TextStyle(
                                                         color: Colors.white,
                                                         fontSize: 16,
@@ -421,13 +421,14 @@ class _ScoringTabState extends State<ScoringTab> {
                                 scoreUpdateRequestModel.innings=1;
                                 scoreUpdateRequestModel.battingTeamId=scoringData!.data!.batting![index1].teamId??0;
                                 scoreUpdateRequestModel.bowlingTeamId=scoringData!.data!.bowling!.teamId??0;
-                                scoreUpdateRequestModel.overBowled=overNumber=0;
+                                scoreUpdateRequestModel.overBowled=overNumber;
                                 scoreUpdateRequestModel.totalOverBowled=0;
                                 scoreUpdateRequestModel.outByPlayer=0;
                                 scoreUpdateRequestModel.outPlayer=0;
                                 scoreUpdateRequestModel.totalWicket=0;
                                 scoreUpdateRequestModel.fieldingPositionsId=0;
                                 scoreUpdateRequestModel.endInnings=false;
+                                scoreUpdateRequestModel.bowlerPosition=0;
                                 ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value)async {
                                   setState(() {
                                     scoreUpdateResponseModel=value;
@@ -1129,7 +1130,7 @@ class _ScoringTabState extends State<ScoringTab> {
                             );
                           }
                           if (data['label'] == ' Run Out'){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => RunOutScreen()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => RunOutScreen(ballType:data['id'],scoringData: scoringData!)));
                           }
                           if (data['label'] == 'Retired Hurt'){
                             Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: 'Retired Hurt', checkcount: "Don't count the ball",ballType:data['id'],scoringData: scoringData!,)));
@@ -1465,7 +1466,7 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
 
                             if(isWideSelected!=null) {
                               ScoreUpdateRequestModel scoreUpdateRequestModel = ScoreUpdateRequestModel();
-                              scoreUpdateRequestModel.ballTypeId = 1;
+                              scoreUpdateRequestModel.ballTypeId = balltype;
                               scoreUpdateRequestModel.matchId =
                                   scoringData!.data!.batting![0].matchId;
                               scoreUpdateRequestModel.scorerId = 1;
@@ -1488,13 +1489,14 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
                                   scoringData!.data!.batting![0].teamId ?? 0;
                               scoreUpdateRequestModel.bowlingTeamId =
                                   scoringData!.data!.bowling!.teamId ?? 0;
-                              scoreUpdateRequestModel.overBowled=overNumber = 0;
+                              scoreUpdateRequestModel.overBowled=overNumber ;
                               scoreUpdateRequestModel.totalOverBowled = 0;
                               scoreUpdateRequestModel.outByPlayer = 0;
                               scoreUpdateRequestModel.outPlayer = 0;
                               scoreUpdateRequestModel.totalWicket = 0;
                               scoreUpdateRequestModel.fieldingPositionsId = 0;
                               scoreUpdateRequestModel.endInnings = false;
+                              scoreUpdateRequestModel.bowlerPosition = 0;
                               ScoringProvider().scoreUpdate(
                                   scoreUpdateRequestModel).then((value) async {
                                 SharedPreferences prefs = await SharedPreferences
@@ -1635,7 +1637,7 @@ Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,Scorin
                 ),
               ),
               SizedBox(height: 1.h,),
-              DottedLine(
+              const DottedLine(
                 dashColor: Color(0xffD2D2D2),
               ),
               SizedBox(height: 1.5.h,),
@@ -1663,9 +1665,9 @@ Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,Scorin
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
-                            color: Color(0xffDADADA),
+                            color: const Color(0xffDADADA),
                           ),
-                          color: isOffSideSelected==0 ? AppColor.primaryColor : Color(0xffF8F9FA),
+                          color: isOffSideSelected==0 ? AppColor.primaryColor : const Color(0xffF8F9FA),
                         ),
                         child: Text("Grease",style: fontMedium.copyWith(
                           fontSize: 12.sp,
@@ -1683,10 +1685,10 @@ Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,Scorin
                       child: Container(
                         padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.5.h),
                         decoration: BoxDecoration(
-                            color: isOffSideSelected==1?AppColor.primaryColor:Color(0xffF8F9FA),
+                            color: isOffSideSelected==1?AppColor.primaryColor:const Color(0xffF8F9FA),
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
-                              color: Color(0xffDADADA),
+                              color: const Color(0xffDADADA),
                             )
                         ),
                         child: Text("Waist",style: fontMedium.copyWith(
@@ -1705,10 +1707,10 @@ Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,Scorin
                       child: Container(
                         padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.5.h),
                         decoration: BoxDecoration(
-                            color: isOffSideSelected==2?AppColor.primaryColor:Color(0xffF8F9FA),
+                            color: isOffSideSelected==2?AppColor.primaryColor:const Color(0xffF8F9FA),
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
-                              color: Color(0xffDADADA),
+                              color: const Color(0xffDADADA),
                             )
                         ),
                         child: Text("Shoulder",style: fontMedium.copyWith(
@@ -1766,13 +1768,14 @@ Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,Scorin
                               scoringData!.data!.batting![0].teamId ?? 0;
                           scoreUpdateRequestModel.bowlingTeamId =
                               scoringData!.data!.bowling!.teamId ?? 0;
-                          scoreUpdateRequestModel.overBowled=overNumber = 0;
+                          scoreUpdateRequestModel.overBowled=overNumber ;
                           scoreUpdateRequestModel.totalOverBowled = 0;
                           scoreUpdateRequestModel.outByPlayer = 0;
                           scoreUpdateRequestModel.outPlayer = 0;
                           scoreUpdateRequestModel.totalWicket = 0;
                           scoreUpdateRequestModel.fieldingPositionsId = 0;
                           scoreUpdateRequestModel.endInnings = false;
+                          scoreUpdateRequestModel.bowlerPosition=0;
                           ScoringProvider()
                               .scoreUpdate(scoreUpdateRequestModel)
                               .then((value) async {
@@ -1943,13 +1946,14 @@ Future<void> _displayBottomSheetLegBye (BuildContext context, int ballType,Scori
                         scoreUpdateRequestModel.innings=1;
                         scoreUpdateRequestModel.battingTeamId=scoringData!.data!.batting![0].teamId??0;
                         scoreUpdateRequestModel.bowlingTeamId=scoringData!.data!.bowling!.teamId??0;
-                        scoreUpdateRequestModel.overBowled=overNumber=0;
+                        scoreUpdateRequestModel.overBowled=overNumber;
                         scoreUpdateRequestModel.totalOverBowled=0;
                         scoreUpdateRequestModel.outByPlayer=0;
                         scoreUpdateRequestModel.outPlayer=0;
                         scoreUpdateRequestModel.totalWicket=0;
                         scoreUpdateRequestModel.fieldingPositionsId=0;
                         scoreUpdateRequestModel.endInnings=false;
+                        scoreUpdateRequestModel.bowlerPosition=0;
                         ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
                           SharedPreferences prefs = await SharedPreferences.getInstance();
                           await prefs.setInt('over_number', value.data!.overNumber??0);
@@ -2103,13 +2107,14 @@ Future<void> _displayBottomSheetByes (BuildContext context,int ballType,ScoringD
                         scoreUpdateRequestModel.innings=1;
                         scoreUpdateRequestModel.battingTeamId=scoringData!.data!.batting![0].teamId??0;
                         scoreUpdateRequestModel.bowlingTeamId=scoringData!.data!.bowling!.teamId??0;
-                        scoreUpdateRequestModel.overBowled=overNumber=0;
+                        scoreUpdateRequestModel.overBowled=overNumber;
                         scoreUpdateRequestModel.totalOverBowled=0;
                         scoreUpdateRequestModel.outByPlayer=0;
                         scoreUpdateRequestModel.outPlayer=0;
                         scoreUpdateRequestModel.totalWicket=0;
                         scoreUpdateRequestModel.fieldingPositionsId=0;
                         scoreUpdateRequestModel.endInnings=false;
+                        scoreUpdateRequestModel.bowlerPosition=0;
                         ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value)async{
                           SharedPreferences prefs = await SharedPreferences.getInstance();
                           await prefs.setInt('over_number', value.data!.overNumber??0);
@@ -2334,13 +2339,14 @@ Future<void> _displayBottomSheetBonus (BuildContext context, int? ballType, Scor
                           scoreUpdateRequestModel.innings=1;
                           scoreUpdateRequestModel.battingTeamId=scoringData!.data!.batting![0].teamId??0;
                           scoreUpdateRequestModel.bowlingTeamId=scoringData!.data!.bowling!.teamId??0;
-                          scoreUpdateRequestModel.overBowled=overNumber=0;
+                          scoreUpdateRequestModel.overBowled=overNumber;
                           scoreUpdateRequestModel.totalOverBowled=0;
                           scoreUpdateRequestModel.outByPlayer=0;
                           scoreUpdateRequestModel.outPlayer=0;
                           scoreUpdateRequestModel.totalWicket=0;
                           scoreUpdateRequestModel.fieldingPositionsId=0;
                           scoreUpdateRequestModel.endInnings=false;
+                          scoreUpdateRequestModel.bowlerPosition=0;
                           ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
                             SharedPreferences prefs = await SharedPreferences.getInstance();
                             await prefs.setInt('over_number', value.data!.overNumber??0);
@@ -2524,13 +2530,14 @@ Future<void> _displayBottomSheetMoreRuns (BuildContext context,int ballType,Scor
                               scoringData!.data!.batting![0].teamId ?? 0;
                           scoreUpdateRequestModel.bowlingTeamId =
                               scoringData!.data!.bowling!.teamId ?? 0;
-                          scoreUpdateRequestModel.overBowled=overNumber = 0;
+                          scoreUpdateRequestModel.overBowled=overNumber ;
                           scoreUpdateRequestModel.totalOverBowled = 0;
                           scoreUpdateRequestModel.outByPlayer = 0;
                           scoreUpdateRequestModel.outPlayer = 0;
                           scoreUpdateRequestModel.totalWicket = 0;
                           scoreUpdateRequestModel.fieldingPositionsId = 0;
                           scoreUpdateRequestModel.endInnings = false;
+                          scoreUpdateRequestModel.bowlerPosition=0;
                           ScoringProvider()
                               .scoreUpdate(scoreUpdateRequestModel)
                               .then((value) async {

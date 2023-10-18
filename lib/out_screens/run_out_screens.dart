@@ -5,12 +5,15 @@ import 'package:scorer/widgets/cancel_btn.dart';
 import 'package:scorer/widgets/ok_btn.dart';
 import 'package:sizer/sizer.dart';
 
+import '../models/scoring_detail_response_model.dart';
 import '../utils/colours.dart';
 import '../utils/images.dart';
 import '../utils/sizes.dart';
 
 class RunOutScreen extends StatefulWidget {
-  const RunOutScreen({super.key});
+  final int ballType;
+  final ScoringDetailResponseModel? scoringData;
+  const RunOutScreen({required this.ballType,required this.scoringData,super.key});
 
   @override
   State<RunOutScreen> createState() => _RunOutScreenState();
@@ -127,7 +130,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
                                     children: [
                                       Image.asset(Images.playerImg,width: 20.w,),
                                       SizedBox(height: 1.h,),
-                                      Text("Pandi",style: fontMedium.copyWith(
+                                      Text("${widget.scoringData!.data!.batting![0].playerName}",style: fontMedium.copyWith(
                                         fontSize: 17.sp,
                                         color: AppColor.blackColour,
                                       ),),
@@ -155,7 +158,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
                                     children: [
                                       Image.asset(Images.playerImg,width: 20.w,),
                                       SizedBox(height: 1.h,),
-                                      Text("Pandi",style: fontMedium.copyWith(
+                                      Text("${widget.scoringData!.data!.batting![1].playerName}",style: fontMedium.copyWith(
                                         fontSize: 17.sp,
                                         color: AppColor.blackColour,
                                       ),),

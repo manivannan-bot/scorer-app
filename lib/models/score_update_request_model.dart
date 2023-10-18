@@ -23,6 +23,7 @@ class ScoreUpdateRequestModel {
   int? totalWicket;
   int? fieldingPositionsId;
   bool? endInnings;
+  int? bowlerPosition;
 
   ScoreUpdateRequestModel(
       {this.ballTypeId,
@@ -48,7 +49,8 @@ class ScoreUpdateRequestModel {
         this.outPlayer,
         this.totalWicket,
         this.fieldingPositionsId,
-        this.endInnings});
+        this.endInnings,
+        this.bowlerPosition});
 
   ScoreUpdateRequestModel.fromJson(Map<String, dynamic> json) {
     ballTypeId = json['ball_type_id'];
@@ -75,6 +77,7 @@ class ScoreUpdateRequestModel {
     totalWicket = json['total_wicket'];
     fieldingPositionsId = json['fielding_positions_id'];
     endInnings = json['end_innings'];
+    bowlerPosition = json['bowler_position'];
   }
 
   Map<String, dynamic> toJson() {
@@ -103,6 +106,7 @@ class ScoreUpdateRequestModel {
     data['total_wicket'] = this.totalWicket;
     data['fielding_positions_id'] = this.fieldingPositionsId;
     data['end_innings'] = this.endInnings;
+    data['bowler_position'] = this.bowlerPosition;
     return data;
   }
 }

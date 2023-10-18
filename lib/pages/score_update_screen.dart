@@ -53,13 +53,18 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
      });
      var overNumber=data.matches!.first.teams!.first.overNumber??0;
      var ballNumber=data.matches!.first.teams!.first.ballNumber??0;
-     if(overNumber ==0 && ballNumber==0){overNumber=0;ballNumber=1;
+     if(overNumber ==0 && ballNumber==0){
+       overNumber=0;ballNumber=1;
      }else if(ballNumber==6) {
+       overNumber += 1;
+       ballNumber = 1;
+     }else if(ballNumber==0) {
        overNumber += 1;
        ballNumber = 1;
      }else if(ballNumber<6){
        ballNumber+=1;
      }else if(ballNumber>6){
+       overNumber += 1;
        ballNumber=1;
      }
 
@@ -163,7 +168,7 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
                                     color: AppColor.primaryColor,
                                   ),
                                   child: Text(
-                                    'Overs: ${matchlist!.first.teams!.first.overNumber}.${matchlist!.first.teams!.first.ballNumber}/${matchlist!.first.overs}',
+                                    'Overs: ${matchlist!.first.teams!.first.currentOverDetails}/${matchlist!.first.overs}',
                                     style: fontMedium.copyWith(
                                       fontSize: 11.sp,
                                       color: AppColor.blackColour,
@@ -171,7 +176,7 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
                                   ),
                                 ),
                                 SizedBox(height: 1.h,),
-                                Text("1st Innings",style: fontRegular.copyWith(
+                                Text("Innings ${matchlist!.first.currentInnings??'0'}",style: fontRegular.copyWith(
                                   fontSize: 12.sp,
                                   color: AppColor.lightColor,
                                 ),)

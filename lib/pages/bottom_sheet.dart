@@ -93,7 +93,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
     }
     return Container(
       height: sheetHeight,
-      padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
+      padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 0.h),
       decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -107,11 +107,12 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
                       icon: const Icon(
                         Icons.arrow_back,
-                        color: Colors.grey,
+                        color: Color(0xff000000),
                       ),
                       onPressed: () {
                         Navigator.pop(context);
@@ -120,10 +121,11 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                     Text(
                       "Shot and Pitching Area",
                       style: fontMedium.copyWith(
-                        fontSize: 18.sp,
+                        fontSize: 17.sp,
                         color: AppColor.textColor,
                       ),
                     ),
+                    SizedBox(width: 10.w,),
                   ],
                 ),
                 SizedBox(
@@ -830,6 +832,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                         scoreUpdateRequestModel.totalWicket=0;
                         scoreUpdateRequestModel.fieldingPositionsId=fieldPositionId;
                         scoreUpdateRequestModel.endInnings=false;
+                        scoreUpdateRequestModel.bowlerPosition=0;
                         ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
                           widget.onSave(value);
                           SharedPreferences prefs = await SharedPreferences.getInstance();

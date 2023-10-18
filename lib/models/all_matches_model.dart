@@ -1,6 +1,6 @@
 class AllMatchesModel {
   bool? status;
- dynamic message;
+  dynamic message;
   List<Matches>? matches;
 
   AllMatchesModel({this.status, this.message, this.matches});
@@ -28,26 +28,29 @@ class AllMatchesModel {
 }
 
 class Matches {
- dynamic matchId;
- dynamic team1Id;
- dynamic team2Id;
- dynamic scorerId;
- dynamic umpireId;
- dynamic date;
- dynamic venue;
+  dynamic matchId;
+  dynamic team1Id;
+  dynamic team2Id;
+  dynamic scorerId;
+  dynamic umpireId;
+  dynamic date;
+  dynamic venue;
   dynamic result;
- dynamic slotStartTime;
- dynamic slotEndTime;
- dynamic organiser;
- dynamic ground;
- dynamic toss;
- dynamic wonBy;
- dynamic choseTo;
- dynamic overs;
- dynamic team1Name;
- dynamic team2Name;
- dynamic tossWinnerName;
- dynamic status;
+  dynamic slotStartTime;
+  dynamic slotEndTime;
+  dynamic organiser;
+  dynamic ground;
+  dynamic toss;
+  dynamic wonBy;
+  dynamic choseTo;
+  dynamic overs;
+  dynamic currentInnings;
+  dynamic createdAt;
+  dynamic updatedAt;
+  dynamic team1Name;
+  dynamic team2Name;
+  dynamic tossWinnerName;
+  dynamic status;
   List<Teams>? teams;
 
   Matches(
@@ -67,6 +70,9 @@ class Matches {
         this.wonBy,
         this.choseTo,
         this.overs,
+        this.currentInnings,
+        this.createdAt,
+        this.updatedAt,
         this.team1Name,
         this.team2Name,
         this.tossWinnerName,
@@ -90,6 +96,9 @@ class Matches {
     wonBy = json['won_by'];
     choseTo = json['chose_to'];
     overs = json['overs'];
+    currentInnings = json['current_innings'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
     team1Name = json['team1_name'];
     team2Name = json['team2_name'];
     tossWinnerName = json['toss_winner_name'];
@@ -120,6 +129,9 @@ class Matches {
     data['won_by'] = this.wonBy;
     data['chose_to'] = this.choseTo;
     data['overs'] = this.overs;
+    data['current_innings'] = this.currentInnings;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
     data['team1_name'] = this.team1Name;
     data['team2_name'] = this.team2Name;
     data['toss_winner_name'] = this.tossWinnerName;
@@ -132,18 +144,20 @@ class Matches {
 }
 
 class Teams {
- dynamic teamName;
- dynamic totalRuns;
- dynamic totalWickets;
- dynamic ballNumber;
- dynamic overNumber;
+  dynamic teamName;
+  dynamic totalRuns;
+  dynamic totalWickets;
+  dynamic ballNumber;
+  dynamic overNumber;
+  dynamic currentOverDetails;
 
   Teams(
       {this.teamName,
         this.totalRuns,
         this.totalWickets,
         this.ballNumber,
-        this.overNumber});
+        this.overNumber,
+        this.currentOverDetails});
 
   Teams.fromJson(Map<String, dynamic> json) {
     teamName = json['team_name'];
@@ -151,6 +165,7 @@ class Teams {
     totalWickets = json['total_wickets'];
     ballNumber = json['ball_number'];
     overNumber = json['over_number'];
+    currentOverDetails = json['current_over_details'];
   }
 
   Map<String, dynamic> toJson() {
@@ -160,6 +175,7 @@ class Teams {
     data['total_wickets'] = this.totalWickets;
     data['ball_number'] = this.ballNumber;
     data['over_number'] = this.overNumber;
+    data['current_over_details'] = this.currentOverDetails;
     return data;
   }
 }

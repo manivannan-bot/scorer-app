@@ -44,6 +44,9 @@ class Matches {
   dynamic wonBy;
   dynamic choseTo;
   dynamic overs;
+  dynamic currentInnings;
+  dynamic createdAt;
+  dynamic updatedAt;
   dynamic team1Name;
   dynamic team2Name;
   dynamic tossWinnerName;
@@ -67,6 +70,9 @@ class Matches {
         this.wonBy,
         this.choseTo,
         this.overs,
+        this.currentInnings,
+        this.createdAt,
+        this.updatedAt,
         this.team1Name,
         this.team2Name,
         this.tossWinnerName,
@@ -90,6 +96,9 @@ class Matches {
     wonBy = json['won_by'];
     choseTo = json['chose_to'];
     overs = json['overs'];
+    currentInnings = json['current_innings'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
     team1Name = json['team1_name'];
     team2Name = json['team2_name'];
     tossWinnerName = json['toss_winner_name'];
@@ -120,6 +129,9 @@ class Matches {
     data['won_by'] = this.wonBy;
     data['chose_to'] = this.choseTo;
     data['overs'] = this.overs;
+    data['current_innings'] = this.currentInnings;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
     data['team1_name'] = this.team1Name;
     data['team2_name'] = this.team2Name;
     data['toss_winner_name'] = this.tossWinnerName;
@@ -138,6 +150,8 @@ class Teams {
   dynamic ballNumber;
   dynamic overNumber;
   dynamic overs;
+  dynamic currentOverDetails;
+  dynamic ballRecordCheck;
 
   Teams(
       {this.teamName,
@@ -145,7 +159,9 @@ class Teams {
         this.totalWickets,
         this.ballNumber,
         this.overNumber,
-        this.overs});
+        this.overs,
+        this.currentOverDetails,
+        this.ballRecordCheck});
 
   Teams.fromJson(Map<String, dynamic> json) {
     teamName = json['team_name'];
@@ -154,6 +170,8 @@ class Teams {
     ballNumber = json['ball_number'];
     overNumber = json['over_number'];
     overs = json['overs'];
+    currentOverDetails = json['current_over_details'];
+    ballRecordCheck = json['ball_record_check'];
   }
 
   Map<String, dynamic> toJson() {
@@ -164,6 +182,8 @@ class Teams {
     data['ball_number'] = this.ballNumber;
     data['over_number'] = this.overNumber;
     data['overs'] = this.overs;
+    data['current_over_details'] = this.currentOverDetails;
+    data['ball_record_check'] = this.ballRecordCheck;
     return data;
   }
 }

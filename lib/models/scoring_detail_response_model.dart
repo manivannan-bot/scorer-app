@@ -211,6 +211,7 @@ class Over {
   dynamic innings;
   dynamic createdAt;
   dynamic updatedAt;
+  dynamic slug;
 
   Over(
       {this.ballId,
@@ -235,7 +236,8 @@ class Over {
         this.fieldingPositionsId,
         this.innings,
         this.createdAt,
-        this.updatedAt});
+        this.updatedAt,
+        this.slug});
 
   Over.fromJson(Map<String, dynamic> json) {
     ballId = json['ball_id'];
@@ -261,6 +263,7 @@ class Over {
     innings = json['innings'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    slug = json['slug'];
   }
 
   Map<String, dynamic> toJson() {
@@ -288,6 +291,7 @@ class Over {
     data['innings'] = this.innings;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+    data['slug'] = this.slug;
     return data;
   }
 }
