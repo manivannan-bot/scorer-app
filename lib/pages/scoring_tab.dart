@@ -88,6 +88,7 @@ class _ScoringTabState extends State<ScoringTab> {
     ScoringProvider().getScoringDetail(widget.matchId).then((value) async {
       setState(() {
         scoringData = value;
+        selectedBowlerName=scoringData!.data!.bowling!.playerName.toString();
       });
       _refreshController.refreshCompleted();
     });
@@ -147,10 +148,9 @@ class _ScoringTabState extends State<ScoringTab> {
                                     children: [
                                       Row(children: [
 
-                                        const Text(
+                                         Text(
                                           'Batsman',
-                                          style: TextStyle(
-                                              color: Colors.orange, fontSize: 24),
+                                          style: fontMedium.copyWith(color: Colors.orange,fontSize: 24),
                                         ),
                                         Container(
                                           width: 0.5.w,
@@ -181,19 +181,17 @@ class _ScoringTabState extends State<ScoringTab> {
                                                   BorderRadius.circular(25),
                                             ),
                                           ),
-                                          child: const Text(
+                                          child:  Text(
                                             'swap',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                            ),
+                                            style: fontRegular.copyWith(color: Colors.white),
                                           ),
                                         ),
                                       ]),
                                       Text('${scoringData!.data!.batting![index1].playerName??'-'}    ${scoringData!.data!.batting![index1].runsScored??'0'}(${scoringData!.data!.batting![index1].ballsFaced??'0'})',
-                                          style: const TextStyle(
+                                          style:  fontRegular.copyWith(
                                               color: Colors.black, fontSize: 16)),
                                       Text((scoringData!.data!.batting?[index2]!=null)?'${scoringData!.data!.batting![index2].playerName??'-'}    ${scoringData!.data!.batting![index2].runsScored??'0'}(${scoringData!.data!.batting![index2].ballsFaced??'0'})':'-',
-                                          style: const TextStyle(
+                                          style:  fontRegular.copyWith(
                                               color: Colors.black, fontSize: 16)),
                                     ],
                                   ),
@@ -208,8 +206,8 @@ class _ScoringTabState extends State<ScoringTab> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Row(children: [
-                                        const Text('Bowler',
-                                            style: TextStyle(
+                                         Text('Bowler',
+                                            style: fontMedium.copyWith(
                                                 color: Colors.orange,
                                                 fontSize: 24)),
                                         Container(
@@ -233,25 +231,25 @@ class _ScoringTabState extends State<ScoringTab> {
                                                   BorderRadius.circular(25),
                                             ),
                                           ),
-                                          child: const Text(
+                                          child:  Text(
                                             'change',
-                                            style: TextStyle(
+                                            style: fontRegular.copyWith(
                                               color: Colors.white,
                                             ),
                                           ),
                                         ),
                                       ]),
-                                      Text('${scoringData!.data!.bowling!.playerName??'-'}    ${scoringData!.data!.bowling!.totalBalls??'0'}(${scoringData!.data!.bowling!.wickets??'0'})',
-                                          style: const TextStyle(
+                                      Text('${selectedBowlerName??'-'}    ${scoringData!.data!.bowling!.totalBalls??'0'}(${scoringData!.data!.bowling!.wickets??'0'})',
+                                          style:  fontRegular.copyWith(
                                               color: Colors.black, fontSize: 16)),
                                       SizedBox(height:0.8.h),
                                       Row(children:[
                                         SvgPicture.asset(Images.stumpIcon1,width:3.w,height: 3.h,),
                                         Padding(padding: EdgeInsets.only(left: 2.w,),
-                                            child: const Text('OW',style: TextStyle(fontSize: 16),)),
+                                            child:  Text('OW',style: fontRegular.copyWith(fontSize: 16),)),
                                         SizedBox(width:15.w),
                                         Padding(padding: EdgeInsets.only(right: 2.w,),
-                                            child: const Text('RW',style: TextStyle(fontSize: 16),)),
+                                            child:  Text('RW',style: fontRegular.copyWith(fontSize: 16),)),
                                         SvgPicture.asset(Images.stumpIcon2,width:3.w,height: 3.h,)
                                       ]),
 
@@ -326,7 +324,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                                   child: Center(
                                                     child: Text(
                                                       scoringData!.data!.over![index].slug.toString(),
-                                                      style: const TextStyle(
+                                                      style:  fontRegular.copyWith(
                                                         color: Colors.white,
                                                         fontSize: 16,
                                                       ),
@@ -339,13 +337,13 @@ class _ScoringTabState extends State<ScoringTab> {
                                             mainAxisAlignment: MainAxisAlignment.start,
                                             children: [
                                               Text('=',
-                                                style: TextStyle(
+                                                style: fontRegular.copyWith(
                                                   color: Colors.black,
                                                   fontSize: 24,
                                                 ),
                                               ),
                                               Text(totalBallId.toString() ?? 'N/A',
-                                                style: TextStyle(
+                                                style: fontRegular.copyWith(
                                                   color: Colors.black,
                                                   fontSize: 24,
                                                 ),
@@ -365,7 +363,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                       horizontal: 8, vertical: 4),
                                   child: Text(
                                     'over ${(scoringData!.data!.over!.isNotEmpty)?scoringData!.data!.over!.first.overNumber:'0'}',
-                                    style: const TextStyle(
+                                    style: fontRegular.copyWith(
                                       color: Colors.black,
                                       fontSize: 16,
                                     ),
@@ -759,7 +757,7 @@ class _ScoringTabState extends State<ScoringTab> {
                             child: CancelBtn("Cancel")),
                         SizedBox(width: 2.w,),
                         GestureDetector(onTap:()async {
-                          ScoringProvider().saveBowler(widget.matchId,widget.team2Id,itemsBowler![localBowlerIndex!].playerId.toString());
+                          //ScoringProvider().saveBowler(widget.matchId,widget.team2Id,itemsBowler![localBowlerIndex!].playerId.toString());
                           SharedPreferences prefs = await SharedPreferences.getInstance();
                           await prefs.setInt('bowler_id', itemsBowler![selectedBowler!].playerId!);
                             Navigator.pop(context);
@@ -1232,11 +1230,11 @@ Widget _buildGridItem(String index,String text, BuildContext context) {
           backgroundColor: Colors.white,
           child: Text(
             "$index",
-            style:  TextStyle(color: Colors.black, fontSize: 2.h),
+            style:  fontRegular.copyWith(color: Colors.black, fontSize: 2.h),
           ),
         ),
          SizedBox(height:  0.5.h,),
-        Text('$text', style: const TextStyle(color: Colors.white)),
+        Text('$text', style:  fontRegular.copyWith(color: Colors.white)),
       ],
     ),
   );
@@ -1255,7 +1253,7 @@ Widget _buildGridItemFour(String index,String text, BuildContext context) {
           child: Image.asset(index)
         ),
          SizedBox(height: 0.5.h,),
-        Text('$text', style: const TextStyle(color: Colors.white)),
+        Text('$text', style:  fontRegular.copyWith(color: Colors.white)),
       ],
     ),
   );
@@ -1273,11 +1271,11 @@ Widget _buildGridItemOut(String index,String text, BuildContext context) {
           backgroundColor: Colors.red,
           child: Text(
             "$index",
-            style:  TextStyle(color: Colors.white, fontSize: 2.h),
+            style:  fontRegular.copyWith(color: Colors.white, fontSize: 2.h),
           ),
         ),
          SizedBox(height: 0.5.h,),
-        Text('$text', style:  TextStyle(color: Colors.white)),
+        Text('$text', style:  fontRegular.copyWith(color: Colors.white)),
       ],
     ),
   );

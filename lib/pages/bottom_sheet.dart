@@ -138,14 +138,14 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                 ),
                 Row(
                   children: [
-                    const Text(
+                     Text(
                       'Wagon Wheel',
-                      style: TextStyle(fontSize: 24),
+                      style: fontMedium.copyWith(fontSize: 24),
                     ),
                     Spacer(),
-                    const Text(
+                     Text(
                       '4s & 6s',
-                      style: TextStyle(color: AppColor.iconColour),
+                      style: fontMedium.copyWith(color: AppColor.iconColour),
                     ),
                     Switch(value: _isSwitch!, onChanged: (bool value) async{
 
@@ -174,14 +174,14 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                   ),
                   child: Column(
                     children: [
-                      const Row(
+                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Column(
                             children: [
                               Center(
                                   child: Text('Batsman Name',
-                                      style: TextStyle(fontSize: 20))),
+                                      style: fontMedium.copyWith(fontSize: 20))),
                             ],
                           ),
                           Column(
@@ -189,7 +189,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                               Center(
                                   child: Text(
                                 'Runs',
-                                style: TextStyle(fontSize: 20),
+                                style: fontMedium.copyWith(fontSize: 20),
                               )),
                             ],
                           ),
@@ -204,7 +204,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                               Container(
                                 child: Center(
                                     child: Text('${widget.scoringData.data!.batting![0].playerName??'-'}',
-                                        style: TextStyle(fontSize: 18))),
+                                        style: fontMedium.copyWith(fontSize: 18))),
                               ),
                             ],
                           ),
@@ -213,7 +213,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                               Container(
                                 child: Center(
                                     child: Text('${widget.scoringData.data!.batting![0].runsScored??'0'}',
-                                        style: TextStyle(fontSize: 18))),
+                                        style: fontMedium.copyWith(fontSize: 18))),
                               ),
                             ],
                           ),
@@ -225,16 +225,16 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                 SizedBox(
                   height: 2.h,
                 ),
-                const Row(
+                 Row(
                   children: [
                     Text(
                       'skip match',
-                      style: TextStyle(color: AppColor.iconColour),
+                      style: fontMedium.copyWith(color: AppColor.iconColour),
                     ),
                     Spacer(),
                     Text(
                       'skip ball',
-                      style: TextStyle(color: AppColor.iconColour),
+                      style: fontMedium.copyWith(color: AppColor.iconColour),
                     )
                   ],
                 ),
@@ -269,8 +269,8 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                       //Icon(Icons.undo, size: 24.0,color: Colors.black,), // Undo arrow icon
                       const SizedBox(
                           width: 4.0), // Spacing between icon and text
-                      const Text('Undo',
-                          style: TextStyle(
+                       Text('Undo',
+                          style: fontMedium.copyWith(
                               fontSize: 18.0,
                               color: Colors.black)), // "Undo" text
                     ],
@@ -300,14 +300,14 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                   ),
                   child: Column(
                     children: [
-                      const Row(
+                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Column(
                             children: [
                               Center(
                                   child: Text('Bowler Name',
-                                      style: TextStyle(fontSize: 20))),
+                                      style: fontMedium.copyWith(fontSize: 20))),
                             ],
                           ),
                           Column(
@@ -315,7 +315,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                               Center(
                                   child: Text(
                                 'Info',
-                                style: TextStyle(fontSize: 20),
+                                style: fontMedium.copyWith(fontSize: 20),
                               )),
                             ],
                           ),
@@ -329,14 +329,14 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                             children: [
                               Center(
                                   child: Text('${widget.scoringData.data!.bowling!.playerName??'-'}',
-                                      style: TextStyle(fontSize: 18))),
+                                      style: fontMedium.copyWith(fontSize: 18))),
                             ],
                           ),
                           Column(
                             children: [
                               Center(
                                   child: Text('${widget.scoringData.data!.bowling!.oversBowled}-${widget.scoringData.data!.bowling!.wickets}-${widget.scoringData.data!.bowling!.runsConceded}-${widget.scoringData.data!.bowling!.economy}',
-                                      style: TextStyle(fontSize: 18))),
+                                      style: fontMedium.copyWith(fontSize: 18))),
                             ],
                           ),
                         ],
@@ -347,16 +347,16 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                 SizedBox(
                   height: 2.h,
                 ),
-                const Row(
+                 Row(
                   children: [
                     Text(
                       'skip match',
-                      style: TextStyle(color: AppColor.iconColour),
+                      style: fontMedium.copyWith(color: AppColor.iconColour),
                     ),
                     Spacer(),
                     Text(
                       'skip ball',
-                      style: TextStyle(color: AppColor.iconColour),
+                      style: fontMedium.copyWith(color: AppColor.iconColour),
                     )
                   ],
                 ),
@@ -381,11 +381,11 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                               children: [
                                 (rowIndex==0)? Row(
                                   children: [
-                                    const SizedBox(
+                                     SizedBox(
                                         width: 60,
                                         child: Text(
                                           'F.TOSS',
-                                          style: TextStyle(color: Colors.white),
+                                          style: fontMedium.copyWith(color: Colors.white),
                                         )),
 
                                     Container(
@@ -420,7 +420,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                                                 child: Center(
                                                   child: Text(
                                                     'Cell $rowIndex-$columnIndex',
-                                                    style: TextStyle(
+                                                    style: fontMedium.copyWith(
                                                       color: isSelected ? Colors
                                                           .white : Colors.black,
                                                     ),
@@ -445,10 +445,10 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                                               10), // Adjust the border radius as needed
                                         ),
                                       ),
-                                      child: const Center(
+                                      child:  Center(
                                         child: Text(
                                           '0m',
-                                          style: TextStyle(
+                                          style: fontMedium.copyWith(
                                             color: Colors.black, // Black text color
                                           ),
                                         ),
@@ -458,11 +458,11 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                                 ):const Text(''),
                                 (rowIndex==1)? Row(
                                   children: [
-                                    const SizedBox(
+                                     SizedBox(
                                         width: 60,
                                         child: Text(
                                           'YORKER',
-                                          style: TextStyle(color: Colors.white),
+                                          style: fontMedium.copyWith(color: Colors.white),
                                         )),
 
                                     Container(
@@ -495,7 +495,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                                                 child: Center(
                                                   child: Text(
                                                     'Cell $rowIndex-$columnIndex',
-                                                    style: TextStyle(
+                                                    style: fontMedium.copyWith(
                                                       color: isSelected ? Colors
                                                           .white : Colors.black,
                                                     ),
@@ -520,10 +520,10 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                                               10), // Adjust the border radius as needed
                                         ),
                                       ),
-                                      child: const Center(
+                                      child:  Center(
                                         child: Text(
                                           '0m',
-                                          style: TextStyle(
+                                          style: fontMedium.copyWith(
                                             color: Colors.black, // Black text color
                                           ),
                                         ),
@@ -533,11 +533,11 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                                 ):const Text(''),
                                 (rowIndex==2)? Row(
                                   children: [
-                                    const SizedBox(
+                                     SizedBox(
                                         width: 60,
                                         child: Text(
                                           'FULL',
-                                          style: TextStyle(color: Colors.white),
+                                          style: fontMedium.copyWith(color: Colors.white),
                                         )),
 
                                     Container(
@@ -570,7 +570,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                                                 child: Center(
                                                   child: Text(
                                                     'Cell $rowIndex-$columnIndex',
-                                                    style: TextStyle(
+                                                    style: fontMedium.copyWith(
                                                       color: isSelected ? Colors
                                                           .white : Colors.black,
                                                     ),
@@ -595,10 +595,10 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                                               10), // Adjust the border radius as needed
                                         ),
                                       ),
-                                      child: const Center(
+                                      child:  Center(
                                         child: Text(
                                           '0m',
-                                          style: TextStyle(
+                                          style: fontMedium.copyWith(
                                             color: Colors.black, // Black text color
                                           ),
                                         ),
@@ -608,11 +608,11 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                                 ):const Text(''),
                                 (rowIndex==3)? Row(
                                   children: [
-                                    const SizedBox(
+                                     SizedBox(
                                         width: 60,
                                         child: Text(
                                           'GOOD',
-                                          style: TextStyle(color: Colors.white),
+                                          style: fontMedium.copyWith(color: Colors.white),
                                         )),
 
                                     Container(
@@ -645,7 +645,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                                                 child: Center(
                                                   child: Text(
                                                     'Cell $rowIndex-$columnIndex',
-                                                    style: TextStyle(
+                                                    style: fontMedium.copyWith(
                                                       color: isSelected ? Colors
                                                           .white : Colors.black,
                                                     ),
@@ -670,10 +670,10 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                                               10), // Adjust the border radius as needed
                                         ),
                                       ),
-                                      child: const Center(
+                                      child:  Center(
                                         child: Text(
                                           '0m',
-                                          style: TextStyle(
+                                          style: fontMedium.copyWith(
                                             color: Colors.black, // Black text color
                                           ),
                                         ),
@@ -683,11 +683,11 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                                 ):const Text(''),
                                 (rowIndex==4)? Row(
                                   children: [
-                                    const SizedBox(
+                                     SizedBox(
                                         width: 60,
                                         child: Text(
                                           'SHORT',
-                                          style: TextStyle(color: Colors.white),
+                                          style: fontMedium.copyWith(color: Colors.white),
                                         )),
 
                                     Container(
@@ -720,7 +720,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                                                 child: Center(
                                                   child: Text(
                                                     'Cell $rowIndex-$columnIndex',
-                                                    style: TextStyle(
+                                                    style: fontMedium.copyWith(
                                                       color: isSelected ? Colors
                                                           .white : Colors.black,
                                                     ),
@@ -745,10 +745,10 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                                               10), // Adjust the border radius as needed
                                         ),
                                       ),
-                                      child: const Center(
+                                      child:  Center(
                                         child: Text(
                                           '0m',
-                                          style: TextStyle(
+                                          style: fontMedium.copyWith(
                                             color: Colors.black, // Black text color
                                           ),
                                         ),
@@ -788,7 +788,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                       //Icon(Icons.undo, size: 24.0,color: Colors.black,), // Undo arrow icon
                       SizedBox(width: 4.0), // Spacing between icon and text
                       Text('Undo',
-                          style: TextStyle(
+                          style: fontMedium.copyWith(
                               fontSize: 18.0,
                               color: Colors.black)), // "Undo" text
                     ],
