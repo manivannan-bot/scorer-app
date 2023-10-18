@@ -64,6 +64,7 @@ class _ScoringTabState extends State<ScoringTab> {
   String selectedBowlerName = "";
   int? selectedBatsman;
   String selectedBatsmanName = "";
+  bool showError=false;
 
   ScoringDetailResponseModel scoringDeatailResponseModel=ScoringDetailResponseModel();
   ScoreUpdateRequestModel scoreUpdateRequestModel=ScoreUpdateRequestModel();
@@ -115,6 +116,7 @@ class _ScoringTabState extends State<ScoringTab> {
             child: Center(child: Text('Please Select Bowler')));
     }
     int totalBallId = 0;
+    showError=false;
     for (int index = 0; index < scoringData!.data!.over!.length; index++) {
       totalBallId += int.parse(scoringData!.data!.over![index].runsScored==null?'0':scoringData!.data!.over![index].runsScored.toString()); // Sum the ballIds
     }
@@ -568,6 +570,30 @@ class _ScoringTabState extends State<ScoringTab> {
     );
   }
 
+  void changeBatsman() {
+    _displayBatsmanBottomSheet (context,selectedBatsman,(bowlerIndex) {
+
+      setState(() {
+        selectedBatsman = bowlerIndex;
+        if (selectedBatsman != null) {
+          selectedBatsmanName = itemsBowler![selectedBowler!].playerName ?? "";
+        }
+      });
+    });
+  }
+
+  void changeBowler() {
+    _displayBowlerBottomSheet (context,selectedBowler,(bowlerIndex) {
+
+      setState(() {
+        selectedBowler = bowlerIndex;
+        if (selectedBowler != null) {
+          selectedBowlerName = itemsBowler![selectedBowler!].playerName ?? "";
+        }
+      });
+    });
+  }
+
   Future<ScoreUpdateResponseModel?> _displayBottomSheet(BuildContext context, int run, ScoringDetailResponseModel? scoringData) async {
     double screenHeight = MediaQuery.of(context).size.height;
     double sheetHeight = screenHeight * 0.9;
@@ -589,7 +615,8 @@ class _ScoringTabState extends State<ScoringTab> {
   }
 
   _displayBowlerBottomSheet (BuildContext context, int? selectedBowler,Function(int?) onItemSelected) async{
-    int? localBowlerIndex = selectedBowler;
+
+    int? localBowlerIndex ;
     showModalBottomSheet(context: context,
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
@@ -751,19 +778,28 @@ class _ScoringTabState extends State<ScoringTab> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
+                        Visibility(visible:showError,
+                          child: Text('Please Select one Player',style: fontMedium.copyWith(color: Colors.red),),
+
+                        ),
                         GestureDetector(onTap:(){
                           Navigator.pop(context);
                         },
                             child: CancelBtn("Cancel")),
                         SizedBox(width: 2.w,),
                         GestureDetector(onTap:()async {
-                          //ScoringProvider().saveBowler(widget.matchId,widget.team2Id,itemsBowler![localBowlerIndex!].playerId.toString());
+            //ScoringProvider().saveBowler(widget.matchId,widget.team2Id,itemsBowler![localBowlerIndex!].playerId.toString());
+
+                          if(localBowlerIndex!=null){
                           SharedPreferences prefs = await SharedPreferences.getInstance();
-                          await prefs.setInt('bowler_id', itemsBowler![selectedBowler!].playerId!);
-                            Navigator.pop(context);
+                          await prefs.setInt('bowler_id', itemsBowler![localBowlerIndex!].playerId!);
+                          Navigator.pop(context);
+                          }else{
+                            setState(() {showError=true;});
+                             Timer(Duration(seconds: 4), () {setState(() {showError = false;});});
+                          }
 
-
-                        },child: OkBtn("Ok")),
+                          },child: OkBtn("Ok")),
                       ],
                     ),
                   ),
@@ -1185,29 +1221,7 @@ class _ScoringTabState extends State<ScoringTab> {
 
   }
 
-  void changeBatsman() {
-      _displayBatsmanBottomSheet (context,selectedBatsman,(bowlerIndex) {
 
-        setState(() {
-          selectedBatsman = bowlerIndex;
-          if (selectedBatsman != null) {
-            selectedBatsmanName = itemsBowler![selectedBowler!].playerName ?? "";
-          }
-        });
-      });
-    }
-
-  void changeBowler() {
-    _displayBowlerBottomSheet (context,selectedBowler,(bowlerIndex) {
-
-      setState(() {
-        selectedBowler = bowlerIndex;
-        if (selectedBowler != null) {
-          selectedBowlerName = itemsBowler![selectedBowler!].playerName ?? "";
-        }
-      });
-    });
-  }
 
   @override
   void dispose() {
