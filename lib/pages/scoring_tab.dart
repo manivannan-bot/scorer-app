@@ -58,7 +58,7 @@ class _ScoringTabState extends State<ScoringTab> {
   int totalBallId = 0;
   int overNumber=0;
   int ballNumber=0;
-  List<Players>? itemsBowler= [];
+  List<BowlingPlayers>? itemsBowler= [];
   int? selectedBowler;
   String? selectedBTeamName ="";
   String selectedBowlerName = "";
@@ -148,17 +148,18 @@ class _ScoringTabState extends State<ScoringTab> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Row(children: [
+                                      Padding(
+                                        padding:EdgeInsets.only(bottom: 2.h),
+                                        child: Row(children: [
 
-                                         Text(
-                                          'Batsman',
-                                          style: fontMedium.copyWith(color: Colors.orange,fontSize: 24),
-                                        ),
-                                        Container(
-                                          width: 0.5.w,
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () async{
+                                           Text(
+                                            'Batsman',
+                                            style: fontMedium.copyWith(color: Color(0xffD78108),fontSize: 16.sp),
+                                          ),
+                                          SizedBox(
+                                            width: 4.w,
+                                          ),
+                                          GestureDetector(onTap:()async{
                                             print('index changed');
                                             SharedPreferences prefs = await SharedPreferences.getInstance();
                                             var strikerId=prefs.getInt('striker_id')??0;
@@ -166,35 +167,35 @@ class _ScoringTabState extends State<ScoringTab> {
                                             await prefs.setInt('non_striker_id',strikerId);
                                             await prefs.setInt('striker_id',nonStrikerId);
 
+
                                             setState(() {
                                               if(index1==1){
-                                              index2=1;
-                                              index1=0;
+                                                index2=1;
+                                                index1=0;
                                               }else{
                                                 index2=0;
                                                 index1=1;
                                               }
                                             });
                                           },
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.black,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(25),
-                                            ),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(15),
+                                                shape: BoxShape.rectangle,
+                                                  color: Colors.black
+
+                                              ),
+                                              padding: EdgeInsets.symmetric(horizontal: 3.w,vertical: 0.5.h),
+                                            child: Text('swap',style: fontMedium.copyWith(color: Colors.white,fontSize: 10.sp),),),
                                           ),
-                                          child:  Text(
-                                            'swap',
-                                            style: fontRegular.copyWith(color: Colors.white),
-                                          ),
-                                        ),
-                                      ]),
+                                        ]),
+                                      ),
                                       Text('${scoringData!.data!.batting![index1].playerName??'-'}    ${scoringData!.data!.batting![index1].runsScored??'0'}(${scoringData!.data!.batting![index1].ballsFaced??'0'})',
                                           style:  fontRegular.copyWith(
-                                              color: Colors.black, fontSize: 16)),
+                                              color: Colors.black, fontSize: 10.sp)),
                                       Text((scoringData!.data!.batting?[index2]!=null)?'${scoringData!.data!.batting![index2].playerName??'-'}    ${scoringData!.data!.batting![index2].runsScored??'0'}(${scoringData!.data!.batting![index2].ballsFaced??'0'})':'-',
                                           style:  fontRegular.copyWith(
-                                              color: Colors.black, fontSize: 16)),
+                                              color: Colors.black, fontSize: 10.sp)),
                                     ],
                                   ),
                                 ),
@@ -207,51 +208,47 @@ class _ScoringTabState extends State<ScoringTab> {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Row(children: [
-                                         Text('Bowler',
-                                            style: fontMedium.copyWith(
-                                                color: Colors.orange,
-                                                fontSize: 24)),
-                                        Container(
-                                          width: 0.5.w,
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () async{
-
-                                            final response = await ScoringProvider().getPlayerList(widget.matchId,widget.team2Id);
+                                      Padding(
+                                        padding:EdgeInsets.only(bottom: 2.h),
+                                        child: Row(children: [
+                                           Text('Bowler',
+                                              style: fontMedium.copyWith(
+                                                  color: Color(0xffD78108),
+                                                  fontSize: 16.sp)),
+                                          SizedBox(
+                                            width: 4.w,
+                                          ),
+                                          GestureDetector(onTap:()async{
+                                            final response = await ScoringProvider().getPlayerList(widget.matchId,widget.team2Id,'bowl');
                                             setState(() {
-                                              itemsBowler = response.data!.players;
-                                              selectedBTeamName= response.data!.teamName;
+                                              itemsBowler = response.bowlingPlayers;
+                                              selectedBTeamName= response.team!.teamName;
                                             });
                                             changeBowler();
-
                                           },
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.black,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(25),
-                                            ),
-                                          ),
-                                          child:  Text(
-                                            'change',
-                                            style: fontRegular.copyWith(
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ]),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(15),
+                                                  shape: BoxShape.rectangle,
+                                                  color: Colors.black
+
+                                              ),
+                                              padding: EdgeInsets.symmetric(horizontal: 3.w,vertical: 0.5.h),
+                                              child: Text('Change',style: fontMedium.copyWith(color: Colors.white,fontSize: 10.sp),),),
+                                          )
+                                        ]),
+                                      ),
                                       Text('${selectedBowlerName??'-'}    ${scoringData!.data!.bowling!.totalBalls??'0'}(${scoringData!.data!.bowling!.wickets??'0'})',
                                           style:  fontRegular.copyWith(
-                                              color: Colors.black, fontSize: 16)),
+                                              color: Colors.black, fontSize: 10.sp)),
                                       SizedBox(height:0.8.h),
                                       Row(children:[
                                         SvgPicture.asset(Images.stumpIcon1,width:3.w,height: 3.h,),
                                         Padding(padding: EdgeInsets.only(left: 2.w,),
-                                            child:  Text('OW',style: fontRegular.copyWith(fontSize: 16),)),
-                                        SizedBox(width:10.w),
+                                            child:  Text('OW',style: fontRegular.copyWith(fontSize: 10.sp),)),
+                                        SizedBox(width:8.w),
                                         Padding(padding: EdgeInsets.only(right: 2.w,),
-                                            child:  Text('RW',style: fontRegular.copyWith(fontSize: 16),)),
+                                            child:  Text('RW',style: fontRegular.copyWith(fontSize: 10.sp),)),
                                         SvgPicture.asset(Images.stumpIcon2,width:3.w,height: 3.h,)
                                       ]),
 
@@ -576,7 +573,7 @@ class _ScoringTabState extends State<ScoringTab> {
       setState(() {
         selectedBatsman = bowlerIndex;
         if (selectedBatsman != null) {
-          selectedBatsmanName = itemsBowler![selectedBowler!].playerName ?? "";
+          selectedBatsmanName = itemsBowler![selectedBowler!].name ?? "";
         }
       });
     });
@@ -588,7 +585,7 @@ class _ScoringTabState extends State<ScoringTab> {
       setState(() {
         selectedBowler = bowlerIndex;
         if (selectedBowler != null) {
-          selectedBowlerName = itemsBowler![selectedBowler!].playerName ?? "";
+          selectedBowlerName = itemsBowler![selectedBowler!].name ?? "";
         }
       });
     });
@@ -736,7 +733,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("${itemsBowler![index].playerName??'-'}",style: fontMedium.copyWith(
+                                    Text("${itemsBowler![index].name??'-'}",style: fontMedium.copyWith(
                                       fontSize: 12.sp,
                                       color: AppColor.blackColour,
                                     ),),
@@ -932,7 +929,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("${itemsBowler![index].playerName??'-'}",style: fontMedium.copyWith(
+                                    Text("${itemsBowler![index].name??'-'}",style: fontMedium.copyWith(
                                       fontSize: 12.sp,
                                       color: AppColor.blackColour,
                                     ),),

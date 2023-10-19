@@ -134,7 +134,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                 Container(
                   width: 100.w,
                   height: 2,
-                  color: Colors.grey,
+                  color: const Color(0xffF8F9FA),
                 ),
                 Row(
                   children: [
@@ -168,7 +168,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                   height: 100, // Adjust the width as needed
                   padding:  EdgeInsets.all(20.0), // Spacing inside the card
                   decoration: BoxDecoration(
-                    color: Colors.grey,
+                    color: const Color(0xffF8F9FA),
                     borderRadius:
                         BorderRadius.circular(10.0),
                   ),
@@ -238,12 +238,11 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                     )
                   ],
                 ),
-
-                ((widget.run==4 || widget.run==6)|| isFourOrSix!=1 )?SizedBox(
-                  height: 550,
-                  width:500,
-                  child:Center(
-                    child: ThreeCircles(onOkButtonPressed:callbackFunction,),
+                ((widget.run==4 || widget.run==6)|| isFourOrSix!=1 )?Center(
+                  child: SizedBox(
+                    height: 550,
+                    width:500,
+                    child:ThreeCircles(onOkButtonPressed:callbackFunction,),
                   ),
                 ):Text(''),
 
@@ -294,7 +293,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                   height: 100, // Adjust the width as needed
                   padding: EdgeInsets.all(20.0), // Spacing inside the card
                   decoration: BoxDecoration(
-                    color: Colors.grey, // Grey background color
+                    color: const Color(0xffF8F9FA), // Grey background color
                     borderRadius:
                         BorderRadius.circular(10.0), // Rounded corners
                   ),
@@ -765,7 +764,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20.0),
+                SizedBox(height: 3.h),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,

@@ -27,8 +27,8 @@ class DOScoring extends StatefulWidget {
 }
 
 class _DOScoringState extends State<DOScoring> {
-  List<Players>? items = [];
-  List<Players>? itemsBowler= [];
+  List<BattingPlayers>? items = [];
+  List<BowlingPlayers>? itemsBowler= [];
   int? selectedIndex;
   int? selectedBowler;
   int? selectedWicketKeeper;
@@ -52,10 +52,10 @@ class _DOScoringState extends State<DOScoring> {
 
   Future<void> _fetchPlayers(String matchId, String team1id,String team2id) async {
     try {
-      final response = await ScoringProvider().getPlayerList(matchId, team1id);
+      final response = await ScoringProvider().getPlayerList(matchId, team1id,'bat');
       setState(() {
-        items = response.data!.players;
-        selectedTeamName= response.data!.teamName;
+        items = response.battingPlayers;
+        selectedTeamName= response.team!.teamName;
 
       });
       print('mani: $items');
@@ -64,10 +64,10 @@ class _DOScoringState extends State<DOScoring> {
     }
 
     try {
-      final response = await ScoringProvider().getPlayerList(matchId, team2id);
+      final response = await ScoringProvider().getPlayerList(matchId, team2id,'bowl');
       setState(() {
-        itemsBowler = response.data!.players;
-        selectedBTeamName= response.data!.teamName;
+        itemsBowler = response.bowlingPlayers;
+        selectedBTeamName= response.team!.teamName;
 
       });
       print('mani1: $itemsBowler');
@@ -128,7 +128,7 @@ class _DOScoringState extends State<DOScoring> {
                                selectedIndex = newIndex;
                                if (selectedIndex != null) {
 
-                                 selectedPlayerName = items![selectedIndex!].playerName ?? "";
+                                 selectedPlayerName = items![selectedIndex!].name ?? "";
                                }
                              });
                              SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -147,7 +147,7 @@ class _DOScoringState extends State<DOScoring> {
                                   player2Index = newIndex;
                                   if (player2Index != null) {
 
-                                    selectedPlayer2Name = items![player2Index!].playerName ?? "";
+                                    selectedPlayer2Name = items![player2Index!].name ?? "";
                                   }
                                 });
 
@@ -199,7 +199,7 @@ class _DOScoringState extends State<DOScoring> {
                                   selectedBowler = bowlerIndex;
                                   if (selectedBowler != null) {
 
-                                    selectedBowlerName = itemsBowler![selectedBowler!].playerName ?? "";
+                                    selectedBowlerName = itemsBowler![selectedBowler!].name ?? "";
                                   }
                                 });
                                 SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -216,7 +216,7 @@ class _DOScoringState extends State<DOScoring> {
                               setState(() {
                                 selectedWicketKeeper = bowlerIndex;
                                 if (selectedWicketKeeper != null) {
-                                  selectedWicketKeeperName = itemsBowler![selectedWicketKeeper!].playerName ?? "";
+                                  selectedWicketKeeperName = itemsBowler![selectedWicketKeeper!].name ?? "";
                                 }
                               });
                               SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -380,7 +380,7 @@ class _DOScoringState extends State<DOScoring> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("${items![index].playerName??'-'}",style: fontMedium.copyWith(
+                                  Text("${items![index].name??'-'}",style: fontMedium.copyWith(
                                     fontSize: 12.sp,
                                     color: AppColor.blackColour,
                                   ),),
@@ -582,7 +582,7 @@ class _DOScoringState extends State<DOScoring> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("${itemsBowler![index].playerName??'-'}",style: fontMedium.copyWith(
+                                    Text("${itemsBowler![index].name??'-'}",style: fontMedium.copyWith(
                                       fontSize: 12.sp,
                                       color: AppColor.blackColour,
                                     ),),
@@ -772,7 +772,7 @@ class _DOScoringState extends State<DOScoring> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("${itemsBowler![index].playerName??'-'}",style: fontMedium.copyWith(
+                                    Text("${itemsBowler![index].name??'-'}",style: fontMedium.copyWith(
                                       fontSize: 12.sp,
                                       color: AppColor.blackColour,
                                     ),),
@@ -962,7 +962,7 @@ class _DOScoringState extends State<DOScoring> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("${items![index].playerName??'-'}",style: fontMedium.copyWith(
+                                    Text("${items![index].name??'-'}",style: fontMedium.copyWith(
                                       fontSize: 12.sp,
                                       color: AppColor.blackColour,
                                     ),),

@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 
+import 'package:sizer/sizer.dart';
+
 class ThreeCircles extends StatefulWidget {
    final Function(int) onOkButtonPressed;
   ThreeCircles({super.key, required this.onOkButtonPressed}) ;
@@ -12,8 +14,11 @@ class ThreeCircles extends StatefulWidget {
 
 class _ThreeCirclesState extends State<ThreeCircles> {
   int? fieldType=0;
+
   @override
   Widget build(BuildContext context) {
+    double width=MediaQuery.of(context).size.width;
+    double height=MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -21,52 +26,57 @@ class _ThreeCirclesState extends State<ThreeCircles> {
         children: [
           // ClipOval(child: Image.network("https://i.pinimg.com/736x/25/16/fe/2516fe2678a70c7a4112367a67a4fe6f--grasses.jpg", fit: BoxFit.cover,
           // width: MediaQuery.of(context).size.width / 1, height: MediaQuery.of(context).size.height / 2.2,)),
+          //circle
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: CustomPaint(
               painter: CirclePainter(),
-              size: Size(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height),
+              size: Size(width, height),
               child: Center(
                 child: Container(
-                  width: 40,
-                  height: 100,
+                  width: 20,
+                  height: 80,
                   color: Colors.orangeAccent,
                 ),
               ),
             ),
           ),
+          //vertical line
           Container(
-            height: MediaQuery.of(context).size.height / 2.5,
+            height: height / 2.5,
             width: 1.5,
             color: Colors.white,
           ),
+          //horizondal line
           RotatedBox(
             quarterTurns: 3,
             child: Container(
-              height: MediaQuery.of(context).size.height / 2.5,
+              height: height / 2.5,
               width: 1.5,
               color: Colors.white,
             ),
           ),
+          //left cross line
           Transform.rotate(
             angle: 45 * 3.14159 / 180,
             child: Container(
-              height: MediaQuery.of(context).size.height / 2.5,
+              height: height / 2.5,
               width: 1.5,
               color: Colors.white,
             ),
           ),
+          //right cross line
           Transform.rotate(
             angle: 135 * 3.14159 / 180,
             child: Container(
-              height: MediaQuery.of(context).size.height / 2.5,
+              height: height / 2.5,
               width: 1.5,
               color: Colors.white,
             ),
           ),
           Positioned(
-            left: MediaQuery.of(context).size.width / 2.6,
-            top: MediaQuery.of(context).size.height / 2.6,
+            left: width / 2.6,
+            top: height / 2.6,
             child: GestureDetector(
               onTap: (){
                 openConfirmDialog("Short Third Man",1, context);
@@ -81,8 +91,8 @@ class _ThreeCirclesState extends State<ThreeCircles> {
             ),
           ),
           Positioned(
-            left: MediaQuery.of(context).size.width / 3.4,
-            top: MediaQuery.of(context).size.height / 2.2,
+            left: width / 3.4,
+            top: height / 2.2,
             child: GestureDetector(
               onTap: (){
                 openConfirmDialog("Point",2, context);
@@ -97,8 +107,8 @@ class _ThreeCirclesState extends State<ThreeCircles> {
             ),
           ),
           Positioned(
-            left: MediaQuery.of(context).size.width / 1.9,
-            top: MediaQuery.of(context).size.height / 2.6,
+            left: width / 1.9,
+            top: height / 2.6,
             child: GestureDetector(
               onTap: (){
                 openConfirmDialog("Fine Leg",3, context);
@@ -113,8 +123,8 @@ class _ThreeCirclesState extends State<ThreeCircles> {
             ),
           ),
           Positioned(
-            right: MediaQuery.of(context).size.width / 3.6,
-            top: MediaQuery.of(context).size.height / 2.2,
+            right: width / 3.6,
+            top: height / 2.2,
             child: GestureDetector(
               onTap: (){
                 openConfirmDialog("Square Leg",4, context);
@@ -130,8 +140,8 @@ class _ThreeCirclesState extends State<ThreeCircles> {
           ),
 
           Positioned(
-            left: MediaQuery.of(context).size.width / 2.5,
-            bottom: MediaQuery.of(context).size.height / 2.5,
+            left: width / 2.5,
+            bottom: height / 2.5,
             child: GestureDetector(
               onTap: (){
                 openConfirmDialog("Mid Off",5, context);
@@ -146,8 +156,8 @@ class _ThreeCirclesState extends State<ThreeCircles> {
             ),
           ),
           Positioned(
-            left: MediaQuery.of(context).size.width / 3.6,
-            bottom: MediaQuery.of(context).size.height / 2.15,
+            left: width / 3.6,
+            bottom: height / 2.15,
             child: GestureDetector(
               onTap: (){
                 openConfirmDialog("Cover",6, context);
@@ -162,8 +172,8 @@ class _ThreeCirclesState extends State<ThreeCircles> {
             ),
           ),
           Positioned(
-            left: MediaQuery.of(context).size.width / 1.8,
-            bottom: MediaQuery.of(context).size.height / 2.5,
+            left: width / 1.8,
+            bottom: height / 2.5,
             child: GestureDetector(
               onTap: (){
                 openConfirmDialog("Mid On",7, context);
@@ -178,8 +188,8 @@ class _ThreeCirclesState extends State<ThreeCircles> {
             ),
           ),
           Positioned(
-            right: MediaQuery.of(context).size.width / 3.6,
-            bottom: MediaQuery.of(context).size.height / 2.2,
+            right: width / 3.6,
+            bottom: height / 2.2,
             child: GestureDetector(
               onTap: (){
                 openConfirmDialog("Mid Wicket",8, context);
@@ -196,8 +206,8 @@ class _ThreeCirclesState extends State<ThreeCircles> {
           //OUTER CIRCLE
 
           Positioned(
-            right: MediaQuery.of(context).size.width / 3.1,
-            bottom: MediaQuery.of(context).size.height / 3.1,
+            right: width / 3.1,
+            bottom: height / 3.1,
             child: GestureDetector(
               onTap: (){
                 openConfirmDialog("Long On",9, context);
@@ -212,8 +222,8 @@ class _ThreeCirclesState extends State<ThreeCircles> {
             ),
           ),
           Positioned(
-            left: MediaQuery.of(context).size.width / 3.1,
-            bottom: MediaQuery.of(context).size.height / 3.1,
+            left: width / 3.1,
+            bottom: height / 3.1,
             child: GestureDetector(
               onTap: (){
                 openConfirmDialog("Long Off",10, context);
@@ -228,8 +238,8 @@ class _ThreeCirclesState extends State<ThreeCircles> {
             ),
           ),
           Positioned(
-            right: MediaQuery.of(context).size.width / 9,
-            bottom: MediaQuery.of(context).size.height / 2.4,
+            right: width / 9,
+            bottom: height / 2.4,
             child: GestureDetector(
               onTap: (){
                 openConfirmDialog("Deep Mid Wicket",11, context);
@@ -244,8 +254,8 @@ class _ThreeCirclesState extends State<ThreeCircles> {
             ),
           ),
           Positioned(
-            left: MediaQuery.of(context).size.width / 8,
-            bottom: MediaQuery.of(context).size.height / 2.4,
+            left: width / 8,
+            bottom: height / 2.4,
             child: GestureDetector(
               onTap: (){
                 openConfirmDialog("Deep Cover",12, context);
@@ -261,8 +271,8 @@ class _ThreeCirclesState extends State<ThreeCircles> {
           ),
 
           Positioned(
-            right: MediaQuery.of(context).size.width / 3.3,
-            top: MediaQuery.of(context).size.height / 3,
+            right: width / 3.3,
+            top: height / 3,
             child: GestureDetector(
               onTap: (){
                 openConfirmDialog("Deep Fine Leg",13, context);
@@ -277,8 +287,8 @@ class _ThreeCirclesState extends State<ThreeCircles> {
             ),
           ),
           Positioned(
-            left: MediaQuery.of(context).size.width / 3.2,
-            top: MediaQuery.of(context).size.height / 3,
+            left: width / 3.2,
+            top: height / 3,
             child: GestureDetector(
               onTap: (){
                 openConfirmDialog("Third Man",14, context);
@@ -293,8 +303,8 @@ class _ThreeCirclesState extends State<ThreeCircles> {
             ),
           ),
           Positioned(
-            right: MediaQuery.of(context).size.width / 9,
-            top: MediaQuery.of(context).size.height / 2.4,
+            right: width / 9,
+            top: height / 2.4,
             child: GestureDetector(
               onTap: (){
                 openConfirmDialog("Deep Square Leg",15, context);
@@ -309,8 +319,8 @@ class _ThreeCirclesState extends State<ThreeCircles> {
             ),
           ),
           Positioned(
-            left: MediaQuery.of(context).size.width / 8,
-            top: MediaQuery.of(context).size.height / 2.4,
+            left: width / 8,
+            top: height / 2.4,
             child: GestureDetector(
               onTap: (){
                 openConfirmDialog("Deep Point",16, context);

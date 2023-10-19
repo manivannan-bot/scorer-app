@@ -26,10 +26,7 @@ class OutMethodDialog extends StatefulWidget {
 }
 
 class _OutMethodDialogState extends State<OutMethodDialog> {
-  List<Players>? items = [];
-  String selectedPlayerName = "";
-  String? selectedTeamName ="";
-  int? selectedIndex;
+
 
   @override
   Widget build(BuildContext context) {

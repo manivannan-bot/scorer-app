@@ -1,71 +1,195 @@
 class PlayerListModel {
   bool? status;
-  String? message;
-  Data? data;
+  dynamic message;
+  Team? team;
+  List<BattingPlayers>? battingPlayers;
+  List<BowlingPlayers>? bowlingPlayers;
+  List<WkPlayers>? wkPlayers;
 
-  PlayerListModel({this.status, this.message, this.data});
+  PlayerListModel(
+      {this.status,
+        this.message,
+        this.team,
+        this.battingPlayers,
+        this.bowlingPlayers,
+        this.wkPlayers});
 
   PlayerListModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
-    if (this.data != null) {
-      data['data'] = this.data!.toJson();
+    team = json['team'] != null ? new Team.fromJson(json['team']) : null;
+    if (json['batting_players'] != null) {
+      battingPlayers = <BattingPlayers>[];
+      json['batting_players'].forEach((v) {
+        battingPlayers!.add(new BattingPlayers.fromJson(v));
+      });
     }
-    return data;
-  }
-}
-
-class Data {
-  int? id;
-  String? teamName;
-  List<Players>? players;
-
-  Data({this.id, this.teamName, this.players});
-
-  Data.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    teamName = json['team_name'];
-    if (json['players'] != null) {
-      players = <Players>[];
-      json['players'].forEach((v) {
-        players!.add(new Players.fromJson(v));
+    if (json['bowling_players'] != null) {
+      bowlingPlayers = <BowlingPlayers>[];
+      json['bowling_players'].forEach((v) {
+        bowlingPlayers!.add(new BowlingPlayers.fromJson(v));
+      });
+    }
+    if (json['wk_players'] != null) {
+      wkPlayers = <WkPlayers>[];
+      json['wk_players'].forEach((v) {
+        wkPlayers!.add(new WkPlayers.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['team_name'] = this.teamName;
-    if (this.players != null) {
-      data['players'] = this.players!.map((v) => v.toJson()).toList();
+    data['status'] = this.status;
+    data['message'] = this.message;
+    if (this.team != null) {
+      data['team'] = this.team!.toJson();
+    }
+    if (this.battingPlayers != null) {
+      data['batting_players'] =
+          this.battingPlayers!.map((v) => v.toJson()).toList();
+    }
+    if (this.bowlingPlayers != null) {
+      data['bowling_players'] =
+          this.bowlingPlayers!.map((v) => v.toJson()).toList();
+    }
+    if (this.wkPlayers != null) {
+      data['wk_players'] = this.wkPlayers!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
-class Players {
-  int? playerId;
-  dynamic playerName;
+class Team {
+  dynamic id;
+  dynamic teamName;
 
-  Players({this.playerId, this.playerName});
+  Team({this.id, this.teamName});
 
-  Players.fromJson(Map<String, dynamic> json) {
+  Team.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    teamName = json['team_name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['team_name'] = this.teamName;
+    return data;
+  }
+}
+
+class BattingPlayers {
+  dynamic playerId;
+  dynamic name;
+  dynamic playingStyle;
+  dynamic runsScored;
+  dynamic ballsFaced;
+  dynamic isOut;
+
+  BattingPlayers(
+      {this.playerId,
+        this.name,
+        this.playingStyle,
+        this.runsScored,
+        this.ballsFaced,
+        this.isOut});
+
+  BattingPlayers.fromJson(Map<String, dynamic> json) {
     playerId = json['player_id'];
-    playerName = json['player_name'];
+    name = json['name'];
+    playingStyle = json['playing_style'];
+    runsScored = json['runs_scored'];
+    ballsFaced = json['balls_faced'];
+    isOut = json['is_out'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['player_id'] = this.playerId;
-    data['player_name'] = this.playerName;
+    data['name'] = this.name;
+    data['playing_style'] = this.playingStyle;
+    data['runs_scored'] = this.runsScored;
+    data['balls_faced'] = this.ballsFaced;
+    data['is_out'] = this.isOut;
+    return data;
+  }
+}
+
+class BowlingPlayers {
+  dynamic playerId;
+  dynamic name;
+  dynamic playingStyle;
+  Null? overBall;
+  Null? maiden;
+  Null? runsConceded;
+  Null? wickets;
+
+  BowlingPlayers(
+      {this.playerId,
+        this.name,
+        this.playingStyle,
+        this.overBall,
+        this.maiden,
+        this.runsConceded,
+        this.wickets});
+
+  BowlingPlayers.fromJson(Map<String, dynamic> json) {
+    playerId = json['player_id'];
+    name = json['name'];
+    playingStyle = json['playing_style'];
+    overBall = json['over_ball'];
+    maiden = json['maiden'];
+    runsConceded = json['runs_conceded'];
+    wickets = json['wickets'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['player_id'] = this.playerId;
+    data['name'] = this.name;
+    data['playing_style'] = this.playingStyle;
+    data['over_ball'] = this.overBall;
+    data['maiden'] = this.maiden;
+    data['runs_conceded'] = this.runsConceded;
+    data['wickets'] = this.wickets;
+    return data;
+  }
+}
+
+class WkPlayers {
+  dynamic playerId;
+  dynamic name;
+  dynamic playingStyle;
+  Null? runsScored;
+  Null? ballsFaced;
+  Null? isOut;
+
+  WkPlayers(
+      {this.playerId,
+        this.name,
+        this.playingStyle,
+        this.runsScored,
+        this.ballsFaced,
+        this.isOut});
+
+  WkPlayers.fromJson(Map<String, dynamic> json) {
+    playerId = json['player_id'];
+    name = json['name'];
+    playingStyle = json['playing_style'];
+    runsScored = json['runs_scored'];
+    ballsFaced = json['balls_faced'];
+    isOut = json['is_out'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['player_id'] = this.playerId;
+    data['name'] = this.name;
+    data['playing_style'] = this.playingStyle;
+    data['runs_scored'] = this.runsScored;
+    data['balls_faced'] = this.ballsFaced;
+    data['is_out'] = this.isOut;
     return data;
   }
 }

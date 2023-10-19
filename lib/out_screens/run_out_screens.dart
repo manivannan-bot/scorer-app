@@ -29,7 +29,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
   int? isWideSelected ;
   int? isRunSelected ;
   int? selectedBowler;
-  List<Players>? itemsBowler= [];
+  List<BowlingPlayers>? itemsBowler= [];
   String? selectedBTeamName ="";
   String selectedBowlerName = "";
   int selectedBowlerId=0;
@@ -200,10 +200,10 @@ class _RunOutScreenState extends State<RunOutScreen> {
                             padding:  EdgeInsets.only(left: 10.w),
                             child: GestureDetector(onTap: ()async{
 
-                              await ScoringProvider().getPlayerList(widget.scoringData!.data!.batting![0].matchId.toString(), widget.scoringData!.data!.bowling!.teamId.toString()).then((value){
+                              await ScoringProvider().getPlayerList(widget.scoringData!.data!.batting![0].matchId.toString(), widget.scoringData!.data!.bowling!.teamId.toString(),'bowl').then((value){
                                 setState(() {
-                                  itemsBowler = value.data!.players;
-                                  selectedBTeamName= value.data!.teamName;
+                                  itemsBowler = value.bowlingPlayers;
+                                  selectedBTeamName= value.team!.teamName;
                                 });
 
                                 _displayBowlerBottomSheet (context,selectedBowler,(bowlerIndex) async{
@@ -212,7 +212,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
                                     selectedBowler = bowlerIndex;
                                     if (selectedBowler != null) {
 
-                                      selectedBowlerName = itemsBowler![selectedBowler!].playerName ?? "";
+                                      selectedBowlerName = itemsBowler![selectedBowler!].name ?? "";
                                       selectedBowlerId= itemsBowler![selectedBowler!].playerId??0;
                                     }
                                   });
@@ -659,7 +659,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("${itemsBowler![index].playerName??'-'}",style: fontMedium.copyWith(
+                                    Text("${itemsBowler![index].name??'-'}",style: fontMedium.copyWith(
                                       fontSize: 12.sp,
                                       color: AppColor.blackColour,
                                     ),),

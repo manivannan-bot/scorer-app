@@ -98,12 +98,12 @@ class ScoringProvider extends ChangeNotifier{
   }
 
 
-  Future<PlayerListModel> getPlayerList(String matchid,String teamid) async{
+  Future<PlayerListModel> getPlayerList(String matchid,String teamid,String option) async{
     // SharedPreferences preferences = await SharedPreferences.getInstance();
     // String? accToken = preferences.getString("access_token");
     // print("usertoken $accToken");
     try {
-      final String baseUrl = "${AppConstants.getPlayerList}/$matchid/$teamid";
+      final String baseUrl = "${AppConstants.getPlayerList}/$matchid/$teamid/$option";
       // final Map<String, String> queryParams = {
       //   'api_token': accToken.toString(),
       // };

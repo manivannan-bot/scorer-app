@@ -26,7 +26,7 @@ class CaughtOutScreen extends StatefulWidget {
 class _CaughtOutScreenState extends State<CaughtOutScreen> {
   int? localBowlerIndex;
   int? selectedBowler;
-  List<Players>? itemsBowler= [];
+  List<BowlingPlayers>? itemsBowler= [];
   String? selectedBTeamName ="";
   String selectedBowlerName = "";
   int? selectedBowlerId;
@@ -36,10 +36,10 @@ class _CaughtOutScreenState extends State<CaughtOutScreen> {
     fetchPlayers();
   }
  fetchPlayers()async{
-   final response = await ScoringProvider().getPlayerList(widget.scoringData!.data!.bowling!.matchId.toString(), widget.scoringData!.data!.bowling!.teamId.toString());
+   final response = await ScoringProvider().getPlayerList(widget.scoringData!.data!.bowling!.matchId.toString(), widget.scoringData!.data!.bowling!.teamId.toString(),'bowl');
    setState(() {
-     itemsBowler = response.data!.players;
-     selectedBTeamName= response.data!.teamName;
+     itemsBowler = response.bowlingPlayers!;
+     selectedBTeamName= response.team!.teamName??'-';
 
    });
  }
@@ -163,7 +163,7 @@ class _CaughtOutScreenState extends State<CaughtOutScreen> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("${itemsBowler![index].playerName??'-'}",style: fontMedium.copyWith(
+                                Text("${itemsBowler![index].name??'-'}",style: fontMedium.copyWith(
                                   fontSize: 12.sp,
                                   color: AppColor.blackColour,
                                 ),),
