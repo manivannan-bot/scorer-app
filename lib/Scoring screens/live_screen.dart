@@ -89,7 +89,7 @@ class _LiveScreenState extends State<LiveScreen> {
                                 child: Row(
                                   children: [
                                     Image.asset(Images.teamaLogo,width: 10.w,),
-                                    SizedBox(width: 3.w,),
+                                    SizedBox(width: 2.w,),
                                    Text(
                                      matchlist![index].team1Name??'',
                                        style: fontMedium.copyWith(
@@ -97,7 +97,7 @@ class _LiveScreenState extends State<LiveScreen> {
                                      color: AppColor.pri,
                                    )
                                    ),
-                                    SizedBox(width: 3.w,),
+                                    SizedBox(width: 2.w,),
                                     RichText(
                                         text: TextSpan(children: [
                                           TextSpan(
@@ -119,7 +119,7 @@ class _LiveScreenState extends State<LiveScreen> {
                                                   color: AppColor.pri
                                               )),
                                         ])),
-                                    SizedBox(width: 3.w,),
+                                    SizedBox(width: 2.w,),
                                     RichText(text: TextSpan(children: [
                                           TextSpan(
                                               text: ("${matchlist![index].teams!.first.overNumber??''}.${matchlist![index].teams!.first.ballNumber??''}"),
@@ -150,12 +150,12 @@ class _LiveScreenState extends State<LiveScreen> {
                                 child: Row(
                                   children: [
                                     Image.asset(Images.teamblogo,width: 10.w,fit: BoxFit.fill,),
-                                    SizedBox(width: 3.w,),
+                                    SizedBox(width: 2.w,),
                                     Text(" ${matchlist![index].team2Name??''}", style: fontMedium.copyWith(
                                       fontSize: 13.sp,
                                       color:Color(0xff555555),
                                     ),),
-                                    SizedBox(width: 3.w,),
+                                    SizedBox(width: 2.w,),
                                     (matchlist![index].currentInnings==2)?
                                     Row(children: [
                                       RichText(
@@ -179,7 +179,7 @@ class _LiveScreenState extends State<LiveScreen> {
                                                     color: AppColor.pri
                                                 )),
                                           ])),
-                                      SizedBox(width: 3.w,),
+                                      SizedBox(width: 2.w,),
                                       RichText(text: TextSpan(children: [
                                         TextSpan(
                                             text: ("${matchlist![index].teams![1].currentOverDetails??'0'}"),

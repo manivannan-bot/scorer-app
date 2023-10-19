@@ -130,7 +130,7 @@ class _ScoringTabState extends State<ScoringTab> {
           ClipRRect(
             borderRadius: BorderRadius.circular(5.h),
             child: Padding(
-              padding: EdgeInsets.only(left: 18),
+              padding: EdgeInsets.only(left: 12),
               child: SizedBox(
                   height: 26.h,
                   width: 100.w,
@@ -249,7 +249,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                         SvgPicture.asset(Images.stumpIcon1,width:3.w,height: 3.h,),
                                         Padding(padding: EdgeInsets.only(left: 2.w,),
                                             child:  Text('OW',style: fontRegular.copyWith(fontSize: 16),)),
-                                        SizedBox(width:15.w),
+                                        SizedBox(width:10.w),
                                         Padding(padding: EdgeInsets.only(right: 2.w,),
                                             child:  Text('RW',style: fontRegular.copyWith(fontSize: 16),)),
                                         SvgPicture.asset(Images.stumpIcon2,width:3.w,height: 3.h,)
