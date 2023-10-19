@@ -490,6 +490,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
                       var nonStrikerId=prefs.getInt('non_striker_id')??0;
                       var bowlerId=prefs.getInt('bowler_id')??0;
                       var keeperId=prefs.getInt('wicket_keeper_id')??0;
+                      var bowlerPosition=prefs.getInt('bowlerPosition')??0;
 
                       ScoreUpdateRequestModel scoreUpdateRequestModel=ScoreUpdateRequestModel();
                       scoreUpdateRequestModel.ballTypeId=14;
@@ -516,7 +517,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
                       scoreUpdateRequestModel.totalWicket=0;
                       scoreUpdateRequestModel.fieldingPositionsId=0;
                       scoreUpdateRequestModel.endInnings=false;
-                      scoreUpdateRequestModel.bowlerPosition=0;
+                      scoreUpdateRequestModel.bowlerPosition=bowlerPosition;
                       ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
 
                         SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -674,7 +675,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
                                           ),
                                         ),
                                         SizedBox(width: 2.w,),
-                                        Text("Right hand batsman",style: fontMedium.copyWith(
+                                        Text(itemsBowler![index].playingStyle??'-',style: fontMedium.copyWith(
                                             fontSize: 11.sp,
                                             color: Color(0xff555555)
                                         ),),

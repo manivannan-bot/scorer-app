@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:r_dotted_line_border/r_dotted_line_border.dart';
@@ -29,6 +31,7 @@ class DOScoring extends StatefulWidget {
 class _DOScoringState extends State<DOScoring> {
   List<BattingPlayers>? items = [];
   List<BowlingPlayers>? itemsBowler= [];
+  List<WkPlayers>? itemsKeeper= [];
   int? selectedIndex;
   int? selectedBowler;
   int? selectedWicketKeeper;
@@ -39,6 +42,7 @@ class _DOScoringState extends State<DOScoring> {
   String selectedBowlerName = "";
   String? selectedPlayer2Name='';
   String selectedWicketKeeperName = "";
+  bool showError=false;
 
   @override
   void initState() {
@@ -58,7 +62,7 @@ class _DOScoringState extends State<DOScoring> {
         selectedTeamName= response.team!.teamName;
 
       });
-      print('mani: $items');
+
     } catch (error) {
       // Handle any errors here
     }
@@ -70,9 +74,17 @@ class _DOScoringState extends State<DOScoring> {
         selectedBTeamName= response.team!.teamName;
 
       });
-      print('mani1: $itemsBowler');
     } catch (error) {
-      // Handle any errors here
+    }
+
+    try {
+      final response = await ScoringProvider().getPlayerList(matchId, team2id,'wk');
+      setState(() {
+        itemsKeeper = response.wkPlayers;
+        selectedBTeamName= response.team!.teamName;
+
+      });
+    } catch (error) {
     }
   }
 
@@ -216,11 +228,10 @@ class _DOScoringState extends State<DOScoring> {
                               setState(() {
                                 selectedWicketKeeper = bowlerIndex;
                                 if (selectedWicketKeeper != null) {
-                                  selectedWicketKeeperName = itemsBowler![selectedWicketKeeper!].name ?? "";
+                                  selectedWicketKeeperName = itemsKeeper![selectedWicketKeeper!].name ?? "";
                                 }
                               });
-                              SharedPreferences prefs = await SharedPreferences.getInstance();
-                              await prefs.setInt('wicket_keeper_id', itemsBowler![selectedWicketKeeper!].playerId!);
+
                             });
                           },
                             child: ChooseContainer(selectedWicketKeeper==null?"Wicket Keeper":selectedWicketKeeperName)),
@@ -395,7 +406,7 @@ class _DOScoringState extends State<DOScoring> {
                                         ),
                                       ),
                                       SizedBox(width: 2.w,),
-                                      Text("Right hand batsman",style: fontMedium.copyWith(
+                                      Text(items![index].playingStyle??'-',style: fontMedium.copyWith(
                                           fontSize: 11.sp,
                                           color: Color(0xff555555)
                                       ),),
@@ -597,7 +608,7 @@ class _DOScoringState extends State<DOScoring> {
                                           ),
                                         ),
                                         SizedBox(width: 2.w,),
-                                        Text("Right hand batsman",style: fontMedium.copyWith(
+                                        Text(itemsBowler![index].playingStyle??'-',style: fontMedium.copyWith(
                                             fontSize: 11.sp,
                                             color: Color(0xff555555)
                                         ),),
@@ -652,7 +663,7 @@ class _DOScoringState extends State<DOScoring> {
     );
   }
   _displayKeeperBottomSheet (BuildContext context, int? selectedBowler,Function(int?) onItemSelected) async{
-    int? localBowlerIndex = selectedBowler;
+    int? localBowlerIndex =selectedBowler;
     showModalBottomSheet(context: context,
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
@@ -734,7 +745,7 @@ class _DOScoringState extends State<DOScoring> {
                           thickness: 0.6,
                         );
                       },
-                      itemCount: itemsBowler!.length,
+                      itemCount: itemsKeeper!.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
@@ -759,7 +770,7 @@ class _DOScoringState extends State<DOScoring> {
                                     shape: BoxShape.circle,
                                     color: localBowlerIndex  == index ? Colors.blue : Colors.grey, // Change colors based on selected index
                                   ),
-                                  child: Center(
+                                  child: const Center(
                                     child: Icon(
                                       Icons.circle_outlined, // You can change the icon as needed
                                       color: Colors.white, // Icon color
@@ -772,7 +783,7 @@ class _DOScoringState extends State<DOScoring> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("${itemsBowler![index].name??'-'}",style: fontMedium.copyWith(
+                                    Text("${itemsKeeper![index].name??'-'}",style: fontMedium.copyWith(
                                       fontSize: 12.sp,
                                       color: AppColor.blackColour,
                                     ),),
@@ -787,7 +798,7 @@ class _DOScoringState extends State<DOScoring> {
                                           ),
                                         ),
                                         SizedBox(width: 2.w,),
-                                        Text("Right hand batsman",style: fontMedium.copyWith(
+                                        Text(itemsKeeper![index].playingStyle??'-',style: fontMedium.copyWith(
                                             fontSize: 11.sp,
                                             color: Color(0xff555555)
                                         ),),
@@ -825,11 +836,30 @@ class _DOScoringState extends State<DOScoring> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        CancelBtn("Cancel"),
+                        Visibility(
+                          visible: showError,
+                          child: Text(
+                            'Please Select One Option',
+                            style: fontMedium.copyWith(color: AppColor.redColor),
+                          ),
+                        ),
+                        GestureDetector(onTap:(){
+                          Navigator.pop(context);
+                        },child: CancelBtn("Cancel")),
                         SizedBox(width: 2.w,),
                         GestureDetector(onTap:()async {
 
-                          Navigator.pop(context);
+                                   if(localBowlerIndex!=null){
+                                     SharedPreferences prefs = await SharedPreferences.getInstance();
+                                     await prefs.setInt('wicket_keeper_id', itemsKeeper![localBowlerIndex!].playerId!);
+                                     Navigator.pop(context);
+                                   }else{
+
+                                     setState(() {showError = true;});
+                                       Timer(Duration(seconds: 4), () {setState(() {showError = false;});});
+
+                                   }
+
                         },child: OkBtn("Ok")),
                       ],
                     ),
@@ -949,7 +979,7 @@ class _DOScoringState extends State<DOScoring> {
                                     shape: BoxShape.circle,
                                     color: localSelectedIndex  == index ? Colors.blue : Colors.grey, // Change colors based on selected index
                                   ),
-                                  child: Center(
+                                  child: const Center(
                                     child: Icon(
                                       Icons.circle_outlined, // You can change the icon as needed
                                       color: Colors.white, // Icon color
@@ -977,7 +1007,7 @@ class _DOScoringState extends State<DOScoring> {
                                           ),
                                         ),
                                         SizedBox(width: 2.w,),
-                                        Text("Right hand batsman",style: fontMedium.copyWith(
+                                        Text(items![index].playingStyle??'-',style: fontMedium.copyWith(
                                             fontSize: 11.sp,
                                             color: Color(0xff555555)
                                         ),),

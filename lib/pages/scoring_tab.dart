@@ -65,6 +65,7 @@ class _ScoringTabState extends State<ScoringTab> {
   int? selectedBatsman;
   String selectedBatsmanName = "";
   bool showError=false;
+  int bowlerPosition=0;
 
   ScoringDetailResponseModel scoringDeatailResponseModel=ScoringDetailResponseModel();
   ScoreUpdateRequestModel scoreUpdateRequestModel=ScoreUpdateRequestModel();
@@ -104,7 +105,9 @@ class _ScoringTabState extends State<ScoringTab> {
       return const SizedBox(
           height: 100,
           width: 100,
-          child: Center(child: CircularProgressIndicator()));
+          child: Center(child: CircularProgressIndicator(
+            backgroundColor: Colors.white,
+          )));
     }
     if(scoringData!.data!.batting!.isEmpty || scoringData!.data!.bowling==null){
       return scoringData!.data!.batting!.isEmpty? const SizedBox(
@@ -238,18 +241,39 @@ class _ScoringTabState extends State<ScoringTab> {
                                           )
                                         ]),
                                       ),
-                                      Text('${selectedBowlerName??'-'}    ${scoringData!.data!.bowling!.totalBalls??'0'}(${scoringData!.data!.bowling!.wickets??'0'})',
+                                      Text('${selectedBowlerName.isEmpty?scoringData!.data!.bowling!.playerName??'-':selectedBowlerName}    ${scoringData!.data!.bowling!.totalBalls??'0'}(${scoringData!.data!.bowling!.wickets??'0'})',
                                           style:  fontRegular.copyWith(
                                               color: Colors.black, fontSize: 10.sp)),
                                       SizedBox(height:0.8.h),
                                       Row(children:[
-                                        SvgPicture.asset(Images.stumpIcon1,width:3.w,height: 3.h,),
-                                        Padding(padding: EdgeInsets.only(left: 2.w,),
-                                            child:  Text('OW',style: fontRegular.copyWith(fontSize: 10.sp),)),
+                                       GestureDetector(onTap:()async{
+                                         setState(() {
+                                           bowlerPosition=0;
+                                         });
+                                         SharedPreferences pref=await SharedPreferences.getInstance();
+                                         await pref.setInt('bowlerPosition', 0);
+                                       },
+                                         child: Row(children:[
+                                           SvgPicture.asset(Images.stumpIcon1,width:3.w,height: 3.h,),
+                                           Padding(padding: EdgeInsets.only(left: 2.w,),
+                                               child:  Text('OW',style: fontRegular.copyWith(fontSize: 10.sp),)),
+                                         ]),
+                                       ),
                                         SizedBox(width:8.w),
-                                        Padding(padding: EdgeInsets.only(right: 2.w,),
-                                            child:  Text('RW',style: fontRegular.copyWith(fontSize: 10.sp),)),
-                                        SvgPicture.asset(Images.stumpIcon2,width:3.w,height: 3.h,)
+                                          GestureDetector(
+                                            onTap:()async{
+                                              setState(() {
+                                                bowlerPosition=1;
+                                              });
+                                              SharedPreferences pref=await SharedPreferences.getInstance();
+                                              await pref.setInt('bowlerPosition', 1);
+                                            },
+                                            child: Row(children:[
+                                              Padding(padding: EdgeInsets.only(right: 2.w,),
+                                                  child:  Text('RW',style: fontRegular.copyWith(fontSize: 10.sp),)),
+                                              SvgPicture.asset(Images.stumpIcon2,width:3.w,height: 3.h,)
+                                            ]),
+                                          ),
                                       ]),
 
                                     ],
@@ -275,7 +299,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                     child: Container(
                                       height: 12.h,
                                       width: 90.w,
-                                      color: Colors.yellow,
+                                      color: const Color(0xffF9D700),
                                       child:(scoringData!.data!.over!.isNotEmpty)? ListView(
                                         scrollDirection: Axis.horizontal,
                                         children: <Widget>[
@@ -357,7 +381,7 @@ class _ScoringTabState extends State<ScoringTab> {
                               ),
                               Center(
                                 child: Container(
-                                  color: Colors.yellow,
+                                  color: Color(0xffF9D700),
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 8, vertical: 4),
                                   child: Text(
@@ -426,7 +450,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                 scoreUpdateRequestModel.totalWicket=0;
                                 scoreUpdateRequestModel.fieldingPositionsId=0;
                                 scoreUpdateRequestModel.endInnings=false;
-                                scoreUpdateRequestModel.bowlerPosition=0;
+                                scoreUpdateRequestModel.bowlerPosition=bowlerPosition;
                                 ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value)async {
                                   setState(() {
                                     scoreUpdateResponseModel=value;
@@ -748,7 +772,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                           ),
                                         ),
                                         SizedBox(width: 2.w,),
-                                        Text("Right hand batsman",style: fontMedium.copyWith(
+                                        Text(itemsBowler![index].playingStyle??'-',style: fontMedium.copyWith(
                                             fontSize: 11.sp,
                                             color: Color(0xff555555)
                                         ),),
@@ -944,7 +968,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                           ),
                                         ),
                                         SizedBox(width: 2.w,),
-                                        Text("Right hand batsman",style: fontMedium.copyWith(
+                                        Text(itemsBowler![index].playingStyle??'-',style: fontMedium.copyWith(
                                             fontSize: 11.sp,
                                             color: Color(0xff555555)
                                         ),),
@@ -1048,11 +1072,13 @@ class _ScoringTabState extends State<ScoringTab> {
       },
 
     ];
+
     showModalBottomSheet(context: context,
         backgroundColor: Colors.transparent,
+        isScrollControlled: true,
         builder: (context)=> StatefulBuilder(builder: (context, setState){
           return Container(
-            // height: 33.h,
+            height: 60.h,
             // padding: EdgeInsets.symmetric(horizontal: 2.w),
             decoration: const BoxDecoration(
                 color: AppColor.lightColor,
@@ -1085,7 +1111,7 @@ class _ScoringTabState extends State<ScoringTab> {
                 ),
                 SizedBox(height: 1.h,),
                 Padding(
-                  padding:  EdgeInsets.only(left: 2.w,right: 2.w),
+                  padding:  EdgeInsets.only(left: 2.w,right: .2.w),
                   child: Wrap(
                     spacing: 2.w,
                     runSpacing: 1.h,
@@ -1509,7 +1535,7 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
                               scoreUpdateRequestModel.totalWicket = 0;
                               scoreUpdateRequestModel.fieldingPositionsId = 0;
                               scoreUpdateRequestModel.endInnings = false;
-                              scoreUpdateRequestModel.bowlerPosition = 0;
+                              scoreUpdateRequestModel.bowlerPosition = bowlerPosition;
                               ScoringProvider().scoreUpdate(
                                   scoreUpdateRequestModel).then((value) async {
                                 SharedPreferences prefs = await SharedPreferences
@@ -1788,7 +1814,7 @@ Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,Scorin
                           scoreUpdateRequestModel.totalWicket = 0;
                           scoreUpdateRequestModel.fieldingPositionsId = 0;
                           scoreUpdateRequestModel.endInnings = false;
-                          scoreUpdateRequestModel.bowlerPosition=0;
+                          scoreUpdateRequestModel.bowlerPosition=bowlerPosition;
                           ScoringProvider()
                               .scoreUpdate(scoreUpdateRequestModel)
                               .then((value) async {
@@ -1966,7 +1992,7 @@ Future<void> _displayBottomSheetLegBye (BuildContext context, int ballType,Scori
                         scoreUpdateRequestModel.totalWicket=0;
                         scoreUpdateRequestModel.fieldingPositionsId=0;
                         scoreUpdateRequestModel.endInnings=false;
-                        scoreUpdateRequestModel.bowlerPosition=0;
+                        scoreUpdateRequestModel.bowlerPosition=bowlerPosition;
                         ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
                           SharedPreferences prefs = await SharedPreferences.getInstance();
                           await prefs.setInt('over_number', value.data!.overNumber??0);
@@ -2127,7 +2153,7 @@ Future<void> _displayBottomSheetByes (BuildContext context,int ballType,ScoringD
                         scoreUpdateRequestModel.totalWicket=0;
                         scoreUpdateRequestModel.fieldingPositionsId=0;
                         scoreUpdateRequestModel.endInnings=false;
-                        scoreUpdateRequestModel.bowlerPosition=0;
+                        scoreUpdateRequestModel.bowlerPosition=bowlerPosition;
                         ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value)async{
                           SharedPreferences prefs = await SharedPreferences.getInstance();
                           await prefs.setInt('over_number', value.data!.overNumber??0);
@@ -2359,7 +2385,7 @@ Future<void> _displayBottomSheetBonus (BuildContext context, int? ballType, Scor
                           scoreUpdateRequestModel.totalWicket=0;
                           scoreUpdateRequestModel.fieldingPositionsId=0;
                           scoreUpdateRequestModel.endInnings=false;
-                          scoreUpdateRequestModel.bowlerPosition=0;
+                          scoreUpdateRequestModel.bowlerPosition=bowlerPosition;
                           ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
                             SharedPreferences prefs = await SharedPreferences.getInstance();
                             await prefs.setInt('over_number', value.data!.overNumber??0);
@@ -2550,7 +2576,7 @@ Future<void> _displayBottomSheetMoreRuns (BuildContext context,int ballType,Scor
                           scoreUpdateRequestModel.totalWicket = 0;
                           scoreUpdateRequestModel.fieldingPositionsId = 0;
                           scoreUpdateRequestModel.endInnings = false;
-                          scoreUpdateRequestModel.bowlerPosition=0;
+                          scoreUpdateRequestModel.bowlerPosition=bowlerPosition;
                           ScoringProvider()
                               .scoreUpdate(scoreUpdateRequestModel)
                               .then((value) async {

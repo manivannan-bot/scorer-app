@@ -253,6 +253,7 @@ class _RetiredScreensState extends State<RetiredScreens> {
                       var nonStrikerId=prefs.getInt('non_striker_id')??0;
                       var bowlerId=prefs.getInt('bowler_id')??0;
                       var keeperId=prefs.getInt('wicket_keeper_id')??0;
+                      var bowlerPosition=prefs.getInt('bowlerPosition')??0;
 
                       ScoreUpdateRequestModel scoreUpdateRequestModel=ScoreUpdateRequestModel();
                       scoreUpdateRequestModel.ballTypeId=14;
@@ -279,7 +280,7 @@ class _RetiredScreensState extends State<RetiredScreens> {
                       scoreUpdateRequestModel.totalWicket=0;
                       scoreUpdateRequestModel.fieldingPositionsId=0;
                       scoreUpdateRequestModel.endInnings=false;
-                      scoreUpdateRequestModel.bowlerPosition=0;
+                      scoreUpdateRequestModel.bowlerPosition=bowlerPosition;
                       ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
 
                         SharedPreferences prefs = await SharedPreferences.getInstance();

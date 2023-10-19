@@ -806,6 +806,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                         var nonStrikerId=prefs.getInt('non_striker_id')??0;
                         var bowlerId=prefs.getInt('bowler_id')??0;
                         var keeperId=prefs.getInt('wicket_keeper_id')??0;
+                        var bowlerPosition=prefs.getInt('bowlerPosition')??0;
 
                         scoreUpdateRequestModel.ballTypeId=widget.run;
                         scoreUpdateRequestModel.matchId=widget.scoringData.data!.batting![0].matchId;
@@ -831,7 +832,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                         scoreUpdateRequestModel.totalWicket=0;
                         scoreUpdateRequestModel.fieldingPositionsId=fieldPositionId;
                         scoreUpdateRequestModel.endInnings=false;
-                        scoreUpdateRequestModel.bowlerPosition=0;
+                        scoreUpdateRequestModel.bowlerPosition= bowlerPosition;
                         ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
                           widget.onSave(value);
                           SharedPreferences prefs = await SharedPreferences.getInstance();

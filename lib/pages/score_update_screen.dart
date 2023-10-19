@@ -80,7 +80,9 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
       return const SizedBox(
           height: 100,
           width: 100,
-          child: Center(child: CircularProgressIndicator())); // Example of a loading indicator
+          child: Center(child: CircularProgressIndicator(
+            backgroundColor: Colors.white,
+          ))); // Example of a loading indicator
     }
     return Scaffold(
       body: SmartRefresher(
