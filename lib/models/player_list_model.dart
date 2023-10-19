@@ -1,6 +1,6 @@
 class PlayerListModel {
   bool? status;
-  dynamic message;
+  String? message;
   Team? team;
   List<BattingPlayers>? battingPlayers;
   List<BowlingPlayers>? bowlingPlayers;
@@ -61,8 +61,8 @@ class PlayerListModel {
 }
 
 class Team {
-  dynamic id;
-  dynamic teamName;
+  int? id;
+  String? teamName;
 
   Team({this.id, this.teamName});
 
@@ -80,12 +80,12 @@ class Team {
 }
 
 class BattingPlayers {
-  dynamic playerId;
-  dynamic name;
-  dynamic playingStyle;
-  dynamic runsScored;
-  dynamic ballsFaced;
-  dynamic isOut;
+  int? playerId;
+  String? name;
+  String? playingStyle;
+  int? runsScored;
+  int? ballsFaced;
+  int? isOut;
 
   BattingPlayers(
       {this.playerId,
@@ -117,13 +117,13 @@ class BattingPlayers {
 }
 
 class BowlingPlayers {
-  dynamic playerId;
-  dynamic name;
-  dynamic playingStyle;
-  Null? overBall;
-  Null? maiden;
-  Null? runsConceded;
-  Null? wickets;
+  int? playerId;
+  String? name;
+  String? playingStyle;
+  dynamic overBall;
+  dynamic maiden;
+  dynamic runsConceded;
+  dynamic wickets;
 
   BowlingPlayers(
       {this.playerId,
@@ -158,12 +158,12 @@ class BowlingPlayers {
 }
 
 class WkPlayers {
-  dynamic playerId;
-  dynamic name;
-  dynamic playingStyle;
-  Null? runsScored;
-  Null? ballsFaced;
-  Null? isOut;
+  int? playerId;
+  String? name;
+  String? playingStyle;
+  dynamic runsScored;
+  dynamic ballsFaced;
+  dynamic isOut;
 
   WkPlayers(
       {this.playerId,
