@@ -86,7 +86,7 @@ class _RetiredHurtScreenState extends State<RetiredHurtScreen> {
                                     });
                                   },
                                   child: Container(
-                                    padding: EdgeInsets.symmetric(horizontal:8.w,vertical: 2.h),
+                                    padding: EdgeInsets.symmetric(horizontal:4.w,vertical: 2.h),
                                     decoration: BoxDecoration(
                                       border: Border.all(color: Color(0xffDFDFDF)),
                                       borderRadius: BorderRadius.circular(20),
@@ -100,12 +100,14 @@ class _RetiredHurtScreenState extends State<RetiredHurtScreen> {
                                         Text("${widget.scoringData!.data!.batting![0].playerName}",style: fontMedium.copyWith(
                                           fontSize: 10.sp,
                                           color: AppColor.blackColour,
-                                        ),),
+                                        ),
+                                          overflow:  TextOverflow.ellipsis),
                                       ],
                                     ),
                                   ),
                                 ),
-                                SizedBox(width: 5.w,),
+                                 SizedBox(width: 4.w,),
+
                                 GestureDetector(
                                   onTap: (){
                                     setState(() {
@@ -114,7 +116,7 @@ class _RetiredHurtScreenState extends State<RetiredHurtScreen> {
                                     });
                                   },
                                   child: Container(
-                                    padding: EdgeInsets.symmetric(horizontal:8.w,vertical: 2.h),
+                                    padding: EdgeInsets.symmetric(horizontal:4.w,vertical: 2.h),
                                     decoration: BoxDecoration(
                                       border: Border.all(color: Color(0xffDFDFDF)),
                                       borderRadius: BorderRadius.circular(20),
@@ -125,10 +127,13 @@ class _RetiredHurtScreenState extends State<RetiredHurtScreen> {
                                       children: [
                                         Image.asset(Images.playerImg,width: 20.w,),
                                         SizedBox(height: 1.h,),
-                                        Text("${widget.scoringData!.data!.batting![1].playerName}",style: fontMedium.copyWith(
-                                          fontSize: 10.sp,
-                                          color: AppColor.blackColour,
-                                        ),),
+                                        FittedBox(
+                                          child: Text("${widget.scoringData!.data!.batting![1].playerName}",style: fontMedium.copyWith(
+                                            fontSize: 10.sp,
+                                            color: AppColor.blackColour,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,),
+                                        ),
                                       ],
                                     ),
                                   ),

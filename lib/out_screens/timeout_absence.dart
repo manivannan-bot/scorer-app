@@ -85,7 +85,7 @@ class _TimeOutAbsenceState extends State<TimeOutAbsence> {
                                     });
                                   },
                                   child: Container(
-                                    padding: EdgeInsets.symmetric(horizontal:8.w,vertical: 2.h),
+                                    padding: EdgeInsets.symmetric(horizontal:4.w,vertical: 2.h),
                                     decoration: BoxDecoration(
                                       border: Border.all(color: Color(0xffDFDFDF)),
                                       borderRadius: BorderRadius.circular(20),
@@ -113,7 +113,7 @@ class _TimeOutAbsenceState extends State<TimeOutAbsence> {
                                     });
                                   },
                                   child: Container(
-                                    padding: EdgeInsets.symmetric(horizontal:8.w,vertical: 2.h),
+                                    padding: EdgeInsets.symmetric(horizontal:4.w,vertical: 2.h),
                                     decoration: BoxDecoration(
                                       border: Border.all(color: Color(0xffDFDFDF)),
                                       borderRadius: BorderRadius.circular(20),
