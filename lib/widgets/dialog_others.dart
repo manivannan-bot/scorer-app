@@ -289,7 +289,9 @@ class _DlMethodDialogState extends State<DlMethodDialog> {
 
 //changekeeper
 class ChangeKeeper extends StatefulWidget {
-  const ChangeKeeper({super.key});
+  final String matchId;
+  final String teamId;
+  const ChangeKeeper(this.matchId, this.teamId, {super.key});
 
   @override
   State<ChangeKeeper> createState() => _ChangeKeeperState();
@@ -347,7 +349,10 @@ class _ChangeKeeperState extends State<ChangeKeeper> {
                         keeperSelected=index;
                       });
                       if (data['label'] == "Injury" ){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => keeperInjury()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => keeperInjury(widget.matchId,widget.teamId,0)));
+                      }
+                      if (data['label'] == "Other" ){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => keeperInjury(widget.matchId,widget.teamId,1)));
                       }
                     },
                     child: Chip(

@@ -48,8 +48,14 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
      var data = await ScoringProvider().getLiveScore(widget.matchId, widget.team1id);
      setState(() {
        matchlist = data.matches;
-       team1Id=data.matches!.first.team1Id;
-       team2Id=data.matches!.first.team2Id;
+           if(matchlist!.first.wonBy==matchlist!.first.team1Id && matchlist!.first.choseTo=='Bat' ) {
+             team1Id=data.matches!.first.team1Id;
+             team2Id=data.matches!.first.team2Id;
+           }else{
+             team1Id=data.matches!.first.team2Id;
+             team2Id=data.matches!.first.team1Id;
+           }
+
      });
      var overNumber=data.matches!.first.teams!.first.overNumber??0;
      var ballNumber=data.matches!.first.teams!.first.ballNumber??0;

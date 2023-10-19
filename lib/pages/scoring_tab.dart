@@ -59,9 +59,11 @@ class _ScoringTabState extends State<ScoringTab> {
   int overNumber=0;
   int ballNumber=0;
   List<BowlingPlayers>? itemsBowler= [];
+  List<BattingPlayers>? itemsBatsman = [];
   int? selectedBowler;
   String? selectedBTeamName ="";
   String selectedBowlerName = "";
+  String? selectedTeamName ="";
   int? selectedBatsman;
   String selectedBatsmanName = "";
   bool showError=false;
@@ -591,16 +593,28 @@ class _ScoringTabState extends State<ScoringTab> {
     );
   }
 
-  void changeBatsman() {
-    _displayBatsmanBottomSheet (context,selectedBatsman,(bowlerIndex) {
+  void changeBatsman() async{
+     await ScoringProvider().getPlayerList(widget.matchId,widget.team1Id,'bat').then((value) {
+       setState(() {
+         itemsBatsman = value.battingPlayers;
+         selectedTeamName= value.team!.teamName;
+       });
 
-      setState(() {
-        selectedBatsman = bowlerIndex;
-        if (selectedBatsman != null) {
-          selectedBatsmanName = itemsBowler![selectedBowler!].name ?? "";
-        }
-      });
-    });
+       _displayBatsmanBottomSheet (context,selectedBatsman,(bowlerIndex) {
+
+         setState(() {
+           selectedBatsman = bowlerIndex;
+           if (selectedBatsman != null) {
+             selectedBatsmanName = itemsBatsman![selectedBatsman!].name ?? "";
+           }
+         });
+       });
+
+
+     });
+
+
+
   }
 
   void changeBowler() {
@@ -833,7 +847,7 @@ class _ScoringTabState extends State<ScoringTab> {
   }
 
   Future<void> _displayBatsmanBottomSheet (BuildContext context, int? selectedBatsman,Function(int?) onItemSelected) async{
-    int? localBowlerIndex = selectedBowler;
+    int? localBowlerIndex = selectedBatsman;
     showModalBottomSheet(context: context,
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
@@ -896,7 +910,7 @@ class _ScoringTabState extends State<ScoringTab> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 5.w),
-                    child: Text('${selectedBTeamName}',style: fontMedium.copyWith(
+                    child: Text('${selectedTeamName}',style: fontMedium.copyWith(
                         fontSize:14.sp,
                         color: AppColor.pri
                     ),),
@@ -915,7 +929,7 @@ class _ScoringTabState extends State<ScoringTab> {
                           thickness: 0.6,
                         );
                       },
-                      itemCount: itemsBowler!.length,
+                      itemCount: itemsBatsman!.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
@@ -953,7 +967,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("${itemsBowler![index].name??'-'}",style: fontMedium.copyWith(
+                                    Text("${itemsBatsman![index].name??'-'}",style: fontMedium.copyWith(
                                       fontSize: 12.sp,
                                       color: AppColor.blackColour,
                                     ),),
@@ -968,7 +982,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                           ),
                                         ),
                                         SizedBox(width: 2.w,),
-                                        Text(itemsBowler![index].playingStyle??'-',style: fontMedium.copyWith(
+                                        Text(itemsBatsman![index].playingStyle??'-',style: fontMedium.copyWith(
                                             fontSize: 11.sp,
                                             color: Color(0xff555555)
                                         ),),
@@ -998,9 +1012,7 @@ class _ScoringTabState extends State<ScoringTab> {
                         CancelBtn("Cancel"),
                         SizedBox(width: 2.w,),
                         GestureDetector(onTap:()async {
-                          // ScoringProvider().saveBowler(widget.matchId,widget.team2Id,itemsBowler![localBowlerIndex!].playerId.toString());
-                          SharedPreferences prefs = await SharedPreferences.getInstance();
-                          await prefs.setInt('bowler_id', itemsBowler![selectedBowler!].playerId!);
+
                           Navigator.pop(context);
                         },child: OkBtn("Ok")),
                       ],
@@ -1244,13 +1256,158 @@ class _ScoringTabState extends State<ScoringTab> {
 
   }
 
-
-
   @override
   void dispose() {
     super.dispose();
     _refreshController.dispose();
   }
+
+
+  Future<void> _displayBottomSheetOther (BuildContext context) async{
+    int? isOffSideSelected ;
+    int? isWideSelected ;
+    List<Map<String, dynamic>> chipData =[
+      {
+        'label': "Match break",
+      },
+      {
+        'label': 'Settings',
+      },
+      {
+        'label': 'End Innings',
+      },
+      {
+        'label': 'D/L Method',
+      },
+      {
+        'label': 'Change keeper',
+      },
+      {
+        'label': 'Abandon',
+      },
+      {
+        'label': 'Change target',
+      },
+      {
+        'label': 'Change Batsman',
+      },
+
+    ];
+    showModalBottomSheet(context: context,
+        backgroundColor: Colors.transparent,
+        builder: (context)=> StatefulBuilder(builder: (context, setState){
+          return Container(
+            height: 40.h,
+            // padding: EdgeInsets.symmetric(horizontal: 2.w),
+            decoration: const BoxDecoration(
+                color: AppColor.lightColor,
+                borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding:  EdgeInsets.symmetric(horizontal: 5.w,)+EdgeInsets.only(top: 2.h,),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                          onTap: (){
+                            Navigator.pop(context);
+                          },
+                          child: Icon(Icons.arrow_back,size: 7.w,)),
+                      Text("Other",style: fontMedium.copyWith(
+                        fontSize: 17.sp,
+                        color: AppColor.blackColour,
+                      ),),
+                      SizedBox(width: 7.w,),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 1.h,),
+                const Divider(
+                  color: Color(0xffD3D3D3),
+                ),
+                SizedBox(height: 1.h,),
+                Padding(
+                  padding:  EdgeInsets.only(left: 2.w,right: 2.w),
+                  child: Wrap(
+                    spacing: 2.w, // Horizontal spacing between items
+                    runSpacing: 1.h, // Vertical spacing between lines
+                    alignment: WrapAlignment.center, // Alignment of items
+                    children:chipData.map((data) {
+                      final index = chipData.indexOf(data);
+                      return GestureDetector(
+                        onTap: (){
+                          setState(() {
+                            isWideSelected=index;
+                          });
+                          if (data['label'] == 'Match break'){
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return DialogsOthers();
+                              },
+                            );
+                          }
+                          if (data['label'] == 'Change keeper'){
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return ChangeKeeper(widget.matchId,widget.team2Id);
+                              },
+                            );
+                          }
+                          if (data['label'] == 'Change target'){
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return ChangeTargetDialog();
+                              },
+                            );
+                          }
+                          if (data['label'] == 'D/L Method'){
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return DlMethodDialog();
+                              },
+                            );
+                          }
+                          if (data['label'] == 'Settings'){
+                            _displayBottomSheetSettings(context);
+                          }
+                          if (data['label'] == 'Change Batsman'){
+                            changeBatsman();
+                          }
+
+                        },
+                        child: Chip(
+                          padding: EdgeInsets.symmetric(horizontal: 2.w,vertical: 0.8.h),
+                          label: Text(data['label'],style: fontSemiBold.copyWith(
+                              fontSize: 12.sp,
+                              color: AppColor.blackColour
+                          ),),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            side: const BorderSide(
+                              color: Color(0xffDADADA),
+                            ),
+                          ),
+                          backgroundColor: isWideSelected==index? AppColor.primaryColor : Color(0xffF8F9FA),
+                          // backgroundColor:AppColor.lightColor
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
+            ),
+          );
+        })
+    );
+  }
+
 
 }
 
@@ -1502,6 +1659,7 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
                             var nonStrikerId=prefs.getInt('non_striker_id')??0;
                             var bowlerId=prefs.getInt('bowler_id')??0;
                             var keeperId=prefs.getInt('wicket_keeper_id')??0;
+                            var bowlerPosition=prefs.getInt('bowlerPosition')??0;
 
                             if(isWideSelected!=null) {
                               ScoreUpdateRequestModel scoreUpdateRequestModel = ScoreUpdateRequestModel();
@@ -1783,6 +1941,7 @@ Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,Scorin
                         var nonStrikerId=prefs.getInt('non_striker_id')??0;
                         var bowlerId=prefs.getInt('bowler_id')??0;
                         var keeperId=prefs.getInt('wicket_keeper_id')??0;
+                        var bowlerPosition=prefs.getInt('bowlerPosition')??0;
 
                         if(isWideSelected!=null) {
                           ScoreUpdateRequestModel scoreUpdateRequestModel = ScoreUpdateRequestModel();
@@ -1966,6 +2125,7 @@ Future<void> _displayBottomSheetLegBye (BuildContext context, int ballType,Scori
                         var nonStrikerId=prefs.getInt('non_striker_id')??0;
                         var bowlerId=prefs.getInt('bowler_id')??0;
                         var keeperId=prefs.getInt('wicket_keeper_id')??0;
+                        var bowlerPosition=prefs.getInt('bowlerPosition')??0;
 
                         ScoreUpdateRequestModel scoreUpdateRequestModel=ScoreUpdateRequestModel();
                         scoreUpdateRequestModel.ballTypeId=ballType??0;
@@ -2126,6 +2286,7 @@ Future<void> _displayBottomSheetByes (BuildContext context,int ballType,ScoringD
                         var nonStrikerId=prefs.getInt('non_striker_id')??0;
                         var bowlerId=prefs.getInt('bowler_id')??0;
                         var keeperId=prefs.getInt('wicket_keeper_id')??0;
+                        var bowlerPosition=prefs.getInt('bowlerPosition')??0;
 
                         ScoreUpdateRequestModel scoreUpdateRequestModel=ScoreUpdateRequestModel();
                         scoreUpdateRequestModel.ballTypeId=ballType??0;
@@ -2359,6 +2520,8 @@ Future<void> _displayBottomSheetBonus (BuildContext context, int? ballType, Scor
                         var nonStrikerId=prefs.getInt('non_striker_id')??0;
                         var bowlerId=prefs.getInt('bowler_id')??0;
                         var keeperId=prefs.getInt('wicket_keeper_id')??0;
+                        var bowlerPosition=prefs.getInt('bowlerPosition')??0;
+
                         if(isWideSelected!=null){
                           ScoreUpdateRequestModel scoreUpdateRequestModel=ScoreUpdateRequestModel();
                           scoreUpdateRequestModel.ballTypeId=ballType??0;
@@ -2542,6 +2705,8 @@ Future<void> _displayBottomSheetMoreRuns (BuildContext context,int ballType,Scor
                         var nonStrikerId=prefs.getInt('non_striker_id')??0;
                         var bowlerId=prefs.getInt('bowler_id')??0;
                         var keeperId=prefs.getInt('wicket_keeper_id')??0;
+                        var bowlerPosition=prefs.getInt('bowlerPosition')??0;
+
                         if(isWideSelected !=null) {
                           ScoreUpdateRequestModel scoreUpdateRequestModel = ScoreUpdateRequestModel();
                           scoreUpdateRequestModel.ballTypeId = ballType ?? 0;
@@ -2749,145 +2914,6 @@ Future<void> _displayBottomSheetSettings (BuildContext context) async{
                 ),
               ],
             ),
-          ),
-        );
-      })
-  );
-}
-
-Future<void> _displayBottomSheetOther (BuildContext context) async{
-  int? isOffSideSelected ;
-  int? isWideSelected ;
-  List<Map<String, dynamic>> chipData =[
-    {
-      'label': "Match break",
-    },
-    {
-      'label': 'Settings',
-    },
-    {
-      'label': 'End Innings',
-    },
-    {
-      'label': 'D/L Method',
-    },
-    {
-      'label': 'Change keeper',
-    },
-    {
-      'label': 'Abandon',
-    },
-    {
-      'label': 'Change target',
-    },
-
-  ];
-  showModalBottomSheet(context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context)=> StatefulBuilder(builder: (context, setState){
-        return Container(
-          height: 33.h,
-          // padding: EdgeInsets.symmetric(horizontal: 2.w),
-          decoration: const BoxDecoration(
-              color: AppColor.lightColor,
-              borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding:  EdgeInsets.symmetric(horizontal: 5.w,)+EdgeInsets.only(top: 2.h,),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                        onTap: (){
-                          Navigator.pop(context);
-                        },
-                        child: Icon(Icons.arrow_back,size: 7.w,)),
-                    Text("Other",style: fontMedium.copyWith(
-                      fontSize: 17.sp,
-                      color: AppColor.blackColour,
-                    ),),
-                    SizedBox(width: 7.w,),
-                  ],
-                ),
-              ),
-              SizedBox(height: 1.h,),
-              const Divider(
-                color: Color(0xffD3D3D3),
-              ),
-              SizedBox(height: 1.h,),
-              Padding(
-                padding:  EdgeInsets.only(left: 2.w,right: 2.w),
-                child: Wrap(
-                  spacing: 2.w, // Horizontal spacing between items
-                  runSpacing: 1.h, // Vertical spacing between lines
-                  alignment: WrapAlignment.center, // Alignment of items
-                  children:chipData.map((data) {
-                    final index = chipData.indexOf(data);
-                    return GestureDetector(
-                      onTap: (){
-                        setState(() {
-                          isWideSelected=index;
-                        });
-                        if (data['label'] == 'Match break'){
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return DialogsOthers();
-                            },
-                          );
-                        }
-                        if (data['label'] == 'Change keeper'){
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return ChangeKeeper();
-                            },
-                          );
-                        }
-                        if (data['label'] == 'Change target'){
-                        showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                        return ChangeTargetDialog();
-                        },
-                        );
-                        }
-                        if (data['label'] == 'D/L Method'){
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return DlMethodDialog();
-                            },
-                          );
-                        }
-                        if (data['label'] == 'Settings'){
-                          _displayBottomSheetSettings(context);
-                        }
-
-                      },
-                      child: Chip(
-                        padding: EdgeInsets.symmetric(horizontal: 2.w,vertical: 0.8.h),
-                        label: Text(data['label'],style: fontSemiBold.copyWith(
-                            fontSize: 12.sp,
-                            color: AppColor.blackColour
-                        ),),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                          side: const BorderSide(
-                            color: Color(0xffDADADA),
-                          ),
-                        ),
-                        backgroundColor: isWideSelected==index? AppColor.primaryColor : Color(0xffF8F9FA),
-                        // backgroundColor:AppColor.lightColor
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ),
-            ],
           ),
         );
       })
