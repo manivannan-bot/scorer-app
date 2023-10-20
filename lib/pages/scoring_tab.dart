@@ -466,6 +466,9 @@ class _ScoringTabState extends State<ScoringTab> {
                                   await prefs.setInt('striker_id', value.data!.strikerId??0);
                                   await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
                                   await prefs.setInt('bowlerPosition', 0);
+                                  if(value.data!.strikerId==0 || value.data!.nonStrikerId==0){
+                                    changeBatsman();
+                                  }
 
                                 });
                                 },
@@ -1413,72 +1416,6 @@ class _ScoringTabState extends State<ScoringTab> {
   }
 
 
-}
-
-Widget _buildGridItem(String index,String text, BuildContext context) {
-  return Container(
-    height: 12.h,
-    width: 19.w,
-    decoration: const BoxDecoration(shape: BoxShape.rectangle,color: Colors.black,),
-    child: Column(
-      children: [
-         SizedBox(height: 2.h,),
-          CircleAvatar(
-          radius: 6.w, // Adjust the radius as needed for the circle size
-          backgroundColor: Colors.white,
-          child: Text(
-            "$index",
-            style:  fontRegular.copyWith(color: Colors.black, fontSize: 2.h),
-          ),
-        ),
-         SizedBox(height:  0.5.h,),
-        Text('$text', style:  fontRegular.copyWith(color: Colors.white)),
-      ],
-    ),
-  );
-}
-Widget _buildGridItemFour(String index,String text, BuildContext context) {
-  return Container(
-    height: 12.h,
-    width: 19.w,
-    decoration: const BoxDecoration(shape: BoxShape.rectangle,color: Colors.black,),
-    child: Column(
-      children: [
-         SizedBox(height: 2.h,),
-        CircleAvatar(
-          radius: 6.w, // Adjust the radius as needed for the circle size
-          backgroundColor: Colors.white,
-          child: Image.asset(index)
-        ),
-         SizedBox(height: 0.5.h,),
-        Text('$text', style:  fontRegular.copyWith(color: Colors.white)),
-      ],
-    ),
-  );
-}
-Widget _buildGridItemOut(String index,String text, BuildContext context) {
-  return Container(
-    height: 12.h,
-    width: 19.w,
-    decoration: const BoxDecoration(shape: BoxShape.rectangle,color: Colors.black,),
-    child: Column(
-      children: [
-         SizedBox(height: 02.h,),
-        CircleAvatar(
-          radius: 6.w, // Adjust the radius as needed for the circle size
-          backgroundColor: Colors.red,
-          child: Text(
-            "$index",
-            style:  fontRegular.copyWith(color: Colors.white, fontSize: 2.h),
-          ),
-        ),
-         SizedBox(height: 0.5.h,),
-        Text('$text', style:  fontRegular.copyWith(color: Colors.white)),
-      ],
-    ),
-  );
-}
-
 
 Future<void> _displayBottomSheetWide (BuildContext context, int balltype, ScoringDetailResponseModel? scoringData) async{
   int? isOffSideSelected ;
@@ -2164,6 +2101,9 @@ Future<void> _displayBottomSheetLegBye (BuildContext context, int ballType,Scori
                           await prefs.setInt('striker_id', value.data!.strikerId??0);
                           await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
                           await prefs.setInt('bowlerPosition', 0);
+                          if(value.data!.strikerId==0 || value.data!.nonStrikerId==0){
+                            changeBatsman();
+                          }
 
                           Navigator.pop(context);
                         });
@@ -2327,6 +2267,9 @@ Future<void> _displayBottomSheetByes (BuildContext context,int ballType,ScoringD
                           await prefs.setInt('striker_id', value.data!.strikerId??0);
                           await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
                           await prefs.setInt('bowlerPosition', 0);
+                          if(value.data!.strikerId==0 || value.data!.nonStrikerId==0){
+                            changeBatsman();
+                          }
                           Navigator.pop(context);
                         });
                       },child: OkBtn("Save")),
@@ -2927,5 +2870,71 @@ Future<void> _displayBottomSheetSettings (BuildContext context) async{
   );
 }
 
+
+}
+
+Widget _buildGridItem(String index,String text, BuildContext context) {
+  return Container(
+    height: 12.h,
+    width: 19.w,
+    decoration: const BoxDecoration(shape: BoxShape.rectangle,color: Colors.black,),
+    child: Column(
+      children: [
+        SizedBox(height: 2.h,),
+        CircleAvatar(
+          radius: 6.w, // Adjust the radius as needed for the circle size
+          backgroundColor: Colors.white,
+          child: Text(
+            "$index",
+            style:  fontRegular.copyWith(color: Colors.black, fontSize: 2.h),
+          ),
+        ),
+        SizedBox(height:  0.5.h,),
+        Text('$text', style:  fontRegular.copyWith(color: Colors.white)),
+      ],
+    ),
+  );
+}
+Widget _buildGridItemFour(String index,String text, BuildContext context) {
+  return Container(
+    height: 12.h,
+    width: 19.w,
+    decoration: const BoxDecoration(shape: BoxShape.rectangle,color: Colors.black,),
+    child: Column(
+      children: [
+        SizedBox(height: 2.h,),
+        CircleAvatar(
+            radius: 6.w, // Adjust the radius as needed for the circle size
+            backgroundColor: Colors.white,
+            child: Image.asset(index)
+        ),
+        SizedBox(height: 0.5.h,),
+        Text('$text', style:  fontRegular.copyWith(color: Colors.white)),
+      ],
+    ),
+  );
+}
+Widget _buildGridItemOut(String index,String text, BuildContext context) {
+  return Container(
+    height: 12.h,
+    width: 19.w,
+    decoration: const BoxDecoration(shape: BoxShape.rectangle,color: Colors.black,),
+    child: Column(
+      children: [
+        SizedBox(height: 02.h,),
+        CircleAvatar(
+          radius: 6.w, // Adjust the radius as needed for the circle size
+          backgroundColor: Colors.red,
+          child: Text(
+            "$index",
+            style:  fontRegular.copyWith(color: Colors.white, fontSize: 2.h),
+          ),
+        ),
+        SizedBox(height: 0.5.h,),
+        Text('$text', style:  fontRegular.copyWith(color: Colors.white)),
+      ],
+    ),
+  );
+}
 
 

@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:scorer/models/scoring_detail_response_model.dart';
+import 'package:scorer/pages/scoring_tab.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
@@ -841,6 +842,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                           await prefs.setInt('striker_id', value.data!.strikerId??0);
                           await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
                           await prefs.setInt('bowlerPosition', 0);
+
                         });
 
                        Navigator.pop(context);
