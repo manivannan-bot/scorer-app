@@ -198,6 +198,9 @@ class _ScoringTabState extends State<ScoringTab> {
                                       Text('${scoringData!.data!.batting![index1].playerName??'-'}    ${scoringData!.data!.batting![index1].runsScored??'0'}(${scoringData!.data!.batting![index1].ballsFaced??'0'})',
                                           style:  fontRegular.copyWith(
                                               color: Colors.black, fontSize: 10.sp)),
+                                      SizedBox(
+                                        height: 1.h,
+                                      ),
                                       Text((scoringData!.data!.batting?[index2]!=null)?'${scoringData!.data!.batting![index2].playerName??'-'}    ${scoringData!.data!.batting![index2].runsScored??'0'}(${scoringData!.data!.batting![index2].ballsFaced??'0'})':'-',
                                           style:  fontRegular.copyWith(
                                               color: Colors.black, fontSize: 10.sp)),
@@ -462,6 +465,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                   await prefs.setInt('ball_number', value.data!.ballNumber??1);
                                   await prefs.setInt('striker_id', value.data!.strikerId??0);
                                   await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
+                                  await prefs.setInt('bowlerPosition', 0);
 
                                 });
                                 },
@@ -2159,6 +2163,7 @@ Future<void> _displayBottomSheetLegBye (BuildContext context, int ballType,Scori
                           await prefs.setInt('ball_number', value.data!.ballNumber??1);
                           await prefs.setInt('striker_id', value.data!.strikerId??0);
                           await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
+                          await prefs.setInt('bowlerPosition', 0);
 
                           Navigator.pop(context);
                         });
@@ -2321,6 +2326,7 @@ Future<void> _displayBottomSheetByes (BuildContext context,int ballType,ScoringD
                           await prefs.setInt('ball_number', value.data!.ballNumber??1);
                           await prefs.setInt('striker_id', value.data!.strikerId??0);
                           await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
+                          await prefs.setInt('bowlerPosition', 0);
                           Navigator.pop(context);
                         });
                       },child: OkBtn("Save")),
@@ -2555,6 +2561,7 @@ Future<void> _displayBottomSheetBonus (BuildContext context, int? ballType, Scor
                             await prefs.setInt('ball_number', value.data!.ballNumber??1);
                             await prefs.setInt('striker_id', value.data!.strikerId??0);
                             await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
+                            await prefs.setInt('bowlerPosition',0);
                             Navigator.pop(context);
                           });
 

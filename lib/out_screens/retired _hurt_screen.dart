@@ -237,6 +237,7 @@ class _RetiredHurtScreenState extends State<RetiredHurtScreen> {
                         await prefs.setInt('ball_number', value.data!.ballNumber??1);
                         await prefs.setInt('striker_id', value.data!.strikerId??0);
                         await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
+                        await prefs.setInt('bowlerPosition', 0);
                       });
 
                       Navigator.pop(context);
