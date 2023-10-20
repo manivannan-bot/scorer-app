@@ -1475,6 +1475,7 @@ class _ScoringTabState extends State<ScoringTab> {
                             );
                           }
                           if (data['label'] == 'Change keeper'){
+
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
@@ -1536,7 +1537,7 @@ class _ScoringTabState extends State<ScoringTab> {
 
 
 Future<void> _displayBottomSheetWide (BuildContext context, int balltype, ScoringDetailResponseModel? scoringData) async{
-  int? isOffSideSelected ;
+  int? isOffSideSelected =0;
   int? isWideSelected ;
   bool showError =false;
   List<Map<String, dynamic>> chipData =[
@@ -1754,6 +1755,7 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
                               scoreUpdateRequestModel.fieldingPositionsId = 0;
                               scoreUpdateRequestModel.endInnings = false;
                               scoreUpdateRequestModel.bowlerPosition = bowlerPosition;
+                              scoreUpdateRequestModel.wideType = isOffSideSelected;
                               ScoringProvider().scoreUpdate(
                                   scoreUpdateRequestModel).then((value) async {
                                 SharedPreferences prefs = await SharedPreferences
@@ -1795,7 +1797,7 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
 }
 
 Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,ScoringDetailResponseModel? scoringData) async{
-  int? isOffSideSelected ;
+  int? isOffSideSelected=0 ;
   int? isWideSelected ;
   bool showError =false;
   List<Map<String, dynamic>> chipData =[
@@ -2034,6 +2036,7 @@ Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,Scorin
                           scoreUpdateRequestModel.fieldingPositionsId = 0;
                           scoreUpdateRequestModel.endInnings = false;
                           scoreUpdateRequestModel.bowlerPosition=bowlerPosition;
+                          scoreUpdateRequestModel.noBallsType=isOffSideSelected;
                           ScoringProvider()
                               .scoreUpdate(scoreUpdateRequestModel)
                               .then((value) async {

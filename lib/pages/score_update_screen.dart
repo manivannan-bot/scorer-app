@@ -45,7 +45,7 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
   }
    Future<void> fetchData() async {
 
-     var data = await ScoringProvider().getLiveScore(widget.matchId, widget.team1id);
+     await ScoringProvider().getLiveScore(widget.matchId, widget.team1id).then((data) async{
      setState(() {
        matchlist = data.matches;
            if(matchlist!.first.wonBy==matchlist!.first.team1Id && matchlist!.first.choseTo=='Bat' ) {
@@ -78,6 +78,8 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
      await prefs.setInt('over_number', overNumber);
      await prefs.setInt('ball_number',ballNumber);
      _refreshController.refreshCompleted();
+     });
+
    }
 
   @override

@@ -349,9 +349,11 @@ class _ChangeKeeperState extends State<ChangeKeeper> {
                         keeperSelected=index;
                       });
                       if (data['label'] == "Injury" ){
+                        Navigator.pop(context);
                         Navigator.push(context, MaterialPageRoute(builder: (context) => keeperInjury(widget.matchId,widget.teamId,0)));
                       }
                       if (data['label'] == "Other" ){
+                        Navigator.pop(context);
                         Navigator.push(context, MaterialPageRoute(builder: (context) => keeperInjury(widget.matchId,widget.teamId,1)));
                       }
                     },
