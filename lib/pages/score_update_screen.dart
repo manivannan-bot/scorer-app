@@ -237,7 +237,7 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
                 child: TabBarView(
                     controller: tabController,
                     children:  [
-                      ScoringTab(widget.matchId,team1Id.toString(),team2Id.toString()),
+                      ScoringTab(widget.matchId,team1Id.toString(),team2Id.toString(),fetchData),
                       Container(height: 50,width: 50,color: Colors.blue,),
                       Container(height: 50,width: 50,color: Colors.red,),
                       Container(height: 50,width: 50,color: Colors.blue,)
