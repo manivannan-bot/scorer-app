@@ -256,8 +256,8 @@ class _CaughtOutScreenState extends State<CaughtOutScreen> {
                             .scoringData!.data!.bowling!.teamId ?? 0;
                         scoreUpdateRequestModel.overBowled = overNumber;
                         scoreUpdateRequestModel.totalOverBowled = 0;
-                        scoreUpdateRequestModel.outByPlayer = 0;
-                        scoreUpdateRequestModel.outPlayer = selectedBowlerId;
+                        scoreUpdateRequestModel.outByPlayer = selectedBowlerId;
+                        scoreUpdateRequestModel.outPlayer = strikerId;
                         scoreUpdateRequestModel.totalWicket = 0;
                         scoreUpdateRequestModel.fieldingPositionsId = 0;
                         scoreUpdateRequestModel.endInnings = false;

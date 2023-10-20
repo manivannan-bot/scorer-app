@@ -267,7 +267,10 @@ class _ScoringTabState extends State<ScoringTab> {
                                           )
                                         ]),
                                       ),
-                                      Text('${selectedBowlerName.isEmpty?scoringData!.data!.bowling!.playerName??'-':selectedBowlerName}    ${scoringData!.data!.bowling!.totalBalls??'0'}(${scoringData!.data!.bowling!.wickets??'0'})',
+                                      Text('${selectedBowlerName.isEmpty?scoringData!.data!.bowling!.playerName??'-':selectedBowlerName}  '
+                                          '  ${scoringData!.data!.bowling!.totalBalls??'0'}-'
+                                          '${scoringData!.data!.bowling!.wickets??'0'}-'
+                                          '${scoringData!.data!.bowling!.runsConceded??'0'}',
                                           style:  fontRegular.copyWith(
                                               color: Colors.black, fontSize: 10.sp)),
                                       SizedBox(height:0.8.h),

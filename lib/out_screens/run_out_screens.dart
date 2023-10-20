@@ -33,6 +33,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
   String? selectedBTeamName ="";
   String selectedBowlerName = "";
   int selectedBowlerId=0;
+  int? selectedBatsmanId;
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +76,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
       },
 
     ];
+    selectedBatsmanId=widget.scoringData!.data!.batting![0].playerId;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xffF8F9FA),
@@ -124,7 +126,8 @@ class _RunOutScreenState extends State<RunOutScreen> {
                               GestureDetector(
                                 onTap: (){
                                   setState(() {
-                                    isSelected =1;
+                                    isSelected =0;
+                                    selectedBatsmanId=widget.scoringData!.data!.batting![0].playerId;
                                   });
                                 },
                                 child: Container(
@@ -132,7 +135,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
                                   decoration: BoxDecoration(
                                     border: Border.all(color: Color(0xffDFDFDF)),
                                     borderRadius: BorderRadius.circular(20),
-                                    color: ( isSelected ==1)?AppColor.primaryColor:AppColor.lightColor,
+                                    color: ( isSelected ==0)?AppColor.primaryColor:AppColor.lightColor,
 
                                   ),
                                   child: Column(
@@ -152,7 +155,8 @@ class _RunOutScreenState extends State<RunOutScreen> {
                                 onTap: (){
                                   setState(() {
 
-                                    isSelected =2;
+                                    isSelected =1;
+                                    selectedBatsmanId=widget.scoringData!.data!.batting![1].playerId;
                                   });
                                 },
                                 child: Container(
@@ -160,7 +164,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
                                   decoration: BoxDecoration(
                                     border: Border.all(color: Color(0xffDFDFDF)),
                                     borderRadius: BorderRadius.circular(20),
-                                    color: ( isSelected ==2)?AppColor.primaryColor:AppColor.lightColor,
+                                    color: ( isSelected ==1)?AppColor.primaryColor:AppColor.lightColor,
 
                                   ),
                                   child: Column(
@@ -512,8 +516,8 @@ class _RunOutScreenState extends State<RunOutScreen> {
                       scoreUpdateRequestModel.bowlingTeamId=widget.scoringData!.data!.bowling!.teamId??0;
                       scoreUpdateRequestModel.overBowled=overNumber;
                       scoreUpdateRequestModel.totalOverBowled=0;
-                      scoreUpdateRequestModel.outByPlayer=0;
-                      scoreUpdateRequestModel.outPlayer=selectedBowlerId;
+                      scoreUpdateRequestModel.outByPlayer=selectedBowlerId;
+                      scoreUpdateRequestModel.outPlayer=selectedBatsmanId;
                       scoreUpdateRequestModel.totalWicket=0;
                       scoreUpdateRequestModel.fieldingPositionsId=0;
                       scoreUpdateRequestModel.endInnings=false;

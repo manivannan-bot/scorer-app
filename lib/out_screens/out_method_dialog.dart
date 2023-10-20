@@ -132,7 +132,7 @@ class _OutMethodDialogState extends State<OutMethodDialog> {
                       scoreUpdateRequestModel.bowlingTeamId=widget.scoringData.data!.bowling!.teamId??0;
                       scoreUpdateRequestModel.overBowled=overNumber;
                       scoreUpdateRequestModel.totalOverBowled=0;
-                      scoreUpdateRequestModel.outByPlayer=0;
+                      scoreUpdateRequestModel.outByPlayer=bowlerId;
                       scoreUpdateRequestModel.outPlayer=strikerId;
                       scoreUpdateRequestModel.totalWicket=0;
                       scoreUpdateRequestModel.fieldingPositionsId=0;
