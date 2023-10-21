@@ -16,44 +16,39 @@ class Images{
   static const String teamblogo = 'assets/images/teamb_logo.png';
   static const String liveIcon = 'assets/images/live_icon.svg';
    static const String plusIcon = 'assets/images/plusIcon.svg';
-  //
-  // //bottom nav
+   //bottom nav
   static const String four = 'assets/images/four.png';
   static const String six = 'assets/images/six.png';
    static const String outBg = 'assets/images/out_bg.png';
    static const String outProfileimage = 'assets/images/out_profile_image.png';
-  //
-  // //auth
+ //auth
    static const String playerImg = 'assets/images/player_image.png';
    static const String batLogo = 'assets/images/bat_logo.svg';
   static const String stumpLogo = 'assets/images/bowl_logo.svg';
-  //
-  //
+
   // //homescreen
   static const String searchIcon = 'assets/images/search_icon.svg';
    static const String playersImage = 'assets/images/players_images.png';
    static const String stumpIcon1 = 'assets/images/stump_icon1.svg';
    static const String stumpIcon2 = 'assets/images/stump_icon2.svg';
-  //
-  // //grounds
-  // static const String groundIcon = 'assets/images/ground_icon.svg';
-  // static const String nearbyIcon = 'assets/images/nearby_location_icon.svg';
-  // static const String mapIcon = 'assets/images/map_icon.svg';
-  //
-  // static const String noMatches = 'assets/images/no_matches_img.png';
-  //
-  // static const String createTeamImg = 'assets/images/create_team_success_img.png';
+
+   //grounds
+  static const String teamPreviewlogoA = 'assets/images/team_preview_logo.png';
+   static const String clockIcon = 'assets/images/clock_icon.svg';
+   static const String dateIcon = 'assets/images/date_icon.svg';
+   static const String groundIcon = 'assets/images/ground_icon.svg';
+  static const String locationsIcon = 'assets/images/location_icons.svg';
   //
   //
-  // static const String pitchImage = 'assets/images/pitch_bg.png';
-  // static const String teamTopImage = 'assets/images/booked_team_top_image.png';
-  // static const String groundImage = 'assets/images/ground_image.png';
-  // static const String bookingConfirmedImage = 'assets/images/booking_confirmed_top_image.png';
+   static const String umpireImage = 'assets/images/umpire_image.png';
+   static const String helmetIcon = 'assets/images/helmet_icon.svg';
+   static const String ballIcon = 'assets/images/ball_icon.svg';
+   static const String ballBlackIcon = 'assets/images/ball_black_icon.svg';
   //
-  // static const String team1 = 'assets/images/team1.png';
-  // static const String team2 = 'assets/images/team2.png';
+   static const String stupmsIconss = 'assets/images/stums_icons.svg';
+   static const String partnerShipIcon = 'assets/images/partnership_icon.svg';
   //
-  // static const String profileBg = 'assets/images/profile_bg.png';
+   static const String logoAll = 'assets/images/logo_bgg_image.png';
   //
   // static const String groundListImage1 = 'assets/images/ground_img_1.png';
   // static const String groundListImage2 = 'assets/images/ground_img_2.png';
