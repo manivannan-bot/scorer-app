@@ -15,7 +15,7 @@ class AppConstants {
 //
   static const String getBallType = '$baseUrl/ball-type';
 //
-//   static const String cityList = '$baseUrl/city-list';
+   static const String endInnings = '$baseUrl/match-end-innings';
 //
 //   static const String matchHistory = '$baseUrl/player/completed_match';
 //   static const String upcomingMatches = '$baseUrl/player/player_upcoming_match';

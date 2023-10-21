@@ -48,7 +48,7 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
      await ScoringProvider().getLiveScore(widget.matchId, widget.team1id).then((data) async{
      setState(() {
        matchlist = data.matches;
-           if(matchlist!.first.wonBy==matchlist!.first.team1Id && matchlist!.first.choseTo=='Bat' ) {
+           if(matchlist!.first.wonBy==int.parse(widget.team1id) && matchlist!.first.choseTo=='Bat' ) {
              team1Id=data.matches!.first.team1Id;
              team2Id=data.matches!.first.team2Id;
            }else{
@@ -57,14 +57,18 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
            }
 
      });
-     var overNumber=data.matches!.first.teams!.first.overNumber??0;
-     var ballNumber=data.matches!.first.teams!.first.ballNumber??0;
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+     var preOver= prefs.getInt('over_number')??0;
+     var preBall= prefs.getInt('ball_number')??0;
+
+     var overNumber=data.matches!.first.teams!.first.overNumber??preOver;
+     var ballNumber=data.matches!.first.teams!.first.ballNumber??preBall;
      if(overNumber ==0 && ballNumber==0){
        overNumber=0;ballNumber=1;
      }else if(ballNumber==6) {
        overNumber += 1;
        ballNumber = 1;
-     }else if(ballNumber==0) {
+     }else if(preOver==overNumber && ballNumber==0) {
        overNumber += 1;
        ballNumber = 1;
      }else if(ballNumber<6){
@@ -74,9 +78,9 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
        ballNumber=1;
      }
 
-     SharedPreferences prefs = await SharedPreferences.getInstance();
      await prefs.setInt('over_number', overNumber);
      await prefs.setInt('ball_number',ballNumber);
+     await prefs.setInt('current_innings',data.matches!.first.currentInnings??1);
      _refreshController.refreshCompleted();
      });
 

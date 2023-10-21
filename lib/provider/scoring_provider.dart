@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/all_matches_model.dart';
+import '../models/end_innings_response_model.dart';
 import '../models/get_ball_type_response_model.dart';
 import '../models/get_live_score_model.dart';
 import '../models/player_list_model.dart';
@@ -29,6 +30,7 @@ class ScoringProvider extends ChangeNotifier{
   ScoringDetailResponseModel scoringDetailResponseModel=ScoringDetailResponseModel();
   ScoreUpdateResponseModel scoreUpdateResponseModel=ScoreUpdateResponseModel();
   GetBallTypeResponseModel getBallTypeResponseModel=GetBallTypeResponseModel();
+  EndInningsResponseModel endInningsResponseModel=EndInningsResponseModel();
 
   Future<AllMatchesModel> getAllMatches() async {
 
@@ -306,6 +308,43 @@ class ScoringProvider extends ChangeNotifier{
     }
     return getBallTypeResponseModel;
   }
+
+  Future<EndInningsResponseModel> endInnings(int matchId,int innings) async {
+    var body = json.encode({
+      'match_id':matchId,
+      'innings':innings
+    });
+    print(body);
+    try {
+      final response = await http.post(
+        Uri.parse(AppConstants.saveBatsman),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: body,
+      );
+      var decodedJson = json.decode(response.body);
+      print(decodedJson);
+      if (response.statusCode == 200) {
+        endInningsResponseModel = EndInningsResponseModel.fromJson(decodedJson);
+        // token = loginModel.token.toString();
+        // saveUserData(true, token);
+        notifyListeners();
+      } else {
+        throw const HttpException('Failed to load data');
+      }
+    } on SocketException {
+      print('No internet connection');
+    } on HttpException {
+      print('Failed to load data');
+    } on FormatException {
+      print('Batsman save- Invalid data format');
+    } catch (e) {
+      print(e);
+    }
+    return endInningsResponseModel;
+  }
+
 
 
 

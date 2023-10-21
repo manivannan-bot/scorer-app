@@ -23,6 +23,7 @@ class Data {
   int? innings;
   bool? inningCompleted;
   String? inningsMessage;
+  int? bowlerChange;
   int? overNumber;
   int? ballNumber;
   int? strikerId;
@@ -32,6 +33,7 @@ class Data {
       {this.innings,
         this.inningCompleted,
         this.inningsMessage,
+        this.bowlerChange,
         this.overNumber,
         this.ballNumber,
         this.strikerId,
@@ -41,6 +43,7 @@ class Data {
     innings = json['innings'];
     inningCompleted = json['inning_completed'];
     inningsMessage = json['innings_message'];
+    bowlerChange = json['bowler_change'];
     overNumber = json['over_number'];
     ballNumber = json['ballNumber'];
     strikerId = json['striker_id'];
@@ -52,6 +55,7 @@ class Data {
     data['innings'] = this.innings;
     data['inning_completed'] = this.inningCompleted;
     data['innings_message'] = this.inningsMessage;
+    data['bowler_change'] = this.bowlerChange;
     data['over_number'] = this.overNumber;
     data['ballNumber'] = this.ballNumber;
     data['striker_id'] = this.strikerId;

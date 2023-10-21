@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:scorer/provider/scoring_provider.dart';
 import 'package:scorer/utils/colours.dart';
 import 'package:scorer/widgets/cancel_btn.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 import '../out_screens/keeper_injury.dart';
@@ -180,10 +182,10 @@ class DlMethodDialog extends StatefulWidget {
   const DlMethodDialog({super.key});
 
   @override
-  State<DlMethodDialog> createState() => _DlMethodDialogState();
+  State<DlMethodDialog> createState() => _DlMethodDialog();
 }
 
-class _DlMethodDialogState extends State<DlMethodDialog> {
+class _DlMethodDialog extends State<DlMethodDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -279,6 +281,81 @@ class _DlMethodDialogState extends State<DlMethodDialog> {
                   OkBtn("ok"),
                 ],
               ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+//end innings
+
+class EndInnings extends StatefulWidget {
+  final String matchId;
+  const EndInnings(this.matchId, {super.key});
+
+  @override
+  State<EndInnings> createState() => _EndInningsState();
+}
+
+class _EndInningsState extends State<EndInnings> {
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(25),
+      ),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
+        height: 20.h,
+        width: 40.w,
+        decoration: BoxDecoration(
+          color: AppColor.lightColor,
+          // boxShadow: [
+          //   BoxShadow(
+          //     color: Colors.grey,
+          //   )
+          // ],
+          borderRadius: BorderRadius.circular(30),
+        ),
+        child:  Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Text("End Innings",style: fontMedium.copyWith(
+                fontSize: 17.sp,
+                color: AppColor.blackColour,
+              ),),
+            ),
+            SizedBox(height: 2.h,),
+            Text("Are you sure want to End Innings?",style: fontRegular.copyWith(
+                fontSize: 11.sp,
+                color: Color(0xff808080)
+            ),),
+            SizedBox(height: 2.h,),
+
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                GestureDetector(
+                    onTap:(){
+                      Navigator.pop(context);
+                    },
+                    child: CancelBtn("cancel")),
+                SizedBox(width: 4.w,),
+                GestureDetector(
+                    onTap:()async{
+
+                      SharedPreferences pref=await SharedPreferences.getInstance();
+                      var innings=pref.getInt('current_innings')??1+1;
+                      ScoringProvider().endInnings(int.parse(widget.matchId), innings);
+                      Navigator.pop(context);
+                    },
+                    child:  OkBtn("ok")),
+              ],
             ),
           ],
         ),

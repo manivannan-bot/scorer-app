@@ -269,8 +269,9 @@ class _ScoringTabState extends State<ScoringTab> {
                                       ),
                                       Text('${selectedBowlerName.isEmpty?scoringData!.data!.bowling!.playerName??'-':selectedBowlerName}  '
                                           '  ${scoringData!.data!.bowling!.totalBalls??'0'}-'
-                                          '${scoringData!.data!.bowling!.wickets??'0'}-'
-                                          '${scoringData!.data!.bowling!.runsConceded??'0'}',
+                                          '${scoringData!.data!.bowling!.maiden??'0'}-'
+                                          '${scoringData!.data!.bowling!.runsConceded??'0'}-'
+                                          '${scoringData!.data!.bowling!.wickets??'0'}',
                                           style:  fontRegular.copyWith(
                                               color: Colors.black, fontSize: 10.sp)),
                                       SizedBox(height:0.8.h),
@@ -491,6 +492,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                   await prefs.setInt('ball_number', value.data!.ballNumber??1);
                                   await prefs.setInt('striker_id', value.data!.strikerId??0);
                                   await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
+                                  await prefs.setInt('bowler_change', value.data!.bowlerChange??0);
                                   await prefs.setInt('bowlerPosition', 0);
                                   if(value.data!.strikerId==0 || value.data!.nonStrikerId==0){
                                     String player=(value.data!.strikerId==0)?'striker_id':'non_striker_id';
@@ -681,9 +683,14 @@ class _ScoringTabState extends State<ScoringTab> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var strikerId=prefs.getInt('striker_id')??0;
     var nonStrikerId=prefs.getInt('non_striker_id')??0;
+    var isBowlerChange=prefs.getInt('bowler_change')??0;
     if(strikerId==0 || nonStrikerId==0 ) {
       String player=(strikerId==0)?'striker_id':'non_striker_id';
       changeBatsman(player);
+      return false;
+    }
+    if(isBowlerChange==1){
+      changeBowler();
       return false;
     }
     return true;
@@ -830,6 +837,7 @@ class _ScoringTabState extends State<ScoringTab> {
                       },
                       itemCount: itemsBowler!.length,
                       itemBuilder: (context, index) {
+                        final isActive=itemsBowler![index].active??0;
                         return GestureDetector(
                           onTap: () {
                             setState(() {
@@ -841,58 +849,60 @@ class _ScoringTabState extends State<ScoringTab> {
                               onItemSelected(localBowlerIndex);
                             });
                           },
-                          child:Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 2.5.w,vertical: 1.h),
-                            child: Row(
-                              children: [
-                                //circular button
-                                Container(
-                                  height: 20.0, // Adjust the height as needed
-                                  width: 20.0,  // Adjust the width as needed
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: localBowlerIndex  == index ? Colors.blue : Colors.grey, // Change colors based on selected index
-                                  ),
-                                  child: Center(
-                                    child: Icon(
-                                      Icons.circle_outlined, // You can change the icon as needed
-                                      color: Colors.white, // Icon color
-                                      size: 20.0, // Icon size
+                          child:Opacity(opacity: isActive==1?0.5:1,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 2.5.w,vertical: 1.h),
+                              child: Row(
+                                children: [
+                                  //circular button
+                                  Container(
+                                    height: 20.0, // Adjust the height as needed
+                                    width: 20.0,  // Adjust the width as needed
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: localBowlerIndex  == index ? Colors.blue : Colors.grey, // Change colors based on selected index
                                     ),
-                                  ),
-                                ), SizedBox(width: 3.w,),
-                                Image.asset(Images.playersImage,width: 10.w,),
-                                SizedBox(width: 2.w,),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("${itemsBowler![index].name??'-'}",style: fontMedium.copyWith(
-                                      fontSize: 12.sp,
-                                      color: AppColor.blackColour,
-                                    ),),
-                                    Row(
-                                      children: [
-                                        Container(
-                                          height:1.h,
-                                          width: 2.w,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(50),
-                                            color: AppColor.pri,
+                                    child: Center(
+                                      child: Icon(
+                                        Icons.circle_outlined, // You can change the icon as needed
+                                        color: Colors.white, // Icon color
+                                        size: 20.0, // Icon size
+                                      ),
+                                    ),
+                                  ), SizedBox(width: 3.w,),
+                                  Image.asset(Images.playersImage,width: 10.w,),
+                                  SizedBox(width: 2.w,),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("${itemsBowler![index].name??'-'}",style: fontMedium.copyWith(
+                                        fontSize: 12.sp,
+                                        color: AppColor.blackColour,
+                                      ),),
+                                      Row(
+                                        children: [
+                                          Container(
+                                            height:1.h,
+                                            width: 2.w,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(50),
+                                              color: AppColor.pri,
+                                            ),
                                           ),
-                                        ),
-                                        SizedBox(width: 2.w,),
-                                        Text(itemsBowler![index].playingStyle??'-',style: fontMedium.copyWith(
-                                            fontSize: 11.sp,
-                                            color: Color(0xff555555)
-                                        ),),
-                                      ],
-                                    ),
+                                          SizedBox(width: 2.w,),
+                                          Text(itemsBowler![index].playingStyle??'-',style: fontMedium.copyWith(
+                                              fontSize: 11.sp,
+                                              color: Color(0xff555555)
+                                          ),),
+                                        ],
+                                      ),
 
-                                  ],
-                                ),
-                                Spacer(),
+                                    ],
+                                  ),
+                                  Spacer(),
 
-                              ],
+                                ],
+                              ),
                             ),
                           ),
 
@@ -1025,74 +1035,93 @@ class _ScoringTabState extends State<ScoringTab> {
                       },
                       itemCount: itemsBatsman!.length,
                       itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              if (localBowlerIndex  == index) {
-                                localBowlerIndex  = null; // Deselect the item if it's already selected
+                        final isPlayerOut = itemsBatsman![index].isOut == 1;
+                          return GestureDetector(
+                            onTap: () {
+                              if (isPlayerOut) {
+
                               } else {
-                                localBowlerIndex  = index; // Select the item if it's not selected
+                                setState(() {
+                                  if (localBowlerIndex == index) {
+                                    localBowlerIndex = null;
+                                  } else {
+                                    localBowlerIndex = index;
+                                  }
+                                  onItemSelected(localBowlerIndex);
+                                });
                               }
-                              onItemSelected(localBowlerIndex);
-                            });
-                          },
-                          child:Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 2.5.w,vertical: 1.h),
-                            child: Row(
-                              children: [
-                                //circular button
-                                Container(
-                                  height: 20.0, // Adjust the height as needed
-                                  width: 20.0,  // Adjust the width as needed
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: localBowlerIndex  == index ? Colors.blue : Colors.grey, // Change colors based on selected index
-                                  ),
-                                  child: Center(
-                                    child: Icon(
-                                      Icons.circle_outlined, // You can change the icon as needed
-                                      color: Colors.white, // Icon color
-                                      size: 20.0, // Icon size
-                                    ),
-                                  ),
-                                ), SizedBox(width: 3.w,),
-                                Image.asset(Images.playersImage,width: 10.w,),
-                                SizedBox(width: 2.w,),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                            },
+                            child: Opacity(
+                              opacity: isPlayerOut?0.5:1.0,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 2.5.w, vertical: 1.h),
+                                child: Row(
                                   children: [
-                                    Text("${itemsBatsman![index].name??'-'}",style: fontMedium.copyWith(
-                                      fontSize: 12.sp,
-                                      color: AppColor.blackColour,
-                                    ),),
-                                    Row(
-                                      children: [
-                                        Container(
-                                          height:1.h,
-                                          width: 2.w,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(50),
-                                            color: AppColor.pri,
-                                          ),
+                                    //circular button
+                                    Container(
+                                      height: 20.0, // Adjust the height as needed
+                                      width: 20.0, // Adjust the width as needed
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: localBowlerIndex == index ? Colors
+                                            .blue : Colors
+                                            .grey, // Change colors based on selected index
+                                      ),
+                                      child: const Center(
+                                        child: Icon(
+                                          Icons.circle_outlined,
+                                          color: Colors.white, // Icon color
+                                          size: 20.0, // Icon size
                                         ),
-                                        SizedBox(width: 2.w,),
-                                        Text(itemsBatsman![index].playingStyle??'-',style: fontMedium.copyWith(
-                                            fontSize: 11.sp,
-                                            color: Color(0xff555555)
-                                        ),),
+                                      ),
+                                    ), SizedBox(width: 3.w,),
+                                    Image.asset(
+                                      Images.playersImage, width: 10.w,),
+                                    SizedBox(width: 2.w,),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment
+                                          .start,
+                                      children: [
+                                        Text(
+                                          "${itemsBatsman![index].name ?? '-'}",
+                                          style: fontMedium.copyWith(
+                                            fontSize: 12.sp,
+                                            color: AppColor.blackColour,
+                                          ),),
+                                        Row(
+                                          children: [
+                                            Container(
+                                              height: 1.h,
+                                              width: 2.w,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius
+                                                    .circular(50),
+                                                color: AppColor.pri,
+                                              ),
+                                            ),
+                                            SizedBox(width: 2.w,),
+                                            Text(
+                                              itemsBatsman![index].playingStyle ??
+                                                  '-', style: fontMedium.copyWith(
+                                                fontSize: 11.sp,
+                                                color: Color(0xff555555)
+                                            ),),
+                                          ],
+                                        ),
+
                                       ],
                                     ),
+                                    Spacer(),
 
                                   ],
                                 ),
-                                Spacer(),
-
-                              ],
+                              ),
                             ),
-                          ),
 
-                        );
-                      },
+                          );
+                        }
+
                     ),
                   ),
                   Container(
@@ -1459,9 +1488,9 @@ class _ScoringTabState extends State<ScoringTab> {
                 Padding(
                   padding:  EdgeInsets.only(left: 2.w,right: 2.w),
                   child: Wrap(
-                    spacing: 2.w, // Horizontal spacing between items
-                    runSpacing: 1.h, // Vertical spacing between lines
-                    alignment: WrapAlignment.center, // Alignment of items
+                    spacing: 2.w,
+                    runSpacing: 1.h,
+                    alignment: WrapAlignment.center,
                     children:chipData.map((data) {
                       final index = chipData.indexOf(data);
                       return GestureDetector(
@@ -1469,6 +1498,16 @@ class _ScoringTabState extends State<ScoringTab> {
                           setState(() {
                             isWideSelected=index;
                           });
+                          if (data['label'] == 'End Innings'){
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return EndInnings(widget.matchId,);
+                              },
+                            ).whenComplete(() {
+                              Navigator.pop(context);
+                            });
+                          }
                           if (data['label'] == 'Match break'){
                             showDialog(
                               context: context,
@@ -1769,8 +1808,9 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
                                     'ball_number', value.data!.ballNumber ?? 1);
                                 await prefs.setInt(
                                     'striker_id', value.data!.strikerId ?? 0);
-                                await prefs.setInt('non_striker_id',
-                                    value.data!.nonStrikerId ?? 0);
+                                await prefs.setInt('non_striker_id', value.data!.nonStrikerId ?? 0);
+                                await prefs.setInt('bowler_change', value.data!.bowlerChange ?? 0);
+                                await prefs.setInt('bowlerPosition',0);
                                 Navigator.pop(context);
                               });
                             }else{
@@ -2051,8 +2091,9 @@ Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,Scorin
                                 'ball_number', value.data!.ballNumber ?? 1);
                             await prefs.setInt(
                                 'striker_id', value.data!.strikerId ?? 0);
-                            await prefs.setInt('non_striker_id',
-                                value.data!.nonStrikerId ?? 0);
+                            await prefs.setInt('non_striker_id', value.data!.nonStrikerId ?? 0);
+                            await prefs.setInt('bowler_change', value.data!.bowlerChange ?? 0);
+                            await prefs.setInt('bowlerPosition',0);
 
                             Navigator.pop(context);
                           });
@@ -2225,6 +2266,7 @@ Future<void> _displayBottomSheetLegBye (BuildContext context, int ballType,Scori
                           await prefs.setInt('ball_number', value.data!.ballNumber??1);
                           await prefs.setInt('striker_id', value.data!.strikerId??0);
                           await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
+                          await prefs.setInt('bowler_change', value.data!.bowlerChange ?? 0);
                           await prefs.setInt('bowlerPosition', 0);
                           if(value.data!.strikerId==0 || value.data!.nonStrikerId==0){
                             String player=(value.data!.strikerId==0)?'striker_id':'non_striker_id';
@@ -2392,6 +2434,7 @@ Future<void> _displayBottomSheetByes (BuildContext context,int ballType,ScoringD
                           await prefs.setInt('ball_number', value.data!.ballNumber??1);
                           await prefs.setInt('striker_id', value.data!.strikerId??0);
                           await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
+                          await prefs.setInt('bowler_change', value.data!.bowlerChange ?? 0);
                           await prefs.setInt('bowlerPosition', 0);
                           if(value.data!.strikerId==0 || value.data!.nonStrikerId==0){
                             String player=(value.data!.strikerId==0)?'striker_id':'non_striker_id';
@@ -2631,6 +2674,7 @@ Future<void> _displayBottomSheetBonus (BuildContext context, int? ballType, Scor
                             await prefs.setInt('ball_number', value.data!.ballNumber??1);
                             await prefs.setInt('striker_id', value.data!.strikerId??0);
                             await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
+                            await prefs.setInt('bowler_change', value.data!.bowlerChange ?? 0);
                             await prefs.setInt('bowlerPosition',0);
                             Navigator.pop(context);
                           });
@@ -2830,8 +2874,9 @@ Future<void> _displayBottomSheetMoreRuns (BuildContext context,int ballType,Scor
                                 'ball_number', value.data!.ballNumber ?? 1);
                             await prefs.setInt(
                                 'striker_id', value.data!.strikerId ?? 0);
-                            await prefs.setInt('non_striker_id',
-                                value.data!.nonStrikerId ?? 0);
+                            await prefs.setInt('non_striker_id', value.data!.nonStrikerId ?? 0);
+                            await prefs.setInt('bowler_change', value.data!.bowlerChange ?? 0);
+                            await prefs.setInt('bowlerPosition',0);
                             Navigator.pop(context);
                           });
                         }else{
