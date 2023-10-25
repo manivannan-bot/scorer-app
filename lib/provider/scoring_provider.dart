@@ -32,6 +32,13 @@ class ScoringProvider extends ChangeNotifier{
   GetBallTypeResponseModel getBallTypeResponseModel=GetBallTypeResponseModel();
   EndInningsResponseModel endInningsResponseModel=EndInningsResponseModel();
 
+  String overNumber = "";
+
+  storeOverNumber(String value){
+    overNumber = value;
+    notifyListeners();
+  }
+
   Future<AllMatchesModel> getAllMatches() async {
 
     // SharedPreferences preferences = await SharedPreferences.getInstance();

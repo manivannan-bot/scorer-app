@@ -350,8 +350,8 @@ class _EndInningsState extends State<EndInnings> {
                     onTap:()async{
 
                       SharedPreferences pref=await SharedPreferences.getInstance();
-                      var innings=pref.getInt('current_innings')??1+1;
-                      ScoringProvider().endInnings(int.parse(widget.matchId), innings);
+                      var innings=(pref.getInt('current_innings')??1)+1;
+                      ScoringProvider().endInnings(int.parse(widget.matchId), 2);
                       Navigator.pop(context);
                     },
                     child:  OkBtn("ok")),

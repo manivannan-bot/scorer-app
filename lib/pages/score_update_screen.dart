@@ -58,28 +58,29 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
 
      });
      SharedPreferences prefs = await SharedPreferences.getInstance();
-     var preOver= prefs.getInt('over_number')??0;
-     var preBall= prefs.getInt('ball_number')??0;
+     var preOver= prefs.getInt('over_number');
+     var preBall= prefs.getInt('ball_number');
 
-     var overNumber=data.matches!.first.teams!.first.overNumber??preOver;
-     var ballNumber=data.matches!.first.teams!.first.ballNumber??preBall;
-     if(overNumber ==0 && ballNumber==0){
-       overNumber=0;ballNumber=1;
-     }else if(ballNumber==6) {
-       overNumber += 1;
-       ballNumber = 1;
-     }else if(preOver==overNumber && ballNumber==0) {
-       overNumber += 1;
-       ballNumber = 1;
-     }else if(ballNumber<6){
-       ballNumber+=1;
-     }else if(ballNumber>6){
-       overNumber += 1;
-       ballNumber=1;
+     if(preOver==0 && preBall==0) {
+         var overNumber = data.matches!.first.teams!.first.overNumber ?? 0;
+         var ballNumber = data.matches!.first.teams!.first.ballNumber ?? 0;
+         if (overNumber == 0 && ballNumber == 0) {
+           overNumber = 0;
+           ballNumber = 1;
+         } else if (ballNumber == 6) {
+           overNumber += 1;
+           ballNumber = 1;
+         } else if ( ballNumber == 0) {
+           ballNumber = 1;
+         } else if (ballNumber < 6) {
+           ballNumber += 1;
+         } else if (ballNumber >= 7) {
+           overNumber += 1;
+           ballNumber = 1;
+         }
+         await prefs.setInt('over_number', overNumber);
+         await prefs.setInt('ball_number', ballNumber);
      }
-
-     await prefs.setInt('over_number', overNumber);
-     await prefs.setInt('ball_number',ballNumber);
      await prefs.setInt('current_innings',data.matches!.first.currentInnings??1);
      _refreshController.refreshCompleted();
      });

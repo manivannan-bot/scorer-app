@@ -103,8 +103,8 @@ class _OutMethodDialogState extends State<OutMethodDialog> {
                     SizedBox(width: 4.w,),
                     GestureDetector(onTap: ()async{
                       SharedPreferences prefs = await SharedPreferences.getInstance();
-                      int overNumber= prefs.getInt('over_number')??0;
-                      int ballNumber= prefs.getInt('ball_number')??0;
+                      var overNumber= prefs.getInt('over_number');
+                      var ballNumber= prefs.getInt('ball_number');
                       var strikerId=prefs.getInt('striker_id');
                       var nonStrikerId=prefs.getInt('non_striker_id');
                       var bowlerId=prefs.getInt('bowler_id')??0;
@@ -142,7 +142,7 @@ class _OutMethodDialogState extends State<OutMethodDialog> {
 
                         SharedPreferences prefs = await SharedPreferences.getInstance();
                         await prefs.setInt('over_number', value.data!.overNumber??0);
-                        await prefs.setInt('ball_number', value.data!.ballNumber??1);
+                        await prefs.setInt('ball_number', value.data!.ballNumber??0);
                         await prefs.setInt('striker_id', value.data!.strikerId??0);
                         await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
                         await prefs.setInt('bowler_change', value.data!.bowlerChange??0);

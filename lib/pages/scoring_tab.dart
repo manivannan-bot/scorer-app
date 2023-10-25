@@ -59,8 +59,7 @@ class _ScoringTabState extends State<ScoringTab> {
   int index1=0;
   int index2=1;
   int totalBallId = 0;
-  int overNumber=0;
-  int ballNumber=0;
+
   List<BowlingPlayers>? itemsBowler= [];
   List<BattingPlayers>? itemsBatsman = [];
   int? selectedBowler;
@@ -248,12 +247,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                             width: 4.w,
                                           ),
                                           GestureDetector(onTap:()async{
-                                            final response = await ScoringProvider().getPlayerList(widget.matchId,widget.team2Id,'bowl');
-                                            setState(() {
-                                              itemsBowler = response.bowlingPlayers;
-                                              selectedBTeamName= response.team!.teamName;
-                                            });
-                                            changeBowler();
+                                             changeBowler();
                                           },
                                             child: Container(
                                               decoration: BoxDecoration(
@@ -451,8 +445,8 @@ class _ScoringTabState extends State<ScoringTab> {
                             GestureDetector(
                               onTap:()async {
                                 SharedPreferences prefs = await SharedPreferences.getInstance();
-                                overNumber= prefs.getInt('over_number')??0;
-                                ballNumber= prefs.getInt('ball_number')??0;
+                                var overNumber= prefs.getInt('over_number');
+                                var ballNumber= prefs.getInt('ball_number');
                                 var strikerId=prefs.getInt('striker_id')??0;
                                 var nonStrikerId=prefs.getInt('non_striker_id')??0;
                                 var bowlerId=prefs.getInt('bowler_id')??0;
@@ -489,7 +483,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                   });
                                   SharedPreferences prefs = await SharedPreferences.getInstance();
                                   await prefs.setInt('over_number', value.data!.overNumber??0);
-                                  await prefs.setInt('ball_number', value.data!.ballNumber??1);
+                                  await prefs.setInt('ball_number', value.data!.ballNumber??0);
                                   await prefs.setInt('striker_id', value.data!.strikerId??0);
                                   await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
                                   await prefs.setInt('bowler_change', value.data!.bowlerChange??0);
@@ -720,14 +714,20 @@ class _ScoringTabState extends State<ScoringTab> {
   }
 
   void changeBowler() {
-    _displayBowlerBottomSheet (context,selectedBowler,(bowlerIndex) {
 
-      setState(() {
-        selectedBowler = bowlerIndex;
-        if (selectedBowler != null) {
-          selectedBowlerName = itemsBowler![selectedBowler!].name ?? "";
-        }
-      });
+    ScoringProvider().getPlayerList(widget.matchId,widget.team2Id,'bowl').then((value) {
+        setState(() {
+          itemsBowler = value.bowlingPlayers;
+          selectedBTeamName= value.team!.teamName;
+        });
+            _displayBowlerBottomSheet (context,selectedBowler,(bowlerIndex) {
+              setState(() {
+                selectedBowler = bowlerIndex;
+                if (selectedBowler != null) {
+                  selectedBowlerName = itemsBowler![selectedBowler!].name ?? "";
+                }
+              });
+            });
     });
   }
 
@@ -932,6 +932,7 @@ class _ScoringTabState extends State<ScoringTab> {
                           if(localBowlerIndex!=null){
                           SharedPreferences prefs = await SharedPreferences.getInstance();
                           await prefs.setInt('bowler_id', itemsBowler![localBowlerIndex!].playerId!);
+                          await prefs.setInt('bowler_change', 0);
                           Navigator.pop(context);
                           }else{
                             setState(() {showError=true;});
@@ -1755,8 +1756,8 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
                       GestureDetector(
                           onTap:()async{
                             SharedPreferences prefs = await SharedPreferences.getInstance();
-                            var overNumber= prefs.getInt('over_number')??0;
-                            var ballNumber= prefs.getInt('ball_number')??0;
+                            var overNumber= prefs.getInt('over_number');
+                            var ballNumber= prefs.getInt('ball_number');
                             var strikerId=prefs.getInt('striker_id')??0;
                             var nonStrikerId=prefs.getInt('non_striker_id')??0;
                             var bowlerId=prefs.getInt('bowler_id')??0;
@@ -1767,12 +1768,10 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
                             if(isWideSelected!=null) {
                               ScoreUpdateRequestModel scoreUpdateRequestModel = ScoreUpdateRequestModel();
                               scoreUpdateRequestModel.ballTypeId = balltype;
-                              scoreUpdateRequestModel.matchId =
-                                  scoringData!.data!.batting![0].matchId;
+                              scoreUpdateRequestModel.matchId = scoringData!.data!.batting![0].matchId;
                               scoreUpdateRequestModel.scorerId = 1;
                               scoreUpdateRequestModel.strikerId = strikerId;
-                              scoreUpdateRequestModel.nonStrikerId =
-                                  nonStrikerId;
+                              scoreUpdateRequestModel.nonStrikerId = nonStrikerId;
                               scoreUpdateRequestModel.wicketKeeperId = keeperId;
                               scoreUpdateRequestModel.bowlerId = bowlerId;
                               scoreUpdateRequestModel.overNumber = overNumber;
@@ -2040,8 +2039,8 @@ Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,Scorin
                       ),
                       GestureDetector(onTap:()async{
                         SharedPreferences prefs = await SharedPreferences.getInstance();
-                        var overNumber= prefs.getInt('over_number')??0;
-                        var ballNumber= prefs.getInt('ball_number')??0;
+                        var overNumber= prefs.getInt('over_number');
+                        var ballNumber= prefs.getInt('ball_number');
                         var strikerId=prefs.getInt('striker_id')??0;
                         var nonStrikerId=prefs.getInt('non_striker_id')??0;
                         var bowlerId=prefs.getInt('bowler_id')??0;
@@ -2226,8 +2225,8 @@ Future<void> _displayBottomSheetLegBye (BuildContext context, int ballType,Scori
                     children: [
                       GestureDetector(onTap:()async {
                         SharedPreferences prefs = await SharedPreferences.getInstance();
-                        var overNumber= prefs.getInt('over_number')??0;
-                        var ballNumber= prefs.getInt('ball_number')??0;
+                        var overNumber= prefs.getInt('over_number');
+                        var ballNumber= prefs.getInt('ball_number');
                         var strikerId=prefs.getInt('striker_id')??0;
                         var nonStrikerId=prefs.getInt('non_striker_id')??0;
                         var bowlerId=prefs.getInt('bowler_id')??0;
@@ -2263,7 +2262,7 @@ Future<void> _displayBottomSheetLegBye (BuildContext context, int ballType,Scori
                         ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
                           SharedPreferences prefs = await SharedPreferences.getInstance();
                           await prefs.setInt('over_number', value.data!.overNumber??0);
-                          await prefs.setInt('ball_number', value.data!.ballNumber??1);
+                          await prefs.setInt('ball_number', value.data!.ballNumber??0);
                           await prefs.setInt('striker_id', value.data!.strikerId??0);
                           await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
                           await prefs.setInt('bowler_change', value.data!.bowlerChange ?? 0);
@@ -2393,8 +2392,8 @@ Future<void> _displayBottomSheetByes (BuildContext context,int ballType,ScoringD
                     children: [
                       GestureDetector(onTap:()async{
                         SharedPreferences prefs = await SharedPreferences.getInstance();
-                        var overNumber= prefs.getInt('over_number')??0;
-                        var ballNumber= prefs.getInt('ball_number')??0;
+                        var overNumber= prefs.getInt('over_number');
+                        var ballNumber= prefs.getInt('ball_number');
                         var strikerId=prefs.getInt('striker_id')??0;
                         var nonStrikerId=prefs.getInt('non_striker_id')??0;
                         var bowlerId=prefs.getInt('bowler_id')??0;
@@ -2431,7 +2430,7 @@ Future<void> _displayBottomSheetByes (BuildContext context,int ballType,ScoringD
                         ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value)async{
                           SharedPreferences prefs = await SharedPreferences.getInstance();
                           await prefs.setInt('over_number', value.data!.overNumber??0);
-                          await prefs.setInt('ball_number', value.data!.ballNumber??1);
+                          await prefs.setInt('ball_number', value.data!.ballNumber??0);
                           await prefs.setInt('striker_id', value.data!.strikerId??0);
                           await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
                           await prefs.setInt('bowler_change', value.data!.bowlerChange ?? 0);
@@ -2633,8 +2632,8 @@ Future<void> _displayBottomSheetBonus (BuildContext context, int? ballType, Scor
                       ),
                       GestureDetector(onTap:()async{
                         SharedPreferences prefs = await SharedPreferences.getInstance();
-                        var overNumber= prefs.getInt('over_number')??0;
-                        var ballNumber= prefs.getInt('ball_number')??0;
+                        var overNumber= prefs.getInt('over_number');
+                        var ballNumber= prefs.getInt('ball_number');
                         var strikerId=prefs.getInt('striker_id')??0;
                         var nonStrikerId=prefs.getInt('non_striker_id')??0;
                         var bowlerId=prefs.getInt('bowler_id')??0;
@@ -2671,7 +2670,7 @@ Future<void> _displayBottomSheetBonus (BuildContext context, int? ballType, Scor
                           ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
                             SharedPreferences prefs = await SharedPreferences.getInstance();
                             await prefs.setInt('over_number', value.data!.overNumber??0);
-                            await prefs.setInt('ball_number', value.data!.ballNumber??1);
+                            await prefs.setInt('ball_number', value.data!.ballNumber??0);
                             await prefs.setInt('striker_id', value.data!.strikerId??0);
                             await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
                             await prefs.setInt('bowler_change', value.data!.bowlerChange ?? 0);
@@ -2820,8 +2819,8 @@ Future<void> _displayBottomSheetMoreRuns (BuildContext context,int ballType,Scor
                       ),
                       GestureDetector(onTap:()async{
                         SharedPreferences prefs = await SharedPreferences.getInstance();
-                        var overNumber= prefs.getInt('over_number')??0;
-                        var ballNumber= prefs.getInt('ball_number')??0;
+                        var overNumber= prefs.getInt('over_number');
+                        var ballNumber= prefs.getInt('ball_number');
                         var strikerId=prefs.getInt('striker_id')??0;
                         var nonStrikerId=prefs.getInt('non_striker_id')??0;
                         var bowlerId=prefs.getInt('bowler_id')??0;

@@ -224,8 +224,8 @@ class _CaughtOutScreenState extends State<CaughtOutScreen> {
                     GestureDetector(onTap:()async {
 
                       SharedPreferences prefs = await SharedPreferences.getInstance();
-                      int overNumber= prefs.getInt('over_number')??0;
-                      int ballNumber= prefs.getInt('ball_number')??0;
+                      var overNumber= prefs.getInt('over_number');
+                      var ballNumber= prefs.getInt('ball_number');
                       var strikerId=prefs.getInt('striker_id')??0;
                       var nonStrikerId=prefs.getInt('non_striker_id')??0;
                       var bowlerId=prefs.getInt('bowler_id')??0;
