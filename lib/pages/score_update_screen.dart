@@ -12,7 +12,9 @@ import 'package:scorer/utils/sizes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
-import '../commentary_screens/commentary_screen.dart';
+
+import '../commentaryscreens/commentary_screen.dart';
+import '../commentaryscreens/info_screen.dart';
 import '../provider/scoring_provider.dart';
 import '../scorecardScreens/scorecard_screen.dart';
 import '../utils/images.dart';
@@ -242,7 +244,7 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
                       ScoringTab(widget.matchId,team1Id.toString(),team2Id.toString(), fetchData),
                       ScorecardScreen(),
                       CommentaryScreen(),
-                      Container(height: 50,width: 50,color: Colors.blue,)
+                      InfoScreen(),
                     ]),
               )
             ],

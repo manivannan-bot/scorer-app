@@ -109,7 +109,6 @@ class _ScoreCardTwoState extends State<ScoreCardTwo> {
                     return Padding(
                       padding:  EdgeInsets.symmetric(vertical: 1.h),
                       child: Row(
-
                         children: [
                           ClipOval(child: Image.asset(Images.profileImage,width: 14.w,)),
                           SizedBox(width: 4.w,),

@@ -50,8 +50,8 @@ class Images{
   //
    static const String logoAll = 'assets/images/logo_bgg_image.png';
   //
-  // static const String groundListImage1 = 'assets/images/ground_img_1.png';
-  // static const String groundListImage2 = 'assets/images/ground_img_2.png';
+   static const String teamIcon = 'assets/images/team_icon.svg';
+   static const String arrowICon = 'assets/images/arrow_icon.svg';
   // static const String groundListImage3 = 'assets/images/ground_img_3.png';
   // static const String groundListImage4 = 'assets/images/ground_img_1.png';
   //
