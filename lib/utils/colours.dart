@@ -3,6 +3,7 @@ import 'dart:ui';
 class AppColor {
   static const Color primaryColor = Color(0xffF6CB03);
   static const Color secondaryColor = Color(0xffD66E1A);
+  static const Color pri = Color(0xffD78108);
 
   static const Color textColor = Color(0xff221f1f);
   static const Color textMildColor = Color(0xff707B81);
@@ -22,16 +23,14 @@ class AppColor {
 
   static const Color locationIconColor = Color(0xffD7E814);
   static const Color offingCardBgColor = Color(0xffF2ECE6);
-
   static const Color oldNotificationBgColor = Color(0xffEBEBEB);
-
   static const Color unselectedTabColor = Color(0xff9D9DA0);
   static const Color greyColor = Color(0xffE0DFDF);
-
   static Color iconBgColor = const Color(0xffD78108).withOpacity(0.2);
   static const Color iconColour = Color(0xffD78108);
   static const Color textFieldBg = Color(0xffF9F8F5);
   static const Color hintColour = Color(0xffA7A7A7);
+  static const Color blackColour = Color(0xff333333);
 
 
 }
