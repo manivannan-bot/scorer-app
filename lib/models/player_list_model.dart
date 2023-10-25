@@ -120,10 +120,11 @@ class BowlingPlayers {
   int? playerId;
   String? name;
   String? playingStyle;
-  dynamic overBall;
-  dynamic maiden;
-  dynamic runsConceded;
-  dynamic wickets;
+  String? overBall;
+  int? maiden;
+  int? runsConceded;
+  int? wickets;
+  int? active;
 
   BowlingPlayers(
       {this.playerId,
@@ -132,7 +133,8 @@ class BowlingPlayers {
         this.overBall,
         this.maiden,
         this.runsConceded,
-        this.wickets});
+        this.wickets,
+        this.active});
 
   BowlingPlayers.fromJson(Map<String, dynamic> json) {
     playerId = json['player_id'];
@@ -142,6 +144,7 @@ class BowlingPlayers {
     maiden = json['maiden'];
     runsConceded = json['runs_conceded'];
     wickets = json['wickets'];
+    active = json['active'];
   }
 
   Map<String, dynamic> toJson() {
@@ -153,17 +156,19 @@ class BowlingPlayers {
     data['maiden'] = this.maiden;
     data['runs_conceded'] = this.runsConceded;
     data['wickets'] = this.wickets;
+    data['active'] = this.active;
     return data;
   }
 }
+
 
 class WkPlayers {
   int? playerId;
   String? name;
   String? playingStyle;
-  dynamic runsScored;
-  dynamic ballsFaced;
-  dynamic isOut;
+  int? runsScored;
+  int? ballsFaced;
+  int? isOut;
 
   WkPlayers(
       {this.playerId,

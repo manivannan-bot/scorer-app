@@ -224,8 +224,8 @@ class _CaughtOutScreenState extends State<CaughtOutScreen> {
                     GestureDetector(onTap:()async {
 
                       SharedPreferences prefs = await SharedPreferences.getInstance();
-                      int overNumber= prefs.getInt('over_number')??0;
-                      int ballNumber= prefs.getInt('ball_number')??0;
+                      var overNumber= prefs.getInt('over_number');
+                      var ballNumber= prefs.getInt('ball_number');
                       var strikerId=prefs.getInt('striker_id')??0;
                       var nonStrikerId=prefs.getInt('non_striker_id')??0;
                       var bowlerId=prefs.getInt('bowler_id')??0;
@@ -256,8 +256,8 @@ class _CaughtOutScreenState extends State<CaughtOutScreen> {
                             .scoringData!.data!.bowling!.teamId ?? 0;
                         scoreUpdateRequestModel.overBowled = overNumber;
                         scoreUpdateRequestModel.totalOverBowled = 0;
-                        scoreUpdateRequestModel.outByPlayer = 0;
-                        scoreUpdateRequestModel.outPlayer = selectedBowlerId;
+                        scoreUpdateRequestModel.outByPlayer = selectedBowlerId;
+                        scoreUpdateRequestModel.outPlayer = strikerId;
                         scoreUpdateRequestModel.totalWicket = 0;
                         scoreUpdateRequestModel.fieldingPositionsId = 0;
                         scoreUpdateRequestModel.endInnings = false;

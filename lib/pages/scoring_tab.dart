@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:laravel_flutter_pusher/laravel_flutter_pusher.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:scorer/models/scoring_detail_response_model.dart';
 
@@ -16,6 +17,7 @@ import 'package:sizer/sizer.dart';
 
 import '../models/player_list_model.dart';
 
+import '../models/save_batsman_request_model.dart';
 import '../out_screens/caught_out_screen.dart';
 import '../out_screens/obstruct_field_screen.dart';
 import '../Scoring screens/retired_screen.dart';
@@ -44,8 +46,10 @@ class ScoringTab extends StatefulWidget {
   final String matchId;
   final String team1Id;
   final String team2Id;
-  final VoidCallback refresh;
-  const ScoringTab(this.matchId, this.team1Id, this.team2Id, this.refresh, {super.key});
+
+  final VoidCallback fetchData;
+  const ScoringTab(this.matchId, this.team1Id, this.team2Id, this.fetchData, {super.key});
+
 
   @override
   State<ScoringTab> createState() => _ScoringTabState();
@@ -57,8 +61,7 @@ class _ScoringTabState extends State<ScoringTab> {
   int index1=0;
   int index2=1;
   int totalBallId = 0;
-  int overNumber=0;
-  int ballNumber=0;
+
   List<BowlingPlayers>? itemsBowler= [];
   List<BattingPlayers>? itemsBatsman = [];
   int? selectedBowler;
@@ -81,16 +84,34 @@ class _ScoringTabState extends State<ScoringTab> {
     });
   }
   RefreshController _refreshController = RefreshController();
+  String eventData = 'No event received yet';
 
   @override
   void initState() {
     scoringData=null;
     super.initState();
     _refreshData();
+    setUpServices();
+  }
+
+  void setUpServices() {
+    var options = PusherOptions(
+        host: '64.227.139.48', port: 6001, encrypted: false, cluster: 'mt1');
+
+    LaravelFlutterPusher pusher =
+    LaravelFlutterPusher('app-key', options, enableLogging: true);
+    pusher.subscribe('public.match.list').bind('matches', (event){
+
+      setState(() {
+        eventData = 'Event Data: ' + event.toString();
+      });
+      print(eventData);
+
+    });
   }
 
   void _refreshData() {
-    widget.refresh();
+    widget.fetchData();
     ScoringProvider().getScoringDetail(widget.matchId).then((value) async {
       setState(() {
         scoringData = value;
@@ -164,7 +185,6 @@ class _ScoringTabState extends State<ScoringTab> {
                                             width: 4.w,
                                           ),
                                           GestureDetector(onTap:()async{
-                                            print('index changed');
                                             SharedPreferences prefs = await SharedPreferences.getInstance();
                                             var strikerId=prefs.getInt('striker_id')??0;
                                             var nonStrikerId=prefs.getInt('non_striker_id')??0;
@@ -226,12 +246,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                             width: 4.w,
                                           ),
                                           GestureDetector(onTap:()async{
-                                            final response = await ScoringProvider().getPlayerList(widget.matchId,widget.team2Id,'bowl');
-                                            setState(() {
-                                              itemsBowler = response.bowlingPlayers;
-                                              selectedBTeamName= response.team!.teamName;
-                                            });
-                                            changeBowler();
+                                             changeBowler();
                                           },
                                             child: Container(
                                               decoration: BoxDecoration(
@@ -245,7 +260,11 @@ class _ScoringTabState extends State<ScoringTab> {
                                           )
                                         ]),
                                       ),
-                                      Text('${selectedBowlerName.isEmpty?scoringData!.data!.bowling!.playerName??'-':selectedBowlerName}    ${scoringData!.data!.bowling!.totalBalls??'0'}(${scoringData!.data!.bowling!.wickets??'0'})',
+                                      Text('${selectedBowlerName.isEmpty?scoringData!.data!.bowling!.playerName??'-':selectedBowlerName}  '
+                                          '  ${scoringData!.data!.bowling!.totalBalls??'0'}-'
+                                          '${scoringData!.data!.bowling!.maiden??'0'}-'
+                                          '${scoringData!.data!.bowling!.runsConceded??'0'}-'
+                                          '${scoringData!.data!.bowling!.wickets??'0'}',
                                           style:  fontRegular.copyWith(
                                               color: Colors.black, fontSize: 10.sp)),
                                       SizedBox(height:0.8.h),
@@ -291,6 +310,8 @@ class _ScoringTabState extends State<ScoringTab> {
                       SizedBox(
                         height: 1.h,
                       ),
+
+                      //Text('$eventData'),
                       Column(
                         children: [
                           Stack(
@@ -420,8 +441,8 @@ class _ScoringTabState extends State<ScoringTab> {
                             GestureDetector(
                               onTap:()async {
                                 SharedPreferences prefs = await SharedPreferences.getInstance();
-                                overNumber= prefs.getInt('over_number')??0;
-                                ballNumber= prefs.getInt('ball_number')??0;
+                                var overNumber= prefs.getInt('over_number');
+                                var ballNumber= prefs.getInt('ball_number');
                                 var strikerId=prefs.getInt('striker_id')??0;
                                 var nonStrikerId=prefs.getInt('non_striker_id')??0;
                                 var bowlerId=prefs.getInt('bowler_id')??0;
@@ -458,12 +479,14 @@ class _ScoringTabState extends State<ScoringTab> {
                                   });
                                   SharedPreferences prefs = await SharedPreferences.getInstance();
                                   await prefs.setInt('over_number', value.data!.overNumber??0);
-                                  await prefs.setInt('ball_number', value.data!.ballNumber??1);
+                                  await prefs.setInt('ball_number', value.data!.ballNumber??0);
                                   await prefs.setInt('striker_id', value.data!.strikerId??0);
                                   await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
+                                  await prefs.setInt('bowler_change', value.data!.bowlerChange??0);
                                   await prefs.setInt('bowlerPosition', 0);
                                   if(value.data!.strikerId==0 || value.data!.nonStrikerId==0){
-                                    changeBatsman();
+                                    String player=(value.data!.strikerId==0)?'striker_id':'non_striker_id';
+                                    changeBatsman(player);
                                   }
 
                                 });
@@ -474,7 +497,11 @@ class _ScoringTabState extends State<ScoringTab> {
                       const CustomVerticalDottedLine(),
                       Column(
                           children:[
-                            GestureDetector(onTap:(){
+                            GestureDetector(onTap:()async {
+                              bool continueOperations = await isBatsman();
+                              if (!continueOperations) {
+                                return;
+                              }
                               _displayBottomSheet(context,1,scoringData);
                             }, child: _buildGridItem('1','', context)),
 
@@ -482,21 +509,33 @@ class _ScoringTabState extends State<ScoringTab> {
                       const CustomVerticalDottedLine(),
                       Column(
                           children:[
-                            GestureDetector(onTap:(){
+                            GestureDetector(onTap:()async{
+                              bool continueOperations =  await isBatsman();
+                              if (!continueOperations) {
+                                return;
+                              }
                               _displayBottomSheet(context,2,scoringData);
                             }, child:_buildGridItem('2','', context)),
                             const CustomHorizantalDottedLine(),]),
                       const CustomVerticalDottedLine(),
                       Column(
                           children:[
-                            GestureDetector(onTap:(){
+                            GestureDetector(onTap:()async{
+                              bool continueOperations = await isBatsman();
+                              if (!continueOperations) {
+                                return;
+                              }
                               _displayBottomSheet(context,3,scoringData);
                             }, child:_buildGridItem('3','', context)),
                             const CustomHorizantalDottedLine(),]),
                       const CustomVerticalDottedLine(),
                       Column(
                           children:[
-                            GestureDetector(onTap:(){
+                            GestureDetector(onTap:()async{
+                              bool continueOperations = await isBatsman();
+                              if (!continueOperations) {
+                                return;
+                              }
                               _displayBottomSheet(context,4,scoringData);
                             }, child:_buildGridItemFour(Images.four,'FOUR', context)),
                             const CustomHorizantalDottedLine(),]),
@@ -506,14 +545,22 @@ class _ScoringTabState extends State<ScoringTab> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Column(
-                          children:[  GestureDetector(onTap:(){
+                          children:[  GestureDetector(onTap:()async{
+                            bool continueOperations = await isBatsman();
+                            if (!continueOperations) {
+                              return;
+                            }
                             _displayBottomSheet(context,6,scoringData);
                           }, child:_buildGridItemFour(Images.six,'SIX', context)),
                             const CustomHorizantalDottedLine(),]),
                       const CustomVerticalDottedLine(),
                       Column(
                           children:[ GestureDetector(
-                            onTap: (){
+                            onTap: ()async{
+                              bool continueOperations = await isBatsman();
+                              if (!continueOperations) {
+                                return;
+                              }
                               _displayBottomSheetWide(context,7,scoringData);
                             },
                               child: _buildGridItem('WD','WIDE', context)),
@@ -521,7 +568,11 @@ class _ScoringTabState extends State<ScoringTab> {
                       const CustomVerticalDottedLine(),
                       Column(
                           children:[ GestureDetector(
-                            onTap: (){
+                            onTap: ()async{
+                              bool continueOperations = await isBatsman();
+                              if (!continueOperations) {
+                                return;
+                              }
                               _displayBottomSheetNoBall(context,8,scoringData);
                             },
                               child: _buildGridItem('NB','NO BALL', context)),
@@ -529,7 +580,11 @@ class _ScoringTabState extends State<ScoringTab> {
                       const CustomVerticalDottedLine(),
                       Column(
                           children:[ GestureDetector(
-                            onTap:(){
+                            onTap:()async{
+                              bool continueOperations = await isBatsman();
+                              if (!continueOperations) {
+                                return;
+                              }
                               _displayBottomSheetLegBye(context,9,scoringData);
                             },
                               child: _buildGridItem('LB','LEG-BYE', context)),
@@ -537,7 +592,11 @@ class _ScoringTabState extends State<ScoringTab> {
                       const CustomVerticalDottedLine(),
                       Column(
                           children:[ GestureDetector(
-                            onTap: (){
+                            onTap: ()async{
+                              bool continueOperations = await isBatsman();
+                              if (!continueOperations) {
+                                return;
+                              }
                               _displayBottomSheetByes(context,10,scoringData);
                             },
                               child: _buildGridItem('BYE','', context)),
@@ -547,18 +606,30 @@ class _ScoringTabState extends State<ScoringTab> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      GestureDetector(onTap:(){
+                      GestureDetector(onTap:()async{
+                        bool continueOperations = await isBatsman();
+                        if (!continueOperations) {
+                          return;
+                        }
                         _displayBottomSheetBonus(context,11,scoringData);
                       },
                           child: _buildGridItem('B/P','B/P', context)),
                       const CustomVerticalDottedLine(),
-                      GestureDetector(onTap: (){
+                      GestureDetector(onTap: ()async{
+                        bool continueOperations =  await isBatsman();
+                        if (!continueOperations) {
+                          return;
+                        }
                         _displayBottomSheetMoreRuns(context,5,scoringData);
                       },
                           child: _buildGridItem('5,7..','RUNS', context)),
                       const CustomVerticalDottedLine(),
                       GestureDetector(
-                          onTap: (){
+                          onTap: ()async {
+                            bool continueOperations =  await isBatsman();
+                            if (!continueOperations) {
+                              return;
+                            }
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
@@ -569,19 +640,21 @@ class _ScoringTabState extends State<ScoringTab> {
                           child: _buildGridItem('','UNDO', context)),
                       const CustomVerticalDottedLine(),
                       GestureDetector(
-                          onTap: (){_displayBottomSheetOther(context);},
+                          onTap: ()async{
+                            bool continueOperations = await isBatsman();
+                            if (!continueOperations) {
+                              return;
+                            }
+                            _displayBottomSheetOther(context);},
                           child: _buildGridItem('','OTHER', context)),
                       const CustomVerticalDottedLine(),
                       GestureDetector(
                           onTap: ()async{
-
+                            bool continueOperations = await isBatsman();
+                            if (!continueOperations) {
+                              return;
+                            }
                         _displayBottomOut(context,scoringData);
-                        SharedPreferences prefs = await SharedPreferences.getInstance();
-                        var strikerId=prefs.getInt('striker_id')??0;
-                        var nonStrikerId=prefs.getInt('non_striker_id')??0;
-                      if(strikerId==0 || nonStrikerId==0 ) {
-                        //changeBatsman();
-                      }
                             },
                           child: _buildGridItemOut('OUT','', context)),
                     ],
@@ -596,7 +669,24 @@ class _ScoringTabState extends State<ScoringTab> {
     );
   }
 
-  void changeBatsman() async{
+   isBatsman()async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var strikerId=prefs.getInt('striker_id')??0;
+    var nonStrikerId=prefs.getInt('non_striker_id')??0;
+    var isBowlerChange=prefs.getInt('bowler_change')??0;
+    if(strikerId==0 || nonStrikerId==0 ) {
+      String player=(strikerId==0)?'striker_id':'non_striker_id';
+      changeBatsman(player);
+      return false;
+    }
+    if(isBowlerChange==1){
+      changeBowler();
+      return false;
+    }
+    return true;
+  }
+
+  void changeBatsman(String player) async{
      await ScoringProvider().getPlayerList(widget.matchId,widget.team1Id,'bat').then((value) {
        setState(() {
          itemsBatsman = value.battingPlayers;
@@ -604,14 +694,13 @@ class _ScoringTabState extends State<ScoringTab> {
        });
 
        _displayBatsmanBottomSheet (context,selectedBatsman,(bowlerIndex) {
-
          setState(() {
            selectedBatsman = bowlerIndex;
            if (selectedBatsman != null) {
              selectedBatsmanName = itemsBatsman![selectedBatsman!].name ?? "";
            }
          });
-       });
+       },player);
 
 
      });
@@ -621,14 +710,20 @@ class _ScoringTabState extends State<ScoringTab> {
   }
 
   void changeBowler() {
-    _displayBowlerBottomSheet (context,selectedBowler,(bowlerIndex) {
 
-      setState(() {
-        selectedBowler = bowlerIndex;
-        if (selectedBowler != null) {
-          selectedBowlerName = itemsBowler![selectedBowler!].name ?? "";
-        }
-      });
+    ScoringProvider().getPlayerList(widget.matchId,widget.team2Id,'bowl').then((value) {
+        setState(() {
+          itemsBowler = value.bowlingPlayers;
+          selectedBTeamName= value.team!.teamName;
+        });
+            _displayBowlerBottomSheet (context,selectedBowler,(bowlerIndex) {
+              setState(() {
+                selectedBowler = bowlerIndex;
+                if (selectedBowler != null) {
+                  selectedBowlerName = itemsBowler![selectedBowler!].name ?? "";
+                }
+              });
+            });
     });
   }
 
@@ -740,6 +835,7 @@ class _ScoringTabState extends State<ScoringTab> {
                       },
                       itemCount: itemsBowler!.length,
                       itemBuilder: (context, index) {
+                        final isActive=itemsBowler![index].active??0;
                         return GestureDetector(
                           onTap: () {
                             setState(() {
@@ -751,58 +847,60 @@ class _ScoringTabState extends State<ScoringTab> {
                               onItemSelected(localBowlerIndex);
                             });
                           },
-                          child:Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 2.5.w,vertical: 1.h),
-                            child: Row(
-                              children: [
-                                //circular button
-                                Container(
-                                  height: 20.0, // Adjust the height as needed
-                                  width: 20.0,  // Adjust the width as needed
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: localBowlerIndex  == index ? Colors.blue : Colors.grey, // Change colors based on selected index
-                                  ),
-                                  child: Center(
-                                    child: Icon(
-                                      Icons.circle_outlined, // You can change the icon as needed
-                                      color: Colors.white, // Icon color
-                                      size: 20.0, // Icon size
+                          child:Opacity(opacity: isActive==1?0.5:1,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 2.5.w,vertical: 1.h),
+                              child: Row(
+                                children: [
+                                  //circular button
+                                  Container(
+                                    height: 20.0, // Adjust the height as needed
+                                    width: 20.0,  // Adjust the width as needed
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: localBowlerIndex  == index ? Colors.blue : Colors.grey, // Change colors based on selected index
                                     ),
-                                  ),
-                                ), SizedBox(width: 3.w,),
-                                Image.asset(Images.playersImage,width: 10.w,),
-                                SizedBox(width: 2.w,),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("${itemsBowler![index].name??'-'}",style: fontMedium.copyWith(
-                                      fontSize: 12.sp,
-                                      color: AppColor.blackColour,
-                                    ),),
-                                    Row(
-                                      children: [
-                                        Container(
-                                          height:1.h,
-                                          width: 2.w,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(50),
-                                            color: AppColor.pri,
+                                    child: Center(
+                                      child: Icon(
+                                        Icons.circle_outlined, // You can change the icon as needed
+                                        color: Colors.white, // Icon color
+                                        size: 20.0, // Icon size
+                                      ),
+                                    ),
+                                  ), SizedBox(width: 3.w,),
+                                  Image.asset(Images.playersImage,width: 10.w,),
+                                  SizedBox(width: 2.w,),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("${itemsBowler![index].name??'-'}",style: fontMedium.copyWith(
+                                        fontSize: 12.sp,
+                                        color: AppColor.blackColour,
+                                      ),),
+                                      Row(
+                                        children: [
+                                          Container(
+                                            height:1.h,
+                                            width: 2.w,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(50),
+                                              color: AppColor.pri,
+                                            ),
                                           ),
-                                        ),
-                                        SizedBox(width: 2.w,),
-                                        Text(itemsBowler![index].playingStyle??'-',style: fontMedium.copyWith(
-                                            fontSize: 11.sp,
-                                            color: Color(0xff555555)
-                                        ),),
-                                      ],
-                                    ),
+                                          SizedBox(width: 2.w,),
+                                          Text(itemsBowler![index].playingStyle??'-',style: fontMedium.copyWith(
+                                              fontSize: 11.sp,
+                                              color: Color(0xff555555)
+                                          ),),
+                                        ],
+                                      ),
 
-                                  ],
-                                ),
-                                Spacer(),
+                                    ],
+                                  ),
+                                  Spacer(),
 
-                              ],
+                                ],
+                              ),
                             ),
                           ),
 
@@ -828,15 +926,15 @@ class _ScoringTabState extends State<ScoringTab> {
                             child: CancelBtn("Cancel")),
                         SizedBox(width: 2.w,),
                         GestureDetector(onTap:()async {
-            //ScoringProvider().saveBowler(widget.matchId,widget.team2Id,itemsBowler![localBowlerIndex!].playerId.toString());
 
                           if(localBowlerIndex!=null){
                           SharedPreferences prefs = await SharedPreferences.getInstance();
                           await prefs.setInt('bowler_id', itemsBowler![localBowlerIndex!].playerId!);
+                          await prefs.setInt('bowler_change', 0);
                           Navigator.pop(context);
                           }else{
                             setState(() {showError=true;});
-                             Timer(Duration(seconds: 4), () {setState(() {showError = false;});});
+                             Timer(const Duration(seconds: 4), () {setState(() {showError = false;});});
                           }
 
                           },child: OkBtn("Ok")),
@@ -851,7 +949,7 @@ class _ScoringTabState extends State<ScoringTab> {
     );
   }
 
-  Future<void> _displayBatsmanBottomSheet (BuildContext context, int? selectedBatsman,Function(int?) onItemSelected) async{
+  Future<void> _displayBatsmanBottomSheet (BuildContext context, int? selectedBatsman,Function(int?) onItemSelected,String player) async{
     int? localBowlerIndex = selectedBatsman;
     showModalBottomSheet(context: context,
         backgroundColor: Colors.transparent,
@@ -936,74 +1034,93 @@ class _ScoringTabState extends State<ScoringTab> {
                       },
                       itemCount: itemsBatsman!.length,
                       itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              if (localBowlerIndex  == index) {
-                                localBowlerIndex  = null; // Deselect the item if it's already selected
+                        final isPlayerOut = itemsBatsman![index].isOut == 1;
+                          return GestureDetector(
+                            onTap: () {
+                              if (isPlayerOut) {
+
                               } else {
-                                localBowlerIndex  = index; // Select the item if it's not selected
+                                setState(() {
+                                  if (localBowlerIndex == index) {
+                                    localBowlerIndex = null;
+                                  } else {
+                                    localBowlerIndex = index;
+                                  }
+                                  onItemSelected(localBowlerIndex);
+                                });
                               }
-                              onItemSelected(localBowlerIndex);
-                            });
-                          },
-                          child:Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 2.5.w,vertical: 1.h),
-                            child: Row(
-                              children: [
-                                //circular button
-                                Container(
-                                  height: 20.0, // Adjust the height as needed
-                                  width: 20.0,  // Adjust the width as needed
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: localBowlerIndex  == index ? Colors.blue : Colors.grey, // Change colors based on selected index
-                                  ),
-                                  child: Center(
-                                    child: Icon(
-                                      Icons.circle_outlined, // You can change the icon as needed
-                                      color: Colors.white, // Icon color
-                                      size: 20.0, // Icon size
-                                    ),
-                                  ),
-                                ), SizedBox(width: 3.w,),
-                                Image.asset(Images.playersImage,width: 10.w,),
-                                SizedBox(width: 2.w,),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                            },
+                            child: Opacity(
+                              opacity: isPlayerOut?0.5:1.0,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 2.5.w, vertical: 1.h),
+                                child: Row(
                                   children: [
-                                    Text("${itemsBatsman![index].name??'-'}",style: fontMedium.copyWith(
-                                      fontSize: 12.sp,
-                                      color: AppColor.blackColour,
-                                    ),),
-                                    Row(
-                                      children: [
-                                        Container(
-                                          height:1.h,
-                                          width: 2.w,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(50),
-                                            color: AppColor.pri,
-                                          ),
+                                    //circular button
+                                    Container(
+                                      height: 20.0, // Adjust the height as needed
+                                      width: 20.0, // Adjust the width as needed
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: localBowlerIndex == index ? Colors
+                                            .blue : Colors
+                                            .grey, // Change colors based on selected index
+                                      ),
+                                      child: const Center(
+                                        child: Icon(
+                                          Icons.circle_outlined,
+                                          color: Colors.white, // Icon color
+                                          size: 20.0, // Icon size
                                         ),
-                                        SizedBox(width: 2.w,),
-                                        Text(itemsBatsman![index].playingStyle??'-',style: fontMedium.copyWith(
-                                            fontSize: 11.sp,
-                                            color: Color(0xff555555)
-                                        ),),
+                                      ),
+                                    ), SizedBox(width: 3.w,),
+                                    Image.asset(
+                                      Images.playersImage, width: 10.w,),
+                                    SizedBox(width: 2.w,),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment
+                                          .start,
+                                      children: [
+                                        Text(
+                                          "${itemsBatsman![index].name ?? '-'}",
+                                          style: fontMedium.copyWith(
+                                            fontSize: 12.sp,
+                                            color: AppColor.blackColour,
+                                          ),),
+                                        Row(
+                                          children: [
+                                            Container(
+                                              height: 1.h,
+                                              width: 2.w,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius
+                                                    .circular(50),
+                                                color: AppColor.pri,
+                                              ),
+                                            ),
+                                            SizedBox(width: 2.w,),
+                                            Text(
+                                              itemsBatsman![index].playingStyle ??
+                                                  '-', style: fontMedium.copyWith(
+                                                fontSize: 11.sp,
+                                                color: Color(0xff555555)
+                                            ),),
+                                          ],
+                                        ),
+
                                       ],
                                     ),
+                                    Spacer(),
 
                                   ],
                                 ),
-                                Spacer(),
-
-                              ],
+                              ),
                             ),
-                          ),
 
-                        );
-                      },
+                          );
+                        }
+
                     ),
                   ),
                   Container(
@@ -1014,11 +1131,36 @@ class _ScoringTabState extends State<ScoringTab> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
+                        Visibility(visible:showError,
+                          child: Text('Please Select one Player',style: fontMedium.copyWith(color: Colors.red),),
+
+                        ),
                         CancelBtn("Cancel"),
                         SizedBox(width: 2.w,),
                         GestureDetector(onTap:()async {
+                          if(localBowlerIndex!=null){
+                            bool striker=(player=='striker_id')?true:false;
+                            SaveBatsmanDetailRequestModel requestModel = SaveBatsmanDetailRequestModel(
+                              batsman: [
+                                Batsman(
+                                    matchId:int.parse(widget.matchId),
+                                    teamId: int.parse(widget.team1Id),
+                                    playerId: itemsBatsman![localBowlerIndex!].playerId,
+                                    striker: striker
+                                ),
+                              ],
+                            );
 
-                          Navigator.pop(context);
+                            await ScoringProvider().saveBatsman(requestModel);
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            await prefs.setInt(player, itemsBatsman![localBowlerIndex!].playerId!);
+                            Navigator.pop(context);
+                          }else{
+                            setState(() {showError=true;});
+                            Timer(Duration(seconds: 4), () {setState(() {showError = false;});});
+                          }
+
+
                         },child: OkBtn("Ok")),
                       ],
                     ),
@@ -1256,7 +1398,15 @@ class _ScoringTabState extends State<ScoringTab> {
             ),
           );
         })
-    );
+    ).whenComplete(()async{
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var strikerId=prefs.getInt('striker_id')??0;
+      var nonStrikerId=prefs.getInt('non_striker_id')??0;
+      if(strikerId==0 || nonStrikerId==0 ) {
+        String player=(strikerId==0)?'striker_id':'non_striker_id';
+        changeBatsman(player);
+      }
+    });
 
 
   }
@@ -1337,9 +1487,9 @@ class _ScoringTabState extends State<ScoringTab> {
                 Padding(
                   padding:  EdgeInsets.only(left: 2.w,right: 2.w),
                   child: Wrap(
-                    spacing: 2.w, // Horizontal spacing between items
-                    runSpacing: 1.h, // Vertical spacing between lines
-                    alignment: WrapAlignment.center, // Alignment of items
+                    spacing: 2.w,
+                    runSpacing: 1.h,
+                    alignment: WrapAlignment.center,
                     children:chipData.map((data) {
                       final index = chipData.indexOf(data);
                       return GestureDetector(
@@ -1347,6 +1497,16 @@ class _ScoringTabState extends State<ScoringTab> {
                           setState(() {
                             isWideSelected=index;
                           });
+                          if (data['label'] == 'End Innings'){
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return EndInnings(widget.matchId,);
+                              },
+                            ).whenComplete(() {
+                              Navigator.pop(context);
+                            });
+                          }
                           if (data['label'] == 'Match break'){
                             showDialog(
                               context: context,
@@ -1356,6 +1516,7 @@ class _ScoringTabState extends State<ScoringTab> {
                             );
                           }
                           if (data['label'] == 'Change keeper'){
+
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
@@ -1383,7 +1544,8 @@ class _ScoringTabState extends State<ScoringTab> {
                             _displayBottomSheetSettings(context);
                           }
                           if (data['label'] == 'Change Batsman'){
-                            changeBatsman();
+                            // String player=(value.data!.strikerId==0)?'striker_id':'non_striker_id';
+                            // changeBatsman(player);
                           }
 
                         },
@@ -1416,7 +1578,7 @@ class _ScoringTabState extends State<ScoringTab> {
 
 
 Future<void> _displayBottomSheetWide (BuildContext context, int balltype, ScoringDetailResponseModel? scoringData) async{
-  int? isOffSideSelected ;
+  int? isOffSideSelected =0;
   int? isWideSelected ;
   bool showError =false;
   List<Map<String, dynamic>> chipData =[
@@ -1594,23 +1756,22 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
                       GestureDetector(
                           onTap:()async{
                             SharedPreferences prefs = await SharedPreferences.getInstance();
-                            var overNumber= prefs.getInt('over_number')??0;
-                            var ballNumber= prefs.getInt('ball_number')??0;
+                            var overNumber= prefs.getInt('over_number');
+                            var ballNumber= prefs.getInt('ball_number');
                             var strikerId=prefs.getInt('striker_id')??0;
                             var nonStrikerId=prefs.getInt('non_striker_id')??0;
                             var bowlerId=prefs.getInt('bowler_id')??0;
                             var keeperId=prefs.getInt('wicket_keeper_id')??0;
                             var bowlerPosition=prefs.getInt('bowlerPosition')??0;
 
+
                             if(isWideSelected!=null) {
                               ScoreUpdateRequestModel scoreUpdateRequestModel = ScoreUpdateRequestModel();
                               scoreUpdateRequestModel.ballTypeId = balltype;
-                              scoreUpdateRequestModel.matchId =
-                                  scoringData!.data!.batting![0].matchId;
+                              scoreUpdateRequestModel.matchId = scoringData!.data!.batting![0].matchId;
                               scoreUpdateRequestModel.scorerId = 1;
                               scoreUpdateRequestModel.strikerId = strikerId;
-                              scoreUpdateRequestModel.nonStrikerId =
-                                  nonStrikerId;
+                              scoreUpdateRequestModel.nonStrikerId = nonStrikerId;
                               scoreUpdateRequestModel.wicketKeeperId = keeperId;
                               scoreUpdateRequestModel.bowlerId = bowlerId;
                               scoreUpdateRequestModel.overNumber = overNumber;
@@ -1635,6 +1796,7 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
                               scoreUpdateRequestModel.fieldingPositionsId = 0;
                               scoreUpdateRequestModel.endInnings = false;
                               scoreUpdateRequestModel.bowlerPosition = bowlerPosition;
+                              scoreUpdateRequestModel.wideType = isOffSideSelected;
                               ScoringProvider().scoreUpdate(
                                   scoreUpdateRequestModel).then((value) async {
                                 SharedPreferences prefs = await SharedPreferences
@@ -1645,8 +1807,9 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
                                     'ball_number', value.data!.ballNumber ?? 1);
                                 await prefs.setInt(
                                     'striker_id', value.data!.strikerId ?? 0);
-                                await prefs.setInt('non_striker_id',
-                                    value.data!.nonStrikerId ?? 0);
+                                await prefs.setInt('non_striker_id', value.data!.nonStrikerId ?? 0);
+                                await prefs.setInt('bowler_change', value.data!.bowlerChange ?? 0);
+                                await prefs.setInt('bowlerPosition',0);
                                 Navigator.pop(context);
                               });
                             }else{
@@ -1676,7 +1839,7 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
 }
 
 Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,ScoringDetailResponseModel? scoringData) async{
-  int? isOffSideSelected ;
+  int? isOffSideSelected=0 ;
   int? isWideSelected ;
   bool showError =false;
   List<Map<String, dynamic>> chipData =[
@@ -1876,8 +2039,8 @@ Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,Scorin
                       ),
                       GestureDetector(onTap:()async{
                         SharedPreferences prefs = await SharedPreferences.getInstance();
-                        var overNumber= prefs.getInt('over_number')??0;
-                        var ballNumber= prefs.getInt('ball_number')??0;
+                        var overNumber= prefs.getInt('over_number');
+                        var ballNumber= prefs.getInt('ball_number');
                         var strikerId=prefs.getInt('striker_id')??0;
                         var nonStrikerId=prefs.getInt('non_striker_id')??0;
                         var bowlerId=prefs.getInt('bowler_id')??0;
@@ -1915,6 +2078,7 @@ Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,Scorin
                           scoreUpdateRequestModel.fieldingPositionsId = 0;
                           scoreUpdateRequestModel.endInnings = false;
                           scoreUpdateRequestModel.bowlerPosition=bowlerPosition;
+                          scoreUpdateRequestModel.noBallsType=isOffSideSelected;
                           ScoringProvider()
                               .scoreUpdate(scoreUpdateRequestModel)
                               .then((value) async {
@@ -1926,8 +2090,9 @@ Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,Scorin
                                 'ball_number', value.data!.ballNumber ?? 1);
                             await prefs.setInt(
                                 'striker_id', value.data!.strikerId ?? 0);
-                            await prefs.setInt('non_striker_id',
-                                value.data!.nonStrikerId ?? 0);
+                            await prefs.setInt('non_striker_id', value.data!.nonStrikerId ?? 0);
+                            await prefs.setInt('bowler_change', value.data!.bowlerChange ?? 0);
+                            await prefs.setInt('bowlerPosition',0);
 
                             Navigator.pop(context);
                           });
@@ -2060,8 +2225,8 @@ Future<void> _displayBottomSheetLegBye (BuildContext context, int ballType,Scori
                     children: [
                       GestureDetector(onTap:()async {
                         SharedPreferences prefs = await SharedPreferences.getInstance();
-                        var overNumber= prefs.getInt('over_number')??0;
-                        var ballNumber= prefs.getInt('ball_number')??0;
+                        var overNumber= prefs.getInt('over_number');
+                        var ballNumber= prefs.getInt('ball_number');
                         var strikerId=prefs.getInt('striker_id')??0;
                         var nonStrikerId=prefs.getInt('non_striker_id')??0;
                         var bowlerId=prefs.getInt('bowler_id')??0;
@@ -2097,12 +2262,14 @@ Future<void> _displayBottomSheetLegBye (BuildContext context, int ballType,Scori
                         ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
                           SharedPreferences prefs = await SharedPreferences.getInstance();
                           await prefs.setInt('over_number', value.data!.overNumber??0);
-                          await prefs.setInt('ball_number', value.data!.ballNumber??1);
+                          await prefs.setInt('ball_number', value.data!.ballNumber??0);
                           await prefs.setInt('striker_id', value.data!.strikerId??0);
                           await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
+                          await prefs.setInt('bowler_change', value.data!.bowlerChange ?? 0);
                           await prefs.setInt('bowlerPosition', 0);
                           if(value.data!.strikerId==0 || value.data!.nonStrikerId==0){
-                            changeBatsman();
+                            String player=(value.data!.strikerId==0)?'striker_id':'non_striker_id';
+                            changeBatsman(player);
                           }
 
                           Navigator.pop(context);
@@ -2225,8 +2392,8 @@ Future<void> _displayBottomSheetByes (BuildContext context,int ballType,ScoringD
                     children: [
                       GestureDetector(onTap:()async{
                         SharedPreferences prefs = await SharedPreferences.getInstance();
-                        var overNumber= prefs.getInt('over_number')??0;
-                        var ballNumber= prefs.getInt('ball_number')??0;
+                        var overNumber= prefs.getInt('over_number');
+                        var ballNumber= prefs.getInt('ball_number');
                         var strikerId=prefs.getInt('striker_id')??0;
                         var nonStrikerId=prefs.getInt('non_striker_id')??0;
                         var bowlerId=prefs.getInt('bowler_id')??0;
@@ -2263,12 +2430,14 @@ Future<void> _displayBottomSheetByes (BuildContext context,int ballType,ScoringD
                         ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value)async{
                           SharedPreferences prefs = await SharedPreferences.getInstance();
                           await prefs.setInt('over_number', value.data!.overNumber??0);
-                          await prefs.setInt('ball_number', value.data!.ballNumber??1);
+                          await prefs.setInt('ball_number', value.data!.ballNumber??0);
                           await prefs.setInt('striker_id', value.data!.strikerId??0);
                           await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
+                          await prefs.setInt('bowler_change', value.data!.bowlerChange ?? 0);
                           await prefs.setInt('bowlerPosition', 0);
                           if(value.data!.strikerId==0 || value.data!.nonStrikerId==0){
-                            changeBatsman();
+                            String player=(value.data!.strikerId==0)?'striker_id':'non_striker_id';
+                            changeBatsman(player);
                           }
                           Navigator.pop(context);
                         });
@@ -2463,8 +2632,8 @@ Future<void> _displayBottomSheetBonus (BuildContext context, int? ballType, Scor
                       ),
                       GestureDetector(onTap:()async{
                         SharedPreferences prefs = await SharedPreferences.getInstance();
-                        var overNumber= prefs.getInt('over_number')??0;
-                        var ballNumber= prefs.getInt('ball_number')??0;
+                        var overNumber= prefs.getInt('over_number');
+                        var ballNumber= prefs.getInt('ball_number');
                         var strikerId=prefs.getInt('striker_id')??0;
                         var nonStrikerId=prefs.getInt('non_striker_id')??0;
                         var bowlerId=prefs.getInt('bowler_id')??0;
@@ -2501,9 +2670,10 @@ Future<void> _displayBottomSheetBonus (BuildContext context, int? ballType, Scor
                           ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
                             SharedPreferences prefs = await SharedPreferences.getInstance();
                             await prefs.setInt('over_number', value.data!.overNumber??0);
-                            await prefs.setInt('ball_number', value.data!.ballNumber??1);
+                            await prefs.setInt('ball_number', value.data!.ballNumber??0);
                             await prefs.setInt('striker_id', value.data!.strikerId??0);
                             await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
+                            await prefs.setInt('bowler_change', value.data!.bowlerChange ?? 0);
                             await prefs.setInt('bowlerPosition',0);
                             Navigator.pop(context);
                           });
@@ -2649,8 +2819,8 @@ Future<void> _displayBottomSheetMoreRuns (BuildContext context,int ballType,Scor
                       ),
                       GestureDetector(onTap:()async{
                         SharedPreferences prefs = await SharedPreferences.getInstance();
-                        var overNumber= prefs.getInt('over_number')??0;
-                        var ballNumber= prefs.getInt('ball_number')??0;
+                        var overNumber= prefs.getInt('over_number');
+                        var ballNumber= prefs.getInt('ball_number');
                         var strikerId=prefs.getInt('striker_id')??0;
                         var nonStrikerId=prefs.getInt('non_striker_id')??0;
                         var bowlerId=prefs.getInt('bowler_id')??0;
@@ -2703,8 +2873,9 @@ Future<void> _displayBottomSheetMoreRuns (BuildContext context,int ballType,Scor
                                 'ball_number', value.data!.ballNumber ?? 1);
                             await prefs.setInt(
                                 'striker_id', value.data!.strikerId ?? 0);
-                            await prefs.setInt('non_striker_id',
-                                value.data!.nonStrikerId ?? 0);
+                            await prefs.setInt('non_striker_id', value.data!.nonStrikerId ?? 0);
+                            await prefs.setInt('bowler_change', value.data!.bowlerChange ?? 0);
+                            await prefs.setInt('bowlerPosition',0);
                             Navigator.pop(context);
                           });
                         }else{

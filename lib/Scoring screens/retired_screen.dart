@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
@@ -231,71 +232,77 @@ class _RetiredScreensState extends State<RetiredScreens> {
                 ),
               ),
             ),
-            Container(
-              decoration: BoxDecoration(
-                  color: AppColor.lightColor
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 2.h,horizontal: 4.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    GestureDetector(onTap:(){
-                      Navigator.pop(context);
-                    },
-                        child: CancelBtn("Cancel")),
-                    SizedBox(width: 4.w,),
-                    GestureDetector(onTap: ()async{
-                      SharedPreferences prefs = await SharedPreferences.getInstance();
-                      int overNumber= prefs.getInt('over_number')??0;
-                      int ballNumber= prefs.getInt('ball_number')??0;
-                      var strikerId=prefs.getInt('striker_id')??0;
-                      var nonStrikerId=prefs.getInt('non_striker_id')??0;
-                      var bowlerId=prefs.getInt('bowler_id')??0;
-                      var keeperId=prefs.getInt('wicket_keeper_id')??0;
-                      var bowlerPosition=prefs.getInt('bowlerPosition')??0;
+            Consumer<ScoringProvider>(
+              builder: (context, score, child) {
+                print(score.overNumber);
+                return Container(
+                  decoration: BoxDecoration(
+                      color: AppColor.lightColor
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 2.h,horizontal: 4.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        GestureDetector(onTap:(){
+                          Navigator.pop(context);
+                        },
+                            child: CancelBtn("Cancel")),
+                        SizedBox(width: 4.w,),
+                        GestureDetector(onTap: ()async{
+                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                          var overNumber= prefs.getInt('over_number');
+                          var ballNumber= prefs.getInt('ball_number');
+                          var strikerId=prefs.getInt('striker_id')??0;
+                          var nonStrikerId=prefs.getInt('non_striker_id')??0;
+                          var bowlerId=prefs.getInt('bowler_id')??0;
+                          var keeperId=prefs.getInt('wicket_keeper_id')??0;
+                          var bowlerPosition=prefs.getInt('bowlerPosition')??0;
 
-                      ScoreUpdateRequestModel scoreUpdateRequestModel=ScoreUpdateRequestModel();
-                      scoreUpdateRequestModel.ballTypeId=14;
-                      scoreUpdateRequestModel.matchId=widget.scoringData!.data!.batting![0].matchId;
-                      scoreUpdateRequestModel.scorerId=1;
-                      scoreUpdateRequestModel.strikerId=strikerId;
-                      scoreUpdateRequestModel.nonStrikerId=nonStrikerId;
-                      scoreUpdateRequestModel.wicketKeeperId=keeperId;
-                      scoreUpdateRequestModel.bowlerId=bowlerId;
-                      scoreUpdateRequestModel.overNumber=overNumber;
-                      scoreUpdateRequestModel.ballNumber=ballNumber;
-                      scoreUpdateRequestModel.runsScored=0;
-                      scoreUpdateRequestModel.extras=0;
-                      scoreUpdateRequestModel.wicket=0;
-                      scoreUpdateRequestModel.dismissalType=widget.ballType;
-                      scoreUpdateRequestModel.commentary=0;
-                      scoreUpdateRequestModel.innings=1;
-                      scoreUpdateRequestModel.battingTeamId=widget.scoringData!.data!.batting![0].teamId??0;
-                      scoreUpdateRequestModel.bowlingTeamId=widget.scoringData!.data!.bowling!.teamId??0;
-                      scoreUpdateRequestModel.overBowled=overNumber;
-                      scoreUpdateRequestModel.totalOverBowled=0;
-                      scoreUpdateRequestModel.outByPlayer=0;
-                      scoreUpdateRequestModel.outPlayer=widget.scoringData!.data!.batting![isSelected].playerId;
-                      scoreUpdateRequestModel.totalWicket=0;
-                      scoreUpdateRequestModel.fieldingPositionsId=0;
-                      scoreUpdateRequestModel.endInnings=false;
-                      scoreUpdateRequestModel.bowlerPosition=bowlerPosition;
-                      ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
+                          ScoreUpdateRequestModel scoreUpdateRequestModel=ScoreUpdateRequestModel();
+                          scoreUpdateRequestModel.ballTypeId=14;
+                          scoreUpdateRequestModel.matchId=widget.scoringData!.data!.batting![0].matchId;
+                          scoreUpdateRequestModel.scorerId=1;
+                          scoreUpdateRequestModel.strikerId=strikerId;
+                          scoreUpdateRequestModel.nonStrikerId=nonStrikerId;
+                          scoreUpdateRequestModel.wicketKeeperId=keeperId;
+                          scoreUpdateRequestModel.bowlerId=bowlerId;
+                          scoreUpdateRequestModel.overNumber=overNumber;
+                          scoreUpdateRequestModel.ballNumber=ballNumber;
+                          scoreUpdateRequestModel.runsScored=0;
+                          scoreUpdateRequestModel.extras=0;
+                          scoreUpdateRequestModel.wicket=0;
+                          scoreUpdateRequestModel.dismissalType=widget.ballType;
+                          scoreUpdateRequestModel.commentary=0;
+                          scoreUpdateRequestModel.innings=1;
+                          scoreUpdateRequestModel.battingTeamId=widget.scoringData!.data!.batting![0].teamId??0;
+                          scoreUpdateRequestModel.bowlingTeamId=widget.scoringData!.data!.bowling!.teamId??0;
+                          scoreUpdateRequestModel.overBowled=overNumber;
+                          scoreUpdateRequestModel.totalOverBowled=0;
+                          scoreUpdateRequestModel.outByPlayer=0;
+                          scoreUpdateRequestModel.outPlayer=widget.scoringData!.data!.batting![isSelected].playerId;
+                          scoreUpdateRequestModel.totalWicket=0;
+                          scoreUpdateRequestModel.fieldingPositionsId=0;
+                          scoreUpdateRequestModel.endInnings=false;
+                          scoreUpdateRequestModel.bowlerPosition=bowlerPosition;
+                          ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
 
-                        SharedPreferences prefs = await SharedPreferences.getInstance();
-                        await prefs.setInt('over_number', value.data!.overNumber??0);
-                        await prefs.setInt('ball_number', value.data!.ballNumber??1);
-                        await prefs.setInt('striker_id', value.data!.strikerId??0);
-                        await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
-                        await prefs.setInt('bowlerPosition',0);
-                      });
-                      Navigator.pop(context);
-                    },
-                        child: OkBtn("Ok")),
-                  ],
-                ),
-              ),
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            await prefs.setInt('over_number', value.data!.overNumber!);
+                            await prefs.setInt('ball_number', value.data!.ballNumber??0);
+                            await prefs.setInt('striker_id', value.data!.strikerId??0);
+                            await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
+                            await prefs.setInt('bowler_change', value.data!.bowlerChange??0);
+                            await prefs.setInt('bowlerPosition',0);
+                          });
+                          Navigator.pop(context);
+                        },
+                            child: OkBtn("Ok")),
+                      ],
+                    ),
+                  ),
+                );
+              }
             ),
           ],
         ),

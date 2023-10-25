@@ -258,21 +258,40 @@ class _LiveScreenState extends State<LiveScreen> {
                                 padding:  EdgeInsets.symmetric(horizontal: 1.w)+EdgeInsets.only(top: 2.h),
                                 child: GestureDetector(
                                     onTap: (){
-                                      if((scoringData!.data!.batting!.length<2) || scoringData!.data!.bowling==null){
+                                      if(matchlist!.first.currentInnings==1 ){
+                                          if(((scoringData!.data!.batting!.length<2) || scoringData!.data!.bowling==null)){
+                                                    if(matchlist!.first.wonBy==matchlist![index].team1Id && matchlist!.first.choseTo=='Bat' ) {
+                                                      Navigator.push(context, MaterialPageRoute(builder: (context) => DOScoring(matchlist![index].matchId.toString(), matchlist![index].team1Id.toString(), matchlist![index].team2Id.toString())));
+                                                    }else{
+                                                      Navigator.push(context, MaterialPageRoute(builder: (context) => DOScoring(matchlist![index].matchId.toString(), matchlist![index].team2Id.toString(),matchlist![index].team1Id.toString())));
+
+                                                    }
+                                              }else{
                                                 if(matchlist!.first.wonBy==matchlist![index].team1Id && matchlist!.first.choseTo=='Bat' ) {
-                                                  Navigator.push(context, MaterialPageRoute(builder: (context) => DOScoring(matchlist![index].matchId.toString(), matchlist![index].team1Id.toString(), matchlist![index].team2Id.toString())));
+
+                                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ScoreUpdateScreen(matchlist!.first.matchId.toString(),matchlist!.first.team1Id.toString())));
                                                 }else{
-                                                  Navigator.push(context, MaterialPageRoute(builder: (context) => DOScoring(matchlist![index].matchId.toString(), matchlist![index].team2Id.toString(),matchlist![index].team1Id.toString())));
+                                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ScoreUpdateScreen(matchlist!.first.matchId.toString(),matchlist!.first.team2Id.toString())));
 
                                                 }
+                                            }
+                                      }else if(matchlist!.first.currentInnings==2){
+                                          if(((scoringData!.data!.batting!.length<2) || scoringData!.data!.bowling==null)){
+                                            if(matchlist!.first.wonBy==matchlist![index].team1Id && matchlist!.first.choseTo=='Bat' ) {
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) => DOScoring(matchlist![index].matchId.toString(), matchlist![index].team1Id.toString(), matchlist![index].team2Id.toString())));
+                                            }else{
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) => DOScoring(matchlist![index].matchId.toString(), matchlist![index].team2Id.toString(),matchlist![index].team1Id.toString())));
+
+                                            }
                                           }else{
-                                              if(matchlist!.first.wonBy==matchlist![index].team1Id && matchlist!.first.choseTo=='Bat' ) {
+                                            if(matchlist!.first.wonBy==matchlist![index].team1Id && matchlist!.first.choseTo=='Bat' ) {
 
-                                                     Navigator.push(context, MaterialPageRoute(builder: (context) => ScoreUpdateScreen(matchlist!.first.matchId.toString(),matchlist!.first.team1Id.toString())));
-                                               }else{
-                                                Navigator.push(context, MaterialPageRoute(builder: (context) => ScoreUpdateScreen(matchlist!.first.matchId.toString(),matchlist!.first.team2Id.toString())));
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) => ScoreUpdateScreen(matchlist!.first.matchId.toString(),matchlist!.first.team1Id.toString())));
+                                            }else{
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) => ScoreUpdateScreen(matchlist!.first.matchId.toString(),matchlist!.first.team2Id.toString())));
 
-                                              }
+                                            }
+                                          }
                                       }
 
                                     },

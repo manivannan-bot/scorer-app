@@ -55,37 +55,13 @@ class _DOScoringState extends State<DOScoring> {
   }
 
   Future<void> _fetchPlayers(String matchId, String team1id,String team2id) async {
-    try {
-      final response = await ScoringProvider().getPlayerList(matchId, team1id,'bat');
-      setState(() {
-        items = response.battingPlayers;
-        selectedTeamName= response.team!.teamName;
+      // final response = await ScoringProvider().getPlayerList(matchId, team1id,'bat');
+      // setState(() {
+      //   items = response.battingPlayers;
+      //   selectedTeamName= response.team!.teamName;
+      //
+      // });
 
-      });
-
-    } catch (error) {
-      // Handle any errors here
-    }
-
-    try {
-      final response = await ScoringProvider().getPlayerList(matchId, team2id,'bowl');
-      setState(() {
-        itemsBowler = response.bowlingPlayers;
-        selectedBTeamName= response.team!.teamName;
-
-      });
-    } catch (error) {
-    }
-
-    try {
-      final response = await ScoringProvider().getPlayerList(matchId, team2id,'wk');
-      setState(() {
-        itemsKeeper = response.wkPlayers;
-        selectedBTeamName= response.team!.teamName;
-
-      });
-    } catch (error) {
-    }
   }
 
   @override
@@ -134,18 +110,24 @@ class _DOScoringState extends State<DOScoring> {
                       children: [
                        GestureDetector(
                          onTap:(){
-                           _displayBottomSheet (context,selectedIndex,(newIndex) async{
+                            ScoringProvider().getPlayerList(widget.matchId, widget.team1id,'bat').then((value){
+                                setState(() {
+                                  items = value.battingPlayers;
+                                  selectedTeamName= value.team!.teamName;
+                                });
+                                _displayBottomSheet (context,selectedIndex,(newIndex) async{
 
-                             setState(() {
-                               selectedIndex = newIndex;
-                               if (selectedIndex != null) {
+                                  setState(() {
+                                    selectedIndex = newIndex;
+                                    if (selectedIndex != null) {
 
-                                 selectedPlayerName = items![selectedIndex!].name ?? "";
-                               }
-                             });
-                             SharedPreferences prefs = await SharedPreferences.getInstance();
-                             await prefs.setInt('striker_id', items![selectedIndex!].playerId!);
-                           });
+                                      selectedPlayerName = items![selectedIndex!].name ?? "";
+                                    }
+                                  });
+
+                                });
+
+                            });
 
                          },
                            child: ChooseContainer(selectedIndex != null
@@ -153,18 +135,19 @@ class _DOScoringState extends State<DOScoring> {
                         SizedBox(width: 8.w,),
                         GestureDetector(
                             onTap:(){
-                              _displayPlayer2BottomSheet (context,player2Index,(newIndex) async{
-
-                                setState(() {
-                                  player2Index = newIndex;
-                                  if (player2Index != null) {
-
-                                    selectedPlayer2Name = items![player2Index!].name ?? "";
-                                  }
-                                });
-
-                                SharedPreferences prefs = await SharedPreferences.getInstance();
-                                await prefs.setInt('non_striker_id', items![player2Index!].playerId!);
+                              ScoringProvider().getPlayerList(widget.matchId, widget.team1id,'bat').then((value){
+                                        setState(() {
+                                          items = value.battingPlayers;
+                                          selectedTeamName= value.team!.teamName;
+                                        });
+                                      _displayPlayer2BottomSheet (context,player2Index,(newIndex) async{
+                                            setState(() {
+                                              player2Index = newIndex;
+                                              if (player2Index != null) {
+                                                selectedPlayer2Name = items![player2Index!].name ?? "";
+                                              }
+                                            });
+                                      });
                               });
 
                             },
@@ -204,35 +187,47 @@ class _DOScoringState extends State<DOScoring> {
                     Row(
                       children: [
                         GestureDetector(
-                            onTap:(){
-                              _displayBowlerBottomSheet (context,selectedBowler,(bowlerIndex) async{
-
+                            onTap:() {
+                               ScoringProvider().getPlayerList(widget.matchId, widget.team2id,'bowl').then((value) {
                                 setState(() {
-                                  selectedBowler = bowlerIndex;
-                                  if (selectedBowler != null) {
+                                  itemsBowler = value.bowlingPlayers;
+                                  selectedBTeamName= value.team!.teamName;
 
-                                    selectedBowlerName = itemsBowler![selectedBowler!].name ?? "";
-                                  }
                                 });
-                                SharedPreferences prefs = await SharedPreferences.getInstance();
-                                await prefs.setInt('bowler_id', itemsBowler![selectedBowler!].playerId!);
+                                  _displayBowlerBottomSheet (context,selectedBowler,(bowlerIndex) async{
+                                    setState(() {
+                                      selectedBowler = bowlerIndex;
+                                      if (selectedBowler != null) {
+                                        selectedBowlerName = itemsBowler![selectedBowler!].name ?? "";
+                                      }
+                                    });
+
+                                  });
+
                               });
+
                             },
                             child: ChooseContainer(selectedBowler==null?"Bowler":selectedBowlerName)),
                         SizedBox(width: 8.w,),
                         GestureDetector(
-                          onTap:(){
+                          onTap:()async{
+                            await ScoringProvider().getPlayerList(widget.matchId, widget.team2id,'wk').then((value) {
+                                  setState(() {
+                                    itemsKeeper = value.wkPlayers;
+                                    selectedBTeamName= value.team!.teamName;
 
-                            _displayKeeperBottomSheet (context,selectedWicketKeeper,(bowlerIndex) async{
+                                  });
+                                      _displayKeeperBottomSheet (context,selectedWicketKeeper,(bowlerIndex) async{
+                                        setState(() {
+                                          selectedWicketKeeper = bowlerIndex;
+                                          if (selectedWicketKeeper != null) {
+                                            selectedWicketKeeperName = itemsKeeper![selectedWicketKeeper!].name ?? "";
+                                          }
+                                        });
+                                      });
 
-                              setState(() {
-                                selectedWicketKeeper = bowlerIndex;
-                                if (selectedWicketKeeper != null) {
-                                  selectedWicketKeeperName = itemsKeeper![selectedWicketKeeper!].name ?? "";
-                                }
-                              });
+                                });
 
-                            });
                           },
                             child: ChooseContainer(selectedWicketKeeper==null?"Wicket Keeper":selectedWicketKeeperName)),
                       ],
@@ -416,18 +411,7 @@ class _DOScoringState extends State<DOScoring> {
                                 ],
                               ),
                               Spacer(),
-                              // Row(
-                              //   children: [
-                              //     Text("25 ",style: fontRegular.copyWith(
-                              //       fontSize: 11.sp,
-                              //       color: AppColor.blackColour,
-                              //     ),),
-                              //     Text("(10) ",style: fontRegular.copyWith(
-                              //       fontSize: 11.sp,
-                              //       color: AppColor.blackColour,
-                              //     ),)
-                              //   ],
-                              // )
+
                             ],
                           ),
                         ),
@@ -444,23 +428,34 @@ class _DOScoringState extends State<DOScoring> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      CancelBtn("Cancel"),
+                      GestureDetector(onTap:(){
+                        Navigator.pop(context);
+                      },
+                          child: CancelBtn("Cancel")),
                       SizedBox(width: 2.w,),
                       GestureDetector(onTap:()async {
-                        SaveBatsmanDetailRequestModel requestModel = SaveBatsmanDetailRequestModel(
-                          batsman: [
-                            Batsman(
-                              matchId:int.parse(widget.matchId),
-                              teamId: int.parse(widget.team1id),
-                              playerId: items![localSelectedIndex!].playerId,
-                              striker: true
-                            ),
-                          ],
-                        );
+                        if(localSelectedIndex!=null){
+                                    SaveBatsmanDetailRequestModel requestModel = SaveBatsmanDetailRequestModel(
+                                    batsman: [
+                                    Batsman(
+                                    matchId:int.parse(widget.matchId),
+                                    teamId: int.parse(widget.team1id),
+                                    playerId: items![localSelectedIndex!].playerId,
+                                    striker: true
+                                    ),
+                                    ],
+                                    );
 
-                        // Call the saveBatsman function with the request model
-                        await ScoringProvider().saveBatsman(requestModel);
-                        Navigator.pop(context);
+                                    await ScoringProvider().saveBatsman(requestModel);
+                                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                                    await prefs.setInt('striker_id', items![selectedIndex!].playerId!);
+
+                                    Navigator.pop(context);
+                          }else{
+                                        displayError();
+                          }
+
+
                       },child: OkBtn("Ok")),
                     ],
                   ),
@@ -473,7 +468,7 @@ class _DOScoringState extends State<DOScoring> {
     );
   }
   _displayBowlerBottomSheet (BuildContext context, int? selectedBowler,Function(int?) onItemSelected) async{
-    int? localBowlerIndex = selectedBowler;
+    int? localBowlerIndex ;
     showModalBottomSheet(context: context,
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
@@ -649,8 +644,20 @@ class _DOScoringState extends State<DOScoring> {
                         CancelBtn("Cancel"),
                         SizedBox(width: 2.w,),
                         GestureDetector(onTap:()async {
-                          ScoringProvider().saveBowler(widget.matchId,widget.team2id,itemsBowler![localBowlerIndex!].playerId.toString());
-                          Navigator.pop(context);
+                          if(localBowlerIndex!=null) {
+                            ScoringProvider().saveBowler(
+                                widget.matchId, widget.team2id,
+                                itemsBowler![localBowlerIndex!].playerId
+                                    .toString());
+                            Navigator.pop(context);
+                            SharedPreferences prefs = await SharedPreferences
+                                .getInstance();
+                            await prefs.setInt('bowler_id',
+                                itemsBowler![localBowlerIndex!].playerId!);
+                          }else{
+                            displayError();
+                          }
+
                         },child: OkBtn("Ok")),
                       ],
                     ),
@@ -663,7 +670,7 @@ class _DOScoringState extends State<DOScoring> {
     );
   }
   _displayKeeperBottomSheet (BuildContext context, int? selectedBowler,Function(int?) onItemSelected) async{
-    int? localBowlerIndex =selectedBowler;
+    int? localBowlerIndex ;
     showModalBottomSheet(context: context,
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
@@ -808,18 +815,6 @@ class _DOScoringState extends State<DOScoring> {
                                   ],
                                 ),
                                 Spacer(),
-                                // Row(
-                                //   children: [
-                                //     Text("25 ",style: fontRegular.copyWith(
-                                //       fontSize: 11.sp,
-                                //       color: AppColor.blackColour,
-                                //     ),),
-                                //     Text("(10) ",style: fontRegular.copyWith(
-                                //       fontSize: 11.sp,
-                                //       color: AppColor.blackColour,
-                                //     ),)
-                                //   ],
-                                // )
                               ],
                             ),
                           ),
@@ -854,10 +849,7 @@ class _DOScoringState extends State<DOScoring> {
                                      await prefs.setInt('wicket_keeper_id', itemsKeeper![localBowlerIndex!].playerId!);
                                      Navigator.pop(context);
                                    }else{
-
-                                     setState(() {showError = true;});
-                                       Timer(Duration(seconds: 4), () {setState(() {showError = false;});});
-
+                                     displayError();
                                    }
 
                         },child: OkBtn("Ok")),
@@ -872,7 +864,7 @@ class _DOScoringState extends State<DOScoring> {
     );
   }
   _displayPlayer2BottomSheet (BuildContext context, int? initialSelectedIndex,Function(int?) onItemSelected) async{
-    int? localSelectedIndex = initialSelectedIndex;
+    int? localSelectedIndex ;
     showModalBottomSheet(context: context,
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
@@ -1017,18 +1009,7 @@ class _DOScoringState extends State<DOScoring> {
                                   ],
                                 ),
                                 Spacer(),
-                                // Row(
-                                //   children: [
-                                //     Text("25 ",style: fontRegular.copyWith(
-                                //       fontSize: 11.sp,
-                                //       color: AppColor.blackColour,
-                                //     ),),
-                                //     Text("(10) ",style: fontRegular.copyWith(
-                                //       fontSize: 11.sp,
-                                //       color: AppColor.blackColour,
-                                //     ),)
-                                //   ],
-                                // )
+
                               ],
                             ),
                           ),
@@ -1045,24 +1026,39 @@ class _DOScoringState extends State<DOScoring> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        GestureDetector(
+                        Visibility(
+                          visible: showError,
+                          child: Text(
+                            'Please Select One Option',
+                            style: fontMedium.copyWith(color: AppColor.redColor),
+                          ),
+                        ),
+                        GestureDetector(onTap: (){
+                          Navigator.pop(context);
+                        },
                             child: CancelBtn("Cancel")),
                         SizedBox(width: 2.w,),
                         GestureDetector(onTap:()async {
-                          SaveBatsmanDetailRequestModel requestModel = SaveBatsmanDetailRequestModel(
-                            batsman: [
-                              Batsman(
-                                matchId:int.parse(widget.matchId),
-                                teamId: int.parse(widget.team1id),
-                                playerId: items![localSelectedIndex!].playerId,
-                                  striker: false
-                              ),
-                            ],
-                          );
+                          if(localSelectedIndex!=null){
+                            SaveBatsmanDetailRequestModel requestModel = SaveBatsmanDetailRequestModel(
+                              batsman: [
+                                Batsman(
+                                    matchId: int.parse(widget.matchId),
+                                    teamId: int.parse(widget.team1id),
+                                    playerId: items![localSelectedIndex!]
+                                        .playerId,
+                                    striker: false
+                                ),
+                              ],
+                            );
+                            await ScoringProvider().saveBatsman(requestModel);
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            await prefs.setInt('non_striker_id', items![localSelectedIndex!].playerId!);
 
-
-                          await ScoringProvider().saveBatsman(requestModel);
-                          Navigator.pop(context);
+                            Navigator.pop(context);
+                          }else{
+                            displayError();
+                          }
                         },child: OkBtn("Ok")),
                       ],
                     ),
@@ -1075,5 +1071,9 @@ class _DOScoringState extends State<DOScoring> {
     );
   }
 
+  displayError(){
+    setState(() {showError = true;});
+    Timer(const Duration(seconds: 4), () {setState(() {showError = false;});});
+  }
 
 }
