@@ -12,7 +12,11 @@ import 'package:scorer/utils/sizes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
+
+import '../commentaryscreens/commentary_screen.dart';
+import '../commentaryscreens/info_screen.dart';
 import '../provider/scoring_provider.dart';
+import '../scorecardScreens/scorecard_screen.dart';
 import '../utils/images.dart';
 
 class ScoreUpdateScreen extends StatefulWidget  {
@@ -112,7 +116,7 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
                     Images.bannerBg,
                     fit: BoxFit.cover, // You can choose how the image should be scaled
                     width: double.infinity,
-                     height: 24.5.h,
+                     height: 26.h,
                   ),
                   Padding(
                     padding:  EdgeInsets.symmetric(horizontal: 5.w),
@@ -244,10 +248,11 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
                 child: TabBarView(
                     controller: tabController,
                     children:  [
-                      ScoringTab(widget.matchId,team1Id.toString(),team2Id.toString(),fetchData),
-                      Container(height: 50,width: 50,color: Colors.blue,),
-                      Container(height: 50,width: 50,color: Colors.red,),
-                      Container(height: 50,width: 50,color: Colors.blue,)
+                      ScoringTab(widget.matchId,team1Id.toString(),team2Id.toString(), fetchData),
+                      ScorecardScreen(),
+                      CommentaryScreen(),
+                      InfoScreen(),
+
                     ]),
               )
             ],

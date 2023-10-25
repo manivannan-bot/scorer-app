@@ -46,8 +46,10 @@ class ScoringTab extends StatefulWidget {
   final String matchId;
   final String team1Id;
   final String team2Id;
+
   final VoidCallback fetchData;
   const ScoringTab(this.matchId, this.team1Id, this.team2Id, this.fetchData, {super.key});
+
 
   @override
   State<ScoringTab> createState() => _ScoringTabState();
@@ -119,9 +121,6 @@ class _ScoringTabState extends State<ScoringTab> {
     });
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
     if(scoringData==null || scoringData!.data ==null){
@@ -151,7 +150,7 @@ class _ScoringTabState extends State<ScoringTab> {
       controller: _refreshController,
       enablePullDown: true,
       onRefresh: _refreshData,
-      child: Column(
+      child: ListView(
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(5.h),
@@ -330,7 +329,6 @@ class _ScoringTabState extends State<ScoringTab> {
                                         scrollDirection: Axis.horizontal,
                                         children: <Widget>[
                                           for (int index = 0; index < scoringData!.data!.over!.length; index++)
-
                                             Row(
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               children: [
@@ -430,7 +428,6 @@ class _ScoringTabState extends State<ScoringTab> {
 
           Expanded(
             child: Container(
-              height: 100.h,
               width: 100.w,
               color: Colors.black,
               child: Column(
@@ -441,7 +438,6 @@ class _ScoringTabState extends State<ScoringTab> {
 
                       Column(
                           children:[
-
                             GestureDetector(
                               onTap:()async {
                                 SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -748,7 +744,9 @@ class _ScoringTabState extends State<ScoringTab> {
           },),
         ); // Create and return the GroundCircle widget here.
       },
-    );
+    ).then((value) {
+      _refreshData();
+    });
   }
 
   _displayBowlerBottomSheet (BuildContext context, int? selectedBowler,Function(int?) onItemSelected) async{
@@ -1644,35 +1642,37 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
               SizedBox(height: 1.h,),
               Padding(
                 padding:  EdgeInsets.only(left: 5.w,right: 5.w),
-                child: Wrap(
-                  spacing: 2.5.w, // Horizontal spacing between items
-                  runSpacing: 0.5.h, // Vertical spacing between lines
-                  alignment: WrapAlignment.center, // Alignment of items
-                  children:chipData.map((data) {
-                    final index = chipData.indexOf(data);
-                    return GestureDetector(
-                      onTap: (){
-                        setState(() {
-                          isWideSelected=index;
-                        });
-                      },
-                      child: Chip(
-                        padding: EdgeInsets.symmetric(horizontal: 1.w,vertical: 0.5.h),
-                        label: Text(data['label'],style: fontSemiBold.copyWith(
-                            fontSize: 12.sp,
-                            color: AppColor.blackColour
-                        ),),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                          side: BorderSide(
-                            color: Color(0xffDADADA),
+                child: Center(
+                  child: Wrap(
+                    spacing: 2.5.w, // Horizontal spacing between items
+                    runSpacing: 0.5.h, // Vertical spacing between lines
+                    alignment: WrapAlignment.center, // Alignment of items
+                    children:chipData.map((data) {
+                      final index = chipData.indexOf(data);
+                      return GestureDetector(
+                        onTap: (){
+                          setState(() {
+                            isWideSelected=index;
+                          });
+                        },
+                        child: Chip(
+                          padding: EdgeInsets.symmetric(horizontal: 1.w,vertical: 0.5.h),
+                          label: Text(data['label'],style: fontSemiBold.copyWith(
+                              fontSize: 12.sp,
+                              color: AppColor.blackColour
+                          ),),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            side: BorderSide(
+                              color: Color(0xffDADADA),
+                            ),
                           ),
+                          backgroundColor: isWideSelected==index? AppColor.primaryColor : Color(0xffF8F9FA),
+                          // backgroundColor:AppColor.lightColor
                         ),
-                        backgroundColor: isWideSelected==index? AppColor.primaryColor : Color(0xffF8F9FA),
-                        // backgroundColor:AppColor.lightColor
-                      ),
-                    );
-                  }).toList(),
+                      );
+                    }).toList(),
+                  ),
                 ),
               ),
               SizedBox(height: 1.h,),
