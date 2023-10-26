@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:scorer/provider/scoring_provider.dart';
 import 'package:scorer/utils/colours.dart';
@@ -13,14 +15,17 @@ import 'ok_btn.dart';
 
 //match break
 class DialogsOthers extends StatefulWidget {
-  const DialogsOthers({super.key});
+  final String matchId;
+  final String team1Id;
+  final String team2Id;
+  const DialogsOthers(this.matchId,this.team1Id,this.team2Id,{super.key});
 
   @override
   State<DialogsOthers> createState() => _DialogsOthersState();
 }
 
 class _DialogsOthersState extends State<DialogsOthers> {
-  int? isWideSelected ;
+  int isWideSelected =0;
   List<Map<String, dynamic>> chipData =[
     {
       'label': "Drinks",
@@ -106,7 +111,12 @@ class _DialogsOthersState extends State<DialogsOthers> {
                       },
                       child: CancelBtn("cancel")),
                   SizedBox(width: 4.w,),
-                  OkBtn("ok"),
+                  GestureDetector(
+                      onTap:(){
+                        ScoringProvider().matchBreak(int.parse(widget.matchId), int.parse(widget.team1Id), isWideSelected).then((value) {
+                          Navigator.pop(context);
+                        });
+                      },child: OkBtn("ok")),
                 ],
               ),
             ),
@@ -179,13 +189,17 @@ class _ChangeTargetDialogState extends State<ChangeTargetDialog> {
 //D/L method
 
 class DlMethodDialog extends StatefulWidget {
-  const DlMethodDialog({super.key});
+  final String matchId;
+  const DlMethodDialog(this.matchId,{super.key});
 
   @override
   State<DlMethodDialog> createState() => _DlMethodDialog();
 }
 
 class _DlMethodDialog extends State<DlMethodDialog> {
+  int totalOvers=0;
+  int targetScore=0;
+  bool showError=false;
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -240,6 +254,14 @@ class _DlMethodDialog extends State<DlMethodDialog> {
                     border: InputBorder.none,// Label text
                   // Hint text
                   ),
+                  onChanged: (value) {
+                    setState(() {
+                      totalOvers = int.parse(value);
+                      if(totalOvers==0){
+                        displayError();
+                      }
+                    });
+                  },
                 ),
               ),
             ),
@@ -264,21 +286,49 @@ class _DlMethodDialog extends State<DlMethodDialog> {
                     border: InputBorder.none,// Label text
                     // Hint text
                   ),
+                  onChanged: (value) {
+
+                      setState(() {
+                        targetScore = int.parse(value);
+                        if(targetScore==0){
+                          displayError();
+                        }
+                      });
+
+
+                  },
                 ),
               ),
+            ),
+            Visibility(visible:showError,
+              child: Text('Please Enter Values',style: fontMedium.copyWith(color: Colors.red),),
+
             ),
             Expanded(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+
                   GestureDetector(
                       onTap:(){
                         Navigator.pop(context);
                       },
                       child: CancelBtn("cancel")),
                   SizedBox(width: 4.w,),
-                  OkBtn("ok"),
+                  GestureDetector(
+                      onTap:()async{
+                        SharedPreferences pref=await SharedPreferences.getInstance();
+                        int innings=pref.getInt('current_innings')??1;
+                        ScoringProvider().dlMethod(int.parse(widget.matchId), innings, totalOvers, targetScore).then((value) {
+                          Navigator.pop(context);
+                        });
+                        if(totalOvers==0) {
+
+                        }else{
+                         //displayError();
+                        }
+                      },child: OkBtn("ok")),
                 ],
               ),
             ),
@@ -286,6 +336,10 @@ class _DlMethodDialog extends State<DlMethodDialog> {
         ),
       ),
     );
+  }
+  displayError(){
+    setState(() {showError=true;});
+    Timer(const Duration(seconds: 4), () {setState(() {showError = false;});});
   }
 }
 

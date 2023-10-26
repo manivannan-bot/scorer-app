@@ -91,7 +91,7 @@ class _ScoringTabState extends State<ScoringTab> {
     scoringData=null;
     super.initState();
     _refreshData();
-    setUpServices();
+    //setUpServices();
   }
 
   void setUpServices() {
@@ -155,7 +155,7 @@ class _ScoringTabState extends State<ScoringTab> {
           ClipRRect(
             borderRadius: BorderRadius.circular(5.h),
             child: Padding(
-              padding: EdgeInsets.only(left: 12),
+              padding: const EdgeInsets.only(left: 12),
               child: SizedBox(
                   height: 26.h,
                   width: 100.w,
@@ -179,7 +179,7 @@ class _ScoringTabState extends State<ScoringTab> {
 
                                            Text(
                                             'Batsman',
-                                            style: fontMedium.copyWith(color: Color(0xffD78108),fontSize: 16.sp),
+                                            style: fontMedium.copyWith(color: const Color(0xffD78108),fontSize: 16.sp),
                                           ),
                                           SizedBox(
                                             width: 4.w,
@@ -240,7 +240,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                         child: Row(children: [
                                            Text('Bowler',
                                               style: fontMedium.copyWith(
-                                                  color: Color(0xffD78108),
+                                                  color: const Color(0xffD78108),
                                                   fontSize: 16.sp)),
                                           SizedBox(
                                             width: 4.w,
@@ -405,7 +405,7 @@ class _ScoringTabState extends State<ScoringTab> {
                               ),
                               Center(
                                 child: Container(
-                                  color: Color(0xffF9D700),
+                                  color: const Color(0xffF9D700),
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 8, vertical: 4),
                                   child: Text(
@@ -633,7 +633,7 @@ class _ScoringTabState extends State<ScoringTab> {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return UndoScreen();
+                                return const UndoScreen();
                               },
                             );
                           },
@@ -697,7 +697,7 @@ class _ScoringTabState extends State<ScoringTab> {
          setState(() {
            selectedBatsman = bowlerIndex;
            if (selectedBatsman != null) {
-             selectedBatsmanName = itemsBatsman![selectedBatsman!].name ?? "";
+             selectedBatsmanName = itemsBatsman![selectedBatsman!].playerName ?? "";
            }
          });
        },player);
@@ -720,7 +720,7 @@ class _ScoringTabState extends State<ScoringTab> {
               setState(() {
                 selectedBowler = bowlerIndex;
                 if (selectedBowler != null) {
-                  selectedBowlerName = itemsBowler![selectedBowler!].name ?? "";
+                  selectedBowlerName = itemsBowler![selectedBowler!].playerName ?? "";
                 }
               });
             });
@@ -777,7 +777,7 @@ class _ScoringTabState extends State<ScoringTab> {
                               Navigator.pop(context);
                             },
                             child: Icon(Icons.arrow_back,size: 7.w,)),
-                        Text("Select Players",style: fontMedium.copyWith(
+                        Text("Select Bowler",style: fontMedium.copyWith(
                           fontSize: 18.sp,
                           color: AppColor.blackColour,
                         ),),
@@ -786,7 +786,7 @@ class _ScoringTabState extends State<ScoringTab> {
                     ),
                   ),
                   SizedBox(height: 1.h,),
-                  Divider(
+                  const Divider(
                     thickness: 1,
                     color: Color(0xffD3D3D3),
                   ),
@@ -795,7 +795,7 @@ class _ScoringTabState extends State<ScoringTab> {
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        color: Color(0xffF8F9FA),
+                        color: const Color(0xffF8F9FA),
                       ),
                       child: Padding(
                         padding:  EdgeInsets.symmetric(horizontal: 5.w,vertical: 1.2.h),
@@ -803,9 +803,9 @@ class _ScoringTabState extends State<ScoringTab> {
                           children: [
                             Text("Search players",style: fontRegular.copyWith(
                               fontSize: 12.sp,
-                              color: Color(0xff707B81),
+                              color: const Color(0xff707B81),
                             ),),
-                            Spacer(),
+                            const Spacer(),
                             SvgPicture.asset(Images.searchIcon)
                           ],
                         ),
@@ -822,7 +822,7 @@ class _ScoringTabState extends State<ScoringTab> {
                   // Divider(
                   //   color: Color(0xffD3D3D3),
                   // ),
-                  Divider(
+                  const Divider(
                     thickness: 0.5,
                     color: Color(0xffD3D3D3),
                   ),
@@ -860,7 +860,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                       shape: BoxShape.circle,
                                       color: localBowlerIndex  == index ? Colors.blue : Colors.grey, // Change colors based on selected index
                                     ),
-                                    child: Center(
+                                    child: const Center(
                                       child: Icon(
                                         Icons.circle_outlined, // You can change the icon as needed
                                         color: Colors.white, // Icon color
@@ -873,7 +873,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text("${itemsBowler![index].name??'-'}",style: fontMedium.copyWith(
+                                      Text("${itemsBowler![index].playerId??'-'}",style: fontMedium.copyWith(
                                         fontSize: 12.sp,
                                         color: AppColor.blackColour,
                                       ),),
@@ -888,16 +888,16 @@ class _ScoringTabState extends State<ScoringTab> {
                                             ),
                                           ),
                                           SizedBox(width: 2.w,),
-                                          Text(itemsBowler![index].playingStyle??'-',style: fontMedium.copyWith(
+                                          Text(itemsBowler![index].bowlingStyle??'-',style: fontMedium.copyWith(
                                               fontSize: 11.sp,
-                                              color: Color(0xff555555)
+                                              color: const Color(0xff555555)
                                           ),),
                                         ],
                                       ),
 
                                     ],
                                   ),
-                                  Spacer(),
+                                  const Spacer(),
 
                                 ],
                               ),
@@ -910,7 +910,7 @@ class _ScoringTabState extends State<ScoringTab> {
                   ),
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 2.h,horizontal: 5.w),
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: AppColor.lightColor,
                     ),
                     child: Row(
@@ -923,7 +923,7 @@ class _ScoringTabState extends State<ScoringTab> {
                         GestureDetector(onTap:(){
                           Navigator.pop(context);
                         },
-                            child: CancelBtn("Cancel")),
+                            child: const CancelBtn("Cancel")),
                         SizedBox(width: 2.w,),
                         GestureDetector(onTap:()async {
 
@@ -937,7 +937,7 @@ class _ScoringTabState extends State<ScoringTab> {
                              Timer(const Duration(seconds: 4), () {setState(() {showError = false;});});
                           }
 
-                          },child: OkBtn("Ok")),
+                          },child: const OkBtn("Ok")),
                       ],
                     ),
                   ),
@@ -976,7 +976,7 @@ class _ScoringTabState extends State<ScoringTab> {
                               Navigator.pop(context);
                             },
                             child: Icon(Icons.arrow_back,size: 7.w,)),
-                        Text("Select Players",style: fontMedium.copyWith(
+                        Text("Select Batsman",style: fontMedium.copyWith(
                           fontSize: 18.sp,
                           color: AppColor.blackColour,
                         ),),
@@ -985,7 +985,7 @@ class _ScoringTabState extends State<ScoringTab> {
                     ),
                   ),
                   SizedBox(height: 1.h,),
-                  Divider(
+                  const Divider(
                     thickness: 1,
                     color: Color(0xffD3D3D3),
                   ),
@@ -994,7 +994,7 @@ class _ScoringTabState extends State<ScoringTab> {
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        color: Color(0xffF8F9FA),
+                        color: const Color(0xffF8F9FA),
                       ),
                       child: Padding(
                         padding:  EdgeInsets.symmetric(horizontal: 5.w,vertical: 1.2.h),
@@ -1002,9 +1002,9 @@ class _ScoringTabState extends State<ScoringTab> {
                           children: [
                             Text("Search players",style: fontRegular.copyWith(
                               fontSize: 12.sp,
-                              color: Color(0xff707B81),
+                              color: const Color(0xff707B81),
                             ),),
-                            Spacer(),
+                            const Spacer(),
                             SvgPicture.asset(Images.searchIcon)
                           ],
                         ),
@@ -1021,7 +1021,7 @@ class _ScoringTabState extends State<ScoringTab> {
                   // Divider(
                   //   color: Color(0xffD3D3D3),
                   // ),
-                  Divider(
+                  const Divider(
                     thickness: 0.5,
                     color: Color(0xffD3D3D3),
                   ),
@@ -1083,7 +1083,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                           .start,
                                       children: [
                                         Text(
-                                          "${itemsBatsman![index].name ?? '-'}",
+                                          "${itemsBatsman![index].playerName ?? '-'}",
                                           style: fontMedium.copyWith(
                                             fontSize: 12.sp,
                                             color: AppColor.blackColour,
@@ -1101,17 +1101,17 @@ class _ScoringTabState extends State<ScoringTab> {
                                             ),
                                             SizedBox(width: 2.w,),
                                             Text(
-                                              itemsBatsman![index].playingStyle ??
+                                              itemsBatsman![index].battingStyle ??
                                                   '-', style: fontMedium.copyWith(
                                                 fontSize: 11.sp,
-                                                color: Color(0xff555555)
+                                                color: const Color(0xff555555)
                                             ),),
                                           ],
                                         ),
 
                                       ],
                                     ),
-                                    Spacer(),
+                                    const Spacer(),
 
                                   ],
                                 ),
@@ -1125,7 +1125,7 @@ class _ScoringTabState extends State<ScoringTab> {
                   ),
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 2.h,horizontal: 5.w),
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: AppColor.lightColor,
                     ),
                     child: Row(
@@ -1135,7 +1135,7 @@ class _ScoringTabState extends State<ScoringTab> {
                           child: Text('Please Select one Player',style: fontMedium.copyWith(color: Colors.red),),
 
                         ),
-                        CancelBtn("Cancel"),
+                        const CancelBtn("Cancel"),
                         SizedBox(width: 2.w,),
                         GestureDetector(onTap:()async {
                           if(localBowlerIndex!=null){
@@ -1157,11 +1157,11 @@ class _ScoringTabState extends State<ScoringTab> {
                             Navigator.pop(context);
                           }else{
                             setState(() {showError=true;});
-                            Timer(Duration(seconds: 4), () {setState(() {showError = false;});});
+                            Timer(const Duration(seconds: 4), () {setState(() {showError = false;});});
                           }
 
 
-                        },child: OkBtn("Ok")),
+                        },child: const OkBtn("Ok")),
                       ],
                     ),
                   ),
@@ -1387,7 +1387,7 @@ class _ScoringTabState extends State<ScoringTab> {
                               color: Color(0xffDADADA),
                             ),
                           ),
-                          backgroundColor: isWideSelected==index? AppColor.primaryColor : Color(0xffF8F9FA),
+                          backgroundColor: isWideSelected==index? AppColor.primaryColor : const Color(0xffF8F9FA),
                           // backgroundColor:AppColor.lightColor
                         ),
                       );
@@ -1440,12 +1440,12 @@ class _ScoringTabState extends State<ScoringTab> {
       {
         'label': 'Abandon',
       },
-      {
-        'label': 'Change target',
-      },
-      {
-        'label': 'Change Batsman',
-      },
+      // {
+      //   'label': 'Change target',
+      // },
+      // {
+      //   'label': 'Change Batsman',
+      // },
 
     ];
     showModalBottomSheet(context: context,
@@ -1511,9 +1511,11 @@ class _ScoringTabState extends State<ScoringTab> {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return DialogsOthers();
+                                return DialogsOthers(widget.matchId,widget.team1Id,widget.team2Id);
                               },
-                            );
+                            ).whenComplete(() {
+                              Navigator.pop(context);
+                            });
                           }
                           if (data['label'] == 'Change keeper'){
 
@@ -1524,19 +1526,19 @@ class _ScoringTabState extends State<ScoringTab> {
                               },
                             );
                           }
-                          if (data['label'] == 'Change target'){
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return ChangeTargetDialog();
-                              },
-                            );
-                          }
+                          // if (data['label'] == 'Change target'){
+                          //   showDialog(
+                          //     context: context,
+                          //     builder: (BuildContext context) {
+                          //       return ChangeTargetDialog();
+                          //     },
+                          //   );
+                          // }
                           if (data['label'] == 'D/L Method'){
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return DlMethodDialog();
+                                return DlMethodDialog(widget.matchId);
                               },
                             );
                           }
@@ -1561,7 +1563,7 @@ class _ScoringTabState extends State<ScoringTab> {
                               color: Color(0xffDADADA),
                             ),
                           ),
-                          backgroundColor: isWideSelected==index? AppColor.primaryColor : Color(0xffF8F9FA),
+                          backgroundColor: isWideSelected==index? AppColor.primaryColor : const Color(0xffF8F9FA),
                           // backgroundColor:AppColor.lightColor
                         ),
                       );
@@ -1610,7 +1612,7 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
         return Container(
           height: 45.h,
           // padding: EdgeInsets.symmetric(horizontal: 2.w),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               color: AppColor.lightColor,
               borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
           ),
@@ -1636,7 +1638,7 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
                 ),
               ),
               SizedBox(height: 1.h,),
-              Divider(
+              const Divider(
                 color: Color(0xffD3D3D3),
               ),
               SizedBox(height: 1.h,),
@@ -1663,11 +1665,11 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
                           ),),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(25.0),
-                            side: BorderSide(
+                            side: const BorderSide(
                               color: Color(0xffDADADA),
                             ),
                           ),
-                          backgroundColor: isWideSelected==index? AppColor.primaryColor : Color(0xffF8F9FA),
+                          backgroundColor: isWideSelected==index? AppColor.primaryColor : const Color(0xffF8F9FA),
                           // backgroundColor:AppColor.lightColor
                         ),
                       );
@@ -1676,7 +1678,7 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
                 ),
               ),
               SizedBox(height: 1.h,),
-              DottedLine(
+              const DottedLine(
                 dashColor: Color(0xffD2D2D2),
               ),
               SizedBox(height: 1.5.h,),
@@ -1704,7 +1706,7 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
-                            color: Color(0xffDADADA),
+                            color: const Color(0xffDADADA),
                           ),
                           color: isOffSideSelected==0 ? AppColor.primaryColor : null,
                         ),
@@ -1727,7 +1729,7 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
                             color: isOffSideSelected==1?AppColor.primaryColor:null,
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
-                              color: Color(0xffDADADA),
+                              color: const Color(0xffDADADA),
                             )
                         ),
                         child: Text("Leg side",style: fontMedium.copyWith(
@@ -1763,6 +1765,8 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
                             var bowlerId=prefs.getInt('bowler_id')??0;
                             var keeperId=prefs.getInt('wicket_keeper_id')??0;
                             var bowlerPosition=prefs.getInt('bowlerPosition')??0;
+                            var wideRun=prefs.getInt('wideRun');
+
 
 
                             if(isWideSelected!=null) {
@@ -1779,7 +1783,7 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
 
                               scoreUpdateRequestModel.runsScored =
                                   1 + (isWideSelected ?? 0);
-                              scoreUpdateRequestModel.extras = 1;
+                              scoreUpdateRequestModel.extras = (wideRun==1)?1:0;
                               scoreUpdateRequestModel.wicket = 0;
                               scoreUpdateRequestModel.dismissalType = 0;
                               scoreUpdateRequestModel.commentary = 0;
@@ -1817,7 +1821,7 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
                                 showError = true;
                               });
                               if (showError) {
-                                Timer(Duration(seconds: 4), () {
+                                Timer(const Duration(seconds: 4), () {
                                   setState(() {
                                     showError = false;
                                   });
@@ -1825,7 +1829,7 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
                               }
                             }
                           },
-                          child: OkBtn("Save")),
+                          child: const OkBtn("Save")),
                     ],
                   ),
                 ),
@@ -1874,7 +1878,7 @@ Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,Scorin
         return Container(
           height: 45.h,
           // padding: EdgeInsets.symmetric(horizontal: 2.w),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               color: AppColor.lightColor,
               borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
           ),
@@ -1900,7 +1904,7 @@ Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,Scorin
                 ),
               ),
               SizedBox(height: 1.h,),
-              Divider(
+              const Divider(
                 color: Color(0xffD3D3D3),
               ),
               SizedBox(height: 1.h,),
@@ -1926,11 +1930,11 @@ Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,Scorin
                         ),),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25.0),
-                          side: BorderSide(
+                          side: const BorderSide(
                             color: Color(0xffDADADA),
                           ),
                         ),
-                        backgroundColor: isWideSelected==index? AppColor.primaryColor : Color(0xffF8F9FA),
+                        backgroundColor: isWideSelected==index? AppColor.primaryColor : const Color(0xffF8F9FA),
                         // backgroundColor:AppColor.lightColor
                       ),
                     );
@@ -2046,6 +2050,7 @@ Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,Scorin
                         var bowlerId=prefs.getInt('bowler_id')??0;
                         var keeperId=prefs.getInt('wicket_keeper_id')??0;
                         var bowlerPosition=prefs.getInt('bowlerPosition')??0;
+                        var noBallRun=prefs.getInt('noBallRun');
 
                         if(isWideSelected!=null) {
                           ScoreUpdateRequestModel scoreUpdateRequestModel = ScoreUpdateRequestModel();
@@ -2061,7 +2066,7 @@ Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,Scorin
                           scoreUpdateRequestModel.ballNumber = ballNumber;
                           scoreUpdateRequestModel.runsScored =
                               1 + (isWideSelected ?? 0);
-                          scoreUpdateRequestModel.extras = 1;
+                          scoreUpdateRequestModel.extras = (noBallRun==1)?1:0;
                           scoreUpdateRequestModel.wicket = 0;
                           scoreUpdateRequestModel.dismissalType = 0;
                           scoreUpdateRequestModel.commentary = 0;
@@ -2108,7 +2113,7 @@ Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,Scorin
                                   });
                                 }
                         }
-                      },child: OkBtn("Save")),
+                      },child: const OkBtn("Save")),
                     ],
                   ),
                 ),
@@ -2153,7 +2158,7 @@ Future<void> _displayBottomSheetLegBye (BuildContext context, int ballType,Scori
         return Container(
           height: 33.h,
           // padding: EdgeInsets.symmetric(horizontal: 2.w),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               color: AppColor.lightColor,
               borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
           ),
@@ -2179,7 +2184,7 @@ Future<void> _displayBottomSheetLegBye (BuildContext context, int ballType,Scori
                 ),
               ),
               SizedBox(height: 1.h,),
-              Divider(
+              const Divider(
                 color: Color(0xffD3D3D3),
               ),
               SizedBox(height: 1.h,),
@@ -2205,11 +2210,11 @@ Future<void> _displayBottomSheetLegBye (BuildContext context, int ballType,Scori
                         ),),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25.0),
-                          side: BorderSide(
+                          side: const BorderSide(
                             color: Color(0xffDADADA),
                           ),
                         ),
-                        backgroundColor: isWideSelected==index? AppColor.primaryColor : Color(0xffF8F9FA),
+                        backgroundColor: isWideSelected==index? AppColor.primaryColor : const Color(0xffF8F9FA),
                         // backgroundColor:AppColor.lightColor
                       ),
                     );
@@ -2274,7 +2279,7 @@ Future<void> _displayBottomSheetLegBye (BuildContext context, int ballType,Scori
 
                           Navigator.pop(context);
                         });
-                      },child: OkBtn("Save")),
+                      },child: const OkBtn("Save")),
                     ],
                   ),
                 ),
@@ -2319,7 +2324,7 @@ Future<void> _displayBottomSheetByes (BuildContext context,int ballType,ScoringD
         return Container(
           height: 35.h,
           // padding: EdgeInsets.symmetric(horizontal: 2.w),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               color: AppColor.lightColor,
               borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
           ),
@@ -2345,7 +2350,7 @@ Future<void> _displayBottomSheetByes (BuildContext context,int ballType,ScoringD
                 ),
               ),
               SizedBox(height: 1.h,),
-              Divider(
+              const Divider(
                 color: Color(0xffD3D3D3),
               ),
               SizedBox(height: 1.h,),
@@ -2371,11 +2376,11 @@ Future<void> _displayBottomSheetByes (BuildContext context,int ballType,ScoringD
                         ),),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25.0),
-                          side: BorderSide(
+                          side: const BorderSide(
                             color: Color(0xffDADADA),
                           ),
                         ),
-                        backgroundColor: isWideSelected==index? AppColor.primaryColor : Color(0xffF8F9FA),
+                        backgroundColor: isWideSelected==index? AppColor.primaryColor : const Color(0xffF8F9FA),
                         // backgroundColor:AppColor.lightColor
                       ),
                     );
@@ -2441,7 +2446,7 @@ Future<void> _displayBottomSheetByes (BuildContext context,int ballType,ScoringD
                           }
                           Navigator.pop(context);
                         });
-                      },child: OkBtn("Save")),
+                      },child: const OkBtn("Save")),
                     ],
                   ),
                 ),
@@ -2512,7 +2517,7 @@ Future<void> _displayBottomSheetBonus (BuildContext context, int? ballType, Scor
         return Container(
           height: 35.h,
           // padding: EdgeInsets.symmetric(horizontal: 2.w),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               color: AppColor.lightColor,
               borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
           ),
@@ -2578,7 +2583,7 @@ Future<void> _displayBottomSheetBonus (BuildContext context, int? ballType, Scor
                 ),
               ),
               SizedBox(height: 1.h,),
-              Divider(
+              const Divider(
                 color: Color(0xffD3D3D3),
               ),
               SizedBox(height: 1.h,),
@@ -2604,11 +2609,11 @@ Future<void> _displayBottomSheetBonus (BuildContext context, int? ballType, Scor
                         ),),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25.0),
-                          side: BorderSide(
+                          side: const BorderSide(
                             color: Color(0xffDADADA),
                           ),
                         ),
-                        backgroundColor: isWideSelected==index? AppColor.primaryColor : Color(0xffF8F9FA),
+                        backgroundColor: isWideSelected==index? AppColor.primaryColor : const Color(0xffF8F9FA),
                         // backgroundColor:AppColor.lightColor
                       ),
                     );
@@ -2683,7 +2688,7 @@ Future<void> _displayBottomSheetBonus (BuildContext context, int? ballType, Scor
                             showError = true;
                           });
                           if (showError) {
-                            Timer(Duration(seconds: 4), () {
+                            Timer(const Duration(seconds: 4), () {
                               setState(() {
                                 showError = false;
                               });
@@ -2691,7 +2696,7 @@ Future<void> _displayBottomSheetBonus (BuildContext context, int? ballType, Scor
                           }
 
                         }
-                      },child: OkBtn("Save")),
+                      },child: const OkBtn("Save")),
                     ],
                   ),
                 ),
@@ -2795,7 +2800,7 @@ Future<void> _displayBottomSheetMoreRuns (BuildContext context,int ballType,Scor
                             color: Color(0xffDADADA),
                           ),
                         ),
-                        backgroundColor: isWideSelected==index? AppColor.primaryColor : Color(0xffF8F9FA),
+                        backgroundColor: isWideSelected==index? AppColor.primaryColor : const Color(0xffF8F9FA),
                         // backgroundColor:AppColor.lightColor
                       ),
                     );
@@ -2883,7 +2888,7 @@ Future<void> _displayBottomSheetMoreRuns (BuildContext context,int ballType,Scor
                                   showError = true;
                                 });
                                 if (showError) {
-                                  Timer(Duration(seconds: 4), () {
+                                  Timer(const Duration(seconds: 4), () {
                                     setState(() {
                                       showError = false;
                                     });
@@ -2891,7 +2896,7 @@ Future<void> _displayBottomSheetMoreRuns (BuildContext context,int ballType,Scor
                                 }
                         }
 
-                      },child: OkBtn("Save")),
+                      },child: const OkBtn("Save")),
                     ],
                   ),
                 ),
@@ -2906,7 +2911,23 @@ Future<void> _displayBottomSheetMoreRuns (BuildContext context,int ballType,Scor
 
 
 Future<void> _displayBottomSheetSettings (BuildContext context) async{
-  bool value1=false;bool value2=false;bool value3=false;bool value4=false;
+  bool value1=false;
+  bool value2=false;
+  bool value3=false;
+  bool value4=false;
+  getScoringArea().then((val) {
+    value1 = val == 1;
+  });
+  getBowlingArea().then((val) {
+    value2 = val == 1;
+  });
+  getWideRun().then((val) {
+    value3 = val == 1;
+  });
+  getNoBallRun().then((val) {
+    value4 = val == 1;
+  });
+
   showModalBottomSheet(context: context,
       backgroundColor: Colors.transparent,
       builder: (context)=> StatefulBuilder(builder: (context, setState){
@@ -2948,9 +2969,17 @@ Future<void> _displayBottomSheetSettings (BuildContext context) async{
                       fontSize: 14.sp,
                       color: AppColor.blackColour,
                     ),),
-                    Spacer(),
+                    const Spacer(),
                     Switch(value: value1,
-                        onChanged:(bool newValue) {
+                        onChanged:(bool newValue) async{
+                          SharedPreferences pref=await SharedPreferences.getInstance();
+                          var isFourOrSix=pref.getInt('fourOrSix');
+                          if(isFourOrSix==1){
+                            await pref.setInt('fourOrSix',0);
+                          }else{
+                            await pref.setInt('fourOrSix',1);
+                          }
+
                           setState(() {
                             value1 = newValue;
                           });
@@ -2958,7 +2987,7 @@ Future<void> _displayBottomSheetSettings (BuildContext context) async{
                   ],
                 ),
                 SizedBox(height: 0.5.h,),
-                DottedLine(
+                const DottedLine(
                   dashColor: Color(0xffD2D2D2),
                 ),
                 Row(
@@ -2967,9 +2996,16 @@ Future<void> _displayBottomSheetSettings (BuildContext context) async{
                       fontSize: 14.sp,
                       color: AppColor.blackColour,
                     ),),
-                    Spacer(),
+                    const Spacer(),
                     Switch(value: value2,
-                        onChanged:(bool newValue) {
+                        onChanged:(bool newValue) async{
+                          SharedPreferences pref=await SharedPreferences.getInstance();
+                          var bowlingArea=pref.getInt('bowlingArea');
+                          if(bowlingArea==1){
+                            await pref.setInt('bowlingArea',0);
+                          }else{
+                            await pref.setInt('bowlingArea',1);
+                          }
                           setState(() {
                             value2 = newValue;
                           });
@@ -2977,7 +3013,7 @@ Future<void> _displayBottomSheetSettings (BuildContext context) async{
                   ],
                 ),
                 SizedBox(height: 0.5.h,),
-                DottedLine(
+                const DottedLine(
                   dashColor: Color(0xffD2D2D2),
                 ),
                 Row(
@@ -2986,9 +3022,16 @@ Future<void> _displayBottomSheetSettings (BuildContext context) async{
                       fontSize: 14.sp,
                       color: AppColor.blackColour,
                     ),),
-                    Spacer(),
+                    const Spacer(),
                     Switch(value: value3,
-                        onChanged:(bool newValue) {
+                        onChanged:(bool newValue) async{
+                          SharedPreferences pref=await SharedPreferences.getInstance();
+                          var extraWide=pref.getInt('wideRun');
+                          if(extraWide==1){
+                            await pref.setInt('wideRun',0);
+                          }else{
+                            await pref.setInt('wideRun',1);
+                          }
                           setState(() {
                             value3 = newValue;
                           });
@@ -2996,7 +3039,7 @@ Future<void> _displayBottomSheetSettings (BuildContext context) async{
                   ],
                 ),
                 SizedBox(height: 0.5.h,),
-                DottedLine(
+                const DottedLine(
                   dashColor: Color(0xffD2D2D2),
                 ),
                 Row(
@@ -3005,9 +3048,16 @@ Future<void> _displayBottomSheetSettings (BuildContext context) async{
                       fontSize: 14.sp,
                       color: AppColor.blackColour,
                     ),),
-                    Spacer(),
+                    const Spacer(),
                     Switch(value: value4,
-                        onChanged:(bool newValue) {
+                        onChanged:(bool newValue) async{
+                          SharedPreferences pref=await SharedPreferences.getInstance();
+                          var noballRun=pref.getInt('noBallRun');
+                          if(noballRun==1){
+                            await pref.setInt('noBallRun',0);
+                          }else{
+                            await pref.setInt('noBallRun',1);
+                          }
                           setState(() {
                             value4 = newValue;
                           });
@@ -3015,7 +3065,7 @@ Future<void> _displayBottomSheetSettings (BuildContext context) async{
                   ],
                 ),
                 SizedBox(height: 0.5.h,),
-                DottedLine(
+                const DottedLine(
                   dashColor: Color(0xffD2D2D2),
                 ),
                 Expanded(
@@ -3027,9 +3077,12 @@ Future<void> _displayBottomSheetSettings (BuildContext context) async{
                           onTap:(){
                             Navigator.pop(context);
                           },
-                          child: CancelBtn("Reset")),
+                          child: const CancelBtn("Reset")),
                       SizedBox(width: 4.w,),
-                      OkBtn("Save"),
+                      GestureDetector(onTap:(){
+                        Navigator.pop(context);
+                      },
+                          child: const OkBtn("Save")),
                     ],
                   ),
                 ),
@@ -3039,7 +3092,24 @@ Future<void> _displayBottomSheetSettings (BuildContext context) async{
         );
       })
   );
+
 }
+  Future<int?> getScoringArea() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    return pref.getInt('fourOrSix')??0;
+  }
+  Future<int?> getBowlingArea() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    return pref.getInt('bowlingArea')??0;
+  }
+  Future<int?> getWideRun() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    return pref.getInt('wideRun')??0;
+  }
+  Future<int?> getNoBallRun() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    return pref.getInt('noBallRun')??0;
+  }
 
 
 }

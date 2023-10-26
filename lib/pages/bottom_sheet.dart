@@ -41,6 +41,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
   int selectedColumn = -1;
   int fieldPositionId=0;
    int? isFourOrSix;
+   int? isBowlingArea=1;
    bool _isSwitch=false ;
 
 
@@ -70,6 +71,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
   void getSwitch()async{
     SharedPreferences pref=await SharedPreferences.getInstance();
    isFourOrSix= pref.getInt('fourOrSix');
+    isBowlingArea=pref.getInt('bowlingArea');
    if(isFourOrSix==1) {
      setState(() {
        _isSwitch = true;
@@ -360,6 +362,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                     )
                   ],
                 ),
+                (isBowlingArea==1)?
                 Center(
                   widthFactor: 0.8.h,
                   child:  Container(
@@ -764,7 +767,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                       ),
                     ),
                   ),
-                ),
+                ):const Text(''),
                 SizedBox(height: 3.h),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(

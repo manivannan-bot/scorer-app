@@ -1,5 +1,6 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
+import 'package:scorer/provider/scoring_provider.dart';
 import 'package:scorer/scorecardScreens/scorecard_one.dart';
 import 'package:scorer/scorecardScreens/scorecard_two.dart';
 import 'package:scorer/utils/colours.dart';
@@ -7,10 +8,14 @@ import 'package:scorer/utils/sizes.dart';
 import 'package:sizer/sizer.dart';
 
 import '../Scoring screens/home_tab.dart';
+import '../models/score_card_response_model.dart';
 
 
 class ScorecardScreen extends StatefulWidget {
-  const ScorecardScreen({super.key});
+  final String matchId;
+  final String team1Id;
+  final String team2Id;
+  const ScorecardScreen(this.matchId,this.team1Id,this.team2Id,{super.key});
 
   @override
   State<ScorecardScreen> createState() => _ScorecardScreenState();
@@ -18,17 +23,31 @@ class ScorecardScreen extends StatefulWidget {
 
 class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProviderStateMixin{
   late TabController tabController;
+   ScoreCardResponseModel scoreCardResponseModel=ScoreCardResponseModel();
 
-
+  @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     tabController = TabController(length: 2, vsync: this);
+    fetchData();
+  }
 
+  void fetchData(){
+    ScoringProvider().getScoreCard(widget.matchId, widget.team1Id).then((value){
+      scoreCardResponseModel=value;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    if(scoreCardResponseModel.data!.batting!.isEmpty || scoreCardResponseModel.data!.bowling!.isEmpty){
+      return const SizedBox(
+          height: 100,
+          width: 100,
+          child: Center(child: CircularProgressIndicator(
+            backgroundColor: Colors.white,
+          )));
+    }
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
@@ -38,7 +57,7 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
           Container(
             padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 6.w),
             width: double.infinity,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(topRight: Radius.circular(20),topLeft: Radius.circular(20)),
               color: AppColor.blackColour,
             ),
@@ -84,7 +103,7 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
             child: TabBarView(
                 controller: tabController,
                 children:  [
-                  ScoreCardOne(),
+                  ScoreCardOne(scoreCardResponseModel.data!),
                   ScoreCardTwo(),
                 ]),
           ),

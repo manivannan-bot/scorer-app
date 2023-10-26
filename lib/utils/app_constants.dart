@@ -17,9 +17,9 @@ class AppConstants {
 //
    static const String endInnings = '$baseUrl/match-end-innings';
 //
-//   static const String matchHistory = '$baseUrl/player/completed_match';
-//   static const String upcomingMatches = '$baseUrl/player/player_upcoming_match';
-//   static const String matchDetail = '$baseUrl/player/player_match_details';
+   static const String scoreCardDetail = '$baseUrl/scorecard-details';
+   static const String matchBreak = '$baseUrl/match-break';
+   static const String dlMethod = '$baseUrl/dl-method';
 //   static const String matchPlayerList = '$baseUrl/player/match_playerlist';
 //
 //   static const String addAddress = '$baseUrl/player/add-address';

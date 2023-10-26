@@ -174,7 +174,7 @@ class _keeperInjuryState extends State<keeperInjury> {
                                 setState(() {
                                   selectedWicketKeeper = bowlerIndex;
                                   if (selectedWicketKeeper != null) {
-                                    selectedWicketKeeperName = itemsKeeper![selectedWicketKeeper!].name ?? "";
+                                    selectedWicketKeeperName = itemsKeeper![selectedWicketKeeper!].playerName ?? "";
                                   }
                                 });
 
@@ -265,7 +265,7 @@ class _keeperInjuryState extends State<keeperInjury> {
                               Navigator.pop(context);
                             },
                             child: Icon(Icons.arrow_back,size: 7.w,)),
-                        Text("Select Players",style: fontMedium.copyWith(
+                        Text("Select Keeper",style: fontMedium.copyWith(
                           fontSize: 18.sp,
                           color: AppColor.blackColour,
                         ),),
@@ -359,7 +359,7 @@ class _keeperInjuryState extends State<keeperInjury> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("${itemsKeeper![index].name??'-'}",style: fontMedium.copyWith(
+                                    Text("${itemsKeeper![index].playerName??'-'}",style: fontMedium.copyWith(
                                       fontSize: 12.sp,
                                       color: AppColor.blackColour,
                                     ),),
@@ -374,7 +374,7 @@ class _keeperInjuryState extends State<keeperInjury> {
                                           ),
                                         ),
                                         SizedBox(width: 2.w,),
-                                        Text(itemsKeeper![index].playingStyle??'-',style: fontMedium.copyWith(
+                                        Text(itemsKeeper![index].battingStyle??'-',style: fontMedium.copyWith(
                                             fontSize: 11.sp,
                                             color: Color(0xff555555)
                                         ),),
