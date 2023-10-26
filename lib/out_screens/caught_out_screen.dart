@@ -163,7 +163,7 @@ class _CaughtOutScreenState extends State<CaughtOutScreen> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("${itemsBowler![index].name??'-'}",style: fontMedium.copyWith(
+                                Text("${itemsBowler![index].playerName??'-'}",style: fontMedium.copyWith(
                                   fontSize: 12.sp,
                                   color: AppColor.blackColour,
                                 ),),
@@ -178,7 +178,7 @@ class _CaughtOutScreenState extends State<CaughtOutScreen> {
                                       ),
                                     ),
                                     SizedBox(width: 2.w,),
-                                    Text(itemsBowler![index].playingStyle??'-',style: fontMedium.copyWith(
+                                    Text(itemsBowler![index].bowlingStyle??'-',style: fontMedium.copyWith(
                                         fontSize: 11.sp,
                                         color: Color(0xff555555)
                                     ),),

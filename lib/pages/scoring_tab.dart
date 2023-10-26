@@ -697,7 +697,7 @@ class _ScoringTabState extends State<ScoringTab> {
          setState(() {
            selectedBatsman = bowlerIndex;
            if (selectedBatsman != null) {
-             selectedBatsmanName = itemsBatsman![selectedBatsman!].name ?? "";
+             selectedBatsmanName = itemsBatsman![selectedBatsman!].playerName ?? "";
            }
          });
        },player);
@@ -720,7 +720,7 @@ class _ScoringTabState extends State<ScoringTab> {
               setState(() {
                 selectedBowler = bowlerIndex;
                 if (selectedBowler != null) {
-                  selectedBowlerName = itemsBowler![selectedBowler!].name ?? "";
+                  selectedBowlerName = itemsBowler![selectedBowler!].playerName ?? "";
                 }
               });
             });
@@ -873,7 +873,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text("${itemsBowler![index].name??'-'}",style: fontMedium.copyWith(
+                                      Text("${itemsBowler![index].playerId??'-'}",style: fontMedium.copyWith(
                                         fontSize: 12.sp,
                                         color: AppColor.blackColour,
                                       ),),
@@ -888,7 +888,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                             ),
                                           ),
                                           SizedBox(width: 2.w,),
-                                          Text(itemsBowler![index].playingStyle??'-',style: fontMedium.copyWith(
+                                          Text(itemsBowler![index].bowlingStyle??'-',style: fontMedium.copyWith(
                                               fontSize: 11.sp,
                                               color: Color(0xff555555)
                                           ),),
@@ -1083,7 +1083,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                           .start,
                                       children: [
                                         Text(
-                                          "${itemsBatsman![index].name ?? '-'}",
+                                          "${itemsBatsman![index].playerName ?? '-'}",
                                           style: fontMedium.copyWith(
                                             fontSize: 12.sp,
                                             color: AppColor.blackColour,
@@ -1101,7 +1101,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                             ),
                                             SizedBox(width: 2.w,),
                                             Text(
-                                              itemsBatsman![index].playingStyle ??
+                                              itemsBatsman![index].battingStyle ??
                                                   '-', style: fontMedium.copyWith(
                                                 fontSize: 11.sp,
                                                 color: Color(0xff555555)
@@ -1440,12 +1440,12 @@ class _ScoringTabState extends State<ScoringTab> {
       {
         'label': 'Abandon',
       },
-      {
-        'label': 'Change target',
-      },
-      {
-        'label': 'Change Batsman',
-      },
+      // {
+      //   'label': 'Change target',
+      // },
+      // {
+      //   'label': 'Change Batsman',
+      // },
 
     ];
     showModalBottomSheet(context: context,
@@ -1511,9 +1511,11 @@ class _ScoringTabState extends State<ScoringTab> {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return DialogsOthers();
+                                return DialogsOthers(widget.matchId,widget.team1Id,widget.team2Id);
                               },
-                            );
+                            ).whenComplete(() {
+                              Navigator.pop(context);
+                            });
                           }
                           if (data['label'] == 'Change keeper'){
 
@@ -1524,19 +1526,19 @@ class _ScoringTabState extends State<ScoringTab> {
                               },
                             );
                           }
-                          if (data['label'] == 'Change target'){
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return ChangeTargetDialog();
-                              },
-                            );
-                          }
+                          // if (data['label'] == 'Change target'){
+                          //   showDialog(
+                          //     context: context,
+                          //     builder: (BuildContext context) {
+                          //       return ChangeTargetDialog();
+                          //     },
+                          //   );
+                          // }
                           if (data['label'] == 'D/L Method'){
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return DlMethodDialog();
+                                return DlMethodDialog(widget.matchId);
                               },
                             );
                           }
@@ -1763,6 +1765,8 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
                             var bowlerId=prefs.getInt('bowler_id')??0;
                             var keeperId=prefs.getInt('wicket_keeper_id')??0;
                             var bowlerPosition=prefs.getInt('bowlerPosition')??0;
+                            var wideRun=prefs.getInt('wideRun');
+
 
 
                             if(isWideSelected!=null) {
@@ -1779,7 +1783,7 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
 
                               scoreUpdateRequestModel.runsScored =
                                   1 + (isWideSelected ?? 0);
-                              scoreUpdateRequestModel.extras = 1;
+                              scoreUpdateRequestModel.extras = (wideRun==1)?1:0;
                               scoreUpdateRequestModel.wicket = 0;
                               scoreUpdateRequestModel.dismissalType = 0;
                               scoreUpdateRequestModel.commentary = 0;
@@ -2046,6 +2050,7 @@ Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,Scorin
                         var bowlerId=prefs.getInt('bowler_id')??0;
                         var keeperId=prefs.getInt('wicket_keeper_id')??0;
                         var bowlerPosition=prefs.getInt('bowlerPosition')??0;
+                        var noBallRun=prefs.getInt('noBallRun');
 
                         if(isWideSelected!=null) {
                           ScoreUpdateRequestModel scoreUpdateRequestModel = ScoreUpdateRequestModel();
@@ -2061,7 +2066,7 @@ Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,Scorin
                           scoreUpdateRequestModel.ballNumber = ballNumber;
                           scoreUpdateRequestModel.runsScored =
                               1 + (isWideSelected ?? 0);
-                          scoreUpdateRequestModel.extras = 1;
+                          scoreUpdateRequestModel.extras = (noBallRun==1)?1:0;
                           scoreUpdateRequestModel.wicket = 0;
                           scoreUpdateRequestModel.dismissalType = 0;
                           scoreUpdateRequestModel.commentary = 0;
@@ -2906,7 +2911,23 @@ Future<void> _displayBottomSheetMoreRuns (BuildContext context,int ballType,Scor
 
 
 Future<void> _displayBottomSheetSettings (BuildContext context) async{
-  bool value1=false;bool value2=false;bool value3=false;bool value4=false;
+  bool value1=false;
+  bool value2=false;
+  bool value3=false;
+  bool value4=false;
+  getScoringArea().then((val) {
+    value1 = val == 1;
+  });
+  getBowlingArea().then((val) {
+    value2 = val == 1;
+  });
+  getWideRun().then((val) {
+    value3 = val == 1;
+  });
+  getNoBallRun().then((val) {
+    value4 = val == 1;
+  });
+
   showModalBottomSheet(context: context,
       backgroundColor: Colors.transparent,
       builder: (context)=> StatefulBuilder(builder: (context, setState){
@@ -2950,7 +2971,15 @@ Future<void> _displayBottomSheetSettings (BuildContext context) async{
                     ),),
                     Spacer(),
                     Switch(value: value1,
-                        onChanged:(bool newValue) {
+                        onChanged:(bool newValue) async{
+                          SharedPreferences pref=await SharedPreferences.getInstance();
+                          var isFourOrSix=pref.getInt('fourOrSix');
+                          if(isFourOrSix==1){
+                            await pref.setInt('fourOrSix',0);
+                          }else{
+                            await pref.setInt('fourOrSix',1);
+                          }
+
                           setState(() {
                             value1 = newValue;
                           });
@@ -2969,7 +2998,14 @@ Future<void> _displayBottomSheetSettings (BuildContext context) async{
                     ),),
                     Spacer(),
                     Switch(value: value2,
-                        onChanged:(bool newValue) {
+                        onChanged:(bool newValue) async{
+                          SharedPreferences pref=await SharedPreferences.getInstance();
+                          var bowlingArea=pref.getInt('bowlingArea');
+                          if(bowlingArea==1){
+                            await pref.setInt('bowlingArea',0);
+                          }else{
+                            await pref.setInt('bowlingArea',1);
+                          }
                           setState(() {
                             value2 = newValue;
                           });
@@ -2988,7 +3024,14 @@ Future<void> _displayBottomSheetSettings (BuildContext context) async{
                     ),),
                     Spacer(),
                     Switch(value: value3,
-                        onChanged:(bool newValue) {
+                        onChanged:(bool newValue) async{
+                          SharedPreferences pref=await SharedPreferences.getInstance();
+                          var extraWide=pref.getInt('wideRun');
+                          if(extraWide==1){
+                            await pref.setInt('wideRun',0);
+                          }else{
+                            await pref.setInt('wideRun',1);
+                          }
                           setState(() {
                             value3 = newValue;
                           });
@@ -3007,7 +3050,14 @@ Future<void> _displayBottomSheetSettings (BuildContext context) async{
                     ),),
                     Spacer(),
                     Switch(value: value4,
-                        onChanged:(bool newValue) {
+                        onChanged:(bool newValue) async{
+                          SharedPreferences pref=await SharedPreferences.getInstance();
+                          var noballRun=pref.getInt('noBallRun');
+                          if(noballRun==1){
+                            await pref.setInt('noBallRun',0);
+                          }else{
+                            await pref.setInt('noBallRun',1);
+                          }
                           setState(() {
                             value4 = newValue;
                           });
@@ -3027,9 +3077,12 @@ Future<void> _displayBottomSheetSettings (BuildContext context) async{
                           onTap:(){
                             Navigator.pop(context);
                           },
-                          child: CancelBtn("Reset")),
+                          child: const CancelBtn("Reset")),
                       SizedBox(width: 4.w,),
-                      OkBtn("Save"),
+                      GestureDetector(onTap:(){
+                        Navigator.pop(context);
+                      },
+                          child: const OkBtn("Save")),
                     ],
                   ),
                 ),
@@ -3039,7 +3092,24 @@ Future<void> _displayBottomSheetSettings (BuildContext context) async{
         );
       })
   );
+
 }
+  Future<int?> getScoringArea() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    return pref.getInt('fourOrSix')??0;
+  }
+  Future<int?> getBowlingArea() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    return pref.getInt('bowlingArea')??0;
+  }
+  Future<int?> getWideRun() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    return pref.getInt('wideRun')??0;
+  }
+  Future<int?> getNoBallRun() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    return pref.getInt('noBallRun')??0;
+  }
 
 
 }

@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:scorer/provider/scoring_provider.dart';
 import 'package:scorer/widgets/cancel_btn.dart';
 import 'package:sizer/sizer.dart';
 
+import '../models/score_update_request_model.dart';
 import '../utils/colours.dart';
 import '../utils/sizes.dart';
 import '../widgets/ok_btn.dart';
@@ -27,11 +30,6 @@ class _UndoScreenState extends State<UndoScreen> {
         width: 80.w,
         decoration: BoxDecoration(
           color: AppColor.lightColor,
-          // boxShadow: [
-          //   BoxShadow(
-          //     color: Colors.grey,
-          //   )
-          // ],
           borderRadius: BorderRadius.circular(30),
         ),
         child:  Column(
@@ -55,7 +53,23 @@ class _UndoScreenState extends State<UndoScreen> {
                 children: [
                   CancelBtn("Cancel"),
                   SizedBox(width: 4.w,),
-                  OkBtn("ok"),
+                  GestureDetector(onTap: (){
+                    final firestoreInstance = FirebaseFirestore.instance;
+                    final DocumentReference documentReference = firestoreInstance.collection('scores').doc('model');
+                    documentReference.get().then((DocumentSnapshot documentSnapshot) {
+                      if (documentSnapshot.exists) {
+                        final Map<String, dynamic>? data = documentSnapshot.data() as Map<String, dynamic>;
+                      if (data != null) {
+                      final scoreUpdate = ScoreUpdateRequestModel.fromJson(data);
+                      ScoringProvider().scoreUpdate(scoreUpdate).then((value){
+                      Navigator.pop(context);
+                      });
+                      }
+                    }
+                    });
+
+                  },
+                      child: OkBtn("ok")),
                 ],
               ),
             ),

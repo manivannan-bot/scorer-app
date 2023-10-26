@@ -174,7 +174,7 @@ class _keeperInjuryState extends State<keeperInjury> {
                                 setState(() {
                                   selectedWicketKeeper = bowlerIndex;
                                   if (selectedWicketKeeper != null) {
-                                    selectedWicketKeeperName = itemsKeeper![selectedWicketKeeper!].name ?? "";
+                                    selectedWicketKeeperName = itemsKeeper![selectedWicketKeeper!].playerName ?? "";
                                   }
                                 });
 
@@ -359,7 +359,7 @@ class _keeperInjuryState extends State<keeperInjury> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("${itemsKeeper![index].name??'-'}",style: fontMedium.copyWith(
+                                    Text("${itemsKeeper![index].playerName??'-'}",style: fontMedium.copyWith(
                                       fontSize: 12.sp,
                                       color: AppColor.blackColour,
                                     ),),
@@ -374,7 +374,7 @@ class _keeperInjuryState extends State<keeperInjury> {
                                           ),
                                         ),
                                         SizedBox(width: 2.w,),
-                                        Text(itemsKeeper![index].playingStyle??'-',style: fontMedium.copyWith(
+                                        Text(itemsKeeper![index].battingStyle??'-',style: fontMedium.copyWith(
                                             fontSize: 11.sp,
                                             color: Color(0xff555555)
                                         ),),

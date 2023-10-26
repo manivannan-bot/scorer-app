@@ -121,7 +121,7 @@ class _DOScoringState extends State<DOScoring> {
                                     selectedIndex = newIndex;
                                     if (selectedIndex != null) {
 
-                                      selectedPlayerName = items![selectedIndex!].name ?? "";
+                                      selectedPlayerName = items![selectedIndex!].playerName ?? "";
                                     }
                                   });
 
@@ -144,7 +144,7 @@ class _DOScoringState extends State<DOScoring> {
                                             setState(() {
                                               player2Index = newIndex;
                                               if (player2Index != null) {
-                                                selectedPlayer2Name = items![player2Index!].name ?? "";
+                                                selectedPlayer2Name = items![player2Index!].playerName ?? "";
                                               }
                                             });
                                       });
@@ -198,7 +198,7 @@ class _DOScoringState extends State<DOScoring> {
                                     setState(() {
                                       selectedBowler = bowlerIndex;
                                       if (selectedBowler != null) {
-                                        selectedBowlerName = itemsBowler![selectedBowler!].name ?? "";
+                                        selectedBowlerName = itemsBowler![selectedBowler!].playerName ?? "";
                                       }
                                     });
 
@@ -221,7 +221,7 @@ class _DOScoringState extends State<DOScoring> {
                                         setState(() {
                                           selectedWicketKeeper = bowlerIndex;
                                           if (selectedWicketKeeper != null) {
-                                            selectedWicketKeeperName = itemsKeeper![selectedWicketKeeper!].name ?? "";
+                                            selectedWicketKeeperName = itemsKeeper![selectedWicketKeeper!].playerName ?? "";
                                           }
                                         });
                                       });
@@ -386,7 +386,7 @@ class _DOScoringState extends State<DOScoring> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("${items![index].name??'-'}",style: fontMedium.copyWith(
+                                  Text("${items![index].playerName??'-'}",style: fontMedium.copyWith(
                                     fontSize: 12.sp,
                                     color: AppColor.blackColour,
                                   ),),
@@ -401,7 +401,7 @@ class _DOScoringState extends State<DOScoring> {
                                         ),
                                       ),
                                       SizedBox(width: 2.w,),
-                                      Text(items![index].playingStyle??'-',style: fontMedium.copyWith(
+                                      Text(items![index].battingStyle??'-',style: fontMedium.copyWith(
                                           fontSize: 11.sp,
                                           color: Color(0xff555555)
                                       ),),
@@ -588,7 +588,7 @@ class _DOScoringState extends State<DOScoring> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("${itemsBowler![index].name??'-'}",style: fontMedium.copyWith(
+                                    Text("${itemsBowler![index].playerName??'-'}",style: fontMedium.copyWith(
                                       fontSize: 12.sp,
                                       color: AppColor.blackColour,
                                     ),),
@@ -603,7 +603,7 @@ class _DOScoringState extends State<DOScoring> {
                                           ),
                                         ),
                                         SizedBox(width: 2.w,),
-                                        Text(itemsBowler![index].playingStyle??'-',style: fontMedium.copyWith(
+                                        Text(itemsBowler![index].battingStyle??'-',style: fontMedium.copyWith(
                                             fontSize: 11.sp,
                                             color: Color(0xff555555)
                                         ),),
@@ -790,7 +790,7 @@ class _DOScoringState extends State<DOScoring> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("${itemsKeeper![index].name??'-'}",style: fontMedium.copyWith(
+                                    Text("${itemsKeeper![index].playerName??'-'}",style: fontMedium.copyWith(
                                       fontSize: 12.sp,
                                       color: AppColor.blackColour,
                                     ),),
@@ -805,7 +805,7 @@ class _DOScoringState extends State<DOScoring> {
                                           ),
                                         ),
                                         SizedBox(width: 2.w,),
-                                        Text(itemsKeeper![index].playingStyle??'-',style: fontMedium.copyWith(
+                                        Text(itemsKeeper![index].battingStyle??'-',style: fontMedium.copyWith(
                                             fontSize: 11.sp,
                                             color: Color(0xff555555)
                                         ),),
@@ -984,7 +984,7 @@ class _DOScoringState extends State<DOScoring> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("${items![index].name??'-'}",style: fontMedium.copyWith(
+                                    Text("${items![index].playerName??'-'}",style: fontMedium.copyWith(
                                       fontSize: 12.sp,
                                       color: AppColor.blackColour,
                                     ),),
@@ -999,7 +999,7 @@ class _DOScoringState extends State<DOScoring> {
                                           ),
                                         ),
                                         SizedBox(width: 2.w,),
-                                        Text(items![index].playingStyle??'-',style: fontMedium.copyWith(
+                                        Text(items![index].battingStyle??'-',style: fontMedium.copyWith(
                                             fontSize: 11.sp,
                                             color: Color(0xff555555)
                                         ),),

@@ -81,24 +81,30 @@ class Team {
 
 class BattingPlayers {
   int? playerId;
-  String? name;
-  String? playingStyle;
+  String? playerName;
+  String? battingStyle;
+  String? bowlingAction;
+  String? bowlingStyle;
   int? runsScored;
   int? ballsFaced;
   int? isOut;
 
   BattingPlayers(
       {this.playerId,
-        this.name,
-        this.playingStyle,
+        this.playerName,
+        this.battingStyle,
+        this.bowlingAction,
+        this.bowlingStyle,
         this.runsScored,
         this.ballsFaced,
         this.isOut});
 
   BattingPlayers.fromJson(Map<String, dynamic> json) {
     playerId = json['player_id'];
-    name = json['name'];
-    playingStyle = json['playing_style'];
+    playerName = json['player_name'];
+    battingStyle = json['batting_style'];
+    bowlingAction = json['bowling_action'];
+    bowlingStyle = json['bowling_style'];
     runsScored = json['runs_scored'];
     ballsFaced = json['balls_faced'];
     isOut = json['is_out'];
@@ -107,8 +113,10 @@ class BattingPlayers {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['player_id'] = this.playerId;
-    data['name'] = this.name;
-    data['playing_style'] = this.playingStyle;
+    data['player_name'] = this.playerName;
+    data['batting_style'] = this.battingStyle;
+    data['bowling_action'] = this.bowlingAction;
+    data['bowling_style'] = this.bowlingStyle;
     data['runs_scored'] = this.runsScored;
     data['balls_faced'] = this.ballsFaced;
     data['is_out'] = this.isOut;
@@ -118,8 +126,10 @@ class BattingPlayers {
 
 class BowlingPlayers {
   int? playerId;
-  String? name;
-  String? playingStyle;
+  String? playerName;
+  String? battingStyle;
+  String? bowlingAction;
+  String? bowlingStyle;
   String? overBall;
   int? maiden;
   int? runsConceded;
@@ -128,8 +138,10 @@ class BowlingPlayers {
 
   BowlingPlayers(
       {this.playerId,
-        this.name,
-        this.playingStyle,
+        this.playerName,
+        this.battingStyle,
+        this.bowlingAction,
+        this.bowlingStyle,
         this.overBall,
         this.maiden,
         this.runsConceded,
@@ -138,8 +150,10 @@ class BowlingPlayers {
 
   BowlingPlayers.fromJson(Map<String, dynamic> json) {
     playerId = json['player_id'];
-    name = json['name'];
-    playingStyle = json['playing_style'];
+    playerName = json['player_name'];
+    battingStyle = json['batting_style'];
+    bowlingAction = json['bowling_action'];
+    bowlingStyle = json['bowling_style'];
     overBall = json['over_ball'];
     maiden = json['maiden'];
     runsConceded = json['runs_conceded'];
@@ -150,8 +164,10 @@ class BowlingPlayers {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['player_id'] = this.playerId;
-    data['name'] = this.name;
-    data['playing_style'] = this.playingStyle;
+    data['player_name'] = this.playerName;
+    data['batting_style'] = this.battingStyle;
+    data['bowling_action'] = this.bowlingAction;
+    data['bowling_style'] = this.bowlingStyle;
     data['over_ball'] = this.overBall;
     data['maiden'] = this.maiden;
     data['runs_conceded'] = this.runsConceded;
@@ -164,24 +180,30 @@ class BowlingPlayers {
 
 class WkPlayers {
   int? playerId;
-  String? name;
-  String? playingStyle;
+  String? playerName;
+  String? battingStyle;
+  String? bowlingAction;
+  String? bowlingStyle;
   int? runsScored;
   int? ballsFaced;
   int? isOut;
 
   WkPlayers(
       {this.playerId,
-        this.name,
-        this.playingStyle,
+        this.playerName,
+        this.battingStyle,
+        this.bowlingAction,
+        this.bowlingStyle,
         this.runsScored,
         this.ballsFaced,
         this.isOut});
 
   WkPlayers.fromJson(Map<String, dynamic> json) {
     playerId = json['player_id'];
-    name = json['name'];
-    playingStyle = json['playing_style'];
+    playerName = json['player_name'];
+    battingStyle = json['batting_style'];
+    bowlingAction = json['bowling_action'];
+    bowlingStyle = json['bowling_style'];
     runsScored = json['runs_scored'];
     ballsFaced = json['balls_faced'];
     isOut = json['is_out'];
@@ -190,8 +212,10 @@ class WkPlayers {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['player_id'] = this.playerId;
-    data['name'] = this.name;
-    data['playing_style'] = this.playingStyle;
+    data['player_name'] = this.playerName;
+    data['batting_style'] = this.battingStyle;
+    data['bowling_action'] = this.bowlingAction;
+    data['bowling_style'] = this.bowlingStyle;
     data['runs_scored'] = this.runsScored;
     data['balls_faced'] = this.ballsFaced;
     data['is_out'] = this.isOut;

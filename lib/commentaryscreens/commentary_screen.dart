@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
+import '../models/score_card_response_model.dart';
 import '../scorecardScreens/scorecard_one.dart';
 import '../scorecardScreens/scorecard_two.dart';
 import '../utils/colours.dart';
@@ -16,6 +17,7 @@ class CommentaryScreen extends StatefulWidget {
 
 class _CommentaryScreenState extends State<CommentaryScreen>with SingleTickerProviderStateMixin {
   late TabController tabController;
+  ScoreCardResponseModel scoreCardResponseModel=ScoreCardResponseModel();
 
   int? currentIndex;
 
@@ -115,9 +117,9 @@ class _CommentaryScreenState extends State<CommentaryScreen>with SingleTickerPro
               child: TabBarView(
                   controller: tabController,
                   children:  [
-                    ScoreCardOne(),
-                    ScoreCardOne(),
-                    ScoreCardOne(),
+                    ScoreCardOne(scoreCardResponseModel.data!),
+                    ScoreCardOne(scoreCardResponseModel.data!),
+                    ScoreCardOne(scoreCardResponseModel.data!),
                     ScoreCardTwo(),
                   ]),
             ),
