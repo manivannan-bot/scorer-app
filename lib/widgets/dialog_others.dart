@@ -367,11 +367,6 @@ class _EndInningsState extends State<EndInnings> {
         width: 40.w,
         decoration: BoxDecoration(
           color: AppColor.lightColor,
-          // boxShadow: [
-          //   BoxShadow(
-          //     color: Colors.grey,
-          //   )
-          // ],
           borderRadius: BorderRadius.circular(30),
         ),
         child:  Column(
@@ -388,7 +383,7 @@ class _EndInningsState extends State<EndInnings> {
                 fontSize: 11.sp,
                 color: Color(0xff808080)
             ),),
-            SizedBox(height: 2.h,),
+            SizedBox(height: 1.h,),
 
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
