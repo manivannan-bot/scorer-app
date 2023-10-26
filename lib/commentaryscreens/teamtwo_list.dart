@@ -1,22 +1,19 @@
-import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
 
-import '../playerdetailsviews/player_detail_view_screen.dart';
 import '../utils/colours.dart';
 import '../utils/images.dart';
 import '../utils/sizes.dart';
 
-
-class TeamOnePlayingList extends StatefulWidget {
-  const TeamOnePlayingList({super.key});
+class TeamTwoList extends StatefulWidget {
+  const TeamTwoList({super.key});
 
   @override
-  State<TeamOnePlayingList> createState() => _TeamOnePlayingListState();
+  State<TeamTwoList> createState() => _TeamTwoListState();
 }
 
-class _TeamOnePlayingListState extends State<TeamOnePlayingList> {
+class _TeamTwoListState extends State<TeamTwoList> {
   List<Map<String,dynamic>> itemList=[
     {
       "image":'assets/images/req_list.png',
@@ -43,7 +40,7 @@ class _TeamOnePlayingListState extends State<TeamOnePlayingList> {
   ];
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 6.w),
@@ -98,11 +95,9 @@ class _TeamOnePlayingListState extends State<TeamOnePlayingList> {
                                   ),),
                                 ],
                               ),
-                          ],),
-
+                            ],),
                           Spacer(),
                           SvgPicture.asset(Images.arrowICon,width: 6.5.w,),
-
                         ],
                       ),
                     );
@@ -110,12 +105,7 @@ class _TeamOnePlayingListState extends State<TeamOnePlayingList> {
               Divider(
                 color: Color(0xffD3D3D3),
               ),
-              GestureDetector(
-                onTap: (){
-                  Navigator.push(context,
-                                                MaterialPageRoute(builder: (context) => PlayerDetailViewScreen()));
-                },
-                  child: Text(' Players',style: fontMedium.copyWith(fontSize: 14.sp,color: AppColor.pri),)),
+              Text(' Players',style: fontMedium.copyWith(fontSize: 14.sp,color: AppColor.pri),),
               SizedBox(height: 0.5.h,),
               ListView.separated(
                   shrinkWrap: true,

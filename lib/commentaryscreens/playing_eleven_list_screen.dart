@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scorer/commentaryscreens/teamone_playing_list.dart';
+import 'package:scorer/commentaryscreens/teamtwo_list.dart';
 import 'package:sizer/sizer.dart';
 
 import '../utils/colours.dart';
@@ -26,20 +27,23 @@ class _PlayingElevenListScreenState extends State<PlayingElevenListScreen>with S
       body: SafeArea(
         child: Column(
           children: [
-           Row(
-             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-             children: [
-               GestureDetector(
-                   onTap: (){
-                     Navigator.pop(context);
-                   },
-                   child: Icon(Icons.arrow_back,size: 7.w,)),
-               Text("Playing XI",style: fontMedium.copyWith(
-                 fontSize: 17.sp,
-                 color: AppColor.blackColour,
-               ),),
-               SizedBox(width: 7.w,),
-             ],
+           Padding(
+             padding:  EdgeInsets.symmetric(horizontal: 4.w),
+             child: Row(
+               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+               children: [
+                 GestureDetector(
+                     onTap: (){
+                       Navigator.pop(context);
+                     },
+                     child: Icon(Icons.arrow_back,size: 7.w,)),
+                 Text("Playing XI",style: fontMedium.copyWith(
+                   fontSize: 17.sp,
+                   color: AppColor.blackColour,
+                 ),),
+                 SizedBox(width: 7.w,),
+               ],
+             ),
            ),
             SizedBox(height: 2.h,),
             TabBar(
@@ -60,7 +64,7 @@ class _PlayingElevenListScreenState extends State<PlayingElevenListScreen>with S
                   controller: tabController,
                   children: [
                     TeamOnePlayingList(),
-                    Container(),
+                    TeamTwoList(),
                   ]
               ),
             ),
