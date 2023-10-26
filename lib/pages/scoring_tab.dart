@@ -140,6 +140,12 @@ class _ScoringTabState extends State<ScoringTab> {
             width: 100,
             child: Center(child: Text('Please Select Bowler')));
     }
+    if(scoringData!.data!.batting!.length<2){
+      var player=scoringData!.data!.batting!.first.stricker==1?'non_striker_id':'striker_id';
+      changeBatsman(player);
+      return const SizedBox(height: 100, width: 100,
+          child: Center(child: Text('Please Select Batsman')));
+    }
     int totalBallId = 0;
     showError=false;
     for (int index = 0; index < scoringData!.data!.over!.length; index++) {
@@ -214,15 +220,34 @@ class _ScoringTabState extends State<ScoringTab> {
                                           ),
                                         ]),
                                       ),
-                                      Text('${scoringData!.data!.batting![index1].playerName??'-'}    ${scoringData!.data!.batting![index1].runsScored??'0'}(${scoringData!.data!.batting![index1].ballsFaced??'0'})',
-                                          style:  fontRegular.copyWith(
-                                              color: Colors.black, fontSize: 10.sp)),
+                                      Row(
+                                        children: [
+                                          Text('${scoringData!.data!.batting![index1].playerName??'-'}',
+                                              style:  fontRegular.copyWith(
+                                                  color: Colors.black, fontSize: 10.sp)),
+                                          scoringData!.data!.batting![index1].stricker == 1
+                                              ? SvgPicture.asset(Images.batIcon) :  SizedBox(width:1.w),
+                                          Text('${scoringData!.data!.batting![index1].runsScored??'0'}(${scoringData!.data!.batting![index1].ballsFaced??'0'})',
+                                              style:  fontRegular.copyWith(
+                                                  color: Colors.black, fontSize: 10.sp)),
+                                        ],
+                                      ),
                                       SizedBox(
                                         height: 1.h,
                                       ),
-                                      Text((scoringData!.data!.batting?[index2]!=null)?'${scoringData!.data!.batting![index2].playerName??'-'}    ${scoringData!.data!.batting![index2].runsScored??'0'}(${scoringData!.data!.batting![index2].ballsFaced??'0'})':'-',
-                                          style:  fontRegular.copyWith(
-                                              color: Colors.black, fontSize: 10.sp)),
+                                      Row(
+                                        children: [
+                                          Text((scoringData!.data!.batting?[index2]!=null)?'${scoringData!.data!.batting![index2].playerName??'-'} ':'-',
+                                              style:  fontRegular.copyWith(
+                                                  color: Colors.black, fontSize: 10.sp)),
+                                          scoringData!.data!.batting![index2].stricker == 1
+                                              ? SvgPicture.asset(Images.batIcon) :  SizedBox(width:1.w),
+                                          Text((scoringData!.data!.batting?[index2]!=null)?
+                                              '  ${scoringData!.data!.batting![index2].runsScored??'0'}(${scoringData!.data!.batting![index2].ballsFaced??'0'})':'-',
+                                              style:  fontRegular.copyWith(
+                                                  color: Colors.black, fontSize: 10.sp)),
+                                        ],
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -689,6 +714,7 @@ class _ScoringTabState extends State<ScoringTab> {
   void changeBatsman(String player) async{
      await ScoringProvider().getPlayerList(widget.matchId,widget.team1Id,'bat').then((value) {
        setState(() {
+         itemsBatsman = [];
          itemsBatsman = value.battingPlayers;
          selectedTeamName= value.team!.teamName;
        });
@@ -713,6 +739,7 @@ class _ScoringTabState extends State<ScoringTab> {
 
     ScoringProvider().getPlayerList(widget.matchId,widget.team2Id,'bowl').then((value) {
         setState(() {
+          itemsBowler=[];
           itemsBowler = value.bowlingPlayers;
           selectedBTeamName= value.team!.teamName;
         });
@@ -873,7 +900,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text("${itemsBowler![index].playerId??'-'}",style: fontMedium.copyWith(
+                                      Text("${itemsBowler![index].playerName??'-'}",style: fontMedium.copyWith(
                                         fontSize: 12.sp,
                                         color: AppColor.blackColour,
                                       ),),
@@ -1398,7 +1425,7 @@ class _ScoringTabState extends State<ScoringTab> {
             ),
           );
         })
-    ).whenComplete(()async{
+    ).then((value)async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var strikerId=prefs.getInt('striker_id')??0;
       var nonStrikerId=prefs.getInt('non_striker_id')??0;
