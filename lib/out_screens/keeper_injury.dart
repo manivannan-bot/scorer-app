@@ -265,7 +265,7 @@ class _keeperInjuryState extends State<keeperInjury> {
                               Navigator.pop(context);
                             },
                             child: Icon(Icons.arrow_back,size: 7.w,)),
-                        Text("Select Players",style: fontMedium.copyWith(
+                        Text("Select Keeper",style: fontMedium.copyWith(
                           fontSize: 18.sp,
                           color: AppColor.blackColour,
                         ),),

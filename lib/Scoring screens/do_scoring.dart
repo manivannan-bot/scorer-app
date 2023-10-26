@@ -67,7 +67,7 @@ class _DOScoringState extends State<DOScoring> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffF8F9FA),
+      backgroundColor: const Color(0xffF8F9FA),
       body: SafeArea(
         child: Column(
           children: [
@@ -237,19 +237,19 @@ class _DOScoringState extends State<DOScoring> {
               ),
             ),
             //cancel bt
-             Spacer(),
+             const Spacer(),
             Container(
               padding: EdgeInsets.symmetric(vertical: 2.h,horizontal: 5.w),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppColor.lightColor,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                 CancelBtn("Cancel"),
+                 const CancelBtn("Cancel"),
                 SizedBox(width: 2.w,),
                 GestureDetector(
-                    child: OkBtn("Ok"),
+                    child: const OkBtn("Ok"),
                 onTap:(){
                       Navigator.push(context, MaterialPageRoute(builder: (context) => ScoreUpdateScreen(widget.matchId,widget.team1id)));
             }),
@@ -292,7 +292,7 @@ class _DOScoringState extends State<DOScoring> {
                             Navigator.pop(context);
                           },
                           child: Icon(Icons.arrow_back,size: 7.w,)),
-                      Text("Select Players",style: fontMedium.copyWith(
+                      Text("Select Striker",style: fontMedium.copyWith(
                         fontSize: 18.sp,
                         color: AppColor.blackColour,
                       ),),
@@ -301,7 +301,7 @@ class _DOScoringState extends State<DOScoring> {
                   ),
                 ),
                 SizedBox(height: 1.h,),
-                Divider(
+                const Divider(
                   thickness: 1,
                   color: Color(0xffD3D3D3),
                 ),
@@ -310,17 +310,17 @@ class _DOScoringState extends State<DOScoring> {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color: Color(0xffF8F9FA),
+                      color: const Color(0xffF8F9FA),
                     ),
                     child: Padding(
                       padding:  EdgeInsets.symmetric(horizontal: 5.w,vertical: 1.2.h),
                       child: Row(
                         children: [
-                          Text("Search players",style: fontRegular.copyWith(
+                          Text("Search striker",style: fontRegular.copyWith(
                             fontSize: 12.sp,
-                            color: Color(0xff707B81),
+                            color: const Color(0xff707B81),
                           ),),
-                          Spacer(),
+                          const Spacer(),
                           SvgPicture.asset(Images.searchIcon)
                         ],
                       ),
@@ -337,7 +337,7 @@ class _DOScoringState extends State<DOScoring> {
                 // Divider(
                 //   color: Color(0xffD3D3D3),
                 // ),
-                Divider(
+                const Divider(
                   thickness: 0.5,
                   color: Color(0xffD3D3D3),
                 ),
@@ -373,7 +373,7 @@ class _DOScoringState extends State<DOScoring> {
                                   shape: BoxShape.circle,
                                   color: localSelectedIndex  == index ? Colors.blue : Colors.grey, // Change colors based on selected index
                                 ),
-                                child:  Center(
+                                child:  const Center(
                                   child: Icon(
                                     Icons.circle_outlined, // You can change the icon as needed
                                     color: Colors.white, // Icon color
@@ -403,14 +403,14 @@ class _DOScoringState extends State<DOScoring> {
                                       SizedBox(width: 2.w,),
                                       Text(items![index].battingStyle??'-',style: fontMedium.copyWith(
                                           fontSize: 11.sp,
-                                          color: Color(0xff555555)
+                                          color: const Color(0xff555555)
                                       ),),
                                     ],
                                   ),
 
                                 ],
                               ),
-                              Spacer(),
+                              const Spacer(),
 
                             ],
                           ),
@@ -422,7 +422,7 @@ class _DOScoringState extends State<DOScoring> {
                 ),
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 2.h,horizontal: 5.w),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: AppColor.lightColor,
                   ),
                   child: Row(
@@ -431,7 +431,7 @@ class _DOScoringState extends State<DOScoring> {
                       GestureDetector(onTap:(){
                         Navigator.pop(context);
                       },
-                          child: CancelBtn("Cancel")),
+                          child: const CancelBtn("Cancel")),
                       SizedBox(width: 2.w,),
                       GestureDetector(onTap:()async {
                         if(localSelectedIndex!=null){
@@ -456,7 +456,7 @@ class _DOScoringState extends State<DOScoring> {
                           }
 
 
-                      },child: OkBtn("Ok")),
+                      },child: const OkBtn("Ok")),
                     ],
                   ),
                 ),
@@ -477,7 +477,7 @@ class _DOScoringState extends State<DOScoring> {
             return Container(
               height: 90.h,
               padding: EdgeInsets.symmetric(vertical: 2.h),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   color: AppColor.lightColor,
                   borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
               ),
@@ -494,7 +494,7 @@ class _DOScoringState extends State<DOScoring> {
                               Navigator.pop(context);
                             },
                             child: Icon(Icons.arrow_back,size: 7.w,)),
-                        Text("Select Players",style: fontMedium.copyWith(
+                        Text("Select Bowler",style: fontMedium.copyWith(
                           fontSize: 18.sp,
                           color: AppColor.blackColour,
                         ),),
@@ -503,7 +503,7 @@ class _DOScoringState extends State<DOScoring> {
                     ),
                   ),
                   SizedBox(height: 1.h,),
-                  Divider(
+                  const Divider(
                     thickness: 1,
                     color: Color(0xffD3D3D3),
                   ),
@@ -512,17 +512,17 @@ class _DOScoringState extends State<DOScoring> {
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        color: Color(0xffF8F9FA),
+                        color: const Color(0xffF8F9FA),
                       ),
                       child: Padding(
                         padding:  EdgeInsets.symmetric(horizontal: 5.w,vertical: 1.2.h),
                         child: Row(
                           children: [
-                            Text("Search players",style: fontRegular.copyWith(
+                            Text("Search bowlers",style: fontRegular.copyWith(
                               fontSize: 12.sp,
-                              color: Color(0xff707B81),
+                              color: const Color(0xff707B81),
                             ),),
-                            Spacer(),
+                            const Spacer(),
                             SvgPicture.asset(Images.searchIcon)
                           ],
                         ),
@@ -539,7 +539,7 @@ class _DOScoringState extends State<DOScoring> {
                   // Divider(
                   //   color: Color(0xffD3D3D3),
                   // ),
-                  Divider(
+                  const Divider(
                     thickness: 0.5,
                     color: Color(0xffD3D3D3),
                   ),
@@ -575,7 +575,7 @@ class _DOScoringState extends State<DOScoring> {
                                     shape: BoxShape.circle,
                                     color: localBowlerIndex  == index ? Colors.blue : Colors.grey, // Change colors based on selected index
                                   ),
-                                  child: Center(
+                                  child: const Center(
                                     child: Icon(
                                       Icons.circle_outlined, // You can change the icon as needed
                                       color: Colors.white, // Icon color
@@ -605,14 +605,14 @@ class _DOScoringState extends State<DOScoring> {
                                         SizedBox(width: 2.w,),
                                         Text(itemsBowler![index].battingStyle??'-',style: fontMedium.copyWith(
                                             fontSize: 11.sp,
-                                            color: Color(0xff555555)
+                                            color: const Color(0xff555555)
                                         ),),
                                       ],
                                     ),
 
                                   ],
                                 ),
-                                Spacer(),
+                                const Spacer(),
                                 // Row(
                                 //   children: [
                                 //     Text("25 ",style: fontRegular.copyWith(
@@ -635,13 +635,13 @@ class _DOScoringState extends State<DOScoring> {
                   ),
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 2.h,horizontal: 5.w),
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: AppColor.lightColor,
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        CancelBtn("Cancel"),
+                        const CancelBtn("Cancel"),
                         SizedBox(width: 2.w,),
                         GestureDetector(onTap:()async {
                           if(localBowlerIndex!=null) {
@@ -658,7 +658,7 @@ class _DOScoringState extends State<DOScoring> {
                             displayError();
                           }
 
-                        },child: OkBtn("Ok")),
+                        },child: const OkBtn("Ok")),
                       ],
                     ),
                   ),
@@ -679,7 +679,7 @@ class _DOScoringState extends State<DOScoring> {
             return Container(
               height: 90.h,
               padding: EdgeInsets.symmetric(vertical: 2.h),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   color: AppColor.lightColor,
                   borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
               ),
@@ -696,7 +696,7 @@ class _DOScoringState extends State<DOScoring> {
                               Navigator.pop(context);
                             },
                             child: Icon(Icons.arrow_back,size: 7.w,)),
-                        Text("Select Players",style: fontMedium.copyWith(
+                        Text("Select Wicket Keeper",style: fontMedium.copyWith(
                           fontSize: 18.sp,
                           color: AppColor.blackColour,
                         ),),
@@ -705,7 +705,7 @@ class _DOScoringState extends State<DOScoring> {
                     ),
                   ),
                   SizedBox(height: 1.h,),
-                  Divider(
+                  const Divider(
                     thickness: 1,
                     color: Color(0xffD3D3D3),
                   ),
@@ -714,17 +714,17 @@ class _DOScoringState extends State<DOScoring> {
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        color: Color(0xffF8F9FA),
+                        color: const Color(0xffF8F9FA),
                       ),
                       child: Padding(
                         padding:  EdgeInsets.symmetric(horizontal: 5.w,vertical: 1.2.h),
                         child: Row(
                           children: [
-                            Text("Search players",style: fontRegular.copyWith(
+                            Text("Search keeper",style: fontRegular.copyWith(
                               fontSize: 12.sp,
-                              color: Color(0xff707B81),
+                              color: const Color(0xff707B81),
                             ),),
-                            Spacer(),
+                            const Spacer(),
                             SvgPicture.asset(Images.searchIcon)
                           ],
                         ),
@@ -741,7 +741,7 @@ class _DOScoringState extends State<DOScoring> {
                   // Divider(
                   //   color: Color(0xffD3D3D3),
                   // ),
-                  Divider(
+                  const Divider(
                     thickness: 0.5,
                     color: Color(0xffD3D3D3),
                   ),
@@ -807,14 +807,14 @@ class _DOScoringState extends State<DOScoring> {
                                         SizedBox(width: 2.w,),
                                         Text(itemsKeeper![index].battingStyle??'-',style: fontMedium.copyWith(
                                             fontSize: 11.sp,
-                                            color: Color(0xff555555)
+                                            color: const Color(0xff555555)
                                         ),),
                                       ],
                                     ),
 
                                   ],
                                 ),
-                                Spacer(),
+                                const Spacer(),
                               ],
                             ),
                           ),
@@ -825,7 +825,7 @@ class _DOScoringState extends State<DOScoring> {
                   ),
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 2.h,horizontal: 5.w),
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: AppColor.lightColor,
                     ),
                     child: Row(
@@ -840,7 +840,7 @@ class _DOScoringState extends State<DOScoring> {
                         ),
                         GestureDetector(onTap:(){
                           Navigator.pop(context);
-                        },child: CancelBtn("Cancel")),
+                        },child: const CancelBtn("Cancel")),
                         SizedBox(width: 2.w,),
                         GestureDetector(onTap:()async {
 
@@ -852,7 +852,7 @@ class _DOScoringState extends State<DOScoring> {
                                      displayError();
                                    }
 
-                        },child: OkBtn("Ok")),
+                        },child: const OkBtn("Ok")),
                       ],
                     ),
                   ),
@@ -873,7 +873,7 @@ class _DOScoringState extends State<DOScoring> {
             return Container(
               height: 90.h,
               padding: EdgeInsets.symmetric(vertical: 2.h),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   color: AppColor.lightColor,
                   borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
               ),
@@ -890,7 +890,7 @@ class _DOScoringState extends State<DOScoring> {
                               Navigator.pop(context);
                             },
                             child: Icon(Icons.arrow_back,size: 7.w,)),
-                        Text("Select Players",style: fontMedium.copyWith(
+                        Text("Select Non Striker",style: fontMedium.copyWith(
                           fontSize: 18.sp,
                           color: AppColor.blackColour,
                         ),),
@@ -899,7 +899,7 @@ class _DOScoringState extends State<DOScoring> {
                     ),
                   ),
                   SizedBox(height: 1.h,),
-                  Divider(
+                  const Divider(
                     thickness: 1,
                     color: Color(0xffD3D3D3),
                   ),
@@ -908,17 +908,17 @@ class _DOScoringState extends State<DOScoring> {
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        color: Color(0xffF8F9FA),
+                        color: const Color(0xffF8F9FA),
                       ),
                       child: Padding(
                         padding:  EdgeInsets.symmetric(horizontal: 5.w,vertical: 1.2.h),
                         child: Row(
                           children: [
-                            Text("Search players",style: fontRegular.copyWith(
+                            Text("Search non Striker",style: fontRegular.copyWith(
                               fontSize: 12.sp,
-                              color: Color(0xff707B81),
+                              color: const Color(0xff707B81),
                             ),),
-                            Spacer(),
+                            const Spacer(),
                             SvgPicture.asset(Images.searchIcon)
                           ],
                         ),
@@ -935,7 +935,7 @@ class _DOScoringState extends State<DOScoring> {
                   // Divider(
                   //   color: Color(0xffD3D3D3),
                   // ),
-                  Divider(
+                  const Divider(
                     thickness: 0.5,
                     color: Color(0xffD3D3D3),
                   ),
@@ -1001,14 +1001,14 @@ class _DOScoringState extends State<DOScoring> {
                                         SizedBox(width: 2.w,),
                                         Text(items![index].battingStyle??'-',style: fontMedium.copyWith(
                                             fontSize: 11.sp,
-                                            color: Color(0xff555555)
+                                            color: const Color(0xff555555)
                                         ),),
                                       ],
                                     ),
 
                                   ],
                                 ),
-                                Spacer(),
+                                const Spacer(),
 
                               ],
                             ),
@@ -1020,7 +1020,7 @@ class _DOScoringState extends State<DOScoring> {
                   ),
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 2.h,horizontal: 5.w),
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: AppColor.lightColor,
                     ),
                     child: Row(
@@ -1036,7 +1036,7 @@ class _DOScoringState extends State<DOScoring> {
                         GestureDetector(onTap: (){
                           Navigator.pop(context);
                         },
-                            child: CancelBtn("Cancel")),
+                            child: const CancelBtn("Cancel")),
                         SizedBox(width: 2.w,),
                         GestureDetector(onTap:()async {
                           if(localSelectedIndex!=null){
@@ -1059,7 +1059,7 @@ class _DOScoringState extends State<DOScoring> {
                           }else{
                             displayError();
                           }
-                        },child: OkBtn("Ok")),
+                        },child: const OkBtn("Ok")),
                       ],
                     ),
                   ),

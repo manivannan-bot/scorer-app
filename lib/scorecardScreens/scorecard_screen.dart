@@ -25,6 +25,7 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
   late TabController tabController;
    ScoreCardResponseModel scoreCardResponseModel=ScoreCardResponseModel();
 
+  @override
   void initState() {
     super.initState();
     tabController = TabController(length: 2, vsync: this);
@@ -39,7 +40,7 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
 
   @override
   Widget build(BuildContext context) {
-    if(scoreCardResponseModel!.data!.batting!.isEmpty || scoreCardResponseModel!.data!.bowling!.isEmpty){
+    if(scoreCardResponseModel.data!.batting!.isEmpty || scoreCardResponseModel.data!.bowling!.isEmpty){
       return const SizedBox(
           height: 100,
           width: 100,

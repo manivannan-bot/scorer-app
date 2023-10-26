@@ -62,8 +62,8 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
 
      });
      SharedPreferences prefs = await SharedPreferences.getInstance();
-     var preOver= prefs.getInt('over_number');
-     var preBall= prefs.getInt('ball_number');
+     var preOver= prefs.getInt('over_number')??0;
+     var preBall= prefs.getInt('ball_number')??0;
 
      if(preOver==0 && preBall==0) {
          var overNumber = data.matches!.first.teams!.first.overNumber ?? 0;

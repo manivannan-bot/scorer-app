@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -266,6 +267,8 @@ class ScoringProvider extends ChangeNotifier{
     var body = json.encode(scoreUpdate);
     // final firestoreInstance = FirebaseFirestore.instance;
     // await firestoreInstance.collection('scores').doc('model').set(scoreUpdate.toJson());
+    final realTimeDatabaseInstance = FirebaseDatabase.instance;
+    await realTimeDatabaseInstance.ref('scores/model').set(scoreUpdate.toJson());
 
     print(json.decode(body));
     try {
