@@ -265,10 +265,15 @@ class ScoringProvider extends ChangeNotifier{
 //score update
   Future<ScoreUpdateResponseModel> scoreUpdate( ScoreUpdateRequestModel scoreUpdate) async {
     var body = json.encode(scoreUpdate);
-    // final firestoreInstance = FirebaseFirestore.instance;
-    // await firestoreInstance.collection('scores').doc('model').set(scoreUpdate.toJson());
-    final realTimeDatabaseInstance = FirebaseDatabase.instance;
-    await realTimeDatabaseInstance.ref('scores/model').set(scoreUpdate.toJson());
+
+    final prefs = await SharedPreferences.getInstance();
+    final scoreUpdateJson = json.encode(scoreUpdate.toJson());
+    
+    final oldScoreUpdateJson = prefs.getString('scoreUpdate');
+    if (oldScoreUpdateJson != null) {
+      prefs.setString('oldScoreUpdate', oldScoreUpdateJson);
+    }
+    prefs.setString('scoreUpdate', scoreUpdateJson);
 
     print(json.decode(body));
     try {
