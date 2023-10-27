@@ -7,6 +7,7 @@ import 'package:sizer/sizer.dart';
 
 import '../utils/styles.dart';
 import 'completed_screen.dart';
+import 'in_the_offing_list.dart';
 
 class HomeTab extends StatefulWidget {
 
@@ -52,7 +53,7 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
                    LiveScreen(),
                     UpcomingScreen(),
                     CompletedScreen(),
-                    Container(),
+                    InTheOffingScreenList(),
                   ]
               ),
             ),
