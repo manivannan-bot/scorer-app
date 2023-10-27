@@ -50,6 +50,11 @@ class _DOScoringState extends State<DOScoring> {
   bool isResultEmpty = false;
   String searchedText = "";
   TextEditingController searchController = TextEditingController();
+  int strikerId=0;
+  int nonStrikerId=0;
+  int bowlerId=0;
+  int keeperId=0;
+
 
   @override
   void initState() {
@@ -63,12 +68,15 @@ class _DOScoringState extends State<DOScoring> {
 
   Future<void> _fetchPlayers(
       String matchId, String team1id, String team2id) async {
-    // final response = await ScoringProvider().getPlayerList(matchId, team1id,'bat');
-    // setState(() {
-    //   items = response.battingPlayers;
-    //   selectedTeamName= response.team!.teamName;
-    //
-    // });
+    SharedPreferences prefs=await SharedPreferences.getInstance();
+    setState(() {
+      strikerId=prefs.getInt('striker_id')??0;
+      nonStrikerId=prefs.getInt('non_striker_id')??0;
+      bowlerId=prefs.getInt('bowler_id')??0;
+      keeperId=prefs.getInt('wicket_keeper_id')??0;
+    });
+
+
   }
   onSearchBatsman(String search) {
     setState(() {
@@ -371,6 +379,13 @@ class _DOScoringState extends State<DOScoring> {
               ),
               //cancel bt
               const Spacer(),
+              Visibility(
+                visible: showError,
+                child: Text(
+                  'Please Select All Options',
+                  style: fontMedium.copyWith(color: AppColor.redColor),
+                ),
+              ),
               Container(
                 padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 5.w),
                 decoration: const BoxDecoration(
@@ -379,13 +394,6 @@ class _DOScoringState extends State<DOScoring> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Visibility(
-                      visible: showError,
-                      child: Text(
-                        'Please Select All Option',
-                        style: fontMedium.copyWith(color: AppColor.redColor),
-                      ),
-                    ),
                     GestureDetector(
                         onTap: () {
                           Navigator.pop(context);
@@ -545,9 +553,6 @@ class _DOScoringState extends State<DOScoring> {
                               fontSize: 14.sp, color: AppColor.pri),
                         ),
                       ),
-                      // Divider(
-                      //   color: Color(0xffD3D3D3),
-                      // ),
                       const Divider(
                         thickness: 0.5,
                         color: Color(0xffD3D3D3),
@@ -806,6 +811,10 @@ class _DOScoringState extends State<DOScoring> {
                                         await SharedPreferences.getInstance();
                                     await prefs.setInt('striker_id',
                                         searchedBatsman![selectedPlayer1!].playerId!);
+
+                                    setState(() {
+                                      strikerId=searchedBatsman![selectedPlayer1!].playerId!;
+                                    });
 
                                     Navigator.pop(context);
                                   } else {
@@ -1586,110 +1595,7 @@ class _DOScoringState extends State<DOScoring> {
                             },
                           ),
                         ),],
-                      Expanded(
-                        child: ListView.separated(
-                          separatorBuilder: (context, _) {
-                            return const Divider(
-                              thickness: 0.6,
-                            );
-                          },
-                          itemCount: searchedKeeper!.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  if (localBowlerIndex == index) {
-                                    localBowlerIndex =
-                                        null; // Deselect the item if it's already selected
-                                  } else {
-                                    localBowlerIndex =
-                                        index; // Select the item if it's not selected
-                                  }
-                                  onItemSelected(localBowlerIndex);
-                                });
-                              },
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 2.5.w, vertical: 1.h),
-                                child: Row(
-                                  children: [
-                                    //circular button
-                                    Container(
-                                      height:
-                                          20.0, // Adjust the height as needed
-                                      width: 20.0, // Adjust the width as needed
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: localBowlerIndex == index
-                                            ? Colors.blue
-                                            : Colors
-                                                .grey, // Change colors based on selected index
-                                      ),
-                                      child: const Center(
-                                        child: Icon(
-                                          Icons
-                                              .circle_outlined, // You can change the icon as needed
-                                          color: Colors.white, // Icon color
-                                          size: 20.0, // Icon size
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 3.w,
-                                    ),
-                                    Image.asset(
-                                      Images.playersImage,
-                                      width: 10.w,
-                                    ),
-                                    SizedBox(
-                                      width: 2.w,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "${searchedKeeper![index].playerName ?? '-'}",
-                                          style: fontMedium.copyWith(
-                                            fontSize: 12.sp,
-                                            color: AppColor.blackColour,
-                                          ),
-                                        ),
-                                        Row(
-                                          children: [
-                                            Container(
-                                              height: 1.h,
-                                              width: 2.w,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(50),
-                                                color: AppColor.pri,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 2.w,
-                                            ),
-                                            Text(
-                                              searchedKeeper![index]
-                                                      .battingStyle ??
-                                                  '-',
-                                              style: fontMedium.copyWith(
-                                                  fontSize: 11.sp,
-                                                  color:
-                                                      const Color(0xff555555)),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    const Spacer(),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
+
                       Container(
                         padding: EdgeInsets.symmetric(
                             vertical: 2.h, horizontal: 5.w),
@@ -2084,108 +1990,7 @@ class _DOScoringState extends State<DOScoring> {
                           ),
                         ),
                       ],
-                      Expanded(
-                        child: ListView.separated(
-                          separatorBuilder: (context, _) {
-                            return const Divider(
-                              thickness: 0.6,
-                            );
-                          },
-                          itemCount: searchedBatsman!.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  if (localSelectedIndex == index) {
-                                    localSelectedIndex =
-                                        null; // Deselect the item if it's already selected
-                                  } else {
-                                    localSelectedIndex =
-                                        index; // Select the item if it's not selected
-                                  }
-                                  onItemSelected(localSelectedIndex);
-                                });
-                              },
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 2.5.w, vertical: 1.h),
-                                child: Row(
-                                  children: [
-                                    //circular button
-                                    Container(
-                                      height:
-                                          20.0, // Adjust the height as needed
-                                      width: 20.0, // Adjust the width as needed
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: localSelectedIndex == index
-                                            ? Colors.blue
-                                            : Colors
-                                                .grey, // Change colors based on selected index
-                                      ),
-                                      child: const Center(
-                                        child: Icon(
-                                          Icons
-                                              .circle_outlined, // You can change the icon as needed
-                                          color: Colors.white, // Icon color
-                                          size: 20.0, // Icon size
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 3.w,
-                                    ),
-                                    Image.asset(
-                                      Images.playersImage,
-                                      width: 10.w,
-                                    ),
-                                    SizedBox(
-                                      width: 2.w,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "${searchedBatsman![index].playerName ?? '-'}",
-                                          style: fontMedium.copyWith(
-                                            fontSize: 12.sp,
-                                            color: AppColor.blackColour,
-                                          ),
-                                        ),
-                                        Row(
-                                          children: [
-                                            Container(
-                                              height: 1.h,
-                                              width: 2.w,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(50),
-                                                color: AppColor.pri,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 2.w,
-                                            ),
-                                            Text(
-                                              searchedBatsman![index].battingStyle ?? '-',
-                                              style: fontMedium.copyWith(
-                                                  fontSize: 11.sp,
-                                                  color:
-                                                      const Color(0xff555555)),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    const Spacer(),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
+
                       Container(
                         padding: EdgeInsets.symmetric(
                             vertical: 2.h, horizontal: 5.w),
