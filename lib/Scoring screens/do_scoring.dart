@@ -510,7 +510,7 @@ class _DOScoringState extends State<DOScoring> {
                                     decoration: InputDecoration(
                                       isDense: true,
                                       border: InputBorder.none,
-                                      hintText: "Search for bowlers",
+                                      hintText: "Search for player",
                                       hintStyle: fontRegular.copyWith(
                                           fontSize: 10.sp,
                                           color: AppColor.textMildColor
@@ -1326,7 +1326,7 @@ class _DOScoringState extends State<DOScoring> {
                                     decoration: InputDecoration(
                                       isDense: true,
                                       border: InputBorder.none,
-                                      hintText: "Search for bowlers",
+                                      hintText: "Search for keeper",
                                       hintStyle: fontRegular.copyWith(
                                           fontSize: 10.sp,
                                           color: AppColor.textMildColor
@@ -1825,7 +1825,7 @@ class _DOScoringState extends State<DOScoring> {
                                     decoration: InputDecoration(
                                       isDense: true,
                                       border: InputBorder.none,
-                                      hintText: "Search for bowlers",
+                                      hintText: "Search for player",
                                       hintStyle: fontRegular.copyWith(
                                           fontSize: 10.sp,
                                           color: AppColor.textMildColor
