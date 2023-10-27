@@ -55,7 +55,7 @@ class Images{
    static const String playerDetailBg = 'assets/images/image 81.png';
    static const String teamListImage = 'assets/images/team_list_image.png';
   //
-  // static const String calendarIcon = 'assets/images/calendar_icon.svg';
+   static const String teamBgImage = 'assets/images/team_bg_image.png';
   //
   // static const String editIcon = 'assets/images/edit_icon.svg';
   //

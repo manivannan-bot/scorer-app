@@ -112,8 +112,7 @@ class _TeamOnePlayingListState extends State<TeamOnePlayingList> {
               ),
               GestureDetector(
                 onTap: (){
-                  Navigator.push(context,
-                                                MaterialPageRoute(builder: (context) => PlayerDetailViewScreen()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => PlayerDetailViewScreen()));
                 },
                   child: Text(' Players',style: fontMedium.copyWith(fontSize: 14.sp,color: AppColor.pri),)),
               SizedBox(height: 0.5.h,),
