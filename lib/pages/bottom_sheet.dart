@@ -199,29 +199,71 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                         ],
                       ),
                       SizedBox(height: 1.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            children: [
-                              Container(
-                                child: Center(
-                                    child: Text('${widget.scoringData.data!.batting![0].playerName??'-'}',
-                                        style: fontMedium.copyWith(fontSize: 18))),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Container(
-                                child: Center(
-                                    child: Text('${widget.scoringData.data!.batting![0].runsScored??'0'}',
-                                        style: fontMedium.copyWith(fontSize: 18))),
-                              ),
-                            ],
-                          ),
-                        ],
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: widget.scoringData.data!.batting!.length,
+                          itemBuilder: (context, index) {
+                            final batsman = widget.scoringData.data!.batting![index];
+
+                            if (batsman.stricker == 1) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Container(
+                                        child: Center(
+                                          child: Text('${batsman.playerName ?? '-'}',
+                                            style: fontMedium.copyWith(fontSize: 18),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Container(
+                                        child: Center(
+                                          child: Text('${batsman.runsScored ?? '0'}',
+                                            style: fontMedium.copyWith(fontSize: 18),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              );
+                            } else {
+                              // If the batsman's striker value is not 1, return an empty container.
+                              return Container();
+                            }
+                          },
+                        ),
                       ),
+
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     Column(
+                      //       children: [
+                      //         Container(
+                      //           child: Center(
+                      //               child: Text('${widget.scoringData.data!.batting![0].playerName??'-'}',
+                      //                   style: fontMedium.copyWith(fontSize: 18))),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //     Column(
+                      //       children: [
+                      //         Container(
+                      //           child: Center(
+                      //               child: Text('${widget.scoringData.data!.batting![0].runsScored??'0'}',
+                      //                   style: fontMedium.copyWith(fontSize: 18))),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ],
+                      // ),
                     ],
                   ),
                 ),

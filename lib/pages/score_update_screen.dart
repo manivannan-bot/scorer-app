@@ -34,8 +34,8 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
    late TabController tabController;
    List<Matches>? matchlist;
    RefreshController _refreshController = RefreshController();
-   int? team1Id;
-   int? team2Id;
+   int? batTeamId;
+   int? bowlTeamId;
 
 
 
@@ -52,13 +52,25 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
      await ScoringProvider().getLiveScore(widget.matchId, widget.team1id).then((data) async{
      setState(() {
        matchlist = data.matches;
-           if(matchlist!.first.wonBy==int.parse(widget.team1id) && matchlist!.first.choseTo=='Bat' ) {
-             team1Id=data.matches!.first.team1Id;
-             team2Id=data.matches!.first.team2Id;
-           }else{
-             team1Id=data.matches!.first.team2Id;
-             team2Id=data.matches!.first.team1Id;
-           }
+
+       if(matchlist!.first.currentInnings==1){
+         if(matchlist!.first.tossWonBy==int.parse(widget.team1id) && matchlist!.first.choseTo=='Bat' ) {
+           batTeamId=data.matches!.first.team1Id;
+           bowlTeamId=data.matches!.first.team2Id;
+         }else{
+           batTeamId=data.matches!.first.team2Id;
+           bowlTeamId=data.matches!.first.team1Id;
+         }
+       }else if(matchlist!.first.currentInnings==2){
+         if(matchlist!.first.tossWonBy==int.parse(widget.team1id) && matchlist!.first.choseTo=='Bat' ) {
+           batTeamId=data.matches!.first.team2Id;
+           bowlTeamId=data.matches!.first.team1Id;
+         }else{
+           batTeamId=data.matches!.first.team1Id;
+           bowlTeamId=data.matches!.first.team2Id;
+         }
+       }
+
 
      });
      SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -248,8 +260,8 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
                 child: TabBarView(
                     controller: tabController,
                     children:  [
-                      ScoringTab(widget.matchId,team1Id.toString(),team2Id.toString(), fetchData),
-                      ScorecardScreen(widget.matchId,team1Id.toString(),team2Id.toString()),
+                      ScoringTab(widget.matchId,batTeamId.toString(),bowlTeamId.toString(), fetchData),
+                      ScorecardScreen(widget.matchId,batTeamId.toString(),bowlTeamId.toString()),
                       CommentaryScreen(),
                       InfoScreen(),
 
