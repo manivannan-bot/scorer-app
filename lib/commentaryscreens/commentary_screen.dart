@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 import '../models/score_card_response_model.dart';
+import '../provider/scoring_provider.dart';
 import '../scorecardScreens/scorecard_one.dart';
 import '../scorecardScreens/scorecard_two.dart';
 import '../utils/colours.dart';
@@ -9,7 +10,11 @@ import '../utils/sizes.dart';
 
 
 class CommentaryScreen extends StatefulWidget {
-  const CommentaryScreen({super.key});
+  final String matchId;
+  final String team1Id;
+  final String team2Id;
+  final VoidCallback fetchData;
+  const CommentaryScreen(this.matchId, this.team1Id, this.team2Id, this.fetchData,{super.key});
 
   @override
   State<CommentaryScreen> createState() => _CommentaryScreenState();
@@ -17,7 +22,7 @@ class CommentaryScreen extends StatefulWidget {
 
 class _CommentaryScreenState extends State<CommentaryScreen>with SingleTickerProviderStateMixin {
   late TabController tabController;
-  ScoreCardResponseModel scoreCardResponseModel=ScoreCardResponseModel();
+  ScoreCardResponseModel? scoreCardResponseModel;
 
   int? currentIndex;
 
@@ -31,9 +36,18 @@ class _CommentaryScreenState extends State<CommentaryScreen>with SingleTickerPro
         currentIndex = tabController.index;
       });
     });
+    fetchData();
+  }
+  fetchData(){
+    // ScoringProvider().getScoreCard(widget.matchId, widget.team1Id).then((value){
+    //   setState(() {
+    //     scoreCardResponseModel=value;
+    //   });
+    // });
   }
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 6.w),
@@ -117,10 +131,10 @@ class _CommentaryScreenState extends State<CommentaryScreen>with SingleTickerPro
               child: TabBarView(
                   controller: tabController,
                   children:  [
-                    ScoreCardOne(scoreCardResponseModel.data!),
-                    ScoreCardOne(scoreCardResponseModel.data!),
-                    ScoreCardOne(scoreCardResponseModel.data!),
-                    ScoreCardTwo(),
+                    // ScoreCardOne(scoreCardResponseModel!.data!),
+                    // ScoreCardOne(scoreCardResponseModel!.data!),
+                    // ScoreCardOne(scoreCardResponseModel!.data!),
+                    //ScoreCardTwo(bowlTeamId.toString()),
                   ]),
             ),
           ],

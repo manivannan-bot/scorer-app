@@ -131,6 +131,7 @@ class BowlingPlayers {
   String? bowlingAction;
   String? bowlingStyle;
   String? overBall;
+  int? oversBowled;
   int? maiden;
   int? runsConceded;
   int? wickets;
@@ -143,6 +144,7 @@ class BowlingPlayers {
         this.bowlingAction,
         this.bowlingStyle,
         this.overBall,
+        this.oversBowled,
         this.maiden,
         this.runsConceded,
         this.wickets,
@@ -155,6 +157,7 @@ class BowlingPlayers {
     bowlingAction = json['bowling_action'];
     bowlingStyle = json['bowling_style'];
     overBall = json['over_ball'];
+    oversBowled = json['overs_bowled'];
     maiden = json['maiden'];
     runsConceded = json['runs_conceded'];
     wickets = json['wickets'];
@@ -169,6 +172,7 @@ class BowlingPlayers {
     data['bowling_action'] = this.bowlingAction;
     data['bowling_style'] = this.bowlingStyle;
     data['over_ball'] = this.overBall;
+    data['overs_bowled'] = this.oversBowled;
     data['maiden'] = this.maiden;
     data['runs_conceded'] = this.runsConceded;
     data['wickets'] = this.wickets;
@@ -176,7 +180,6 @@ class BowlingPlayers {
     return data;
   }
 }
-
 
 class WkPlayers {
   int? playerId;
@@ -222,3 +225,4 @@ class WkPlayers {
     return data;
   }
 }
+

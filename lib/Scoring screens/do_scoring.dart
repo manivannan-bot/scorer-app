@@ -1254,16 +1254,12 @@ class _DOScoringState extends State<DOScoring> {
                                     ScoringProvider().saveBowler(
                                         widget.matchId,
                                         widget.team2id,
-                                        searchedBowler![localBowlerIndex!]
-                                            .playerId
-                                            .toString());
+                                        searchedBowler![localBowlerIndex!].playerId.toString());
                                     Navigator.pop(context);
                                     SharedPreferences prefs =
                                         await SharedPreferences.getInstance();
-                                    await prefs.setInt(
-                                        'bowler_id',
-                                        searchedBowler![localBowlerIndex!]
-                                            .playerId!);
+                                    await prefs.setInt('bowler_id', searchedBowler![localBowlerIndex!].playerId!);
+                                    await prefs.setInt('overs_bowled', searchedBowler![localBowlerIndex!].oversBowled!);
                                     setState(() {
                                       bowlerId=searchedBowler![localBowlerIndex!].playerId!;
                                     });
@@ -1956,11 +1952,9 @@ class _DOScoringState extends State<DOScoring> {
                                  if(isHide){}else{
                                    setState(() {
                                      if (localSelectedIndex == index) {
-                                       localSelectedIndex =
-                                       null; // Deselect the item if it's already selected
+                                       localSelectedIndex = null;
                                      } else {
-                                       localSelectedIndex =
-                                           index; // Select the item if it's not selected
+                                       localSelectedIndex = index;
                                      }
                                      onItemSelected(localSelectedIndex);
                                    });

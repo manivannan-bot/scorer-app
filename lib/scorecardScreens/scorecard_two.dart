@@ -9,7 +9,8 @@ import '../utils/images.dart';
 
 
 class ScoreCardTwo extends StatefulWidget {
-  const ScoreCardTwo({super.key});
+  final String bowlTeamId;
+  const ScoreCardTwo(this.bowlTeamId,{super.key});
 
   @override
   State<ScoreCardTwo> createState() => _ScoreCardTwoState();
