@@ -263,7 +263,7 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
                       ScoringTab(widget.matchId,batTeamId.toString(),bowlTeamId.toString(), fetchData),
                       ScorecardScreen(widget.matchId,batTeamId.toString(),fetchData),
                       CommentaryScreen(widget.matchId,batTeamId.toString(),bowlTeamId.toString(),fetchData),
-                      InfoScreen(),
+                      InfoScreen(widget.matchId),
 
                     ]),
               )

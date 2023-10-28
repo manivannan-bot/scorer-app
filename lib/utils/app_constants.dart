@@ -16,7 +16,7 @@ class AppConstants {
    static const String scoreCardDetail = '$baseUrl/scorecard-details';
    static const String matchBreak = '$baseUrl/match-break';
    static const String dlMethod = '$baseUrl/dl-method';
-//   static const String matchPlayerList = '$baseUrl/player/match_playerlist';
+   static const String matchInfo = '$baseUrl/match-info';
 //
 //   static const String addAddress = '$baseUrl/player/add-address';
 //

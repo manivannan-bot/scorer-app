@@ -2,6 +2,8 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:scorer/commentaryscreens/playing_eleven_list_screen.dart';
+import 'package:scorer/models/match_info_model.dart';
+import 'package:scorer/provider/match_provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../utils/colours.dart';
@@ -10,15 +12,37 @@ import '../utils/sizes.dart';
 
 
 class InfoScreen extends StatefulWidget {
-  const InfoScreen({super.key});
+  final String matchId;
+  const InfoScreen(this.matchId,{super.key});
 
   @override
   State<InfoScreen> createState() => _InfoScreenState();
 }
 
 class _InfoScreenState extends State<InfoScreen> {
+  MatchInfoModel? matchInfo;
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+  fetchData(){
+        MatchProvider().getMatchInfo(widget.matchId).then((value){
+          setState(() {
+            matchInfo=value;
+          });
+        });
+  }
   @override
   Widget build(BuildContext context) {
+    if (matchInfo == null) {
+      return const SizedBox(
+          height: 100,
+          width: 100,
+          child: Center(child: CircularProgressIndicator(
+            backgroundColor: Colors.white,
+          ))); // Example of a loading indicator
+    }
     return Scaffold(
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 6.w),
@@ -54,7 +78,7 @@ class _InfoScreenState extends State<InfoScreen> {
                             color: Color(0xff666666),
                           ),),
                           Spacer(),
-                          Text("Aug 21, 2023 ",style: fontMedium.copyWith(
+                          Text("${matchInfo!.data!.matchDetails!.date}",style: fontMedium.copyWith(
                             fontSize: 12.sp,
                             color: AppColor.blackColour,
                           ),),
@@ -75,7 +99,7 @@ class _InfoScreenState extends State<InfoScreen> {
                             color: Color(0xff666666),
                           ),),
                           Spacer(),
-                          Text("6:00 AM",style: fontMedium.copyWith(
+                          Text("${matchInfo!.data!.matchDetails!.slotStartTime}",style: fontMedium.copyWith(
                             fontSize: 12.sp,
                             color: AppColor.blackColour,
                           ),),
@@ -96,7 +120,7 @@ class _InfoScreenState extends State<InfoScreen> {
                             color: Color(0xff666666),
                           ),),
                           Spacer(),
-                          Text("6:00 AM",style: fontMedium.copyWith(
+                          Text("${matchInfo!.data!.matchDetails!.date}",style: fontMedium.copyWith(
                             fontSize: 12.sp,
                             color: AppColor.blackColour,
                           ),),
@@ -117,7 +141,7 @@ class _InfoScreenState extends State<InfoScreen> {
                             color: Color(0xff666666),
                           ),),
                           Spacer(),
-                          Text("JK Organizer \n Square out fighters"
+                          Text("${matchInfo!.data!.matchDetails!.organiser} \n ${matchInfo!.data!.matchDetails!.ground}"
                             ,style: fontMedium.copyWith(
                               fontSize: 12.sp,
                               color: AppColor.blackColour,
@@ -139,7 +163,7 @@ class _InfoScreenState extends State<InfoScreen> {
                             color: Color(0xff666666),
                           ),),
                           Spacer(),
-                          Text("Chrompet"
+                          Text("${matchInfo!.data!.matchDetails!.venue}"
                             ,style: fontMedium.copyWith(
                               fontSize: 12.sp,
                               color: AppColor.blackColour,
@@ -171,9 +195,9 @@ class _InfoScreenState extends State<InfoScreen> {
                 padding:  EdgeInsets.only(top: 0.5.h,bottom: 1.2.h),
                 child: Row(
                   children: [
-                    ClipOval(child: Image.asset(Images.profileImage,width: 14.w,)),
+                    ClipOval(child: Image.asset('${Images.profileImage}',width: 14.w,)),
                     SizedBox(width: 5.w,),
-                    Text('Dhoni CC',style: fontMedium.copyWith(
+                    Text('${matchInfo!.data!.playing11!.team1Name}',style: fontMedium.copyWith(
                       fontSize: 14.sp,
                       color: AppColor.blackColour,
                     ),),
@@ -191,9 +215,9 @@ class _InfoScreenState extends State<InfoScreen> {
                 padding:  EdgeInsets.only(top: 0.5.h,bottom: 1.2.h),
                 child: Row(
                   children: [
-                    ClipOval(child: Image.asset(Images.profileImage,width: 14.w,)),
+                    ClipOval(child: Image.asset('${Images.profileImage}',width: 14.w,)),
                     SizedBox(width: 5.w,),
-                    Text('Spartans',style: fontMedium.copyWith(
+                    Text('${matchInfo!.data!.playing11!.team2Name}',style: fontMedium.copyWith(
                       fontSize: 14.sp,
                       color: AppColor.blackColour,
                     ),),
@@ -233,9 +257,9 @@ class _InfoScreenState extends State<InfoScreen> {
                   children: [
                     Column(
                       children: [
-                        ClipOval(child: Image.asset(Images.profileImage,width: 16.w,)),
+                        ClipOval(child: Image.asset('${Images.profileImage}',width: 16.w,)),
                         SizedBox(height: 0.5.h,),
-                        Text('Dhoni CC',style: fontMedium.copyWith(
+                        Text('${matchInfo!.data!.headToHead!.team1Name}',style: fontMedium.copyWith(
                           fontSize: 14.sp,
                           color: AppColor.blackColour,
                         ),),
@@ -246,7 +270,7 @@ class _InfoScreenState extends State<InfoScreen> {
                         RichText(
                             text: TextSpan(children: [
                               TextSpan(
-                                  text: '0',
+                                  text: '${matchInfo!.data!.headToHead!.team1Won}',
                                   style: fontMedium.copyWith(
                                     fontSize: 20.sp,
                                     color: AppColor.blackColour,
@@ -258,7 +282,7 @@ class _InfoScreenState extends State<InfoScreen> {
                                     color: AppColor.blackColour,
                                   )),
                               TextSpan(
-                                  text: '0',
+                                  text: '${matchInfo!.data!.headToHead!.team2Won}',
                                   style: fontMedium.copyWith(
                                     fontSize: 20.sp,
                                     color: AppColor.blackColour,
@@ -270,9 +294,9 @@ class _InfoScreenState extends State<InfoScreen> {
                     ),
                     Column(
                       children: [
-                        ClipOval(child: Image.asset(Images.profileImage,width: 16.w,)),
+                        ClipOval(child: Image.asset('${Images.profileImage}',width: 16.w,)),
                         SizedBox(height: 0.5.h,),
-                        Text('Spartans',style: fontMedium.copyWith(
+                        Text('${matchInfo!.data!.headToHead!.team2Name}',style: fontMedium.copyWith(
                           fontSize: 14.sp,
                           color: AppColor.blackColour,
                         ),),
@@ -296,7 +320,7 @@ class _InfoScreenState extends State<InfoScreen> {
                   Expanded(
                     child: Column(
                       children: [
-                        Text("Umpire 2",style: fontRegular.copyWith(
+                        Text("Umpire 1",style: fontRegular.copyWith(
                           fontSize: 12.sp,
                           color: AppColor.blackColour,
                         ),),
@@ -312,9 +336,9 @@ class _InfoScreenState extends State<InfoScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              ClipOval(child: Image.asset(Images.umpireImage,width: 16.w,)),
+                              ClipOval(child: Image.asset('${Images.umpireImage}',width: 16.w,)),
                               SizedBox(height: 0.5.h,),
-                              Text("ArunKumar",style: fontMedium.copyWith(
+                              Text("${matchInfo!.data!.proffesionals!.first.umpireName}",style: fontMedium.copyWith(
                                 fontSize: 12.sp,
                                 color: AppColor.blackColour,
                               ),),
@@ -344,9 +368,9 @@ class _InfoScreenState extends State<InfoScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              ClipOval(child: Image.asset(Images.umpireImage,width: 16.w,)),
+                              ClipOval(child: Image.asset('${Images.umpireImage}',width: 16.w,)),
                               SizedBox(height: 0.5.h,),
-                              Text("vinayagam\nMoorthy",style: fontMedium.copyWith(
+                              Text("${matchInfo!.data!.proffesionals!.first.umpireName}",style: fontMedium.copyWith(
                                 fontSize: 12.sp,
                                 color: AppColor.blackColour,
                               ),),
@@ -379,7 +403,7 @@ class _InfoScreenState extends State<InfoScreen> {
                       children: [
                         ClipOval(child: Image.asset(Images.umpireImage,width: 16.w,)),
                         SizedBox(height: 0.5.h,),
-                        Text("ArunKumar",style: fontMedium.copyWith(
+                        Text("${matchInfo!.data!.proffesionals!.first.scorerName}",style: fontMedium.copyWith(
                           fontSize: 12.sp,
                           color: AppColor.blackColour,
                         ),),
