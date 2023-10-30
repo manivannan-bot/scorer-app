@@ -202,7 +202,10 @@ class _InfoScreenState extends State<InfoScreen> {
                       color: AppColor.blackColour,
                     ),),
                     Spacer(),
-                    SvgPicture.asset(Images.arrowICon,width: 6.5.w,),
+                    GestureDetector(onTap: (){
+
+                    },
+                        child: SvgPicture.asset(Images.arrowICon,width: 6.5.w,)),
 
                   ],
                 ),

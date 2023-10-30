@@ -441,6 +441,7 @@ class ScoringProvider extends ChangeNotifier{
       'match_id':matchId,
       'team_id':teamId,
       'break_type_id':breakTypeId,
+      'commentry_type_id':9
     });
     print(body);
     try {
