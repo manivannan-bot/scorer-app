@@ -122,6 +122,8 @@ class ScoringProvider extends ChangeNotifier{
     // SharedPreferences preferences = await SharedPreferences.getInstance();
     // String? accToken = preferences.getString("access_token");
     // print("usertoken $accToken");
+    playerListModel = PlayerListModel();
+    notifyListeners();
     try {
       final String baseUrl = "${AppConstants.getPlayerList}/$matchid/$teamid/$option";
       // final Map<String, String> queryParams = {
