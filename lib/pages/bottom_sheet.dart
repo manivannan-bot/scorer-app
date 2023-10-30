@@ -41,6 +41,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
   int selectedColumn = -1;
   int fieldPositionId=0;
    int? isFourOrSix;
+   int? isBowlingArea=1;
    bool _isSwitch=false ;
 
 
@@ -70,6 +71,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
   void getSwitch()async{
     SharedPreferences pref=await SharedPreferences.getInstance();
    isFourOrSix= pref.getInt('fourOrSix');
+    isBowlingArea=pref.getInt('bowlingArea');
    if(isFourOrSix==1) {
      setState(() {
        _isSwitch = true;
@@ -197,29 +199,71 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                         ],
                       ),
                       SizedBox(height: 1.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            children: [
-                              Container(
-                                child: Center(
-                                    child: Text('${widget.scoringData.data!.batting![0].playerName??'-'}',
-                                        style: fontMedium.copyWith(fontSize: 18))),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Container(
-                                child: Center(
-                                    child: Text('${widget.scoringData.data!.batting![0].runsScored??'0'}',
-                                        style: fontMedium.copyWith(fontSize: 18))),
-                              ),
-                            ],
-                          ),
-                        ],
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: widget.scoringData.data!.batting!.length,
+                          itemBuilder: (context, index) {
+                            final batsman = widget.scoringData.data!.batting![index];
+
+                            if (batsman.stricker == 1) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Container(
+                                        child: Center(
+                                          child: Text('${batsman.playerName ?? '-'}',
+                                            style: fontMedium.copyWith(fontSize: 18),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Container(
+                                        child: Center(
+                                          child: Text('${batsman.runsScored ?? '0'}',
+                                            style: fontMedium.copyWith(fontSize: 18),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              );
+                            } else {
+                              // If the batsman's striker value is not 1, return an empty container.
+                              return Container();
+                            }
+                          },
+                        ),
                       ),
+
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     Column(
+                      //       children: [
+                      //         Container(
+                      //           child: Center(
+                      //               child: Text('${widget.scoringData.data!.batting![0].playerName??'-'}',
+                      //                   style: fontMedium.copyWith(fontSize: 18))),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //     Column(
+                      //       children: [
+                      //         Container(
+                      //           child: Center(
+                      //               child: Text('${widget.scoringData.data!.batting![0].runsScored??'0'}',
+                      //                   style: fontMedium.copyWith(fontSize: 18))),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ],
+                      // ),
                     ],
                   ),
                 ),
@@ -239,7 +283,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                     )
                   ],
                 ),
-                ((widget.run==4 || widget.run==6)|| isFourOrSix!=1 )?Center(
+                ((widget.run==4 || widget.run==6)|| isFourOrSix!=0 )?Center(
                   child: SizedBox(
                     height: 550,
                     width:500,
@@ -360,6 +404,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                     )
                   ],
                 ),
+                (isBowlingArea==1)?
                 Center(
                   widthFactor: 0.8.h,
                   child:  Container(
@@ -764,7 +809,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                       ),
                     ),
                   ),
-                ),
+                ):const Text(''),
                 SizedBox(height: 3.h),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -806,6 +851,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                         var strikerId=prefs.getInt('striker_id')??0;
                         var nonStrikerId=prefs.getInt('non_striker_id')??0;
                         var bowlerId=prefs.getInt('bowler_id')??0;
+var oversBowled=prefs.getInt('overs_bowled')??0;
                         var keeperId=prefs.getInt('wicket_keeper_id')??0;
                         var bowlerPosition=prefs.getInt('bowlerPosition')??0;
 
@@ -826,7 +872,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                         scoreUpdateRequestModel.innings=1;
                         scoreUpdateRequestModel.battingTeamId=widget.scoringData.data!.batting![0].teamId??0;
                         scoreUpdateRequestModel.bowlingTeamId=widget.scoringData.data!.bowling!.teamId??0;
-                        scoreUpdateRequestModel.overBowled=overNumber;
+                        scoreUpdateRequestModel.overBowled=oversBowled;
                         scoreUpdateRequestModel.totalOverBowled=0;
                         scoreUpdateRequestModel.outByPlayer=0;
                         scoreUpdateRequestModel.outPlayer=0;

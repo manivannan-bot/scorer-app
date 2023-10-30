@@ -52,16 +52,16 @@ class Images{
   //
    static const String teamIcon = 'assets/images/team_icon.svg';
    static const String arrowICon = 'assets/images/arrow_icon.svg';
-  // static const String groundListImage3 = 'assets/images/ground_img_3.png';
-  // static const String groundListImage4 = 'assets/images/ground_img_1.png';
+   static const String playerDetailBg = 'assets/images/image 81.png';
+   static const String teamListImage = 'assets/images/team_list_image.png';
   //
-  // static const String calendarIcon = 'assets/images/calendar_icon.svg';
+   static const String teamBgImage = 'assets/images/team_bg_image.png';
   //
   // static const String editIcon = 'assets/images/edit_icon.svg';
   //
-  // static const String createTeamBg = 'assets/images/create_team_bg.png';
+   static const String bowlingSpellImage = 'assets/images/bowling_spell_img.svg';
   //
-  // static const String qrCodeImg = 'assets/images/qrcode_img.svg';
+   static const String wktImage = 'assets/images/wicket_img.svg';
   // static const String upiIdImg = 'assets/images/upi_img.svg';
   // static const String downloadIcon = 'assets/images/download_icon.svg';
   // static const String copyIcon = 'assets/images/copy_icon.svg';

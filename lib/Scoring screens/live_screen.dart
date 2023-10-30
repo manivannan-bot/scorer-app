@@ -55,7 +55,7 @@ class _LiveScreenState extends State<LiveScreen> {
           )));
     }
 
-    return  ListView.separated(
+    return ListView.separated(
         physics: const BouncingScrollPhysics(),
         separatorBuilder: (context, _) {
           return Padding(
@@ -63,7 +63,7 @@ class _LiveScreenState extends State<LiveScreen> {
           );
         },
         itemCount:matchlist!.length ,
-        itemBuilder: (BuildContext, int index) {
+        itemBuilder: (context, int index) {
           final item = matchlist![index];
           return Padding(
             padding:  EdgeInsets.symmetric(horizontal: 3.w),
@@ -125,23 +125,23 @@ class _LiveScreenState extends State<LiveScreen> {
                                               text: ("${matchlist![index].teams!.first.overNumber??''}.${matchlist![index].teams!.first.ballNumber??''}"),
                                               style: fontMedium.copyWith(
                                                   fontSize: 13.sp,
-                                                  color: Color(0xff444444)
+                                                  color: const Color(0xff444444)
                                               )),
                                           TextSpan(
                                               text: "/",
                                               style: fontMedium.copyWith(
                                                   fontSize: 13.sp,
-                                                  color: Color(0xff444444)
+                                                  color: const Color(0xff444444)
                                               )),
                                           TextSpan(
                                               text: ("${matchlist![index].overs}"),
                                               style: fontMedium.copyWith(
                                                   fontSize: 13.sp,
-                                                  color: Color(0xff444444)
+                                                  color: const Color(0xff444444)
                                               )),
                                         ])),
                                     SizedBox(width: 1.w,),
-                                    (matchlist![index].currentInnings==1)?SvgPicture.asset(Images.batIcon,width: 5.w,):Text(''),
+                                    (matchlist![index].currentInnings==1)?SvgPicture.asset(Images.batIcon,width: 5.w,):const Text(''),
                                   ],
                                 ),
                               ),
@@ -153,7 +153,7 @@ class _LiveScreenState extends State<LiveScreen> {
                                     SizedBox(width: 2.w,),
                                     Text(" ${matchlist![index].team2Name??''}", style: fontMedium.copyWith(
                                       fontSize: 13.sp,
-                                      color:Color(0xff555555),
+                                      color:const Color(0xff555555),
                                     ),),
                                     SizedBox(width: 2.w,),
                                     (matchlist![index].currentInnings==2)?
@@ -185,27 +185,27 @@ class _LiveScreenState extends State<LiveScreen> {
                                             text: ("${matchlist![index].teams![1].currentOverDetails??'0'}"),
                                             style: fontMedium.copyWith(
                                                 fontSize: 13.sp,
-                                                color: Color(0xff444444)
+                                                color: const Color(0xff444444)
                                             )),
                                         TextSpan(
                                             text: "/",
                                             style: fontMedium.copyWith(
                                                 fontSize: 13.sp,
-                                                color: Color(0xff444444)
+                                                color: const Color(0xff444444)
                                             )),
                                         TextSpan(
                                             text: ("${matchlist![index].overs}"),
                                             style: fontMedium.copyWith(
                                                 fontSize: 13.sp,
-                                                color: Color(0xff444444)
+                                                color: const Color(0xff444444)
                                             )),
                                       ])),
                                       SizedBox(width: 1.w,),
                                     ],):Text("Yet to bat", style: fontRegular.copyWith(
                                       fontSize: 12.sp,
-                                      color:Color(0xff666666),
+                                      color:const Color(0xff666666),
                                     ),),
-                                    (matchlist![index].currentInnings==2)?SvgPicture.asset(Images.batIcon,width: 5.w,):Text(''),
+                                    (matchlist![index].currentInnings==2)?SvgPicture.asset(Images.batIcon,width: 5.w,):const Text(''),
                                   ],
                                 ),
                               ),
@@ -221,7 +221,7 @@ class _LiveScreenState extends State<LiveScreen> {
                                 length: 6.h,
                                 dashGap: 1,
                                 dashLength: 5,
-                                dashColor: Color(0xffEFEAEA)),
+                                dashColor: const Color(0xffEFEAEA)),
                           ),
                           SizedBox(
                             width: 1.w,
@@ -234,7 +234,7 @@ class _LiveScreenState extends State<LiveScreen> {
                                     horizontal: 5.w,
                                     vertical: 0.2.h
                                 ),
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                     color: AppColor.primaryColor,
                                     borderRadius: BorderRadius.only(topRight: Radius.circular(20))
                                 ),
@@ -246,7 +246,7 @@ class _LiveScreenState extends State<LiveScreen> {
                                     ),
                                     Text("Live",style: fontRegular.copyWith(
                                       fontSize: 10.5.sp,
-                                      color: Color(0xff444444),
+                                      color: const Color(0xff444444),
                                     ),)
                                   ],
                                 ),
@@ -260,42 +260,42 @@ class _LiveScreenState extends State<LiveScreen> {
                                     onTap: (){
                                       if(matchlist!.first.currentInnings==1 ){
                                           if(((scoringData!.data!.batting!.length<2) || scoringData!.data!.bowling==null)){
-                                                    if(matchlist!.first.wonBy==matchlist![index].team1Id && matchlist!.first.choseTo=='Bat' ) {
-                                                      Navigator.push(context, MaterialPageRoute(builder: (context) => DOScoring(matchlist![index].matchId.toString(), matchlist![index].team1Id.toString(), matchlist![index].team2Id.toString())));
+                                                    if(matchlist!.first.tossWonBy==matchlist![index].team1Id && matchlist!.first.choseTo=='Bat' ) {
+                                                      Navigator.push(context, MaterialPageRoute(builder: (context) => DOScoring(matchlist![index].matchId.toString(), matchlist![index].team1Id.toString(), matchlist![index].team2Id.toString()))).then((value) {_refreshData();});
                                                     }else{
-                                                      Navigator.push(context, MaterialPageRoute(builder: (context) => DOScoring(matchlist![index].matchId.toString(), matchlist![index].team2Id.toString(),matchlist![index].team1Id.toString())));
+                                                      Navigator.push(context, MaterialPageRoute(builder: (context) => DOScoring(matchlist![index].matchId.toString(), matchlist![index].team2Id.toString(),matchlist![index].team1Id.toString()))).then((value) {_refreshData();});
 
                                                     }
                                               }else{
-                                                if(matchlist!.first.wonBy==matchlist![index].team1Id && matchlist!.first.choseTo=='Bat' ) {
+                                                if(matchlist!.first.tossWonBy==matchlist![index].team1Id && matchlist!.first.choseTo=='Bat' ) {
 
-                                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ScoreUpdateScreen(matchlist!.first.matchId.toString(),matchlist!.first.team1Id.toString())));
+                                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ScoreUpdateScreen(matchlist!.first.matchId.toString(),matchlist!.first.team1Id.toString()))).then((value) {_refreshData();});
                                                 }else{
-                                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ScoreUpdateScreen(matchlist!.first.matchId.toString(),matchlist!.first.team2Id.toString())));
+                                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ScoreUpdateScreen(matchlist!.first.matchId.toString(),matchlist!.first.team2Id.toString()))).then((value) {_refreshData();});
 
                                                 }
                                             }
                                       }else if(matchlist!.first.currentInnings==2){
                                           if(((scoringData!.data!.batting!.length<2) || scoringData!.data!.bowling==null)){
-                                            if(matchlist!.first.wonBy==matchlist![index].team1Id && matchlist!.first.choseTo=='Bat' ) {
-                                              Navigator.push(context, MaterialPageRoute(builder: (context) => DOScoring(matchlist![index].matchId.toString(), matchlist![index].team1Id.toString(), matchlist![index].team2Id.toString())));
+                                            if(matchlist!.first.tossWonBy==matchlist![index].team1Id && matchlist!.first.choseTo=='Bat' ) {
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) => DOScoring(matchlist![index].matchId.toString(), matchlist![index].team1Id.toString(), matchlist![index].team2Id.toString()))).then((value) {_refreshData();});
                                             }else{
-                                              Navigator.push(context, MaterialPageRoute(builder: (context) => DOScoring(matchlist![index].matchId.toString(), matchlist![index].team2Id.toString(),matchlist![index].team1Id.toString())));
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) => DOScoring(matchlist![index].matchId.toString(), matchlist![index].team2Id.toString(),matchlist![index].team1Id.toString()))).then((value) {_refreshData();});
 
                                             }
                                           }else{
-                                            if(matchlist!.first.wonBy==matchlist![index].team1Id && matchlist!.first.choseTo=='Bat' ) {
+                                            if(matchlist!.first.tossWonBy==matchlist![index].team1Id && matchlist!.first.choseTo=='Bat' ) {
 
-                                              Navigator.push(context, MaterialPageRoute(builder: (context) => ScoreUpdateScreen(matchlist!.first.matchId.toString(),matchlist!.first.team1Id.toString())));
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) => ScoreUpdateScreen(matchlist!.first.matchId.toString(),matchlist!.first.team1Id.toString()))).then((value) {_refreshData();});
                                             }else{
-                                              Navigator.push(context, MaterialPageRoute(builder: (context) => ScoreUpdateScreen(matchlist!.first.matchId.toString(),matchlist!.first.team2Id.toString())));
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) => ScoreUpdateScreen(matchlist!.first.matchId.toString(),matchlist!.first.team2Id.toString()))).then((value) {_refreshData();});
 
                                             }
                                           }
                                       }
 
                                     },
-                                    child: DoScoringBtn()),
+                                    child: const DoScoringBtn()),
                               ),
                             ],
                           ),

@@ -9,20 +9,15 @@ class AppConstants {
   static const String saveBatsman = '$baseUrl/batsman-save';
   static const String saveBowler = '$baseUrl/bowler-save';
    static const String getLiveScore = "$baseUrl/live-scorecard";
-//
    static const String scoringDetail = '$baseUrl/scoring-details';
    static const String scoreUpdate = '$baseUrl/score-update';
-//
   static const String getBallType = '$baseUrl/ball-type';
-//
    static const String endInnings = '$baseUrl/match-end-innings';
-//
-//   static const String matchHistory = '$baseUrl/player/completed_match';
-//   static const String upcomingMatches = '$baseUrl/player/player_upcoming_match';
-//   static const String matchDetail = '$baseUrl/player/player_match_details';
-//   static const String matchPlayerList = '$baseUrl/player/match_playerlist';
-//
-//   static const String addAddress = '$baseUrl/player/add-address';
+   static const String scoreCardDetail = '$baseUrl/scorecard-details';
+   static const String matchBreak = '$baseUrl/match-commentary';
+   static const String dlMethod = '$baseUrl/dl-method';
+   static const String matchInfo = '$baseUrl/match-info';
+  static const String matchPlayers = '$baseUrl/match-players';
 //
 //
 //   static const String captainlist = '$baseUrl/player/captain-list';

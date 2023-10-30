@@ -1,6 +1,7 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:scorer/models/score_card_response_model.dart';
 import 'package:scorer/utils/colours.dart';
 import 'package:sizer/sizer.dart';
 
@@ -8,159 +9,15 @@ import '../utils/images.dart';
 import '../utils/sizes.dart';
 
 class ScoreCardOne extends StatefulWidget {
-  const ScoreCardOne({super.key});
+  final Data scoreCardData;
+  const ScoreCardOne(this.scoreCardData, {super.key});
 
   @override
   State<ScoreCardOne> createState() => _ScoreCardOneState();
 }
 
 class _ScoreCardOneState extends State<ScoreCardOne> {
-  List<Map<String,dynamic>> itemList=[
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Akash",
-      "team":"(Toss and Tails)",
-      "dot":".",
-      "batsman":"Right hand batsman",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Vigneswaran",
-      "team":"(Royal Kings)",
-      "dot":".",
-      "batsman":"All rounder",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Akash",
-      "team":"(Toss and Tails)",
-      "dot":".",
-      "batsman":"Right hand batsman",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Vigneswaran",
-      "team":"(Royal Kings)",
-      "dot":".",
-      "batsman":"All rounder",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Akash",
-      "team":"(Toss and Tails)",
-      "dot":".",
-      "batsman":"Right hand batsman",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Vigneswaran",
-      "team":"(Royal Kings)",
-      "dot":".",
-      "batsman":"All rounder",
-      "button":"Connect",
-    },
 
-  ];
-  List<Map<String,dynamic>> gridList=[
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Akash",
-      "team":"(Toss and Tails)",
-      "dot":".",
-      "batsman":"Right hand batsman",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Vigneswaran",
-      "team":"(Royal Kings)",
-      "dot":".",
-      "batsman":"All rounder",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Akash",
-      "team":"(Toss and Tails)",
-      "dot":".",
-      "batsman":"Right hand batsman",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Vigneswaran",
-      "team":"(Royal Kings)",
-      "dot":".",
-      "batsman":"All rounder",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Akash",
-      "team":"(Toss and Tails)",
-      "dot":".",
-      "batsman":"Right hand batsman",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Vigneswaran",
-      "team":"(Royal Kings)",
-      "dot":".",
-      "batsman":"All rounder",
-      "button":"Connect",
-    },
-
-  ];
-  List<Map<String,dynamic>> itemsList=[
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Akash",
-      "team":"(Toss and Tails)",
-      "dot":".",
-      "batsman":"Right hand batsman",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Vigneswaran",
-      "team":"(Royal Kings)",
-      "dot":".",
-      "batsman":"All rounder",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Akash",
-      "team":"(Toss and Tails)",
-      "dot":".",
-      "batsman":"Right hand batsman",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Vigneswaran",
-      "team":"(Royal Kings)",
-      "dot":".",
-      "batsman":"All rounder",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Akash",
-      "team":"(Toss and Tails)",
-      "dot":".",
-      "batsman":"Right hand batsman",
-      "button":"Connect",
-    },
-
-
-  ];
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -231,9 +88,12 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                   ),
                 );
               },
-              itemCount: itemList.length,
+              itemCount: widget.scoreCardData.batting!.length,
               itemBuilder: (BuildContext, int index) {
-                final item = itemList[index];
+                if(widget.scoreCardData.batting!.isEmpty){
+                  return Text('No data found');
+                }
+                final item = widget.scoreCardData.batting![index];
                 return Row(
                   children: [
                     SizedBox(
@@ -243,25 +103,26 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                         children: [
                           Row(
                             children: [
-                              Text("Prasanth",style: fontRegular.copyWith(
+                              Text("${item.playerName}",style: fontRegular.copyWith(
                                 fontSize: 12.sp,
                                 color: AppColor.blackColour,
                               ),),
                               SizedBox(width: 1.w,),
-                              SvgPicture.asset(Images.batIcon,width: 4.w,color: AppColor.blackColour,),
+                              (item.isOut!=1)?
+                              SvgPicture.asset(Images.batIcon,width: 4.w,color: AppColor.blackColour,):Text(''),
                             ],
                           ),
                           SizedBox(height: 0.5.h,),
                           RichText(
                               text: TextSpan(children: [
                                 TextSpan(
-                                    text: ("c Lasith malinga\n"),
+                                    text: ("c ${item.wicketerName}\n"),
                                     style: fontRegular.copyWith(
                                       fontSize: 11.sp,
                                         color: const Color(0xff777777),
                                     )),
                                 TextSpan(
-                                    text: "b Sachin tendulkar",
+                                    text: "b ${item.wicketBowlerName}",
                                     style: fontRegular.copyWith(
                                         fontSize: 11.sp,
                                         color: const Color(0xff777777)
@@ -276,23 +137,23 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text("129",style: fontRegular.copyWith(
+                          Text("${item.runsScored}",style: fontRegular.copyWith(
                             fontSize: 12.sp,
                             color: const Color(0xff777777),
                           ),),
-                          Text("50",style: fontRegular.copyWith(
+                          Text("${item.ballsFaced}",style: fontRegular.copyWith(
                             fontSize: 12.sp,
                             color: const Color(0xff777777),
                           ),),
-                          Text("10",style: fontRegular.copyWith(
+                          Text("${item.fours}",style: fontRegular.copyWith(
                             fontSize: 12.sp,
                             color: const Color(0xff777777),
                           ),),
-                          Text("10",style: fontRegular.copyWith(
+                          Text("${item.sixes}",style: fontRegular.copyWith(
                             fontSize: 12.sp,
                             color: const Color(0xff777777),
                           ),),
-                          Text("200",style: fontRegular.copyWith(
+                          Text("${item.strikeRate}",style: fontRegular.copyWith(
                             fontSize: 12.sp,
                             color: const Color(0xff777777),
                           ),),
@@ -317,22 +178,22 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
               const Spacer(),
               Row(
                 children: [
-                  Text("9",style: fontMedium.copyWith(
+                  Text("${widget.scoreCardData.bowlingExtras!.totalExtras}",style: fontMedium.copyWith(
                     fontSize: 12.sp,
                     color: AppColor.blackColour,
                   ),),
                   SizedBox(width: 2.w,),
-                  Text("2lb,",style: fontRegular.copyWith(
+                  Text("${widget.scoreCardData.bowlingExtras!.legByes}lb,",style: fontRegular.copyWith(
                     fontSize: 12.sp,
                     color: const Color(0xff777777),
                   ),),
                   SizedBox(width: 2.w,),
-                  Text("4w,",style: fontRegular.copyWith(
+                  Text("${widget.scoreCardData.bowlingExtras!.wides}w,",style: fontRegular.copyWith(
                     fontSize: 12.sp,
                     color: const Color(0xff777777),
                   ),),
                   SizedBox(width: 2.w,),
-                  Text("1nb",style: fontRegular.copyWith(
+                  Text("${widget.scoreCardData.bowlingExtras!.noBalls}nb",style: fontRegular.copyWith(
                     fontSize: 12.sp,
                     color: const Color(0xff777777),
                   ),),
@@ -365,10 +226,13 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
         crossAxisCount: 2, // 1 column
         childAspectRatio: 2.5, // Adjust the aspect ratio as needed
       ),
-      itemCount: gridList.length,
+      itemCount: widget.scoreCardData.yetToBatPlayers!.length,
       shrinkWrap: true,
       itemBuilder: (BuildContext context, int index) {
-        final item = gridList[index];
+        if(widget.scoreCardData.yetToBatPlayers!.isEmpty){
+          return Text('No data found');
+        }
+        final item = widget.scoreCardData.yetToBatPlayers![index];
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -379,7 +243,7 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
               children: [
                 SizedBox(
                   width: 30.w,
-                  child: Text("Sachin",style: fontRegular.copyWith(
+                  child: Text("${item.playerName}",style: fontRegular.copyWith(
                     fontSize: 12.sp,
                     color: AppColor.blackColour,
                   ),),
@@ -391,12 +255,10 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                       radius: 4,
                     ),
                     SizedBox(width: 1.w,),
-                    Text("RHB",style: fontRegular.copyWith(
+                    Text("${item.battingStyle}",style: fontRegular.copyWith(
                       fontSize: 11.sp,
                       color: Color(0xff666666)
                     ),),
-
-
                   ],
                 )
               ],
@@ -478,9 +340,12 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                   ),
                 );
               },
-              itemCount: itemsList.length,
+              itemCount: widget.scoreCardData.bowling!.length,
               itemBuilder: (BuildContext, int index) {
-                final item = itemsList[index];
+                if(widget.scoreCardData.bowling!.isEmpty){
+                  return Text('No data found');
+                }
+                final item = widget.scoreCardData.bowling![index];
                 return Row(
                   children: [
                     SizedBox(
@@ -492,13 +357,14 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                             children: [
                               Padding(
                                 padding:  EdgeInsets.only(top: 0.5.h,bottom: 0.5.h),
-                                child: Text("Prasanth",style: fontRegular.copyWith(
+                                child: Text("${item.playerName}",style: fontRegular.copyWith(
                                   fontSize: 12.sp,
                                   color: AppColor.blackColour,
                                 ),),
                               ),
                               SizedBox(width: 1.w,),
-                              SvgPicture.asset(Images.ballBlackIcon,width: 4.w,color: AppColor.blackColour,),
+                              (item.active==1)?
+                              SvgPicture.asset(Images.ballBlackIcon,width: 4.w,color: AppColor.blackColour,):Text(''),
                             ],
                           ),
                           SizedBox(height: 1.h,),
@@ -510,23 +376,23 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text("2.0",style: fontMedium.copyWith(
+                          Text("${item.overBall}",style: fontMedium.copyWith(
                             fontSize: 12.sp,
                             color: AppColor.blackColour,
                           ),),
-                          Text("1",style: fontRegular.copyWith(
+                          Text("${item.maiden}",style: fontRegular.copyWith(
                             fontSize: 12.sp,
                             color: const Color(0xff777777),
                           ),),
-                          Text("8",style: fontRegular.copyWith(
+                          Text("${item.runsConceded}",style: fontRegular.copyWith(
                             fontSize: 12.sp,
                             color: const Color(0xff777777),
                           ),),
-                          Text("2",style: fontMedium.copyWith(
+                          Text("${item.wickets}",style: fontMedium.copyWith(
                             fontSize: 12.sp,
                             color: AppColor.blackColour,
                           ),),
-                          Text("2.00",style: fontRegular.copyWith(
+                          Text("${item.economy}",style: fontRegular.copyWith(
                             fontSize: 12.sp,
                             color: const Color(0xff777777),
                           ),),
@@ -596,9 +462,12 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                   ),
                 );
               },
-              itemCount: itemsList.length,
+              itemCount: widget.scoreCardData.fallOfWicket!.length,
               itemBuilder: (BuildContext, int index) {
-                final item = itemsList[index];
+                if(widget.scoreCardData.fallOfWicket!.isEmpty){
+                  return Text('No data found');
+                }
+                final item = widget.scoreCardData.fallOfWicket![index];
                 return Row(
                   children: [
                     SizedBox(
@@ -610,7 +479,7 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                             children: [
                               Padding(
                                 padding:  EdgeInsets.only(top: 0.5.h,bottom: 0.5.h),
-                                child: Text("Prasanth",style: fontRegular.copyWith(
+                                child: Text("${item.playerOutName}",style: fontRegular.copyWith(
                                   fontSize: 12.sp,
                                   color: AppColor.blackColour,
                                 ),),
@@ -626,11 +495,11 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text("2-0",style: fontMedium.copyWith(
+                          Text("${item.teamScore}",style: fontMedium.copyWith(
                             fontSize: 12.sp,
                             color: AppColor.blackColour,
                           ),),
-                          Text("1.0",style: fontRegular.copyWith(
+                          Text("${item.over}",style: fontRegular.copyWith(
                             fontSize: 12.sp,
                             color: const Color(0xff777777),
                           ),),
@@ -687,9 +556,12 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                   ),
                 );
               },
-              itemCount: itemsList.length,
+              itemCount: widget.scoreCardData.partnerships!.length,
               itemBuilder: (BuildContext, int index) {
-                final item = itemsList[index];
+                if(widget.scoreCardData.partnerships!.isEmpty){
+                  return Text('No data found');
+                }
+                final item = widget.scoreCardData.partnerships![index];
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -717,7 +589,7 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                         children: [
                           Column(
                             children: [
-                              Text("Prasanth",style: fontRegular.copyWith(
+                              Text("${item.player1Name}",style: fontRegular.copyWith(
                                 fontSize: 12.sp,
                                 color: AppColor.blackColour,
                               ),),
@@ -725,13 +597,13 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                               RichText(
                                   text: TextSpan(children: [
                                     TextSpan(
-                                        text: ("14"),
+                                        text: ("${item.player1BallsFaced}"),
                                         style: fontMedium.copyWith(
                                           fontSize: 11.sp,
                                           color: AppColor.blackColour
                                         )),
                                     TextSpan(
-                                        text: "(7)",
+                                        text: "(${item.player1RunsScored})",
                                         style: fontRegular.copyWith(
                                             fontSize: 11.sp,
                                             color: const Color(0xff666666)
@@ -744,13 +616,13 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                               RichText(
                                   text: TextSpan(children: [
                                     TextSpan(
-                                        text: ("14"),
+                                        text: ("${item.totalRunsScored}"),
                                         style: fontMedium.copyWith(
                                             fontSize: 11.sp,
                                             color: AppColor.blackColour
                                         )),
                                     TextSpan(
-                                        text: "(7)",
+                                        text: "(${item.totalBallsFaced})",
                                         style: fontRegular.copyWith(
                                             fontSize: 11.sp,
                                             color: const Color(0xff666666)
@@ -769,7 +641,7 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                           ),
                           Column(
                             children: [
-                              Text("Prasanth",style: fontRegular.copyWith(
+                              Text("${item.player2Name}",style: fontRegular.copyWith(
                                 fontSize: 12.sp,
                                 color: AppColor.blackColour,
                               ),),
@@ -777,13 +649,13 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                               RichText(
                                   text: TextSpan(children: [
                                     TextSpan(
-                                        text: ("14"),
+                                        text: ("${item.player2BallsFaced}"),
                                         style: fontMedium.copyWith(
                                             fontSize: 11.sp,
                                             color: AppColor.blackColour
                                         )),
                                     TextSpan(
-                                        text: "(7)",
+                                        text: "(${item.player2RunsScored})",
                                         style: fontRegular.copyWith(
                                             fontSize: 11.sp,
                                             color: const Color(0xff666666)

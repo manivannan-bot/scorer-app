@@ -17,17 +17,15 @@ import 'Scoring screens/home_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp(
-  // );
-  SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  await Firebase.initializeApp();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ScoringProvider()),
         // ChangeNotifierProvider(create: (context) => OrdersProvider()),
       ],
-      child: const MyApp(),
+      child:  MyApp(),
     ),
   );
 }
@@ -54,6 +52,18 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);

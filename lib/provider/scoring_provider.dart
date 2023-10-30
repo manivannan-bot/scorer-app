@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,6 +14,8 @@ import '../models/player_list_model.dart';
 import '../models/save_batsman_request_model.dart';
 import '../models/save_batsman_response_model.dart';
 import '../models/save_bowler_response_model.dart';
+import '../models/score_card_response_model.dart';
+import '../models/score_card_yet_to_bat.dart';
 import '../models/score_update_request_model.dart';
 import '../models/score_update_response_model.dart';
 import '../models/scoring_detail_response_model.dart';
@@ -22,15 +26,22 @@ class ScoringProvider extends ChangeNotifier{
   AllMatchesModel allMatchesModel =AllMatchesModel();
 
   PlayerListModel playerListModel = PlayerListModel();
-
   SaveBatsmanResponseModel saveBatsmanResponseModel =SaveBatsmanResponseModel();
 
   SaveBowlerResponseModel saveBowlerResponseModel = SaveBowlerResponseModel();
+
   GetLiveScoreResponseModel getLiveScoreResponseModel=GetLiveScoreResponseModel();
+
   ScoringDetailResponseModel scoringDetailResponseModel=ScoringDetailResponseModel();
+
   ScoreUpdateResponseModel scoreUpdateResponseModel=ScoreUpdateResponseModel();
+
   GetBallTypeResponseModel getBallTypeResponseModel=GetBallTypeResponseModel();
+
   EndInningsResponseModel endInningsResponseModel=EndInningsResponseModel();
+
+  ScoreCardResponseModel scoreCardResponseModel=ScoreCardResponseModel();
+  ScoreCardYetTobat scoreCardYetTobat=ScoreCardYetTobat();
 
   String overNumber = "";
 
@@ -256,8 +267,20 @@ class ScoringProvider extends ChangeNotifier{
 //score update
   Future<ScoreUpdateResponseModel> scoreUpdate( ScoreUpdateRequestModel scoreUpdate) async {
     var body = json.encode(scoreUpdate);
+
+    final prefs = await SharedPreferences.getInstance();
+    final scoreUpdateJson = json.encode(scoreUpdate.toJson());
+    
+    final oldScoreUpdateJson = prefs.getString('scoreUpdate');
+    if (oldScoreUpdateJson != null) {
+      prefs.setString('oldScoreUpdate', oldScoreUpdateJson);
+    }
+    prefs.setString('scoreUpdate', scoreUpdateJson);
+
     print(json.decode(body));
     try {
+
+
       final response = await http.post(
         Uri.parse(AppConstants.scoreUpdate),
         headers: {
@@ -324,7 +347,7 @@ class ScoringProvider extends ChangeNotifier{
     print(body);
     try {
       final response = await http.post(
-        Uri.parse(AppConstants.saveBatsman),
+        Uri.parse(AppConstants.endInnings),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -352,6 +375,142 @@ class ScoringProvider extends ChangeNotifier{
     return endInningsResponseModel;
   }
 
+  Future<ScoreCardResponseModel> getScoreCard(String matchId,String teamId) async {
+
+    try {
+      final response = await http.get(
+        Uri.parse('${AppConstants.scoreCardDetail}/$matchId/$teamId'),
+        // headers: {
+        //   // 'Content-Type': 'application/json; charset=UTF-8',
+        //   // 'Authorization': 'Bearer $accToken',
+        // },
+      );
+      var decodedJson = json.decode(response.body);
+      print(decodedJson);
+      if (response.statusCode == 200) {
+        scoreCardResponseModel = ScoreCardResponseModel.fromJson(decodedJson);
+
+        notifyListeners();
+      } else {
+        throw const HttpException('Failed to load data');
+      }
+    } on SocketException {
+      print('No internet connection');
+    } on HttpException {
+      print('Failed to load data');
+    } on FormatException {
+      print('All Matches  - Invalid data format');
+    } catch (e) {
+      print(e);
+    }
+    return scoreCardResponseModel;
+  }
+  Future<ScoreCardYetTobat> getScoreCard1(String matchId,String teamId) async {
+
+    try {
+      final response = await http.get(
+        Uri.parse('${AppConstants.scoreCardDetail}/$matchId/$teamId'),
+        // headers: {
+        //   // 'Content-Type': 'application/json; charset=UTF-8',
+        //   // 'Authorization': 'Bearer $accToken',
+        // },
+      );
+      var decodedJson = json.decode(response.body);
+      print(decodedJson);
+      if (response.statusCode == 200) {
+        scoreCardYetTobat = ScoreCardYetTobat.fromJson(decodedJson);
+
+        notifyListeners();
+      } else {
+        throw const HttpException('Failed to load data');
+      }
+    } on SocketException {
+      print('No internet connection');
+    } on HttpException {
+      print('Failed to load data');
+    } on FormatException {
+      print('All Matches  - Invalid data format');
+    } catch (e) {
+      print(e);
+    }
+    return scoreCardYetTobat;
+  }
+
+  Future<EndInningsResponseModel> matchBreak(int matchId,int teamId,int breakTypeId) async {
+    var body = json.encode({
+      'match_id':matchId,
+      'team_id':teamId,
+      'break_type_id':breakTypeId,
+      'commentry_type_id':9
+    });
+    print(body);
+    try {
+      final response = await http.post(
+        Uri.parse(AppConstants.matchBreak),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: body,
+      );
+      var decodedJson = json.decode(response.body);
+      print(decodedJson);
+      if (response.statusCode == 200) {
+        endInningsResponseModel = EndInningsResponseModel.fromJson(decodedJson);
+        // token = loginModel.token.toString();
+        // saveUserData(true, token);
+        notifyListeners();
+      } else {
+        throw const HttpException('Failed to load data');
+      }
+    } on SocketException {
+      print('No internet connection');
+    } on HttpException {
+      print('Failed to load data');
+    } on FormatException {
+      print('Batsman save- Invalid data format');
+    } catch (e) {
+      print(e);
+    }
+    return endInningsResponseModel;
+  }
+
+  Future<EndInningsResponseModel> dlMethod(int matchId,int innings,int totalOvers,int targetScore) async {
+    var body = json.encode({
+      'match_id':matchId,
+      'innings':innings,
+      'total_overs':totalOvers,
+      'target_score':targetScore
+    });
+    print(body);
+    try {
+      final response = await http.post(
+        Uri.parse(AppConstants.dlMethod),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: body,
+      );
+      var decodedJson = json.decode(response.body);
+      print(decodedJson);
+      if (response.statusCode == 200) {
+        endInningsResponseModel = EndInningsResponseModel.fromJson(decodedJson);
+        // token = loginModel.token.toString();
+        // saveUserData(true, token);
+        notifyListeners();
+      } else {
+        throw const HttpException('Failed to load data');
+      }
+    } on SocketException {
+      print('No internet connection');
+    } on HttpException {
+      print('Failed to load data');
+    } on FormatException {
+      print('Batsman save- Invalid data format');
+    } catch (e) {
+      print(e);
+    }
+    return endInningsResponseModel;
+  }
 
 
 

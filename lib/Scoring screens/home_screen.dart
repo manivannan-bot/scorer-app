@@ -7,10 +7,13 @@ import 'package:scorer/utils/colours.dart';
 import 'package:scorer/utils/styles.dart';
 import 'package:sizer/sizer.dart';
 
+import '../commentaryscreens/sample_screen.dart';
 import '../models/all_matches_model.dart';
 import '../utils/images.dart';
+import '../widgets/Individual_player_completed_list.dart';
 import '../widgets/cancel_btn.dart';
 import '../widgets/dialog_others.dart';
+import '../widgets/individual_player_upcoming_matches.dart';
 import '../widgets/ok_btn.dart';
 
 
@@ -78,21 +81,26 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       children: [
                         SvgPicture.asset(Images.locationIcon),
                         SizedBox(width: 2.w,),
-                        RichText(
-                            text: TextSpan(children: [
-                              TextSpan(
-                                  text: ("Chrompet,"),
-                                  style: fontRegular.copyWith(
-                                    fontSize: 12.sp,
-                                    color: AppColor.lightColor,
-                                  )),
-                              TextSpan(
-                                  text: "Chennai 600210",
-                                  style: fontRegular.copyWith(
-                                    fontSize: 12.sp,
-                                    color: AppColor.lightColor
-                                  )),
-                            ])),
+                        GestureDetector(
+                          onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => SampleScreen()));
+                          },
+                          child: RichText(
+                              text: TextSpan(children: [
+                                TextSpan(
+                                    text: ("Chrompet,"),
+                                    style: fontRegular.copyWith(
+                                      fontSize: 12.sp,
+                                      color: AppColor.lightColor,
+                                    )),
+                                TextSpan(
+                                    text: "Chennai 600210",
+                                    style: fontRegular.copyWith(
+                                      fontSize: 12.sp,
+                                      color: AppColor.lightColor
+                                    )),
+                              ])),
+                        ),
                       ],
                     )
                   ],

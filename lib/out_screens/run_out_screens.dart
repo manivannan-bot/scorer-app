@@ -26,8 +26,8 @@ class RunOutScreen extends StatefulWidget {
 class _RunOutScreenState extends State<RunOutScreen> {
   int? isSelected=0;
   int? isStump=0;
-  int? isWideSelected ;
-  int? isRunSelected ;
+  int? isWideSelected=0 ;
+  int? isRunSelected=0 ;
   int? selectedBowler;
   List<BowlingPlayers>? itemsBowler= [];
   String? selectedBTeamName ="";
@@ -216,7 +216,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
                                     selectedBowler = bowlerIndex;
                                     if (selectedBowler != null) {
 
-                                      selectedBowlerName = itemsBowler![selectedBowler!].name ?? "";
+                                      selectedBowlerName = itemsBowler![selectedBowler!].playerName ?? "";
                                       selectedBowlerId= itemsBowler![selectedBowler!].playerId??0;
                                     }
                                   });
@@ -493,6 +493,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
                       var strikerId=prefs.getInt('striker_id')??0;
                       var nonStrikerId=prefs.getInt('non_striker_id')??0;
                       var bowlerId=prefs.getInt('bowler_id')??0;
+var oversBowled=prefs.getInt('overs_bowled')??0;
                       var keeperId=prefs.getInt('wicket_keeper_id')??0;
                       var bowlerPosition=prefs.getInt('bowlerPosition')??0;
 
@@ -506,7 +507,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
                       scoreUpdateRequestModel.bowlerId=bowlerId;
                       scoreUpdateRequestModel.overNumber=overNumber;
                       scoreUpdateRequestModel.ballNumber=ballNumber;
-                      scoreUpdateRequestModel.runsScored=0;
+                      scoreUpdateRequestModel.runsScored=(isRunSelected??0+1);
                       scoreUpdateRequestModel.extras=0;
                       scoreUpdateRequestModel.wicket=0;
                       scoreUpdateRequestModel.dismissalType=widget.ballType;
@@ -514,7 +515,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
                       scoreUpdateRequestModel.innings=1;
                       scoreUpdateRequestModel.battingTeamId=widget.scoringData!.data!.batting![0].teamId??0;
                       scoreUpdateRequestModel.bowlingTeamId=widget.scoringData!.data!.bowling!.teamId??0;
-                      scoreUpdateRequestModel.overBowled=overNumber;
+                      scoreUpdateRequestModel.overBowled=oversBowled;
                       scoreUpdateRequestModel.totalOverBowled=0;
                       scoreUpdateRequestModel.outByPlayer=selectedBowlerId;
                       scoreUpdateRequestModel.outPlayer=selectedBatsmanId;
@@ -666,7 +667,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("${itemsBowler![index].name??'-'}",style: fontMedium.copyWith(
+                                    Text("${itemsBowler![index].playerName??'-'}",style: fontMedium.copyWith(
                                       fontSize: 12.sp,
                                       color: AppColor.blackColour,
                                     ),),
@@ -681,7 +682,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
                                           ),
                                         ),
                                         SizedBox(width: 2.w,),
-                                        Text(itemsBowler![index].playingStyle??'-',style: fontMedium.copyWith(
+                                        Text(itemsBowler![index].bowlingStyle??'-',style: fontMedium.copyWith(
                                             fontSize: 11.sp,
                                             color: Color(0xff555555)
                                         ),),

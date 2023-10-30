@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
 
+import '../playerdetailsviews/player_detail_view_screen.dart';
 import '../utils/colours.dart';
 import '../utils/images.dart';
 import '../utils/sizes.dart';
@@ -55,7 +56,7 @@ class _TeamOnePlayingListState extends State<TeamOnePlayingList> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Captain',style: fontMedium.copyWith(fontSize: 14.sp,color: AppColor.pri),),
-              SizedBox(height: 1.h,),
+              SizedBox(height: 0.5.h,),
               ListView.separated(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -79,25 +80,24 @@ class _TeamOnePlayingListState extends State<TeamOnePlayingList> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                            Text('Dhoni CC',style: fontMedium.copyWith(
-                              fontSize: 14.sp,
-                              color: AppColor.blackColour,
-                            ),),
-                            Row(
-                              children: [
-                                CircleAvatar(
-                                  backgroundColor: AppColor.pri,
-                                  radius: 4,
-                                ),
-                                SizedBox(width: 1.w,),
-                                Text("Left hand batsman",style: fontRegular.copyWith(
-                                  fontSize: 11.sp,
-                                  color: Color(0xff555555),
-                                ),),
-
-
-                              ],
-                            )
+                              Text('Prasanth',style: fontMedium.copyWith(
+                                fontSize: 12.sp,
+                                color: AppColor.blackColour,
+                              ),),
+                              SizedBox(height: 0.5.h,),
+                              Row(
+                                children: [
+                                  CircleAvatar(
+                                    backgroundColor: AppColor.pri,
+                                    radius: 4,
+                                  ),
+                                  SizedBox(width: 1.w,),
+                                  Text("Left hand batsman",style: fontRegular.copyWith(
+                                    fontSize: 11.sp,
+                                    color: Color(0xff555555),
+                                  ),),
+                                ],
+                              ),
                           ],),
 
                           Spacer(),
@@ -110,7 +110,12 @@ class _TeamOnePlayingListState extends State<TeamOnePlayingList> {
               Divider(
                 color: Color(0xffD3D3D3),
               ),
-              Text(' Players',style: fontMedium.copyWith(fontSize: 14.sp,color: AppColor.pri),),
+              GestureDetector(
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => PlayerDetailViewScreen()));
+                },
+                  child: Text(' Players',style: fontMedium.copyWith(fontSize: 14.sp,color: AppColor.pri),)),
+              SizedBox(height: 0.5.h,),
               ListView.separated(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -134,10 +139,11 @@ class _TeamOnePlayingListState extends State<TeamOnePlayingList> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Dhoni CC',style: fontMedium.copyWith(
-                                fontSize: 14.sp,
+                              Text('Prasanth',style: fontMedium.copyWith(
+                                fontSize: 12.sp,
                                 color: AppColor.blackColour,
                               ),),
+                              SizedBox(height: 0.5.h,),
                               Row(
                                 children: [
                                   CircleAvatar(
@@ -149,21 +155,15 @@ class _TeamOnePlayingListState extends State<TeamOnePlayingList> {
                                     fontSize: 11.sp,
                                     color: Color(0xff555555),
                                   ),),
-
-
                                 ],
                               )
                             ],),
-
                           Spacer(),
                           SvgPicture.asset(Images.arrowICon,width: 6.5.w,),
-
                         ],
                       ),
                     );
                   }),
-
-
             ],
           ),
         ),
