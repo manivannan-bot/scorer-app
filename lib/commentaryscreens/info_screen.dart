@@ -21,6 +21,8 @@ class InfoScreen extends StatefulWidget {
 
 class _InfoScreenState extends State<InfoScreen> {
   MatchInfoModel? matchInfo;
+  String team1Id='';
+  String team2Id='';
   @override
   void initState() {
     super.initState();
@@ -203,7 +205,7 @@ class _InfoScreenState extends State<InfoScreen> {
                   ],
                 ),
               ),
-              DottedLine(
+              const DottedLine(
                 dashColor: Color(0xffD2D2D2),
               ),
               SizedBox(height: 1.h,),

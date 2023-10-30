@@ -33,6 +33,14 @@ class _TeamOnePlayingListState extends State<TeamOnePlayingList> {
 
   @override
   Widget build(BuildContext context) {
+    if(playersCapDetails==null|| playersList==null){
+      return const SizedBox(
+          height: 100,
+          width: 100,
+          child: Center(child: CircularProgressIndicator(
+            backgroundColor: Colors.white,
+          )));
+    }
     return  Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -112,13 +120,13 @@ class _TeamOnePlayingListState extends State<TeamOnePlayingList> {
                   separatorBuilder: (context, _) {
                     return Padding(
                       padding: EdgeInsets.only(bottom: 0.h),
-                      child: Divider(
+                      child: const Divider(
                         color: Color(0xffD3D3D3),
                       ),
                     );
                   },
                   itemCount: playersList!.length,
-                  itemBuilder: (BuildContext, int index) {
+                  itemBuilder: (context, int index) {
                     final item = playersList![index];
                     return   Padding(
                       padding:  EdgeInsets.only(top: 0.5.h,bottom: 0.8.h),
