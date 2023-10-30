@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:scorer/models/players/players_overview_model.dart';
 import 'package:sizer/sizer.dart';
 
 import '../utils/colours.dart';
 import '../utils/images.dart';
 import '../utils/sizes.dart';
 
-class PlayerBattingDetails extends StatefulWidget {
-  const PlayerBattingDetails({super.key});
+class RecentBattingDetails extends StatefulWidget {
+  final List<RecentBatting> recentBatting;
+  const RecentBattingDetails(this.recentBatting, {super.key});
 
   @override
-  State<PlayerBattingDetails> createState() => _PlayerBattingDetailsState();
+  State<RecentBattingDetails> createState() => _RecentBattingDetailsState();
 }
 
-class _PlayerBattingDetailsState extends State<PlayerBattingDetails> {
+class _RecentBattingDetailsState extends State<RecentBattingDetails> {
   List<Map<String,dynamic>> itemList=[
     {
       "image":'assets/images/req_list.png',
@@ -65,9 +67,9 @@ class _PlayerBattingDetailsState extends State<PlayerBattingDetails> {
                   ),
                 );
               },
-              itemCount: itemList.length,
+              itemCount: widget.recentBatting.length,
               itemBuilder: (BuildContext, int index) {
-                final item = itemList[index];
+                final item = widget.recentBatting[index];
                 return   Column(
                   children: [
                     Container(

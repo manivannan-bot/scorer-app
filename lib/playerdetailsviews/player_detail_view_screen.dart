@@ -4,15 +4,18 @@ import 'package:scorer/playerdetailsviews/player_info_screen.dart';
 import 'package:scorer/playerdetailsviews/player_matches_view_screen.dart';
 import 'package:scorer/playerdetailsviews/stats_view_screen.dart';
 import 'package:scorer/playerdetailsviews/teams_list_screen.dart';
+import 'package:scorer/provider/player_details_provider.dart';
 import 'package:sizer/sizer.dart';
 
+import '../models/players/players_overview_model.dart';
 import '../utils/colours.dart';
 import '../utils/images.dart';
 import '../utils/sizes.dart';
 import 'overview_player_screen.dart';
 
 class PlayerDetailViewScreen extends StatefulWidget {
-  const PlayerDetailViewScreen({super.key});
+  final String playerId;
+  const PlayerDetailViewScreen(this.playerId, {super.key});
 
   @override
   State<PlayerDetailViewScreen> createState() => _PlayerDetailViewScreenState();
@@ -20,15 +23,34 @@ class PlayerDetailViewScreen extends StatefulWidget {
 
 class _PlayerDetailViewScreenState extends State<PlayerDetailViewScreen>with SingleTickerProviderStateMixin {
   late TabController tabController;
+  PlayerOverview? playerOverview;
+
   void initState() {
     // TODO: implement initState
     super.initState();
     tabController = TabController(length: 5, vsync: this);
+    fetchData();
+  }
+  fetchData(){
+    PlayerDetailsProvider().getPlayerOverView(widget.playerId).then((value){
+      setState(() {
+        playerOverview=value;
+      });
+    });
   }
 
   Color color = Colors.white.withOpacity(0.2);
   @override
   Widget build(BuildContext context) {
+    if(playerOverview==null){
+      return const SizedBox(
+        height: 100,
+        width:100,
+        child: CircularProgressIndicator(
+          backgroundColor: Colors.white,
+        ),
+      );
+    }
     return Scaffold(
       body: Column(
         children: [
@@ -137,7 +159,7 @@ class _PlayerDetailViewScreenState extends State<PlayerDetailViewScreen>with Sin
             child: TabBarView(
                 controller: tabController,
                 children: [
-                  OverviewPlayerScreen(),
+                  OverviewPlayerScreen(playerOverview!),
                   PlayerMatchesViewScreen(),
                   StatsViewScreen(),
                   TeamListScreen(),

@@ -6,14 +6,14 @@ import '../utils/colours.dart';
 import '../utils/images.dart';
 import '../utils/sizes.dart';
 
-class PlayerBowlingDetails extends StatefulWidget {
-  const PlayerBowlingDetails({super.key});
+class RecentBowlingDetails extends StatefulWidget {
+  const RecentBowlingDetails({super.key});
 
   @override
-  State<PlayerBowlingDetails> createState() => _PlayerBowlingDetailsState();
+  State<RecentBowlingDetails> createState() => _RecentBowlingDetailsState();
 }
 
-class _PlayerBowlingDetailsState extends State<PlayerBowlingDetails> {
+class _RecentBowlingDetailsState extends State<RecentBowlingDetails> {
   List<Map<String,dynamic>> itemList=[
     {
       "image":'assets/images/req_list.png',

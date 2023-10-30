@@ -108,11 +108,7 @@ class _TeamOnePlayingListState extends State<TeamOnePlayingList> {
               Divider(
                 color: Color(0xffD3D3D3),
               ),
-              GestureDetector(
-                onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => PlayerDetailViewScreen()));
-                },
-                  child: Text(' Players',style: fontMedium.copyWith(fontSize: 14.sp,color: AppColor.pri),)),
+               Text(' Players',style: fontMedium.copyWith(fontSize: 14.sp,color: AppColor.pri),),
               SizedBox(height: 0.5.h,),
               ListView.separated(
                   shrinkWrap: true,
@@ -157,7 +153,11 @@ class _TeamOnePlayingListState extends State<TeamOnePlayingList> {
                               )
                             ],),
                           Spacer(),
-                          SvgPicture.asset(Images.arrowICon,width: 6.5.w,),
+                            GestureDetector(
+                            onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => PlayerDetailViewScreen(item.playerId.toString())));
+                            },
+                            child: SvgPicture.asset(Images.arrowICon,width: 6.5.w,)),
                         ],
                       ),
                     );
