@@ -139,9 +139,9 @@ class Batting {
   dynamic sixes;
   dynamic strikeRate;
   dynamic isOut;
-  Null? outType;
-  Null? wicketBowlerName;
-  Null? wicketerName;
+  dynamic outType;
+  dynamic wicketBowlerName;
+  dynamic wicketerName;
   dynamic playerName;
 
   Batting(
@@ -249,11 +249,11 @@ class Bowling {
 }
 
 class BowlingExtras {
-  Null? totalExtras;
-  Null? wides;
-  Null? noBalls;
-  Null? byes;
-  Null? legByes;
+  dynamic totalExtras;
+  dynamic wides;
+  dynamic noBalls;
+  dynamic byes;
+  dynamic legByes;
 
   BowlingExtras(
       {this.totalExtras, this.wides, this.noBalls, this.byes, this.legByes});
