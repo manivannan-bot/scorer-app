@@ -9,6 +9,7 @@ import '../utils/colours.dart';
 import '../utils/sizes.dart';
 import 'commentary_all_screen.dart';
 import 'commentary_wicket_screen.dart';
+import 'commentry_overs_screen.dart';
 
 
 class CommentaryScreen extends StatefulWidget {
@@ -135,7 +136,7 @@ class _CommentaryScreenState extends State<CommentaryScreen>with SingleTickerPro
                   children:  [
 
                     CommentaryAllScreen(),
-                    Container(),
+                    CommentryOvers(),
                     CommentaryWicketScreen(),
                     Container(),
 

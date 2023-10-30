@@ -176,16 +176,10 @@ class _InfoScreenState extends State<InfoScreen> {
               ),
               SizedBox(height: 2.h,),
               //playingx1
-              GestureDetector(
-                onTap: (){
-                  Navigator.push(context,
-                                                MaterialPageRoute(builder: (context) => PlayingElevenListScreen()));
-                },
-                child: Text('Playing XI',style: fontMedium.copyWith(
-                  fontSize: 14.sp,
-                  color: AppColor.blackColour,
-                ),),
-              ),
+              Text('Playing XI',style: fontMedium.copyWith(
+                fontSize: 14.sp,
+                color: AppColor.blackColour,
+              ),),
               Divider(
                 color: Color(0xffD3D3D3),
               ),
@@ -201,7 +195,8 @@ class _InfoScreenState extends State<InfoScreen> {
                     ),),
                     Spacer(),
                     GestureDetector(onTap: (){
-
+                      Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                          PlayingElevenListScreen(widget.matchId,matchInfo!.data!.playing11!.team1Id.toString(),matchInfo!.data!.playing11!.team2Id.toString())));
                     },
                         child: SvgPicture.asset(Images.arrowICon,width: 6.5.w,)),
 
@@ -223,7 +218,11 @@ class _InfoScreenState extends State<InfoScreen> {
                       color: AppColor.blackColour,
                     ),),
                     Spacer(),
-                    SvgPicture.asset(Images.arrowICon,width: 6.5.w,)
+                    GestureDetector(onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                          PlayingElevenListScreen(widget.matchId,matchInfo!.data!.playing11!.team1Id.toString(),matchInfo!.data!.playing11!.team2Id.toString())));
+                    },
+                    child:   SvgPicture.asset(Images.arrowICon,width: 6.5.w,))
 
                   ],
                 ),
