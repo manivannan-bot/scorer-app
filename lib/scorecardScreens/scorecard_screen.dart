@@ -140,7 +140,7 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
                 children:  [
                   ScoreCardOne(scoreCardResponseModel!.data!),
                   if(teams!.first.currentInnings==1)...[
-                    ScoreCardTwo(bowlTeamId.toString()),]
+                    ScoreCardTwo(widget.matchId,bowlTeamId.toString()),]
                   else...[
                     ScoreCardOne(scoreCardResponseModel!.data!),
                   ]

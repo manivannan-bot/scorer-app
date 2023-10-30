@@ -15,6 +15,7 @@ import '../models/save_batsman_request_model.dart';
 import '../models/save_batsman_response_model.dart';
 import '../models/save_bowler_response_model.dart';
 import '../models/score_card_response_model.dart';
+import '../models/score_card_yet_to_bat.dart';
 import '../models/score_update_request_model.dart';
 import '../models/score_update_response_model.dart';
 import '../models/scoring_detail_response_model.dart';
@@ -40,6 +41,7 @@ class ScoringProvider extends ChangeNotifier{
   EndInningsResponseModel endInningsResponseModel=EndInningsResponseModel();
 
   ScoreCardResponseModel scoreCardResponseModel=ScoreCardResponseModel();
+  ScoreCardYetTobat scoreCardYetTobat=ScoreCardYetTobat();
 
   String overNumber = "";
 
@@ -402,6 +404,36 @@ class ScoringProvider extends ChangeNotifier{
       print(e);
     }
     return scoreCardResponseModel;
+  }
+  Future<ScoreCardYetTobat> getScoreCard1(String matchId,String teamId) async {
+
+    try {
+      final response = await http.get(
+        Uri.parse('${AppConstants.scoreCardDetail}/$matchId/$teamId'),
+        // headers: {
+        //   // 'Content-Type': 'application/json; charset=UTF-8',
+        //   // 'Authorization': 'Bearer $accToken',
+        // },
+      );
+      var decodedJson = json.decode(response.body);
+      print(decodedJson);
+      if (response.statusCode == 200) {
+        scoreCardYetTobat = ScoreCardYetTobat.fromJson(decodedJson);
+
+        notifyListeners();
+      } else {
+        throw const HttpException('Failed to load data');
+      }
+    } on SocketException {
+      print('No internet connection');
+    } on HttpException {
+      print('Failed to load data');
+    } on FormatException {
+      print('All Matches  - Invalid data format');
+    } catch (e) {
+      print(e);
+    }
+    return scoreCardYetTobat;
   }
 
   Future<EndInningsResponseModel> matchBreak(int matchId,int teamId,int breakTypeId) async {

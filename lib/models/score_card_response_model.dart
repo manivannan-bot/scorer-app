@@ -139,9 +139,9 @@ class Batting {
   dynamic sixes;
   dynamic strikeRate;
   dynamic isOut;
- dynamic outType;
- dynamic wicketBowlerName;
- dynamic wicketerName;
+  Null? outType;
+  Null? wicketBowlerName;
+  Null? wicketerName;
   dynamic playerName;
 
   Batting(
@@ -213,6 +213,7 @@ class Bowling {
   dynamic economy;
   dynamic runsConceded;
   dynamic wickets;
+  dynamic active;
   dynamic playerName;
 
   Bowling(
@@ -221,6 +222,7 @@ class Bowling {
         this.economy,
         this.runsConceded,
         this.wickets,
+        this.active,
         this.playerName});
 
   Bowling.fromJson(Map<String, dynamic> json) {
@@ -229,6 +231,7 @@ class Bowling {
     economy = json['economy'];
     runsConceded = json['runs_conceded'];
     wickets = json['wickets'];
+    active = json['active'];
     playerName = json['player_name'];
   }
 
@@ -239,17 +242,18 @@ class Bowling {
     data['economy'] = this.economy;
     data['runs_conceded'] = this.runsConceded;
     data['wickets'] = this.wickets;
+    data['active'] = this.active;
     data['player_name'] = this.playerName;
     return data;
   }
 }
 
 class BowlingExtras {
- dynamic totalExtras;
- dynamic wides;
- dynamic noBalls;
- dynamic byes;
- dynamic legByes;
+  Null? totalExtras;
+  Null? wides;
+  Null? noBalls;
+  Null? byes;
+  Null? legByes;
 
   BowlingExtras(
       {this.totalExtras, this.wides, this.noBalls, this.byes, this.legByes});
