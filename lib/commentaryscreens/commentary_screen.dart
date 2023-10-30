@@ -6,6 +6,8 @@ import '../scorecardScreens/scorecard_one.dart';
 import '../scorecardScreens/scorecard_two.dart';
 import '../utils/colours.dart';
 import '../utils/sizes.dart';
+import 'commentary_all_screen.dart';
+import 'commentary_wicket_screen.dart';
 
 
 class CommentaryScreen extends StatefulWidget {
@@ -36,7 +38,7 @@ class _CommentaryScreenState extends State<CommentaryScreen>with SingleTickerPro
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 6.w),
+        padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 0.w),
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(topRight: Radius.circular(20),topLeft: Radius.circular(20)),
@@ -101,7 +103,7 @@ class _CommentaryScreenState extends State<CommentaryScreen>with SingleTickerPro
                       padding:  EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.4.h),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
-                          color: currentIndex == 3 ? AppColor.primaryColor : Colors.transparent,
+                          color: currentIndex == 3 ? AppColor.primaryColor : Color(0xffFBFAF7),
                           border: currentIndex == 3 ? null : Border.all(color: Colors.black12)
                       ),
                       child: Text('4s & 6s',style: fontMedium.copyWith(fontSize: 13.sp,color: AppColor.blackColour),),
@@ -117,10 +119,11 @@ class _CommentaryScreenState extends State<CommentaryScreen>with SingleTickerPro
               child: TabBarView(
                   controller: tabController,
                   children:  [
-                    ScoreCardOne(scoreCardResponseModel.data!),
-                    ScoreCardOne(scoreCardResponseModel.data!),
-                    ScoreCardOne(scoreCardResponseModel.data!),
-                    ScoreCardTwo(),
+                    CommentaryAllScreen(),
+                    Container(),
+                    CommentaryWicketScreen(),
+                    Container(),
+
                   ]),
             ),
           ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scorer/teamsdetailsview/team_completed_matches_screen.dart';
+import 'package:scorer/teamsdetailsview/team_live_matches_screen.dart';
 import 'package:scorer/teamsdetailsview/team_upcoming_matches.dart';
 import 'package:sizer/sizer.dart';
 
@@ -57,9 +58,10 @@ class _TeamMatchesScreenState extends State<TeamMatchesScreen>with SingleTickerP
               child: TabBarView(
                   controller: tabController,
                   children: [
-                    Container(),
+                    TeamLiveMatches(),
                     TeamUpcomingMatches(),
                     TeamCompletedMatchesScreen(),
+
                   ]
               ),
             ),
