@@ -259,8 +259,6 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                       fontSize: 11.sp,
                       color: Color(0xff666666)
                     ),),
-
-
                   ],
                 )
               ],

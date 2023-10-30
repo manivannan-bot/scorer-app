@@ -175,8 +175,6 @@ class _InfoScreenState extends State<InfoScreen> {
                 ),
               ),
               SizedBox(height: 2.h,),
-
-
               //playingx1
               GestureDetector(
                 onTap: (){

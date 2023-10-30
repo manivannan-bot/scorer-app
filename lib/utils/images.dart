@@ -59,9 +59,9 @@ class Images{
   //
   // static const String editIcon = 'assets/images/edit_icon.svg';
   //
-  // static const String createTeamBg = 'assets/images/create_team_bg.png';
+   static const String bowlingSpellImage = 'assets/images/bowling_spell_img.svg';
   //
-  // static const String qrCodeImg = 'assets/images/qrcode_img.svg';
+   static const String wktImage = 'assets/images/wicket_img.svg';
   // static const String upiIdImg = 'assets/images/upi_img.svg';
   // static const String downloadIcon = 'assets/images/download_icon.svg';
   // static const String copyIcon = 'assets/images/copy_icon.svg';
