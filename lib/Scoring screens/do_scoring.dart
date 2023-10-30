@@ -8,6 +8,7 @@ import 'package:scorer/utils/styles.dart';
 import 'package:scorer/widgets/cancel_btn.dart';
 import 'package:scorer/widgets/ok_btn.dart';
 import 'package:scorer/widgets/stricker%20container.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 import '../models/player_list_model.dart';

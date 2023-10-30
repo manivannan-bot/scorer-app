@@ -72,11 +72,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         const Spacer(),
                         InkWell(
                             onTap: (){
-                              Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => const SampleScreen(),
-                                  ),
-                                );
+                              // Navigator.of(context).push(
+                              //     MaterialPageRoute(
+                              //       builder: (context) => const SampleScreen(),
+                              //     ),
+                              //   );
                             },
                             child: SvgPicture.asset(Images.notificationIcon,color: AppColor.lightColor,))
                       ],
@@ -88,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         SizedBox(width: 2.w,),
                         GestureDetector(
                           onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => SampleScreen()));
+                            //Navigator.push(context, MaterialPageRoute(builder: (context) => SampleScreen()));
                           },
                           child: RichText(
                               text: TextSpan(children: [

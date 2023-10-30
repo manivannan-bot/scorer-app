@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:laravel_flutter_pusher/laravel_flutter_pusher.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:scorer/models/scoring_detail_response_model.dart';
+import 'package:scorer/view/score_update_bottom_sheet.dart';
 
 import 'package:scorer/widgets/custom_vertical_dottedLine.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -38,7 +39,7 @@ import '../widgets/custom_horizondal_dottedLine.dart';
 import '../widgets/dialog_others.dart';
 import '../widgets/ok_btn.dart';
 import '../out_screens/out_method_dialog.dart';
-import 'bottom_sheet.dart';
+
 
 
 
@@ -183,7 +184,7 @@ class _ScoringTabState extends State<ScoringTab> {
             child: Center(child: Text('Please Select Bowler')));
     }
     if(scoringData!.data!.batting!.length<2){
-      var player=scoringData!.data!.batting!.first.stricker==1?'non_striker_id':'striker_id';
+      var player=scoringData!.data!.batting!.first.striker==1?'non_striker_id':'striker_id';
      // changeBatsman(player);
       return const SizedBox(height: 100, width: 100,
           child: Center(child: Text('Please Select Batsman')));
@@ -267,7 +268,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                           Text('${scoringData!.data!.batting![index1].playerName??'-'}',
                                               style:  fontRegular.copyWith(
                                                   color: Colors.black, fontSize: 10.sp)),
-                                          scoringData!.data!.batting![index1].stricker == 1
+                                          scoringData!.data!.batting![index1].striker == 1
                                               ? SvgPicture.asset(Images.batIcon) :  SizedBox(width:1.w),
                                           Text('${scoringData!.data!.batting![index1].runsScored??'0'}(${scoringData!.data!.batting![index1].ballsFaced??'0'})',
                                               style:  fontRegular.copyWith(
@@ -282,7 +283,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                           Text((scoringData!.data!.batting?[index2]!=null)?'${scoringData!.data!.batting![index2].playerName??'-'} ':'-',
                                               style:  fontRegular.copyWith(
                                                   color: Colors.black, fontSize: 10.sp)),
-                                          scoringData!.data!.batting![index2].stricker == 1
+                                          scoringData!.data!.batting![index2].striker == 1
                                               ? SvgPicture.asset(Images.batIcon) :  SizedBox(width:1.w),
                                           Text((scoringData!.data!.batting?[index2]!=null)?
                                               '  ${scoringData!.data!.batting![index2].runsScored??'0'}(${scoringData!.data!.batting![index2].ballsFaced??'0'})':'-',
@@ -1644,7 +1645,7 @@ class _ScoringTabState extends State<ScoringTab> {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return OutMethodDialog(label: 'Bowled', Id: data['id'], scoringData: scoringData!);
+                                return OutMethodDialog(label: 'Bowled', id: data['id'], scoringData: scoringData!);
                               },
                             );
                           }
@@ -1652,7 +1653,7 @@ class _ScoringTabState extends State<ScoringTab> {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return OutMethodDialog(label: 'LBW',Id: data['id'],scoringData: scoringData!);
+                                return OutMethodDialog(label: 'LBW',id: data['id'],scoringData: scoringData!);
                               },
                             );
                           }
@@ -1660,7 +1661,7 @@ class _ScoringTabState extends State<ScoringTab> {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return OutMethodDialog(label: 'Caught Behind',Id: data['id'],scoringData: scoringData!);
+                                return OutMethodDialog(label: 'Caught Behind',id: data['id'],scoringData: scoringData!);
                               },
                             );
                           }
@@ -1668,7 +1669,7 @@ class _ScoringTabState extends State<ScoringTab> {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return OutMethodDialog(label: 'Caught & Bowled',Id: data['id'],scoringData: scoringData!);
+                                return OutMethodDialog(label: 'Caught & Bowled',id: data['id'],scoringData: scoringData!);
                               },
                             );
                           }
@@ -1676,7 +1677,7 @@ class _ScoringTabState extends State<ScoringTab> {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return OutMethodDialog(label: 'Mankaded',Id: data['id'],scoringData: scoringData!);
+                                return OutMethodDialog(label: 'Mankaded',id: data['id'],scoringData: scoringData!);
                               },
                             );
                           }
@@ -1684,7 +1685,7 @@ class _ScoringTabState extends State<ScoringTab> {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return OutMethodDialog(label: 'Hit Wicket',Id: data['id'],scoringData: scoringData!);
+                                return OutMethodDialog(label: 'Hit Wicket',id: data['id'],scoringData: scoringData!);
                               },
                             );
                           }
@@ -1692,7 +1693,7 @@ class _ScoringTabState extends State<ScoringTab> {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return OutMethodDialog(label: 'Handling the Ball',Id: data['id'],scoringData: scoringData!);
+                                return OutMethodDialog(label: 'Handling the Ball',id: data['id'],scoringData: scoringData!);
                               },
                             );
                           }
@@ -1700,7 +1701,7 @@ class _ScoringTabState extends State<ScoringTab> {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return OutMethodDialog(label: 'Hit the Ball Twice',Id: data['id'],scoringData: scoringData!);
+                                return OutMethodDialog(label: 'Hit the Ball Twice',id: data['id'],scoringData: scoringData!);
                               },
                             );
                           }
