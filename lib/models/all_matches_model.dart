@@ -3,7 +3,7 @@ class AllMatchesModel {
   dynamic message;
   List<Matches>? matches;
 
-  AllMatchesModel({this.status, this.message, this.matches});
+  AllMatchesModel({status, message, matches});
 
   AllMatchesModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
@@ -18,10 +18,10 @@ class AllMatchesModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
-    if (this.matches != null) {
-      data['matches'] = this.matches!.map((v) => v.toJson()).toList();
+    data['status'] = status;
+    data['message'] = message;
+    if (matches != null) {
+      data['matches'] = matches!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -57,33 +57,33 @@ class Matches {
   List<Teams>? teams;
 
   Matches(
-      {this.matchId,
-        this.matchNumber,
-        this.team1Id,
-        this.team2Id,
-        this.scorerId,
-        this.umpireId,
-        this.date,
-        this.venue,
-        this.slotStartTime,
-        this.slotEndTime,
-        this.organiser,
-        this.ground,
-        this.tossWonBy,
-        this.choseTo,
-        this.overs,
-        this.currentInnings,
-        this.matchStatus,
-        this.matchWonBy,
-        this.matchLossBy,
-        this.resultDescription,
-        this.createdAt,
-        this.updatedAt,
-        this.team1Name,
-        this.team2Name,
-        this.tossWinnerName,
-        this.status,
-        this.teams});
+      {matchId,
+        matchNumber,
+        team1Id,
+        team2Id,
+        scorerId,
+        umpireId,
+        date,
+        venue,
+        slotStartTime,
+        slotEndTime,
+        organiser,
+        ground,
+        tossWonBy,
+        choseTo,
+        overs,
+        currentInnings,
+        matchStatus,
+        matchWonBy,
+        matchLossBy,
+        resultDescription,
+        createdAt,
+        updatedAt,
+        team1Name,
+        team2Name,
+        tossWinnerName,
+        status,
+        teams});
 
   Matches.fromJson(Map<String, dynamic> json) {
     matchId = json['match_id'];
@@ -122,34 +122,34 @@ class Matches {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['match_id'] = this.matchId;
-    data['match_number'] = this.matchNumber;
-    data['team_1_id'] = this.team1Id;
-    data['team_2_id'] = this.team2Id;
-    data['scorer_id'] = this.scorerId;
-    data['umpire_id'] = this.umpireId;
-    data['date'] = this.date;
-    data['venue'] = this.venue;
-    data['slot_start_time'] = this.slotStartTime;
-    data['slot_end_time'] = this.slotEndTime;
-    data['organiser'] = this.organiser;
-    data['ground'] = this.ground;
-    data['toss_won_by'] = this.tossWonBy;
-    data['chose_to'] = this.choseTo;
-    data['overs'] = this.overs;
-    data['current_innings'] = this.currentInnings;
-    data['match_status'] = this.matchStatus;
-    data['match_won_by'] = this.matchWonBy;
-    data['match_loss_by'] = this.matchLossBy;
-    data['result_description'] = this.resultDescription;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['team1_name'] = this.team1Name;
-    data['team2_name'] = this.team2Name;
-    data['toss_winner_name'] = this.tossWinnerName;
-    data['status'] = this.status;
-    if (this.teams != null) {
-      data['teams'] = this.teams!.map((v) => v.toJson()).toList();
+    data['match_id'] = matchId;
+    data['match_number'] = matchNumber;
+    data['team_1_id'] = team1Id;
+    data['team_2_id'] = team2Id;
+    data['scorer_id'] = scorerId;
+    data['umpire_id'] = umpireId;
+    data['date'] = date;
+    data['venue'] = venue;
+    data['slot_start_time'] = slotStartTime;
+    data['slot_end_time'] = slotEndTime;
+    data['organiser'] = organiser;
+    data['ground'] = ground;
+    data['toss_won_by'] = tossWonBy;
+    data['chose_to'] = choseTo;
+    data['overs'] = overs;
+    data['current_innings'] = currentInnings;
+    data['match_status'] = matchStatus;
+    data['match_won_by'] = matchWonBy;
+    data['match_loss_by'] = matchLossBy;
+    data['result_description'] = resultDescription;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['team1_name'] = team1Name;
+    data['team2_name'] = team2Name;
+    data['toss_winner_name'] = tossWinnerName;
+    data['status'] = status;
+    if (teams != null) {
+      data['teams'] = teams!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -164,12 +164,12 @@ class Teams {
   dynamic currentOverDetails;
 
   Teams(
-      {this.teamName,
-        this.totalRuns,
-        this.totalWickets,
-        this.ballNumber,
-        this.overNumber,
-        this.currentOverDetails});
+      {teamName,
+        totalRuns,
+        totalWickets,
+        ballNumber,
+        overNumber,
+        currentOverDetails});
 
   Teams.fromJson(Map<String, dynamic> json) {
     teamName = json['team_name'];
@@ -182,12 +182,12 @@ class Teams {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['team_name'] = this.teamName;
-    data['total_runs'] = this.totalRuns;
-    data['total_wickets'] = this.totalWickets;
-    data['ball_number'] = this.ballNumber;
-    data['over_number'] = this.overNumber;
-    data['current_over_details'] = this.currentOverDetails;
+    data['team_name'] = teamName;
+    data['total_runs'] = totalRuns;
+    data['total_wickets'] = totalWickets;
+    data['ball_number'] = ballNumber;
+    data['over_number'] = overNumber;
+    data['current_over_details'] = currentOverDetails;
     return data;
   }
 }

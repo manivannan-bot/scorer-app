@@ -1,9 +1,6 @@
-import 'dart:ffi';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:scorer/models/scoring_detail_response_model.dart';
-import 'package:scorer/pages/scoring_tab.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
@@ -30,11 +27,11 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
 
 
   List<Color> rowColors = [
-    Color(0xff797873),
-    Color(0xffF7B199),
-    Color(0xffF48F6D),
-    Color(0xffBC8BA0),
-    Color(0xffCAB59A),
+    const Color(0xff797873),
+    const Color(0xffF7B199),
+    const Color(0xffF48F6D),
+    const Color(0xffBC8BA0),
+    const Color(0xffCAB59A),
   ];
 
   int selectedRow = -1;
@@ -145,12 +142,12 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                       'Wagon Wheel',
                       style: fontMedium.copyWith(fontSize: 24),
                     ),
-                    Spacer(),
+                    const Spacer(),
                      Text(
                       '4s & 6s',
                       style: fontMedium.copyWith(color: AppColor.iconColour),
                     ),
-                    Switch(value: _isSwitch!, onChanged: (bool value) async{
+                    Switch(value: _isSwitch, onChanged: (bool value) async{
 
                       SharedPreferences pref=await SharedPreferences.getInstance();
                       isFourOrSix=pref.getInt('fourOrSix');
@@ -169,7 +166,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                 Container(
                   width: 600.0,
                   height: 100, // Adjust the width as needed
-                  padding:  EdgeInsets.all(20.0), // Spacing inside the card
+                  padding:  const EdgeInsets.all(20.0), // Spacing inside the card
                   decoration: BoxDecoration(
                     color: const Color(0xffF8F9FA),
                     borderRadius:
@@ -205,28 +202,24 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                           itemBuilder: (context, index) {
                             final batsman = widget.scoringData.data!.batting![index];
 
-                            if (batsman.stricker == 1) {
+                            if (batsman.striker == 1) {
                               return Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Column(
                                     children: [
-                                      Container(
-                                        child: Center(
-                                          child: Text('${batsman.playerName ?? '-'}',
-                                            style: fontMedium.copyWith(fontSize: 18),
-                                          ),
+                                      Center(
+                                        child: Text('${batsman.playerName ?? '-'}',
+                                          style: fontMedium.copyWith(fontSize: 18),
                                         ),
                                       ),
                                     ],
                                   ),
                                   Column(
                                     children: [
-                                      Container(
-                                        child: Center(
-                                          child: Text('${batsman.runsScored ?? '0'}',
-                                            style: fontMedium.copyWith(fontSize: 18),
-                                          ),
+                                      Center(
+                                        child: Text('${batsman.runsScored ?? '0'}',
+                                          style: fontMedium.copyWith(fontSize: 18),
                                         ),
                                       ),
                                     ],
@@ -276,7 +269,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                       'skip match',
                       style: fontMedium.copyWith(color: AppColor.iconColour),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Text(
                       'skip ball',
                       style: fontMedium.copyWith(color: AppColor.iconColour),
@@ -289,13 +282,13 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                     width:500,
                     child:ThreeCircles(onOkButtonPressed:callbackFunction,),
                   ),
-                ):Text(''),
+                ):const Text(''),
 
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     elevation: 2, // Button shadow
-                    side: BorderSide(width: 1.0, color: Colors.black),
+                    side: const BorderSide(width: 1.0, color: Colors.black),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
                           20.0), // Set the border radius to 12
@@ -336,7 +329,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                 Container(
                   width: 600.0,
                   height: 100, // Adjust the width as needed
-                  padding: EdgeInsets.all(20.0), // Spacing inside the card
+                  padding: const EdgeInsets.all(20.0), // Spacing inside the card
                   decoration: BoxDecoration(
                     color: const Color(0xffF8F9FA), // Grey background color
                     borderRadius:
@@ -397,7 +390,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                       'skip match',
                       style: fontMedium.copyWith(color: AppColor.iconColour),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Text(
                       'skip ball',
                       style: fontMedium.copyWith(color: AppColor.iconColour),
@@ -815,7 +808,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     elevation: 2, // Button shadow
-                    side: BorderSide(width: 1.0, color: Colors.black),
+                    side: const BorderSide(width: 1.0, color: Colors.black),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
                           20.0), // Set the border radius to 12
@@ -831,7 +824,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                         width: 40,
                       ),
                       //Icon(Icons.undo, size: 24.0,color: Colors.black,), // Undo arrow icon
-                      SizedBox(width: 4.0), // Spacing between icon and text
+                      const SizedBox(width: 4.0), // Spacing between icon and text
                       Text('Undo',
                           style: fontMedium.copyWith(
                               fontSize: 18.0,
@@ -890,8 +883,9 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                           await prefs.setInt('bowlerPosition', 0);
 
                         });
-
-                       Navigator.pop(context);
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          Navigator.pop(context);
+                          });
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.black,
@@ -899,7 +893,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                           borderRadius: BorderRadius.circular(25),
                         ),
                       ),
-                      child: Text(
+                      child: const Text(
                         'Save',
                         style: TextStyle(color: Colors.white, fontSize: 24),
                       ),

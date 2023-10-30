@@ -3,7 +3,7 @@ class ScoringDetailResponseModel {
   dynamic message;
   Data? data;
 
-  ScoringDetailResponseModel({this.status, this.message, this.data});
+  ScoringDetailResponseModel({status, message, data});
 
   ScoringDetailResponseModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
@@ -13,8 +13,8 @@ class ScoringDetailResponseModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
+    data['status'] = status;
+    data['message'] = message;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -27,7 +27,7 @@ class Data {
   Bowling? bowling;
   List<Over>? over;
 
-  Data({this.batting, this.bowling, this.over});
+  Data({batting, bowling, over});
 
   Data.fromJson(Map<String, dynamic> json) {
     if (json['batting'] != null) {
@@ -48,14 +48,14 @@ class Data {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.batting != null) {
-      data['batting'] = this.batting!.map((v) => v.toJson()).toList();
+    if (batting != null) {
+      data['batting'] = batting!.map((v) => v.toJson()).toList();
     }
-    if (this.bowling != null) {
-      data['bowling'] = this.bowling!.toJson();
+    if (bowling != null) {
+      data['bowling'] = bowling!.toJson();
     }
-    if (this.over != null) {
-      data['over'] = this.over!.map((v) => v.toJson()).toList();
+    if (over != null) {
+      data['over'] = over!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -70,20 +70,20 @@ class Batting {
   dynamic fours;
   dynamic sixes;
   dynamic strikeRate;
-  dynamic stricker;
+  dynamic striker;
   dynamic playerName;
 
   Batting(
-      {this.matchId,
-        this.playerId,
-        this.teamId,
-        this.runsScored,
-        this.ballsFaced,
-        this.fours,
-        this.sixes,
-        this.strikeRate,
-        this.stricker,
-        this.playerName});
+      {matchId,
+        playerId,
+        teamId,
+        runsScored,
+        ballsFaced,
+        fours,
+        sixes,
+        strikeRate,
+        striker,
+        playerName});
 
   Batting.fromJson(Map<String, dynamic> json) {
     matchId = json['match_id'];
@@ -94,22 +94,22 @@ class Batting {
     fours = json['fours'];
     sixes = json['sixes'];
     strikeRate = json['strike_rate'];
-    stricker = json['stricker'];
+    striker = json['stricker'];
     playerName = json['player_name'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['match_id'] = this.matchId;
-    data['player_id'] = this.playerId;
-    data['team_id'] = this.teamId;
-    data['runs_scored'] = this.runsScored;
-    data['balls_faced'] = this.ballsFaced;
-    data['fours'] = this.fours;
-    data['sixes'] = this.sixes;
-    data['strike_rate'] = this.strikeRate;
-    data['stricker'] = this.stricker;
-    data['player_name'] = this.playerName;
+    data['match_id'] = matchId;
+    data['player_id'] = playerId;
+    data['team_id'] = teamId;
+    data['runs_scored'] = runsScored;
+    data['balls_faced'] = ballsFaced;
+    data['fours'] = fours;
+    data['sixes'] = sixes;
+    data['strike_rate'] = strikeRate;
+    data['stricker'] = striker;
+    data['player_name'] = playerName;
     return data;
   }
 }
@@ -132,21 +132,21 @@ class Bowling {
   dynamic playerName;
 
   Bowling(
-      {this.bowlingId,
-        this.matchId,
-        this.playerId,
-        this.teamId,
-        this.oversBowled,
-        this.overBall,
-        this.runsConceded,
-        this.wickets,
-        this.extras,
-        this.maiden,
-        this.totalBalls,
-        this.economy,
-        this.createdAt,
-        this.updatedAt,
-        this.playerName});
+      {bowlingId,
+        matchId,
+        playerId,
+        teamId,
+        oversBowled,
+        overBall,
+        runsConceded,
+        wickets,
+        extras,
+        maiden,
+        totalBalls,
+        economy,
+        createdAt,
+        updatedAt,
+        playerName});
 
   Bowling.fromJson(Map<String, dynamic> json) {
     bowlingId = json['bowling_id'];
@@ -168,21 +168,21 @@ class Bowling {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['bowling_id'] = this.bowlingId;
-    data['match_id'] = this.matchId;
-    data['player_id'] = this.playerId;
-    data['team_id'] = this.teamId;
-    data['overs_bowled'] = this.oversBowled;
-    data['over_ball'] = this.overBall;
-    data['runs_conceded'] = this.runsConceded;
-    data['wickets'] = this.wickets;
-    data['extras'] = this.extras;
-    data['maiden'] = this.maiden;
-    data['total_balls'] = this.totalBalls;
-    data['economy'] = this.economy;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['player_name'] = this.playerName;
+    data['bowling_id'] = bowlingId;
+    data['match_id'] = matchId;
+    data['player_id'] = playerId;
+    data['team_id'] = teamId;
+    data['overs_bowled'] = oversBowled;
+    data['over_ball'] = overBall;
+    data['runs_conceded'] = runsConceded;
+    data['wickets'] = wickets;
+    data['extras'] = extras;
+    data['maiden'] = maiden;
+    data['total_balls'] = totalBalls;
+    data['economy'] = economy;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['player_name'] = playerName;
     return data;
   }
 }
@@ -214,30 +214,30 @@ class Over {
   dynamic slug;
 
   Over(
-      {this.ballId,
-        this.ballTypeId,
-        this.matchId,
-        this.battingTeamId,
-        this.bowlingTeamId,
-        this.scorerId,
-        this.strikerId,
-        this.nonStrikerId,
-        this.wicketKeeperId,
-        this.bowlerId,
-        this.overNumber,
-        this.ballNumber,
-        this.runsScored,
-        this.extras,
-        this.extrasType,
-        this.wicket,
-        this.wicketById,
-        this.dismissalType,
-        this.commentary,
-        this.fieldingPositionsId,
-        this.innings,
-        this.createdAt,
-        this.updatedAt,
-        this.slug});
+      {ballId,
+        ballTypeId,
+        matchId,
+        battingTeamId,
+        bowlingTeamId,
+        scorerId,
+        strikerId,
+        nonStrikerId,
+        wicketKeeperId,
+        bowlerId,
+        overNumber,
+        ballNumber,
+        runsScored,
+        extras,
+        extrasType,
+        wicket,
+        wicketById,
+        dismissalType,
+        commentary,
+        fieldingPositionsId,
+        innings,
+        createdAt,
+        updatedAt,
+        slug});
 
   Over.fromJson(Map<String, dynamic> json) {
     ballId = json['ball_id'];
@@ -268,30 +268,30 @@ class Over {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['ball_id'] = this.ballId;
-    data['ball_type_id'] = this.ballTypeId;
-    data['match_id'] = this.matchId;
-    data['batting_team_id'] = this.battingTeamId;
-    data['bowling_team_id'] = this.bowlingTeamId;
-    data['scorer_id'] = this.scorerId;
-    data['striker_id'] = this.strikerId;
-    data['non_striker_id'] = this.nonStrikerId;
-    data['wicket_keeper_id'] = this.wicketKeeperId;
-    data['bowler_id'] = this.bowlerId;
-    data['over_number'] = this.overNumber;
-    data['ball_number'] = this.ballNumber;
-    data['runs_scored'] = this.runsScored;
-    data['extras'] = this.extras;
-    data['extras_type'] = this.extrasType;
-    data['wicket'] = this.wicket;
-    data['wicket_by_id'] = this.wicketById;
-    data['dismissal_type'] = this.dismissalType;
-    data['commentary'] = this.commentary;
-    data['fielding_positions_id'] = this.fieldingPositionsId;
-    data['innings'] = this.innings;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['slug'] = this.slug;
+    data['ball_id'] = ballId;
+    data['ball_type_id'] = ballTypeId;
+    data['match_id'] = matchId;
+    data['batting_team_id'] = battingTeamId;
+    data['bowling_team_id'] = bowlingTeamId;
+    data['scorer_id'] = scorerId;
+    data['striker_id'] = strikerId;
+    data['non_striker_id'] = nonStrikerId;
+    data['wicket_keeper_id'] = wicketKeeperId;
+    data['bowler_id'] = bowlerId;
+    data['over_number'] = overNumber;
+    data['ball_number'] = ballNumber;
+    data['runs_scored'] = runsScored;
+    data['extras'] = extras;
+    data['extras_type'] = extrasType;
+    data['wicket'] = wicket;
+    data['wicket_by_id'] = wicketById;
+    data['dismissal_type'] = dismissalType;
+    data['commentary'] = commentary;
+    data['fielding_positions_id'] = fieldingPositionsId;
+    data['innings'] = innings;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['slug'] = slug;
     return data;
   }
 }

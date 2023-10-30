@@ -16,7 +16,10 @@ class HomeTab extends StatefulWidget {
 }
 
 class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
+
   late TabController tabController;
+
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -25,15 +28,15 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffF8F9FA),
+      backgroundColor: const Color(0xffF8F9FA),
       body: Padding(
         padding:  EdgeInsets.symmetric(horizontal: 1.w),
         child: Column(
           children: [
             TabBar(
               unselectedLabelColor: AppColor.unselectedTabColor,
-              labelColor:  Color(0xffD78108),
-              indicatorColor: Color(0xffD78108),
+              labelColor:  const Color(0xffD78108),
+              indicatorColor: const Color(0xffD78108),
               isScrollable: true,
               controller: tabController,
               indicatorWeight: 4.0, // Set the indicator weight
@@ -44,14 +47,14 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
                 Text('In the offing',style: fontRegular.copyWith(fontSize: 12.sp,),),
               ],
             ),
-            Divider(),
+            const Divider(),
             Expanded(
               child: TabBarView(
                 controller: tabController,
                   children: [
-                   LiveScreen(),
-                    UpcomingScreen(),
-                    CompletedScreen(),
+                   const LiveScreen(),
+                    const UpcomingScreen(),
+                    const CompletedScreen(),
                     Container(),
                   ]
               ),

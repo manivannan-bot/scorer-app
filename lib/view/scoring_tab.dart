@@ -1,33 +1,21 @@
 import 'dart:async';
-import 'dart:math';
-import 'dart:ui';
-
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:laravel_flutter_pusher/laravel_flutter_pusher.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:scorer/models/scoring_detail_response_model.dart';
-
+import 'package:scorer/view/widgets/scorer_grid_four.dart';
+import 'package:scorer/view/widgets/scorer_grid_item.dart';
+import 'package:scorer/view/widgets/scorer_grid_out.dart';
 import 'package:scorer/widgets/custom_vertical_dottedLine.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:sizer/sizer.dart';
-
-
+import '../Scoring screens/wicket_options_bottom_sheet.dart';
 import '../models/player_list_model.dart';
-
 import '../models/save_batsman_request_model.dart';
-import '../out_screens/caught_out_screen.dart';
-import '../out_screens/obstruct_field_screen.dart';
-import '../Scoring screens/retired_screen.dart';
-
 import '../models/score_update_request_model.dart';
-
 import '../models/score_update_response_model.dart';
-import '../out_screens/retired _hurt_screen.dart';
-import '../out_screens/run_out_screens.dart';
-import '../out_screens/timeout_absence.dart';
 import '../out_screens/undo_screen.dart';
 import '../provider/scoring_provider.dart';
 import '../utils/colours.dart';
@@ -37,10 +25,7 @@ import '../widgets/cancel_btn.dart';
 import '../widgets/custom_horizondal_dottedLine.dart';
 import '../widgets/dialog_others.dart';
 import '../widgets/ok_btn.dart';
-import '../out_screens/out_method_dialog.dart';
-import 'bottom_sheet.dart';
-
-
+import 'score_update_bottom_sheet.dart';
 
 class ScoringTab extends StatefulWidget {
   final String matchId;
@@ -49,7 +34,6 @@ class ScoringTab extends StatefulWidget {
 
   final VoidCallback fetchData;
   const ScoringTab(this.matchId, this.team1Id, this.team2Id, this.fetchData, {super.key});
-
 
   @override
   State<ScoringTab> createState() => _ScoringTabState();
@@ -80,7 +64,7 @@ class _ScoringTabState extends State<ScoringTab> {
   List<BowlingPlayers> searchedList = [];
   List<BattingPlayers>? searchedBatsman = [];
 
-  ScoringDetailResponseModel scoringDeatailResponseModel=ScoringDetailResponseModel();
+  ScoringDetailResponseModel scoringDetailResponseModel=ScoringDetailResponseModel();
   ScoreUpdateRequestModel scoreUpdateRequestModel=ScoreUpdateRequestModel();
 
   ScoreUpdateResponseModel scoreUpdateResponseModel=ScoreUpdateResponseModel();
@@ -90,7 +74,8 @@ class _ScoringTabState extends State<ScoringTab> {
       scoreUpdateResponseModel = data1;
     });
   }
-  RefreshController _refreshController = RefreshController();
+
+  RefreshController refreshController = RefreshController();
   String eventData = 'No event received yet';
 
   @override
@@ -110,7 +95,7 @@ class _ScoringTabState extends State<ScoringTab> {
     pusher.subscribe('public.match.list').bind('matches', (event){
 
       setState(() {
-        eventData = 'Event Data: ' + event.toString();
+        eventData = 'Event Data: $event';
       });
       print(eventData);
 
@@ -124,7 +109,7 @@ class _ScoringTabState extends State<ScoringTab> {
         scoringData = value;
         selectedBowlerName=scoringData!.data!.bowling!.playerName.toString();
       });
-      _refreshController.refreshCompleted();
+      refreshController.refreshCompleted();
     });
   }
 
@@ -149,7 +134,8 @@ class _ScoringTabState extends State<ScoringTab> {
     setState(() {
       searching = true;
       searchedText = search;
-      searchedBatsman = itemsBatsman!.where((player) => player.playerName!.toLowerCase().toString().contains(search.toLowerCase())).toList();
+      searchedBatsman = itemsBatsman!.where((player) =>
+          player.playerName!.toLowerCase().toString().contains(search.toLowerCase())).toList();
       if (searchedBatsman!.isEmpty) {
         setState(() {
           isResultEmpty = true;
@@ -164,29 +150,27 @@ class _ScoringTabState extends State<ScoringTab> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    refreshController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     if(scoringData==null || scoringData!.data ==null){
-      return const SizedBox(
-          height: 100,
-          width: 100,
-          child: Center(child: CircularProgressIndicator(
-            backgroundColor: Colors.white,
-          )));
+      return const Center(child: CircularProgressIndicator(
+        backgroundColor: Colors.white,
+      ));
     }
     if(scoringData!.data!.batting!.isEmpty || scoringData!.data!.bowling==null){
-      return scoringData!.data!.batting!.isEmpty? const SizedBox(
-          height: 100,
-          width: 100,
-          child: Center(child: Text('Please Select Batsman'))): const SizedBox(
-            height: 100,
-            width: 100,
-            child: Center(child: Text('Please Select Bowler')));
+      return scoringData!.data!.batting!.isEmpty
+          ? const Center(child: Text('Please Select Batsman'))
+          : const Center(child: Text('Please Select Bowler'));
     }
     if(scoringData!.data!.batting!.length<2){
-      var player=scoringData!.data!.batting!.first.stricker==1?'non_striker_id':'striker_id';
+      // var player=scoringData!.data!.batting!.first.striker==1?'non_striker_id':'striker_id';
      // changeBatsman(player);
-      return const SizedBox(height: 100, width: 100,
-          child: Center(child: Text('Please Select Batsman')));
+      return const Center(child: Text('Please Select Batsman'));
     }
     int totalBallId = 0;
     showError=false;
@@ -195,542 +179,520 @@ class _ScoringTabState extends State<ScoringTab> {
     }
 
     return SmartRefresher(
-      controller: _refreshController,
+      controller: refreshController,
       enablePullDown: true,
       onRefresh: _refreshData,
       child: ListView(
+        shrinkWrap: true,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(5.h),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 12),
-              child: SizedBox(
-                  height: 26.h,
-                  width: 100.w,
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 5.w
+            ),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding:EdgeInsets.only(bottom: 2.h),
+                          child: Row(children: [
+                            Text(
+                              'Batsman',
+                              style: fontMedium.copyWith(color: const Color(0xffD78108),fontSize: 16.sp),
+                            ),
+                            SizedBox(
+                              width: 4.w,
+                            ),
+                            GestureDetector(onTap:()async{
+                              SharedPreferences prefs = await SharedPreferences.getInstance();
+                              var strikerId=prefs.getInt('striker_id')??0;
+                              var nonStrikerId=prefs.getInt('non_striker_id')??0;
+                              await prefs.setInt('non_striker_id',strikerId);
+                              await prefs.setInt('striker_id',nonStrikerId);
+                              setState(() {
+                                if(index1==1){
+                                  index2=1;
+                                  index1=0;
+                                }else{
+                                  index2=0;
+                                  index1=1;
+                                }
+                              });
+                            },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    shape: BoxShape.rectangle,
+                                    color: Colors.black
+
+                                ),
+                                padding: EdgeInsets.symmetric(horizontal: 3.w,vertical: 0.5.h),
+                                child: Text('swap',style: fontMedium.copyWith(color: Colors.white,fontSize: 10.sp),),),
+                            ),
+                          ]),
+                        ),
+                        Row(
+                          children: [
+                            Text('${scoringData!.data!.batting![index1].playerName??'-'}',
+                                style:  fontRegular.copyWith(
+                                    color: Colors.black, fontSize: 10.sp)),
+                            scoringData!.data!.batting![index1].striker == 1
+                                ? SvgPicture.asset(Images.batIcon) :  SizedBox(width:1.w),
+                            Text('${scoringData!.data!.batting![index1].runsScored??'0'}(${scoringData!.data!.batting![index1].ballsFaced??'0'})',
+                                style:  fontRegular.copyWith(
+                                    color: Colors.black, fontSize: 10.sp)),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 1.h,
+                        ),
+                        Row(
+                          children: [
+                            Text((scoringData!.data!.batting?[index2]!=null)?'${scoringData!.data!.batting![index2].playerName??'-'} ':'-',
+                                style:  fontRegular.copyWith(
+                                    color: Colors.black, fontSize: 10.sp)),
+                            scoringData!.data!.batting![index2].striker == 1
+                                ? SvgPicture.asset(Images.batIcon) :  SizedBox(width:1.w),
+                            Text((scoringData!.data!.batting?[index2]!=null)?
+                            '  ${scoringData!.data!.batting![index2].runsScored??'0'}(${scoringData!.data!.batting![index2].ballsFaced??'0'})':'-',
+                                style:  fontRegular.copyWith(
+                                    color: Colors.black, fontSize: 10.sp)),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const CustomVerticalDottedLine(),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(5),
+                      child: Padding(
+                        padding: EdgeInsets.only(left:4.w),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding:EdgeInsets.only(bottom: 2.h),
+                              child: Row(children: [
+                                Text('Bowler',
+                                    style: fontMedium.copyWith(
+                                        color: const Color(0xffD78108),
+                                        fontSize: 16.sp)),
+                                SizedBox(
+                                  width: 4.w,
+                                ),
+                                GestureDetector(onTap:()async{
+                                  changeBowler();
+                                },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(15),
+                                        shape: BoxShape.rectangle,
+                                        color: Colors.black
+
+                                    ),
+                                    padding: EdgeInsets.symmetric(horizontal: 3.w,vertical: 0.5.h),
+                                    child: Text('Change',style: fontMedium.copyWith(color: Colors.white,fontSize: 10.sp),),),
+                                )
+                              ]),
+                            ),
+                            //over data
+                            Text('${selectedBowlerName.isEmpty?scoringData!.data!.bowling!.playerName??'-':selectedBowlerName}  '
+                                '  ${scoringData!.data!.bowling!.totalBalls??'0'}-'
+                                '${scoringData!.data!.bowling!.maiden??'0'}-'
+                                '${scoringData!.data!.bowling!.runsConceded??'0'}-'
+                                '${scoringData!.data!.bowling!.wickets??'0'}',
+                                style:  fontRegular.copyWith(
+                                    color: Colors.black, fontSize: 10.sp)),
+                            SizedBox(height:0.8.h),
+                            //bowler position
+                            Row(
+                                children:[
+                              GestureDetector(
+                                onTap:()async{
+                                setState(() {
+                                  bowlerPosition=0;
+                                });
+                                SharedPreferences pref=await SharedPreferences.getInstance();
+                                await pref.setInt('bowlerPosition', 0);
+                              },
+                                child: Row(children:[
+                                  SvgPicture.asset(Images.stumpIcon1,width:3.w,height: 3.h,),
+                                  Padding(padding: EdgeInsets.only(left: 2.w,),
+                                      child:  Text('OW',style: fontRegular.copyWith(fontSize: 10.sp),)),
+                                ]),
+                              ),
+                              SizedBox(width:8.w),
+                              GestureDetector(
+                                onTap:()async{
+                                  setState(() {
+                                    bowlerPosition=1;
+                                  });
+                                  SharedPreferences pref=await SharedPreferences.getInstance();
+                                  await pref.setInt('bowlerPosition', 1);
+                                },
+                                child: Row(children:[
+                                  Padding(padding: EdgeInsets.only(right: 2.w,),
+                                      child:  Text('RW',style: fontRegular.copyWith(fontSize: 10.sp),)),
+                                  SvgPicture.asset(Images.stumpIcon2,width:3.w,height: 3.h,)
+                                ]),
+                              ),
+                            ]),
+
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 1.h,
+                ),
+                Container(
+                  width: double.maxFinite,
+                  decoration: BoxDecoration(
+                    color: const Color(0xffF9D700),
+                    borderRadius: BorderRadius.circular(10.0)
+                  ),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 3.w, vertical: 2.h),
                   child: Column(
                     children: [
-                      Row(
-                        children: [
-                          Row(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(5),
-                                child: Padding(
-                                  padding:  EdgeInsets.only(right:4.w),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding:EdgeInsets.only(bottom: 2.h),
-                                        child: Row(children: [
-
-                                           Text(
-                                            'Batsman',
-                                            style: fontMedium.copyWith(color: const Color(0xffD78108),fontSize: 16.sp),
-                                          ),
-                                          SizedBox(
-                                            width: 4.w,
-                                          ),
-                                          GestureDetector(onTap:()async{
-                                            SharedPreferences prefs = await SharedPreferences.getInstance();
-                                            var strikerId=prefs.getInt('striker_id')??0;
-                                            var nonStrikerId=prefs.getInt('non_striker_id')??0;
-                                            await prefs.setInt('non_striker_id',strikerId);
-                                            await prefs.setInt('striker_id',nonStrikerId);
-
-
-                                            setState(() {
-                                              if(index1==1){
-                                                index2=1;
-                                                index1=0;
-                                              }else{
-                                                index2=0;
-                                                index1=1;
-                                              }
-                                            });
-                                          },
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(15),
-                                                shape: BoxShape.rectangle,
-                                                  color: Colors.black
-
-                                              ),
-                                              padding: EdgeInsets.symmetric(horizontal: 3.w,vertical: 0.5.h),
-                                            child: Text('swap',style: fontMedium.copyWith(color: Colors.white,fontSize: 10.sp),),),
-                                          ),
-                                        ]),
+                      Text(
+                        'over ${(scoringData!.data!.over!.isNotEmpty)?scoringData!.data!.over!.first.overNumber:'0'}',
+                        style: fontRegular.copyWith(
+                          color: Colors.black,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 2.h),
+                        child: (scoringData!.data!.over!.isNotEmpty)
+                            ? SizedBox(
+                          height: 40,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: <Widget>[
+                              for (int index = 0; index < scoringData!.data!.over!.length; index++)
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    (scoringData!.data!.over![index].runsScored==4 || scoringData!.data!.over![index].runsScored==6)?
+                                    (scoringData!.data!.over![index].runsScored==4)
+                                        ? Container(
+                                      width: 40,
+                                      height: 40,
+                                      margin: const EdgeInsets.symmetric(horizontal: 5),
+                                      decoration: const BoxDecoration(
+                                        color: Colors.black,
+                                        shape: BoxShape.circle,
                                       ),
-                                      Row(
-                                        children: [
-                                          Text('${scoringData!.data!.batting![index1].playerName??'-'}',
-                                              style:  fontRegular.copyWith(
-                                                  color: Colors.black, fontSize: 10.sp)),
-                                          scoringData!.data!.batting![index1].stricker == 1
-                                              ? SvgPicture.asset(Images.batIcon) :  SizedBox(width:1.w),
-                                          Text('${scoringData!.data!.batting![index1].runsScored??'0'}(${scoringData!.data!.batting![index1].ballsFaced??'0'})',
-                                              style:  fontRegular.copyWith(
-                                                  color: Colors.black, fontSize: 10.sp)),
-                                        ],
+                                      child:  CircleAvatar(
+                                          radius: 4.w, // Adjust the radius as needed for the circle size
+                                          backgroundColor: Colors.white,
+                                          child: Image.asset(Images.four)
                                       ),
-                                      SizedBox(
-                                        height: 1.h,
+                                    ):Container(
+                                      width: 40,
+                                      height: 40,
+                                      margin: const EdgeInsets.symmetric(horizontal: 5),
+                                      decoration: const BoxDecoration(
+                                        color: Colors.black,
+                                        shape: BoxShape.circle,
                                       ),
-                                      Row(
-                                        children: [
-                                          Text((scoringData!.data!.batting?[index2]!=null)?'${scoringData!.data!.batting![index2].playerName??'-'} ':'-',
-                                              style:  fontRegular.copyWith(
-                                                  color: Colors.black, fontSize: 10.sp)),
-                                          scoringData!.data!.batting![index2].stricker == 1
-                                              ? SvgPicture.asset(Images.batIcon) :  SizedBox(width:1.w),
-                                          Text((scoringData!.data!.batting?[index2]!=null)?
-                                              '  ${scoringData!.data!.batting![index2].runsScored??'0'}(${scoringData!.data!.batting![index2].ballsFaced??'0'})':'-',
-                                              style:  fontRegular.copyWith(
-                                                  color: Colors.black, fontSize: 10.sp)),
-                                        ],
+                                      child:  CircleAvatar(
+                                          radius: 4.w, // Adjust the radius as needed for the circle size
+                                          backgroundColor: Colors.white,
+                                          child: Image.asset(Images.six)
                                       ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              const CustomVerticalDottedLine(),
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(5),
-                                child: Padding(
-                                  padding: EdgeInsets.only(left:4.w),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding:EdgeInsets.only(bottom: 2.h),
-                                        child: Row(children: [
-                                           Text('Bowler',
-                                              style: fontMedium.copyWith(
-                                                  color: const Color(0xffD78108),
-                                                  fontSize: 16.sp)),
-                                          SizedBox(
-                                            width: 4.w,
-                                          ),
-                                          GestureDetector(onTap:()async{
-                                             changeBowler();
-                                          },
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(15),
-                                                  shape: BoxShape.rectangle,
-                                                  color: Colors.black
-
-                                              ),
-                                              padding: EdgeInsets.symmetric(horizontal: 3.w,vertical: 0.5.h),
-                                              child: Text('Change',style: fontMedium.copyWith(color: Colors.white,fontSize: 10.sp),),),
-                                          )
-                                        ]),
+                                    ):
+                                    Container(
+                                      width: 40,
+                                      height: 40,
+                                      margin: const EdgeInsets.symmetric(horizontal: 5),
+                                      decoration: const BoxDecoration(
+                                        color: Colors.black,
+                                        shape: BoxShape.circle,
                                       ),
-                                      Text('${selectedBowlerName.isEmpty?scoringData!.data!.bowling!.playerName??'-':selectedBowlerName}  '
-                                          '  ${scoringData!.data!.bowling!.totalBalls??'0'}-'
-                                          '${scoringData!.data!.bowling!.maiden??'0'}-'
-                                          '${scoringData!.data!.bowling!.runsConceded??'0'}-'
-                                          '${scoringData!.data!.bowling!.wickets??'0'}',
+                                      child: Center(
+                                        child: Text(
+                                          scoringData!.data!.over![index].slug.toString(),
                                           style:  fontRegular.copyWith(
-                                              color: Colors.black, fontSize: 10.sp)),
-                                      SizedBox(height:0.8.h),
-                                      Row(children:[
-                                       GestureDetector(onTap:()async{
-                                         setState(() {
-                                           bowlerPosition=0;
-                                         });
-                                         SharedPreferences pref=await SharedPreferences.getInstance();
-                                         await pref.setInt('bowlerPosition', 0);
-                                       },
-                                         child: Row(children:[
-                                           SvgPicture.asset(Images.stumpIcon1,width:3.w,height: 3.h,),
-                                           Padding(padding: EdgeInsets.only(left: 2.w,),
-                                               child:  Text('OW',style: fontRegular.copyWith(fontSize: 10.sp),)),
-                                         ]),
-                                       ),
-                                        SizedBox(width:8.w),
-                                          GestureDetector(
-                                            onTap:()async{
-                                              setState(() {
-                                                bowlerPosition=1;
-                                              });
-                                              SharedPreferences pref=await SharedPreferences.getInstance();
-                                              await pref.setInt('bowlerPosition', 1);
-                                            },
-                                            child: Row(children:[
-                                              Padding(padding: EdgeInsets.only(right: 2.w,),
-                                                  child:  Text('RW',style: fontRegular.copyWith(fontSize: 10.sp),)),
-                                              SvgPicture.asset(Images.stumpIcon2,width:3.w,height: 3.h,)
-                                            ]),
+                                            color: Colors.white,
+                                            fontSize: 16,
                                           ),
-                                      ]),
-
-                                    ],
-                                  ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 1.h,
-                      ),
-
-                      //Text('$eventData'),
-                      Column(
-                        children: [
-                          Stack(
-                            children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(15),
-                                    child: Container(
-                                      height: 12.h,
-                                      width: 90.w,
-                                      color: const Color(0xffF9D700),
-                                      child:(scoringData!.data!.over!.isNotEmpty)? ListView(
-                                        scrollDirection: Axis.horizontal,
-                                        children: <Widget>[
-                                          for (int index = 0; index < scoringData!.data!.over!.length; index++)
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              children: [
-                                                (scoringData!.data!.over![index].runsScored==4 || scoringData!.data!.over![index].runsScored==6)?
-                                                (scoringData!.data!.over![index].runsScored==4)?Container(
-                                                  width: 40,
-                                                  height: 40,
-                                                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                                                  decoration: const BoxDecoration(
-                                                    color: Colors.black,
-                                                    shape: BoxShape.circle,
-                                                  ),
-                                                  child:  CircleAvatar(
-                                                      radius: 4.w, // Adjust the radius as needed for the circle size
-                                                      backgroundColor: Colors.white,
-                                                      child: Image.asset(Images.four)
-                                                  ),
-                                                ):Container(
-                                                  width: 40,
-                                                  height: 40,
-                                                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                                                  decoration: const BoxDecoration(
-                                                    color: Colors.black,
-                                                    shape: BoxShape.circle,
-                                                  ),
-                                                  child:  CircleAvatar(
-                                                      radius: 4.w, // Adjust the radius as needed for the circle size
-                                                      backgroundColor: Colors.white,
-                                                      child: Image.asset(Images.six)
-                                                  ),
-                                                ):
-                                                Container(
-                                                  width: 40,
-                                                  height: 40,
-                                                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                                                  decoration: const BoxDecoration(
-                                                    color: Colors.black,
-                                                    shape: BoxShape.circle,
-                                                  ),
-                                                  child: Center(
-                                                    child: Text(
-                                                      scoringData!.data!.over![index].slug.toString(),
-                                                      style:  fontRegular.copyWith(
-                                                        color: Colors.white,
-                                                        fontSize: 16,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                           Row(
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            children: [
-                                              Text('=',
-                                                style: fontRegular.copyWith(
-                                                  color: Colors.black,
-                                                  fontSize: 24,
-                                                ),
-                                              ),
-                                              Text(totalBallId.toString() ?? 'N/A',
-                                                style: fontRegular.copyWith(
-                                                  color: Colors.black,
-                                                  fontSize: 24,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ):const Text(''),
+                                  Text('=',
+                                    style: fontRegular.copyWith(
+                                      color: Colors.black,
+                                      fontSize: 24,
+                                    ),
+                                  ),
+                                  Text(totalBallId.toString() ?? 'N/A',
+                                    style: fontRegular.copyWith(
+                                      color: Colors.black,
+                                      fontSize: 24,
                                     ),
                                   ),
                                 ],
                               ),
-                              Center(
-                                child: Container(
-                                  color: const Color(0xffF9D700),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8, vertical: 4),
-                                  child: Text(
-                                    'over ${(scoringData!.data!.over!.isNotEmpty)?scoringData!.data!.over!.first.overNumber:'0'}',
-                                    style: fontRegular.copyWith(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ),
-                              ),
                             ],
                           ),
-                        ],
-                      )
-                    ],
-                  )),
-            ),
-          ),
-
-          Expanded(
-            child: Container(
-              width: 100.w,
-              color: Colors.black,
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-
-                      Column(
-                          children:[
-                            GestureDetector(
-                              onTap:()async {
-                                SharedPreferences prefs = await SharedPreferences.getInstance();
-                                var overNumber= prefs.getInt('over_number');
-                                var ballNumber= prefs.getInt('ball_number');
-                                var strikerId=prefs.getInt('striker_id')??0;
-                                var nonStrikerId=prefs.getInt('non_striker_id')??0;
-                                var bowlerId=prefs.getInt('bowler_id')??0;
-                                var keeperId=prefs.getInt('wicket_keeper_id')??0;
-
-                                scoreUpdateRequestModel.ballTypeId=0;
-                                scoreUpdateRequestModel.matchId=int.parse(widget.matchId);
-                                scoreUpdateRequestModel.scorerId=1;
-                                scoreUpdateRequestModel.strikerId=strikerId;
-                                scoreUpdateRequestModel.nonStrikerId=nonStrikerId;
-                                scoreUpdateRequestModel.wicketKeeperId=keeperId;
-                                scoreUpdateRequestModel.bowlerId=bowlerId;
-                                scoreUpdateRequestModel.overNumber=overNumber;
-                                scoreUpdateRequestModel.ballNumber=ballNumber;
-                                scoreUpdateRequestModel.runsScored=0;
-                                scoreUpdateRequestModel.extras=0;
-                                scoreUpdateRequestModel.wicket=0;
-                                scoreUpdateRequestModel.dismissalType=0;
-                                scoreUpdateRequestModel.commentary=0;
-                                scoreUpdateRequestModel.innings=1;
-                                scoreUpdateRequestModel.battingTeamId=scoringData!.data!.batting![index1].teamId??0;
-                                scoreUpdateRequestModel.bowlingTeamId=scoringData!.data!.bowling!.teamId??0;
-                                scoreUpdateRequestModel.overBowled=overNumber;
-                                scoreUpdateRequestModel.totalOverBowled=0;
-                                scoreUpdateRequestModel.outByPlayer=0;
-                                scoreUpdateRequestModel.outPlayer=0;
-                                scoreUpdateRequestModel.totalWicket=0;
-                                scoreUpdateRequestModel.fieldingPositionsId=0;
-                                scoreUpdateRequestModel.endInnings=false;
-                                scoreUpdateRequestModel.bowlerPosition=bowlerPosition;
-                                ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value)async {
-                                  setState(() {
-                                    scoreUpdateResponseModel=value;
-                                  });
-                                  SharedPreferences prefs = await SharedPreferences.getInstance();
-                                  await prefs.setInt('over_number', value.data!.overNumber??0);
-                                  await prefs.setInt('ball_number', value.data!.ballNumber??0);
-                                  await prefs.setInt('striker_id', value.data!.strikerId??0);
-                                  await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
-                                  await prefs.setInt('bowler_change', value.data!.bowlerChange??0);
-                                  await prefs.setInt('bowlerPosition', 0);
-                                  if(value.data!.strikerId==0 || value.data!.nonStrikerId==0){
-                                    String player=(value.data!.strikerId==0)?'striker_id':'non_striker_id';
-                                    changeBatsman(player);
-                                  }
-
-                                });
-                                },
-                                child: _buildGridItem('0','DOT', context)),
-
-                            const CustomHorizantalDottedLine(),]),
-                      const CustomVerticalDottedLine(),
-                      Column(
-                          children:[
-                            GestureDetector(onTap:()async {
-                              bool continueOperations = await isBatsman();
-                              if (!continueOperations) {
-                                return;
-                              }
-                              _displayBottomSheet(context,1,scoringData);
-                            }, child: _buildGridItem('1','', context)),
-
-                            const CustomHorizantalDottedLine(),]),
-                      const CustomVerticalDottedLine(),
-                      Column(
-                          children:[
-                            GestureDetector(onTap:()async{
-                              bool continueOperations =  await isBatsman();
-                              if (!continueOperations) {
-                                return;
-                              }
-                              _displayBottomSheet(context,2,scoringData);
-                            }, child:_buildGridItem('2','', context)),
-                            const CustomHorizantalDottedLine(),]),
-                      const CustomVerticalDottedLine(),
-                      Column(
-                          children:[
-                            GestureDetector(onTap:()async{
-                              bool continueOperations = await isBatsman();
-                              if (!continueOperations) {
-                                return;
-                              }
-                              _displayBottomSheet(context,3,scoringData);
-                            }, child:_buildGridItem('3','', context)),
-                            const CustomHorizantalDottedLine(),]),
-                      const CustomVerticalDottedLine(),
-                      Column(
-                          children:[
-                            GestureDetector(onTap:()async{
-                              bool continueOperations = await isBatsman();
-                              if (!continueOperations) {
-                                return;
-                              }
-                              _displayBottomSheet(context,4,scoringData);
-                            }, child:_buildGridItemFour(Images.four,'FOUR', context)),
-                            const CustomHorizantalDottedLine(),]),
+                        )
+                            :const Text(''),
+                      ),
                     ],
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Column(
-                          children:[  GestureDetector(onTap:()async{
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 2.h),
+          Container(
+            color: Colors.black,
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                        children:[
+                          GestureDetector(
+                            onTap:() async {
+                              SharedPreferences prefs = await SharedPreferences.getInstance();
+                              var overNumber= prefs.getInt('over_number');
+                              var ballNumber= prefs.getInt('ball_number');
+                              var strikerId=prefs.getInt('striker_id')??0;
+                              var nonStrikerId=prefs.getInt('non_striker_id')??0;
+                              var bowlerId=prefs.getInt('bowler_id')??0;
+                              var keeperId=prefs.getInt('wicket_keeper_id')??0;
+
+                              scoreUpdateRequestModel.ballTypeId=0;
+                              scoreUpdateRequestModel.matchId=int.parse(widget.matchId);
+                              scoreUpdateRequestModel.scorerId=1;
+                              scoreUpdateRequestModel.strikerId=strikerId;
+                              scoreUpdateRequestModel.nonStrikerId=nonStrikerId;
+                              scoreUpdateRequestModel.wicketKeeperId=keeperId;
+                              scoreUpdateRequestModel.bowlerId=bowlerId;
+                              scoreUpdateRequestModel.overNumber=overNumber;
+                              scoreUpdateRequestModel.ballNumber=ballNumber;
+                              scoreUpdateRequestModel.runsScored=0;
+                              scoreUpdateRequestModel.extras=0;
+                              scoreUpdateRequestModel.wicket=0;
+                              scoreUpdateRequestModel.dismissalType=0;
+                              scoreUpdateRequestModel.commentary=0;
+                              scoreUpdateRequestModel.innings=1;
+                              scoreUpdateRequestModel.battingTeamId=scoringData!.data!.batting![index1].teamId??0;
+                              scoreUpdateRequestModel.bowlingTeamId=scoringData!.data!.bowling!.teamId??0;
+                              scoreUpdateRequestModel.overBowled=overNumber;
+                              scoreUpdateRequestModel.totalOverBowled=0;
+                              scoreUpdateRequestModel.outByPlayer=0;
+                              scoreUpdateRequestModel.outPlayer=0;
+                              scoreUpdateRequestModel.totalWicket=0;
+                              scoreUpdateRequestModel.fieldingPositionsId=0;
+                              scoreUpdateRequestModel.endInnings=false;
+                              scoreUpdateRequestModel.bowlerPosition=bowlerPosition;
+                              ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value)async {
+                                setState(() {
+                                  scoreUpdateResponseModel=value;
+                                });
+                                SharedPreferences prefs = await SharedPreferences.getInstance();
+                                await prefs.setInt('over_number', value.data!.overNumber??0);
+                                await prefs.setInt('ball_number', value.data!.ballNumber??0);
+                                await prefs.setInt('striker_id', value.data!.strikerId??0);
+                                await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
+                                await prefs.setInt('bowler_change', value.data!.bowlerChange??0);
+                                await prefs.setInt('bowlerPosition', 0);
+                                if(value.data!.strikerId==0 || value.data!.nonStrikerId==0){
+                                  String player=(value.data!.strikerId==0)?'striker_id':'non_striker_id';
+                                  changeBatsman(player);
+                                }
+
+                              });
+                              },
+                              child: const ScorerGridItem('0','DOT')),
+
+                          const CustomHorizantalDottedLine(),]),
+                    const CustomVerticalDottedLine(),
+                    Column(
+                        children:[
+                          GestureDetector(onTap:()async {
                             bool continueOperations = await isBatsman();
                             if (!continueOperations) {
                               return;
                             }
-                            _displayBottomSheet(context,6,scoringData);
-                          }, child:_buildGridItemFour(Images.six,'SIX', context)),
-                            const CustomHorizantalDottedLine(),]),
-                      const CustomVerticalDottedLine(),
-                      Column(
-                          children:[ GestureDetector(
-                            onTap: ()async{
-                              bool continueOperations = await isBatsman();
-                              if (!continueOperations) {
-                                return;
-                              }
-                              _displayBottomSheetWide(context,7,scoringData);
-                            },
-                              child: _buildGridItem('WD','WIDE', context)),
-                            const CustomHorizantalDottedLine(),]),
-                      const CustomVerticalDottedLine(),
-                      Column(
-                          children:[ GestureDetector(
-                            onTap: ()async{
-                              bool continueOperations = await isBatsman();
-                              if (!continueOperations) {
-                                return;
-                              }
-                              _displayBottomSheetNoBall(context,8,scoringData);
-                            },
-                              child: _buildGridItem('NB','NO BALL', context)),
-                            const CustomHorizantalDottedLine(),]),
-                      const CustomVerticalDottedLine(),
-                      Column(
-                          children:[ GestureDetector(
-                            onTap:()async{
-                              bool continueOperations = await isBatsman();
-                              if (!continueOperations) {
-                                return;
-                              }
-                              _displayBottomSheetLegBye(context,9,scoringData);
-                            },
-                              child: _buildGridItem('LB','LEG-BYE', context)),
-                            const CustomHorizantalDottedLine(),]),
-                      const CustomVerticalDottedLine(),
-                      Column(
-                          children:[ GestureDetector(
-                            onTap: ()async{
-                              bool continueOperations = await isBatsman();
-                              if (!continueOperations) {
-                                return;
-                              }
-                              _displayBottomSheetByes(context,10,scoringData);
-                            },
-                              child: _buildGridItem('BYE','', context)),
-                            const CustomHorizantalDottedLine(),]),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      GestureDetector(onTap:()async{
-                        bool continueOperations = await isBatsman();
-                        if (!continueOperations) {
-                          return;
-                        }
-                        _displayBottomSheetBonus(context,11,scoringData);
-                      },
-                          child: _buildGridItem('B/P','B/P', context)),
-                      const CustomVerticalDottedLine(),
-                      GestureDetector(onTap: ()async{
-                        bool continueOperations =  await isBatsman();
-                        if (!continueOperations) {
-                          return;
-                        }
-                        _displayBottomSheetMoreRuns(context,5,scoringData);
-                      },
-                          child: _buildGridItem('5,7..','RUNS', context)),
-                      const CustomVerticalDottedLine(),
-                      GestureDetector(
-                          onTap: ()async {
+                            _displayBottomSheet(1,scoringData);
+                          }, child: const ScorerGridItem('1','')),
+
+                          const CustomHorizantalDottedLine(),]),
+                    const CustomVerticalDottedLine(),
+                    Column(
+                        children:[
+                          GestureDetector(onTap:()async{
                             bool continueOperations =  await isBatsman();
                             if (!continueOperations) {
                               return;
                             }
+                            _displayBottomSheet(2,scoringData);
+                          }, child: const ScorerGridItem('2','')),
+                          const CustomHorizantalDottedLine(),]),
+                    const CustomVerticalDottedLine(),
+                    Column(
+                        children:[
+                          GestureDetector(onTap:()async{
+                            bool continueOperations = await isBatsman();
+                            if (!continueOperations) {
+                              return;
+                            }
+                            _displayBottomSheet(3,scoringData);
+                          }, child: const ScorerGridItem('3','')),
+                          const CustomHorizantalDottedLine(),]),
+                    const CustomVerticalDottedLine(),
+                    Column(
+                        children:[
+                          GestureDetector(onTap:()async{
+                            bool continueOperations = await isBatsman();
+                            if (!continueOperations) {
+                              return;
+                            }
+                            _displayBottomSheet(4,scoringData);
+                          }, child:const ScorerGridFour(Images.four,'FOUR')),
+                          const CustomHorizantalDottedLine(),]),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                        children:[  GestureDetector(onTap:()async{
+                          bool continueOperations = await isBatsman();
+                          if (!continueOperations) {
+                            return;
+                          }
+                          _displayBottomSheet(6,scoringData);
+                        }, child:const ScorerGridFour(Images.six,'SIX')),
+                          const CustomHorizantalDottedLine(),]),
+                    const CustomVerticalDottedLine(),
+                    Column(
+                        children:[ GestureDetector(
+                          onTap: ()async{
+                            bool continueOperations = await isBatsman();
+                            if (!continueOperations) {
+                              return;
+                            }
+                            _displayBottomSheetWide(7,scoringData);
+                          },
+                            child: const ScorerGridItem('WD','WIDE')),
+                          const CustomHorizantalDottedLine(),]),
+                    const CustomVerticalDottedLine(),
+                    Column(
+                        children:[ GestureDetector(
+                          onTap: ()async{
+                            bool continueOperations = await isBatsman();
+                            if (!continueOperations) {
+                              return;
+                            }
+                            _displayBottomSheetNoBall(8,scoringData);
+                          },
+                            child: const ScorerGridItem('NB','NO BALL')),
+                          const CustomHorizantalDottedLine(),]),
+                    const CustomVerticalDottedLine(),
+                    Column(
+                        children:[ GestureDetector(
+                          onTap:()async{
+                            bool continueOperations = await isBatsman();
+                            if (!continueOperations) {
+                              return;
+                            }
+                            _displayBottomSheetLegBye(9,scoringData);
+                          },
+                            child: const ScorerGridItem('LB','LEG-BYE')),
+                          const CustomHorizantalDottedLine(),]),
+                    const CustomVerticalDottedLine(),
+                    Column(
+                        children:[ GestureDetector(
+                          onTap: ()async{
+                            bool continueOperations = await isBatsman();
+                            if (!continueOperations) {
+                              return;
+                            }
+                            _displayBottomSheetByes(10,scoringData);
+                          },
+                            child: const ScorerGridItem('BYE','')),
+                          const CustomHorizantalDottedLine(),]),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(onTap:()async{
+                      bool continueOperations = await isBatsman();
+                      if (!continueOperations) {
+                        return;
+                      }
+                      _displayBottomSheetBonus(11,scoringData);
+                    },
+                        child: const ScorerGridItem('B/P','B/P')),
+                    const CustomVerticalDottedLine(),
+                    GestureDetector(onTap: ()async{
+                      bool continueOperations =  await isBatsman();
+                      if (!continueOperations) {
+                        return;
+                      }
+                      _displayBottomSheetMoreRuns(5,scoringData);
+                    },
+                        child: const ScorerGridItem('5,7..','RUNS')),
+                    const CustomVerticalDottedLine(),
+                    GestureDetector(
+                        onTap: ()async {
+                          bool continueOperations =  await isBatsman();
+                          if (!continueOperations) {
+                            return;
+                          }
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 return const UndoScreen();
                               },
                             );
+                            });
+                        },
+                        child: const ScorerGridItem('','UNDO')),
+                    const CustomVerticalDottedLine(),
+                    GestureDetector(
+                        onTap: ()async{
+                          bool continueOperations = await isBatsman();
+                          if (!continueOperations) {
+                            return;
+                          }
+                          _displayBottomSheetOther();},
+                        child: const ScorerGridItem('','OTHER')),
+                    const CustomVerticalDottedLine(),
+                    GestureDetector(
+                        onTap: ()async{
+                          bool continueOperations = await isBatsman();
+                          if (!continueOperations) {
+                            return;
+                          }
+                      _displayBottomOut(scoringData);
                           },
-                          child: _buildGridItem('','UNDO', context)),
-                      const CustomVerticalDottedLine(),
-                      GestureDetector(
-                          onTap: ()async{
-                            bool continueOperations = await isBatsman();
-                            if (!continueOperations) {
-                              return;
-                            }
-                            _displayBottomSheetOther(context);},
-                          child: _buildGridItem('','OTHER', context)),
-                      const CustomVerticalDottedLine(),
-                      GestureDetector(
-                          onTap: ()async{
-                            bool continueOperations = await isBatsman();
-                            if (!continueOperations) {
-                              return;
-                            }
-                        _displayBottomOut(context,scoringData);
-                            },
-                          child: _buildGridItemOut('OUT','', context)),
-                    ],
-                  ),
-                ],
-              ),
+                        child: const ScorerGridOut('OUT','')),
+                  ],
+                ),
+              ],
             ),
           )
-
         ],
       ),
     );
@@ -762,7 +724,7 @@ class _ScoringTabState extends State<ScoringTab> {
          selectedTeamName= value.team!.teamName;
        });
 
-       _displayBatsmanBottomSheet (context,selectedBatsman,(bowlerIndex) {
+       _displayBatsmanBottomSheet (selectedBatsman,(bowlerIndex) {
          setState(() {
            selectedBatsman = bowlerIndex;
            if (selectedBatsman != null) {
@@ -787,7 +749,7 @@ class _ScoringTabState extends State<ScoringTab> {
           itemsBowler = value.bowlingPlayers;
           selectedBTeamName= value.team!.teamName;
         });
-            _displayBowlerBottomSheet (context,selectedBowler,(bowlerIndex) {
+            _displayBowlerBottomSheet (selectedBowler,(bowlerIndex) {
               setState(() {
                 selectedBowler = bowlerIndex;
                 if (selectedBowler != null) {
@@ -798,7 +760,7 @@ class _ScoringTabState extends State<ScoringTab> {
     });
   }
 
-  Future<ScoreUpdateResponseModel?> _displayBottomSheet(BuildContext context, int run, ScoringDetailResponseModel? scoringData) async {
+  Future<ScoreUpdateResponseModel?> _displayBottomSheet(int run, ScoringDetailResponseModel? scoringData) async {
     double screenHeight = MediaQuery.of(context).size.height;
     double sheetHeight = screenHeight * 0.9;
     showModalBottomSheet(
@@ -813,14 +775,15 @@ class _ScoringTabState extends State<ScoringTab> {
             });
 
           },),
-        ); // Create and return the GroundCircle widget here.
+        );
       },
     ).then((value) {
       _refreshData();
     });
+    return null;
   }
 
-  _displayBowlerBottomSheet (BuildContext context, int? selectedBowler,Function(int?) onItemSelected) async{
+  _displayBowlerBottomSheet (int? selectedBowler,Function(int?) onItemSelected) async{
 
     int? localBowlerIndex ;
     isResultEmpty=true;
@@ -1153,7 +1116,7 @@ class _ScoringTabState extends State<ScoringTab> {
     );
   }
 
-  Future<void> _displayBatsmanBottomSheet (BuildContext context, int? selectedBatsman,Function(int?) onItemSelected,String player) async{
+  Future<void> _displayBatsmanBottomSheet (int? selectedBatsman,Function(int?) onItemSelected,String player) async{
     int? localBowlerIndex = selectedBatsman;
     isResultEmpty=true;
     showModalBottomSheet(context: context,
@@ -1252,7 +1215,7 @@ class _ScoringTabState extends State<ScoringTab> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 5.w),
-                    child: Text('${selectedTeamName}',style: fontMedium.copyWith(
+                    child: Text('$selectedTeamName',style: fontMedium.copyWith(
                         fontSize:14.sp,
                         color: AppColor.pri
                     ),),
@@ -1334,7 +1297,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                             .start,
                                         children: [
                                           Text(
-                                            "${searchedBatsman![index].playerName ?? '-'}",
+                                            searchedBatsman![index].playerName ?? '-',
                                             style: fontMedium.copyWith(
                                               fontSize: 12.sp,
                                               color: AppColor.blackColour,
@@ -1435,7 +1398,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                               .start,
                                           children: [
                                             Text(
-                                              "${searchedBatsman![index].playerName ?? '-'}",
+                                              searchedBatsman![index].playerName ?? '-',
                                               style: fontMedium.copyWith(
                                                 fontSize: 12.sp,
                                                 color: AppColor.blackColour,
@@ -1512,7 +1475,9 @@ class _ScoringTabState extends State<ScoringTab> {
                             await ScoringProvider().saveBatsman(requestModel);
                             SharedPreferences prefs = await SharedPreferences.getInstance();
                             await prefs.setInt(player, searchedBatsman![localBowlerIndex!].playerId!);
-                            Navigator.pop(context);
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              Navigator.pop(context);
+                              });
                           }else{
                             setState(() {showError=true;});
                             Timer(const Duration(seconds: 4), () {setState(() {showError = false;});});
@@ -1532,252 +1497,27 @@ class _ScoringTabState extends State<ScoringTab> {
   }
 
 //Out
-  Future<void> _displayBottomOut (BuildContext context,ScoringDetailResponseModel? scoringData) async{
-    int? isOffSideSelected ;
-    int? isWideSelected ;
-    List<Map<String, dynamic>> chipData =[
-      { 'id':18,
-        'label': "Bowled",
-      },
-      { 'id':17,
-        'label': 'Caught',
-      },
-      { 'id':20,
-        'label': 'Stumped',
-      },
-      { 'id':16,
-        'label': 'LBW',
-      },
-      {  'id':17,
-        'label': 'Caught Behind',
-      },
-      { 'id':17,
-        'label': 'Caught & Bowled',
-      },
-      { 'id':15,
-        'label': ' Run Out',
-      },
-      {  'id':21,
-        'label': 'Run out (Mankaded)',
-      },
-      { 'id':14,
-        'label': 'Retired Hurt',
-      },
-      { 'id':19,
-        'label': 'Hit Wicket',
-      },
-      { 'id':14,
-        'label': 'Retired',
-      },
-      { 'id':14,
-        'label': 'Retired Out',
-      },
-      { 'id':14,
-        'label': 'Handling the Ball',
-      },
-      { 'id':14,
-        'label': 'Hit the Ball Twice',
-      },
-      { 'id':14,
-        'label': 'Obstruct the field',
-      },
-      { 'id':14,
-        'label': 'Timed Out',
-      },
-      { 'id':14,
-        'label': 'Absence Hurt',
-      },
-
-    ];
+  Future<void> _displayBottomOut (ScoringDetailResponseModel? scoringData) async {
 
     showModalBottomSheet(context: context,
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
         builder: (context)=> StatefulBuilder(builder: (context, setState){
-          return Container(
-            height: 60.h,
-            // padding: EdgeInsets.symmetric(horizontal: 2.w),
-            decoration: const BoxDecoration(
-                color: AppColor.lightColor,
-                borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding:  EdgeInsets.symmetric(horizontal: 5.w,)+EdgeInsets.only(top: 2.h,),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                          onTap: (){
-                            Navigator.pop(context);
-                          },
-                          child: Icon(Icons.arrow_back,size: 7.w,)),
-                      Text("Select out method",style: fontMedium.copyWith(
-                        fontSize: 17.sp,
-                        color: AppColor.blackColour,
-                      ),),
-                      SizedBox(width: 7.w,),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 1.h,),
-                const Divider(
-                  color: Color(0xffD3D3D3),
-                ),
-                SizedBox(height: 1.h,),
-                Padding(
-                  padding:  EdgeInsets.only(left: 2.w,right: .2.w),
-                  child: Wrap(
-                    spacing: 2.w,
-                    runSpacing: 1.h,
-                    alignment: WrapAlignment.center,
-                    children:chipData.map((data) {
-                      final index = chipData.indexOf(data);
-                      return GestureDetector(
-                        onTap: (){
-                          setState(() {
-                            isWideSelected=index;
-                          });
-                          if (data['label'] == 'Bowled'){
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return OutMethodDialog(label: 'Bowled', Id: data['id'], scoringData: scoringData!);
-                              },
-                            );
-                          }
-                          if (data['label'] == 'LBW'){
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return OutMethodDialog(label: 'LBW',Id: data['id'],scoringData: scoringData!);
-                              },
-                            );
-                          }
-                          if (data['label'] == 'Caught Behind'){
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return OutMethodDialog(label: 'Caught Behind',Id: data['id'],scoringData: scoringData!);
-                              },
-                            );
-                          }
-                          if (data['label'] == 'Caught & Bowled'){
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return OutMethodDialog(label: 'Caught & Bowled',Id: data['id'],scoringData: scoringData!);
-                              },
-                            );
-                          }
-                          if (data['label'] == 'Run out (Mankaded)'){
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return OutMethodDialog(label: 'Mankaded',Id: data['id'],scoringData: scoringData!);
-                              },
-                            );
-                          }
-                          if (data['label'] == 'Hit Wicket'){
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return OutMethodDialog(label: 'Hit Wicket',Id: data['id'],scoringData: scoringData!);
-                              },
-                            );
-                          }
-                          if (data['label'] == 'Handling the Ball'){
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return OutMethodDialog(label: 'Handling the Ball',Id: data['id'],scoringData: scoringData!);
-                              },
-                            );
-                          }
-                          if (data['label'] == 'Hit the Ball Twice'){
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return OutMethodDialog(label: 'Hit the Ball Twice',Id: data['id'],scoringData: scoringData!);
-                              },
-                            );
-                          }
-                          if (data['label'] == ' Run Out'){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => RunOutScreen(ballType:data['id'],scoringData: scoringData!)));
-                          }
-                          if (data['label'] == 'Caught'){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => CaughtOutScreen(ballType:data['id'],scoringData: scoringData!)));
-                          }
-                          if (data['label'] == 'Retired Hurt'){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: 'Retired Hurt', checkcount: "Don't count the ball",ballType:data['id'],scoringData: scoringData!,)));
-                          }
-                          if (data['label'] == 'Retired Out'){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: 'Retired Out', checkcount: "Don't count the ball",ballType:data['id'],scoringData: scoringData!,)));
-                          }
-                          if (data['label'] == 'Timed Out'){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => TimeOutAbsence(label: 'Timed out',ballType:data['id'],scoringData: scoringData!, )));
-                          }
-                          if (data['label'] == 'Absence Hurt'){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => TimeOutAbsence(label: 'Absence hurt',ballType:data['id'],scoringData: scoringData!,)));
-                          }
-                          if (data['label'] == 'Stumped'){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: 'Stumped', checkcount: "Wide Ball?",ballType:data['id'],scoringData: scoringData!,)));
-                          }
-                          if (data['label'] == 'Retired'){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredScreens(ballType:data['id'],scoringData: scoringData!,)));
-                          }
-                          if (data['label'] == 'Obstruct the field' ){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => ObstructTheField(ballType:data['id'],scoringData: scoringData!,)));
-                          }
-
-                        },
-                        child: Chip(
-                          padding: EdgeInsets.symmetric(horizontal: 2.w,vertical: 0.8.h),
-                          label: Text(data['label'],style: fontSemiBold.copyWith(
-                              fontSize: 12.sp,
-                              color: AppColor.blackColour
-                          ),),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            side: const BorderSide(
-                              color: Color(0xffDADADA),
-                            ),
-                          ),
-                          backgroundColor: isWideSelected==index? AppColor.primaryColor : const Color(0xffF8F9FA),
-                          // backgroundColor:AppColor.lightColor
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-            ),
-          );
+          return WicketOptionsBottomSheet(scoringData);
         })
     ).then((value)async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var strikerId=prefs.getInt('striker_id')??0;
       var nonStrikerId=prefs.getInt('non_striker_id')??0;
+      widget.fetchData();
       if(strikerId==0 || nonStrikerId==0 ) {
         String player=(strikerId==0)?'striker_id':'non_striker_id';
         changeBatsman(player);
       }
     });
-
-
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    _refreshController.dispose();
-  }
-
-
-  Future<void> _displayBottomSheetOther (BuildContext context) async{
-    int? isOffSideSelected ;
+  Future<void> _displayBottomSheetOther () async{
     int? isWideSelected ;
     List<Map<String, dynamic>> chipData =[
       {
@@ -1811,7 +1551,6 @@ class _ScoringTabState extends State<ScoringTab> {
         builder: (context)=> StatefulBuilder(builder: (context, setState){
           return Container(
             height: 40.h,
-            // padding: EdgeInsets.symmetric(horizontal: 2.w),
             decoration: const BoxDecoration(
                 color: AppColor.lightColor,
                 borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
@@ -1901,13 +1640,12 @@ class _ScoringTabState extends State<ScoringTab> {
                             );
                           }
                           if (data['label'] == 'Settings'){
-                            _displayBottomSheetSettings(context);
+                            _displayBottomSheetSettings();
                           }
                           if (data['label'] == 'Change Batsman'){
                             // String player=(value.data!.strikerId==0)?'striker_id':'non_striker_id';
                             // changeBatsman(player);
                           }
-
                         },
                         child: Chip(
                           padding: EdgeInsets.symmetric(horizontal: 2.w,vertical: 0.8.h),
@@ -1935,9 +1673,7 @@ class _ScoringTabState extends State<ScoringTab> {
     );
   }
 
-
-
-Future<void> _displayBottomSheetWide (BuildContext context, int balltype, ScoringDetailResponseModel? scoringData) async{
+Future<void> _displayBottomSheetWide (int ballType, ScoringDetailResponseModel? scoringData) async{
   int? isOffSideSelected =0;
   int? isWideSelected ;
   bool showError =false;
@@ -2129,7 +1865,7 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
 
                             if(isWideSelected!=null) {
                               ScoreUpdateRequestModel scoreUpdateRequestModel = ScoreUpdateRequestModel();
-                              scoreUpdateRequestModel.ballTypeId = balltype;
+                              scoreUpdateRequestModel.ballTypeId = ballType;
                               scoreUpdateRequestModel.matchId = scoringData!.data!.batting![0].matchId;
                               scoreUpdateRequestModel.scorerId = 1;
                               scoreUpdateRequestModel.strikerId = strikerId;
@@ -2200,7 +1936,7 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
   );
 }
 
-Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,ScoringDetailResponseModel? scoringData) async{
+Future<void> _displayBottomSheetNoBall (int ballType,ScoringDetailResponseModel? scoringData) async{
   int? isOffSideSelected=0 ;
   int? isWideSelected ;
   bool showError =false;
@@ -2484,7 +2220,7 @@ Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,Scorin
   );
 }
 
-Future<void> _displayBottomSheetLegBye (BuildContext context, int ballType,ScoringDetailResponseModel? scoringData) async{
+Future<void> _displayBottomSheetLegBye (int ballType,ScoringDetailResponseModel? scoringData) async{
   int? isOffSideSelected ;
   int? isWideSelected ;
   List<Map<String, dynamic>> chipData =[
@@ -2649,7 +2385,7 @@ Future<void> _displayBottomSheetLegBye (BuildContext context, int ballType,Scori
   );
 }
 
-Future<void> _displayBottomSheetByes (BuildContext context,int ballType,ScoringDetailResponseModel? scoringData) async{
+Future<void> _displayBottomSheetByes (int ballType,ScoringDetailResponseModel? scoringData) async{
   int? isOffSideSelected ;
   int? isWideSelected ;
   List<Map<String, dynamic>> chipData =[
@@ -2817,7 +2553,7 @@ Future<void> _displayBottomSheetByes (BuildContext context,int ballType,ScoringD
   );
 }
 
-Future<void> _displayBottomSheetBonus (BuildContext context, int? ballType, ScoringDetailResponseModel? scoringData,) async{
+Future<void> _displayBottomSheetBonus (int? ballType, ScoringDetailResponseModel? scoringData) async{
   int? isOffSideSelected=1 ;
   int? isWideSelected ;
   bool showError=false;
@@ -2874,7 +2610,6 @@ Future<void> _displayBottomSheetBonus (BuildContext context, int? ballType, Scor
       builder: (context)=> StatefulBuilder(builder: (context, setState){
         return Container(
           height: 35.h,
-          // padding: EdgeInsets.symmetric(horizontal: 2.w),
           decoration: const BoxDecoration(
               color: AppColor.lightColor,
               borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
@@ -3068,7 +2803,7 @@ Future<void> _displayBottomSheetBonus (BuildContext context, int? ballType, Scor
 
 }
 
-Future<void> _displayBottomSheetMoreRuns (BuildContext context,int ballType,ScoringDetailResponseModel? scoringData) async{
+Future<void> _displayBottomSheetMoreRuns (int ballType,ScoringDetailResponseModel? scoringData) async{
   int? isOffSideSelected ;
   int? isWideSelected ;
   bool showError =false;
@@ -3239,7 +2974,9 @@ Future<void> _displayBottomSheetMoreRuns (BuildContext context,int ballType,Scor
                             await prefs.setInt('non_striker_id', value.data!.nonStrikerId ?? 0);
                             await prefs.setInt('bowler_change', value.data!.bowlerChange ?? 0);
                             await prefs.setInt('bowlerPosition',0);
-                            Navigator.pop(context);
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              Navigator.pop(context);
+                              });
                           });
                         }else{
                                 setState(() {
@@ -3268,7 +3005,7 @@ Future<void> _displayBottomSheetMoreRuns (BuildContext context,int ballType,Scor
 }
 
 
-Future<void> _displayBottomSheetSettings (BuildContext context) async{
+Future<void> _displayBottomSheetSettings () async{
   bool value1=false;
   bool value2=false;
   bool value3=false;
@@ -3452,6 +3189,7 @@ Future<void> _displayBottomSheetSettings (BuildContext context) async{
   );
 
 }
+
   Future<int?> getScoringArea() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     return pref.getInt('fourOrSix')??0;
@@ -3472,68 +3210,5 @@ Future<void> _displayBottomSheetSettings (BuildContext context) async{
 
 }
 
-Widget _buildGridItem(String index,String text, BuildContext context) {
-  return Container(
-    height: 12.h,
-    width: 19.w,
-    decoration: const BoxDecoration(shape: BoxShape.rectangle,color: Colors.black,),
-    child: Column(
-      children: [
-        SizedBox(height: 2.h,),
-        CircleAvatar(
-          radius: 6.w, // Adjust the radius as needed for the circle size
-          backgroundColor: Colors.white,
-          child: Text(
-            "$index",
-            style:  fontRegular.copyWith(color: Colors.black, fontSize: 2.h),
-          ),
-        ),
-        SizedBox(height:  0.5.h,),
-        Text('$text', style:  fontRegular.copyWith(color: Colors.white)),
-      ],
-    ),
-  );
-}
-Widget _buildGridItemFour(String index,String text, BuildContext context) {
-  return Container(
-    height: 12.h,
-    width: 19.w,
-    decoration: const BoxDecoration(shape: BoxShape.rectangle,color: Colors.black,),
-    child: Column(
-      children: [
-        SizedBox(height: 2.h,),
-        CircleAvatar(
-            radius: 6.w, // Adjust the radius as needed for the circle size
-            backgroundColor: Colors.white,
-            child: Image.asset(index)
-        ),
-        SizedBox(height: 0.5.h,),
-        Text('$text', style:  fontRegular.copyWith(color: Colors.white)),
-      ],
-    ),
-  );
-}
-Widget _buildGridItemOut(String index,String text, BuildContext context) {
-  return Container(
-    height: 12.h,
-    width: 19.w,
-    decoration: const BoxDecoration(shape: BoxShape.rectangle,color: Colors.black,),
-    child: Column(
-      children: [
-        SizedBox(height: 02.h,),
-        CircleAvatar(
-          radius: 6.w, // Adjust the radius as needed for the circle size
-          backgroundColor: Colors.red,
-          child: Text(
-            "$index",
-            style:  fontRegular.copyWith(color: Colors.white, fontSize: 2.h),
-          ),
-        ),
-        SizedBox(height: 0.5.h,),
-        Text('$text', style:  fontRegular.copyWith(color: Colors.white)),
-      ],
-    ),
-  );
-}
 
 
