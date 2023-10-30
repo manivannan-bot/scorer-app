@@ -383,6 +383,7 @@ class _ObstructTheFieldState extends State<ObstructTheField> {
                       var strikerId=prefs.getInt('striker_id')??0;
                       var nonStrikerId=prefs.getInt('non_striker_id')??0;
                       var bowlerId=prefs.getInt('bowler_id')??0;
+var oversBowled=prefs.getInt('overs_bowled')??0;
                       var keeperId=prefs.getInt('wicket_keeper_id')??0;
                       var bowlerPosition=prefs.getInt('bowlerPosition')??0;
 
@@ -404,7 +405,7 @@ class _ObstructTheFieldState extends State<ObstructTheField> {
                       scoreUpdateRequestModel.innings=1;
                       scoreUpdateRequestModel.battingTeamId=widget.scoringData!.data!.batting![0].teamId??0;
                       scoreUpdateRequestModel.bowlingTeamId=widget.scoringData!.data!.bowling!.teamId??0;
-                      scoreUpdateRequestModel.overBowled=overNumber;
+                      scoreUpdateRequestModel.overBowled=oversBowled;
                       scoreUpdateRequestModel.totalOverBowled=0;
                       scoreUpdateRequestModel.outByPlayer=0;
                       scoreUpdateRequestModel.outPlayer=widget.scoringData!.data!.batting![isSelected].playerId;

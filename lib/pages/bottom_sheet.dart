@@ -283,7 +283,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                     )
                   ],
                 ),
-                ((widget.run==4 || widget.run==6)|| isFourOrSix!=1 )?Center(
+                ((widget.run==4 || widget.run==6)|| isFourOrSix!=0 )?Center(
                   child: SizedBox(
                     height: 550,
                     width:500,
@@ -851,6 +851,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                         var strikerId=prefs.getInt('striker_id')??0;
                         var nonStrikerId=prefs.getInt('non_striker_id')??0;
                         var bowlerId=prefs.getInt('bowler_id')??0;
+var oversBowled=prefs.getInt('overs_bowled')??0;
                         var keeperId=prefs.getInt('wicket_keeper_id')??0;
                         var bowlerPosition=prefs.getInt('bowlerPosition')??0;
 
@@ -871,7 +872,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                         scoreUpdateRequestModel.innings=1;
                         scoreUpdateRequestModel.battingTeamId=widget.scoringData.data!.batting![0].teamId??0;
                         scoreUpdateRequestModel.bowlingTeamId=widget.scoringData.data!.bowling!.teamId??0;
-                        scoreUpdateRequestModel.overBowled=overNumber;
+                        scoreUpdateRequestModel.overBowled=oversBowled;
                         scoreUpdateRequestModel.totalOverBowled=0;
                         scoreUpdateRequestModel.outByPlayer=0;
                         scoreUpdateRequestModel.outPlayer=0;

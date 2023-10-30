@@ -400,7 +400,13 @@ class _EndInningsState extends State<EndInnings> {
 
                       SharedPreferences pref=await SharedPreferences.getInstance();
                       var innings=(pref.getInt('current_innings')??1)+1;
-                      ScoringProvider().endInnings(int.parse(widget.matchId), 2);
+                      ScoringProvider().endInnings(int.parse(widget.matchId), 2).then((value) async{
+                        SharedPreferences prefs = await SharedPreferences.getInstance();
+                        prefs.remove('striker_id');
+                        prefs.remove('non_striker_id');
+                        prefs.remove('bowler_id');
+                        prefs.remove('wicket_keeper_id');
+                      });
                       Navigator.pop(context);
                     },
                     child:  OkBtn("ok")),

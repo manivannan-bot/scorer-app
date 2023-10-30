@@ -229,6 +229,7 @@ class _CaughtOutScreenState extends State<CaughtOutScreen> {
                       var strikerId=prefs.getInt('striker_id')??0;
                       var nonStrikerId=prefs.getInt('non_striker_id')??0;
                       var bowlerId=prefs.getInt('bowler_id')??0;
+var oversBowled=prefs.getInt('overs_bowled')??0;
                       var keeperId=prefs.getInt('wicket_keeper_id')??0;
                       var bowlerPosition=prefs.getInt('bowlerPosition')??0;
 
@@ -254,7 +255,7 @@ class _CaughtOutScreenState extends State<CaughtOutScreen> {
                             .scoringData!.data!.batting![0].teamId ?? 0;
                         scoreUpdateRequestModel.bowlingTeamId = widget
                             .scoringData!.data!.bowling!.teamId ?? 0;
-                        scoreUpdateRequestModel.overBowled = overNumber;
+                        scoreUpdateRequestModel.overBowled=oversBowled;
                         scoreUpdateRequestModel.totalOverBowled = 0;
                         scoreUpdateRequestModel.outByPlayer = selectedBowlerId;
                         scoreUpdateRequestModel.outPlayer = strikerId;

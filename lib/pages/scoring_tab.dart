@@ -513,6 +513,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                 var strikerId=prefs.getInt('striker_id')??0;
                                 var nonStrikerId=prefs.getInt('non_striker_id')??0;
                                 var bowlerId=prefs.getInt('bowler_id')??0;
+                                var oversBowled=prefs.getInt('overs_bowled')??0;
                                 var keeperId=prefs.getInt('wicket_keeper_id')??0;
 
                                 scoreUpdateRequestModel.ballTypeId=0;
@@ -532,7 +533,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                 scoreUpdateRequestModel.innings=1;
                                 scoreUpdateRequestModel.battingTeamId=scoringData!.data!.batting![index1].teamId??0;
                                 scoreUpdateRequestModel.bowlingTeamId=scoringData!.data!.bowling!.teamId??0;
-                                scoreUpdateRequestModel.overBowled=overNumber;
+                                scoreUpdateRequestModel.overBowled=oversBowled;
                                 scoreUpdateRequestModel.totalOverBowled=0;
                                 scoreUpdateRequestModel.outByPlayer=0;
                                 scoreUpdateRequestModel.outPlayer=0;
@@ -1134,6 +1135,7 @@ class _ScoringTabState extends State<ScoringTab> {
                           if(localBowlerIndex!=null){
                           SharedPreferences prefs = await SharedPreferences.getInstance();
                           await prefs.setInt('bowler_id', searchedList![localBowlerIndex!].playerId!);
+                          await prefs.setInt('overs_bowled', searchedList![localBowlerIndex!].oversBowled!);
                           await prefs.setInt('bowler_change', 0);
                           Navigator.pop(context);
                           }else{
@@ -1536,55 +1538,55 @@ class _ScoringTabState extends State<ScoringTab> {
     int? isOffSideSelected ;
     int? isWideSelected ;
     List<Map<String, dynamic>> chipData =[
-      { 'id':18,
+      { 'id':15,
         'label': "Bowled",
       },
-      { 'id':17,
+      { 'id':32,
         'label': 'Caught',
       },
-      { 'id':20,
+      { 'id':16,
         'label': 'Stumped',
       },
-      { 'id':16,
+      { 'id':17,
         'label': 'LBW',
       },
-      {  'id':17,
+      {  'id':18,
         'label': 'Caught Behind',
       },
-      { 'id':17,
+      { 'id':19,
         'label': 'Caught & Bowled',
       },
-      { 'id':15,
+      { 'id':20,
         'label': ' Run Out',
       },
       {  'id':21,
         'label': 'Run out (Mankaded)',
       },
-      { 'id':14,
+      { 'id':22,
         'label': 'Retired Hurt',
       },
-      { 'id':19,
+      { 'id':23,
         'label': 'Hit Wicket',
       },
-      { 'id':14,
+      { 'id':24,
         'label': 'Retired',
       },
-      { 'id':14,
+      { 'id':25,
         'label': 'Retired Out',
       },
-      { 'id':14,
+      { 'id':26,
         'label': 'Handling the Ball',
       },
-      { 'id':14,
+      { 'id':27,
         'label': 'Hit the Ball Twice',
       },
-      { 'id':14,
+      { 'id':28,
         'label': 'Obstruct the field',
       },
-      { 'id':14,
+      { 'id':29,
         'label': 'Timed Out',
       },
-      { 'id':14,
+      { 'id':30,
         'label': 'Absence Hurt',
       },
 
@@ -2121,6 +2123,7 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
                             var strikerId=prefs.getInt('striker_id')??0;
                             var nonStrikerId=prefs.getInt('non_striker_id')??0;
                             var bowlerId=prefs.getInt('bowler_id')??0;
+var oversBowled=prefs.getInt('overs_bowled')??0;
                             var keeperId=prefs.getInt('wicket_keeper_id')??0;
                             var bowlerPosition=prefs.getInt('bowlerPosition')??0;
                             var wideRun=prefs.getInt('wideRun');
@@ -2150,7 +2153,7 @@ Future<void> _displayBottomSheetWide (BuildContext context, int balltype, Scorin
                                   scoringData!.data!.batting![0].teamId ?? 0;
                               scoreUpdateRequestModel.bowlingTeamId =
                                   scoringData!.data!.bowling!.teamId ?? 0;
-                              scoreUpdateRequestModel.overBowled=overNumber ;
+                              scoreUpdateRequestModel.overBowled=oversBowled ;
                               scoreUpdateRequestModel.totalOverBowled = 0;
                               scoreUpdateRequestModel.outByPlayer = 0;
                               scoreUpdateRequestModel.outPlayer = 0;
@@ -2406,6 +2409,7 @@ Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,Scorin
                         var strikerId=prefs.getInt('striker_id')??0;
                         var nonStrikerId=prefs.getInt('non_striker_id')??0;
                         var bowlerId=prefs.getInt('bowler_id')??0;
+var oversBowled=prefs.getInt('overs_bowled')??0;
                         var keeperId=prefs.getInt('wicket_keeper_id')??0;
                         var bowlerPosition=prefs.getInt('bowlerPosition')??0;
                         var noBallRun=prefs.getInt('noBallRun');
@@ -2433,7 +2437,7 @@ Future<void> _displayBottomSheetNoBall (BuildContext context,int ballType,Scorin
                               scoringData!.data!.batting![0].teamId ?? 0;
                           scoreUpdateRequestModel.bowlingTeamId =
                               scoringData!.data!.bowling!.teamId ?? 0;
-                          scoreUpdateRequestModel.overBowled=overNumber ;
+                          scoreUpdateRequestModel.overBowled=oversBowled ;
                           scoreUpdateRequestModel.totalOverBowled = 0;
                           scoreUpdateRequestModel.outByPlayer = 0;
                           scoreUpdateRequestModel.outPlayer = 0;
@@ -2593,6 +2597,7 @@ Future<void> _displayBottomSheetLegBye (BuildContext context, int ballType,Scori
                         var strikerId=prefs.getInt('striker_id')??0;
                         var nonStrikerId=prefs.getInt('non_striker_id')??0;
                         var bowlerId=prefs.getInt('bowler_id')??0;
+var oversBowled=prefs.getInt('overs_bowled')??0;
                         var keeperId=prefs.getInt('wicket_keeper_id')??0;
                         var bowlerPosition=prefs.getInt('bowlerPosition')??0;
 
@@ -2614,7 +2619,7 @@ Future<void> _displayBottomSheetLegBye (BuildContext context, int ballType,Scori
                         scoreUpdateRequestModel.innings=1;
                         scoreUpdateRequestModel.battingTeamId=scoringData!.data!.batting![0].teamId??0;
                         scoreUpdateRequestModel.bowlingTeamId=scoringData!.data!.bowling!.teamId??0;
-                        scoreUpdateRequestModel.overBowled=overNumber;
+                        scoreUpdateRequestModel.overBowled=oversBowled;
                         scoreUpdateRequestModel.totalOverBowled=0;
                         scoreUpdateRequestModel.outByPlayer=0;
                         scoreUpdateRequestModel.outPlayer=0;
@@ -2760,6 +2765,7 @@ Future<void> _displayBottomSheetByes (BuildContext context,int ballType,ScoringD
                         var strikerId=prefs.getInt('striker_id')??0;
                         var nonStrikerId=prefs.getInt('non_striker_id')??0;
                         var bowlerId=prefs.getInt('bowler_id')??0;
+var oversBowled=prefs.getInt('overs_bowled')??0;
                         var keeperId=prefs.getInt('wicket_keeper_id')??0;
                         var bowlerPosition=prefs.getInt('bowlerPosition')??0;
 
@@ -2782,7 +2788,7 @@ Future<void> _displayBottomSheetByes (BuildContext context,int ballType,ScoringD
                         scoreUpdateRequestModel.innings=1;
                         scoreUpdateRequestModel.battingTeamId=scoringData!.data!.batting![0].teamId??0;
                         scoreUpdateRequestModel.bowlingTeamId=scoringData!.data!.bowling!.teamId??0;
-                        scoreUpdateRequestModel.overBowled=overNumber;
+                        scoreUpdateRequestModel.overBowled=oversBowled;
                         scoreUpdateRequestModel.totalOverBowled=0;
                         scoreUpdateRequestModel.outByPlayer=0;
                         scoreUpdateRequestModel.outPlayer=0;
@@ -3000,6 +3006,7 @@ Future<void> _displayBottomSheetBonus (BuildContext context, int? ballType, Scor
                         var strikerId=prefs.getInt('striker_id')??0;
                         var nonStrikerId=prefs.getInt('non_striker_id')??0;
                         var bowlerId=prefs.getInt('bowler_id')??0;
+var oversBowled=prefs.getInt('overs_bowled')??0;
                         var keeperId=prefs.getInt('wicket_keeper_id')??0;
                         var bowlerPosition=prefs.getInt('bowlerPosition')??0;
 
@@ -3022,7 +3029,7 @@ Future<void> _displayBottomSheetBonus (BuildContext context, int? ballType, Scor
                           scoreUpdateRequestModel.innings=1;
                           scoreUpdateRequestModel.battingTeamId=scoringData!.data!.batting![0].teamId??0;
                           scoreUpdateRequestModel.bowlingTeamId=scoringData!.data!.bowling!.teamId??0;
-                          scoreUpdateRequestModel.overBowled=overNumber;
+                          scoreUpdateRequestModel.overBowled=oversBowled;
                           scoreUpdateRequestModel.totalOverBowled=0;
                           scoreUpdateRequestModel.outByPlayer=0;
                           scoreUpdateRequestModel.outPlayer=0;
@@ -3187,6 +3194,7 @@ Future<void> _displayBottomSheetMoreRuns (BuildContext context,int ballType,Scor
                         var strikerId=prefs.getInt('striker_id')??0;
                         var nonStrikerId=prefs.getInt('non_striker_id')??0;
                         var bowlerId=prefs.getInt('bowler_id')??0;
+var oversBowled=prefs.getInt('overs_bowled')??0;
                         var keeperId=prefs.getInt('wicket_keeper_id')??0;
                         var bowlerPosition=prefs.getInt('bowlerPosition')??0;
 
@@ -3217,7 +3225,7 @@ Future<void> _displayBottomSheetMoreRuns (BuildContext context,int ballType,Scor
                               scoringData!.data!.batting![0].teamId ?? 0;
                           scoreUpdateRequestModel.bowlingTeamId =
                               scoringData!.data!.bowling!.teamId ?? 0;
-                          scoreUpdateRequestModel.overBowled=overNumber ;
+                          scoreUpdateRequestModel.overBowled=oversBowled ;
                           scoreUpdateRequestModel.totalOverBowled = 0;
                           scoreUpdateRequestModel.outByPlayer = 0;
                           scoreUpdateRequestModel.outPlayer = 0;

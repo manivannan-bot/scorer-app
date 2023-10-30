@@ -17,152 +17,7 @@ class ScoreCardOne extends StatefulWidget {
 }
 
 class _ScoreCardOneState extends State<ScoreCardOne> {
-  List<Map<String,dynamic>> itemList=[
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Akash",
-      "team":"(Toss and Tails)",
-      "dot":".",
-      "batsman":"Right hand batsman",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Vigneswaran",
-      "team":"(Royal Kings)",
-      "dot":".",
-      "batsman":"All rounder",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Akash",
-      "team":"(Toss and Tails)",
-      "dot":".",
-      "batsman":"Right hand batsman",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Vigneswaran",
-      "team":"(Royal Kings)",
-      "dot":".",
-      "batsman":"All rounder",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Akash",
-      "team":"(Toss and Tails)",
-      "dot":".",
-      "batsman":"Right hand batsman",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Vigneswaran",
-      "team":"(Royal Kings)",
-      "dot":".",
-      "batsman":"All rounder",
-      "button":"Connect",
-    },
 
-  ];
-  List<Map<String,dynamic>> gridList=[
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Akash",
-      "team":"(Toss and Tails)",
-      "dot":".",
-      "batsman":"Right hand batsman",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Vigneswaran",
-      "team":"(Royal Kings)",
-      "dot":".",
-      "batsman":"All rounder",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Akash",
-      "team":"(Toss and Tails)",
-      "dot":".",
-      "batsman":"Right hand batsman",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Vigneswaran",
-      "team":"(Royal Kings)",
-      "dot":".",
-      "batsman":"All rounder",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Akash",
-      "team":"(Toss and Tails)",
-      "dot":".",
-      "batsman":"Right hand batsman",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Vigneswaran",
-      "team":"(Royal Kings)",
-      "dot":".",
-      "batsman":"All rounder",
-      "button":"Connect",
-    },
-
-  ];
-  List<Map<String,dynamic>> itemsList=[
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Akash",
-      "team":"(Toss and Tails)",
-      "dot":".",
-      "batsman":"Right hand batsman",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Vigneswaran",
-      "team":"(Royal Kings)",
-      "dot":".",
-      "batsman":"All rounder",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Akash",
-      "team":"(Toss and Tails)",
-      "dot":".",
-      "batsman":"Right hand batsman",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Vigneswaran",
-      "team":"(Royal Kings)",
-      "dot":".",
-      "batsman":"All rounder",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Akash",
-      "team":"(Toss and Tails)",
-      "dot":".",
-      "batsman":"Right hand batsman",
-      "button":"Connect",
-    },
-
-
-  ];
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -235,6 +90,9 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
               },
               itemCount: widget.scoreCardData.batting!.length,
               itemBuilder: (BuildContext, int index) {
+                if(widget.scoreCardData.batting!.isEmpty){
+                  return Text('No data found');
+                }
                 final item = widget.scoreCardData.batting![index];
                 return Row(
                   children: [
@@ -250,7 +108,8 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                                 color: AppColor.blackColour,
                               ),),
                               SizedBox(width: 1.w,),
-                              SvgPicture.asset(Images.batIcon,width: 4.w,color: AppColor.blackColour,),
+                              (item.isOut!=1)?
+                              SvgPicture.asset(Images.batIcon,width: 4.w,color: AppColor.blackColour,):Text(''),
                             ],
                           ),
                           SizedBox(height: 0.5.h,),
@@ -370,6 +229,9 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
       itemCount: widget.scoreCardData.yetToBatPlayers!.length,
       shrinkWrap: true,
       itemBuilder: (BuildContext context, int index) {
+        if(widget.scoreCardData.yetToBatPlayers!.isEmpty){
+          return Text('No data found');
+        }
         final item = widget.scoreCardData.yetToBatPlayers![index];
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -480,6 +342,9 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
               },
               itemCount: widget.scoreCardData.bowling!.length,
               itemBuilder: (BuildContext, int index) {
+                if(widget.scoreCardData.bowling!.isEmpty){
+                  return Text('No data found');
+                }
                 final item = widget.scoreCardData.bowling![index];
                 return Row(
                   children: [
@@ -498,7 +363,8 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                                 ),),
                               ),
                               SizedBox(width: 1.w,),
-                              SvgPicture.asset(Images.ballBlackIcon,width: 4.w,color: AppColor.blackColour,),
+                              (item.active==1)?
+                              SvgPicture.asset(Images.ballBlackIcon,width: 4.w,color: AppColor.blackColour,):Text(''),
                             ],
                           ),
                           SizedBox(height: 1.h,),
@@ -598,6 +464,9 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
               },
               itemCount: widget.scoreCardData.fallOfWicket!.length,
               itemBuilder: (BuildContext, int index) {
+                if(widget.scoreCardData.fallOfWicket!.isEmpty){
+                  return Text('No data found');
+                }
                 final item = widget.scoreCardData.fallOfWicket![index];
                 return Row(
                   children: [
@@ -689,6 +558,9 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
               },
               itemCount: widget.scoreCardData.partnerships!.length,
               itemBuilder: (BuildContext, int index) {
+                if(widget.scoreCardData.partnerships!.isEmpty){
+                  return Text('No data found');
+                }
                 final item = widget.scoreCardData.partnerships![index];
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -744,13 +616,13 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                               RichText(
                                   text: TextSpan(children: [
                                     TextSpan(
-                                        text: ("${item.ballsFaced}"),
+                                        text: ("${item.totalRunsScored}"),
                                         style: fontMedium.copyWith(
                                             fontSize: 11.sp,
                                             color: AppColor.blackColour
                                         )),
                                     TextSpan(
-                                        text: "(${item.runsScored})",
+                                        text: "(${item.totalBallsFaced})",
                                         style: fontRegular.copyWith(
                                             fontSize: 11.sp,
                                             color: const Color(0xff666666)

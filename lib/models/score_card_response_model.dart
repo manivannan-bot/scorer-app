@@ -1,6 +1,6 @@
 class ScoreCardResponseModel {
   bool? status;
-  String? message;
+  dynamic message;
   Data? data;
 
   ScoreCardResponseModel({this.status, this.message, this.data});
@@ -23,6 +23,7 @@ class ScoreCardResponseModel {
 }
 
 class Data {
+  List<TeamsName>? teamsName;
   List<Batting>? batting;
   List<YetToBatPlayers>? yetToBatPlayers;
   List<Bowling>? bowling;
@@ -31,7 +32,8 @@ class Data {
   List<Partnerships>? partnerships;
 
   Data(
-      {this.batting,
+      {this.teamsName,
+        this.batting,
         this.yetToBatPlayers,
         this.bowling,
         this.bowlingExtras,
@@ -39,6 +41,12 @@ class Data {
         this.partnerships});
 
   Data.fromJson(Map<String, dynamic> json) {
+    if (json['teamsName'] != null) {
+      teamsName = <TeamsName>[];
+      json['teamsName'].forEach((v) {
+        teamsName!.add(new TeamsName.fromJson(v));
+      });
+    }
     if (json['batting'] != null) {
       batting = <Batting>[];
       json['batting'].forEach((v) {
@@ -76,6 +84,9 @@ class Data {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.teamsName != null) {
+      data['teamsName'] = this.teamsName!.map((v) => v.toJson()).toList();
+    }
     if (this.batting != null) {
       data['batting'] = this.batting!.map((v) => v.toJson()).toList();
     }
@@ -99,17 +110,39 @@ class Data {
   }
 }
 
+class TeamsName {
+  dynamic team1Name;
+  dynamic team2Name;
+  dynamic currentInnings;
+
+  TeamsName({this.team1Name, this.team2Name, this.currentInnings});
+
+  TeamsName.fromJson(Map<String, dynamic> json) {
+    team1Name = json['team1_name'];
+    team2Name = json['team2_name'];
+    currentInnings = json['current_innings'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['team1_name'] = this.team1Name;
+    data['team2_name'] = this.team2Name;
+    data['current_innings'] = this.currentInnings;
+    return data;
+  }
+}
+
 class Batting {
-  int? runsScored;
-  int? ballsFaced;
-  int? fours;
-  int? sixes;
-  String? strikeRate;
-  int? isOut;
-  String? outType;
-  String? wicketBowlerName;
-  String? wicketerName;
-  String? playerName;
+  dynamic runsScored;
+  dynamic ballsFaced;
+  dynamic fours;
+  dynamic sixes;
+  dynamic strikeRate;
+  dynamic isOut;
+  dynamic outType;
+  dynamic wicketBowlerName;
+  dynamic wicketerName;
+  dynamic playerName;
 
   Batting(
       {this.runsScored,
@@ -153,9 +186,9 @@ class Batting {
 }
 
 class YetToBatPlayers {
-  int? playerId;
-  String? playerName;
-  String? battingStyle;
+  dynamic playerId;
+  dynamic playerName;
+  dynamic battingStyle;
 
   YetToBatPlayers({this.playerId, this.playerName, this.battingStyle});
 
@@ -175,12 +208,13 @@ class YetToBatPlayers {
 }
 
 class Bowling {
-  String? overBall;
-  int? maiden;
-  String? economy;
-  int? runsConceded;
-  int? wickets;
-  String? playerName;
+  dynamic overBall;
+  dynamic maiden;
+  dynamic economy;
+  dynamic runsConceded;
+  dynamic wickets;
+  dynamic active;
+  dynamic playerName;
 
   Bowling(
       {this.overBall,
@@ -188,6 +222,7 @@ class Bowling {
         this.economy,
         this.runsConceded,
         this.wickets,
+        this.active,
         this.playerName});
 
   Bowling.fromJson(Map<String, dynamic> json) {
@@ -196,6 +231,7 @@ class Bowling {
     economy = json['economy'];
     runsConceded = json['runs_conceded'];
     wickets = json['wickets'];
+    active = json['active'];
     playerName = json['player_name'];
   }
 
@@ -206,17 +242,18 @@ class Bowling {
     data['economy'] = this.economy;
     data['runs_conceded'] = this.runsConceded;
     data['wickets'] = this.wickets;
+    data['active'] = this.active;
     data['player_name'] = this.playerName;
     return data;
   }
 }
 
 class BowlingExtras {
-  String? totalExtras;
-  String? wides;
-  String? noBalls;
-  String? byes;
-  String? legByes;
+  dynamic totalExtras;
+  dynamic wides;
+  dynamic noBalls;
+  dynamic byes;
+  dynamic legByes;
 
   BowlingExtras(
       {this.totalExtras, this.wides, this.noBalls, this.byes, this.legByes});
@@ -241,10 +278,10 @@ class BowlingExtras {
 }
 
 class FallOfWicket {
-  int? wicketNumber;
-  int? teamScore;
-  String? over;
-  String? playerOutName;
+  dynamic wicketNumber;
+  dynamic teamScore;
+  dynamic over;
+  dynamic playerOutName;
 
   FallOfWicket(
       {this.wicketNumber, this.teamScore, this.over, this.playerOutName});
@@ -267,18 +304,18 @@ class FallOfWicket {
 }
 
 class Partnerships {
-  int? runsScored;
-  int? ballsFaced;
-  int? player1RunsScored;
-  int? player1BallsFaced;
-  int? player2RunsScored;
-  int? player2BallsFaced;
-  String? player1Name;
-  String? player2Name;
+  dynamic totalRunsScored;
+  dynamic totalBallsFaced;
+  dynamic player1RunsScored;
+  dynamic player1BallsFaced;
+  dynamic player2RunsScored;
+  dynamic player2BallsFaced;
+  dynamic player1Name;
+  dynamic player2Name;
 
   Partnerships(
-      {this.runsScored,
-        this.ballsFaced,
+      {this.totalRunsScored,
+        this.totalBallsFaced,
         this.player1RunsScored,
         this.player1BallsFaced,
         this.player2RunsScored,
@@ -287,8 +324,8 @@ class Partnerships {
         this.player2Name});
 
   Partnerships.fromJson(Map<String, dynamic> json) {
-    runsScored = json['runs_scored'];
-    ballsFaced = json['balls_faced'];
+    totalRunsScored = json['total_runs_scored'];
+    totalBallsFaced = json['total_balls_faced'];
     player1RunsScored = json['player1_runs_scored'];
     player1BallsFaced = json['player1_balls_faced'];
     player2RunsScored = json['player2_runs_scored'];
@@ -299,8 +336,8 @@ class Partnerships {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['runs_scored'] = this.runsScored;
-    data['balls_faced'] = this.ballsFaced;
+    data['total_runs_scored'] = this.totalRunsScored;
+    data['total_balls_faced'] = this.totalBallsFaced;
     data['player1_runs_scored'] = this.player1RunsScored;
     data['player1_balls_faced'] = this.player1BallsFaced;
     data['player2_runs_scored'] = this.player2RunsScored;
