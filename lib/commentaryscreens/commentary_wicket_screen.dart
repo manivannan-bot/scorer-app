@@ -214,7 +214,7 @@ class _CommentaryWicketScreenState extends State<CommentaryWicketScreen> {
                           children: [
                             CircleAvatar(
                               backgroundColor: Color(0xffFA3E3E),
-                              radius: 20,
+                              radius: 16,
                               child: Text(
                                 "W",
                                 style: fontMedium.copyWith(

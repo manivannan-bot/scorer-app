@@ -1,8 +1,9 @@
+import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scorer/provider/match_provider.dart';
+import 'package:scorer/utils/colours.dart';
 import 'package:sizer/sizer.dart';
-
 import '../models/commentary/commentary_overs_model.dart';
 import '../utils/images.dart';
 import '../utils/sizes.dart';
@@ -15,6 +16,9 @@ class CommentryOvers extends StatefulWidget {
 }
 
 class _CommentryOversState extends State<CommentryOvers> {
+  final List<Map<String,dynamic>>itemList=[
+    {},{},{},{},{},{},{},{},{},{},{},{},
+  ];
 
   CommentaryOversModel? oversModel;
   @override
@@ -32,6 +36,7 @@ class _CommentryOversState extends State<CommentryOvers> {
 
   @override
   Widget build(BuildContext context) {
+
     if(oversModel==null){
       return const SizedBox(
           height: 100,
@@ -131,29 +136,15 @@ class _CommentryOversState extends State<CommentryOvers> {
                   ],
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text('=',
-                    style: fontRegular.copyWith(
-                      color: Colors.black,
-                      fontSize: 24,
-                    ),
-                  ),
-                  Text('15' ?? 'N/A',
-                    style: fontRegular.copyWith(
-                      color: Colors.black,
-                      fontSize: 24,
-                    ),
-                  ),
-                ],
+              SizedBox(height: 1.h,),
+              DottedLine(
+                dashColor: Color(0xffD2D2D2),
               ),
-
             ],
-          ),
-        );
-      },
+          );
+        },
 
+      ),
     );
   }
 }

@@ -62,8 +62,9 @@ class Images{
    static const String bowlingSpellImage = 'assets/images/bowling_spell_img.svg';
   //
    static const String wktImage = 'assets/images/wicket_img.svg';
-  // static const String upiIdImg = 'assets/images/upi_img.svg';
-  // static const String downloadIcon = 'assets/images/download_icon.svg';
+  static const String newBatsmanImage = 'assets/images/new_batsman_img.svg';
+   static const String moreBgImage = 'assets/images/more_image_bg.png';
+   static const String editSymbolIcon = 'assets/images/edit_symbol_icon.svg';
   // static const String copyIcon = 'assets/images/copy_icon.svg';
   // static const String totalAmountBgImg = 'assets/images/total_amount_bg_img.svg';
   //

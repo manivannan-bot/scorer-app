@@ -8,7 +8,11 @@ import 'package:sizer/sizer.dart';
 
 import '../commentaryscreens/sample_screen.dart';
 import '../models/all_matches_model.dart';
+
 import '../sample_screen.dart';
+
+import '../more/more_screen.dart';
+
 import '../utils/images.dart';
 import '../widgets/Individual_player_completed_list.dart';
 import '../widgets/cancel_btn.dart';
@@ -65,18 +69,22 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           ),
                         ),
                         SizedBox(width: 4.w,),
-                        Text('Hello!\n prasanth',style: fontMedium.copyWith(
-                          fontSize: 15.sp,
-                          color: AppColor.lightColor
-                        ),),
-                        const Spacer(),
-                        InkWell(
+
+                        GestureDetector(
+                          onTap: (){
+                            _displayBottomSheetDoScoring(context);
+                          },
+                          child: Text('Hello!\n prasanth',style: fontMedium.copyWith(
+                            fontSize: 15.sp,
+                            color: AppColor.lightColor
+                          ),),
+                        ),
+                        Spacer(),
+                        GestureDetector(
                             onTap: (){
-                              // Navigator.of(context).push(
-                              //     MaterialPageRoute(
-                              //       builder: (context) => const SampleScreen(),
-                              //     ),
-                              //   );
+                              Navigator.push(context,
+                                                            MaterialPageRoute(builder: (context) => MoreScreen()));
+
                             },
                             child: SvgPicture.asset(Images.notificationIcon,color: AppColor.lightColor,))
                       ],
