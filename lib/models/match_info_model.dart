@@ -69,8 +69,8 @@ class Data {
 }
 
 class MatchDetails {
-  dynamic date;
-  dynamic slotStartTime;
+  dynamic matchDate;
+  dynamic slotTime;
   dynamic team1Name;
   dynamic team1Logo;
   dynamic team2Name;
@@ -82,8 +82,8 @@ class MatchDetails {
   dynamic venue;
 
   MatchDetails(
-      {this.date,
-        this.slotStartTime,
+      {this.matchDate,
+        this.slotTime,
         this.team1Name,
         this.team1Logo,
         this.team2Name,
@@ -95,8 +95,8 @@ class MatchDetails {
         this.venue});
 
   MatchDetails.fromJson(Map<String, dynamic> json) {
-    date = json['date'];
-    slotStartTime = json['slot_start_time'];
+    matchDate = json['match_date'];
+    slotTime = json['slot_time'];
     team1Name = json['team1_name'];
     team1Logo = json['team1_logo'];
     team2Name = json['team2_name'];
@@ -110,8 +110,8 @@ class MatchDetails {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['date'] = this.date;
-    data['slot_start_time'] = this.slotStartTime;
+    data['match_date'] = this.matchDate;
+    data['slot_time'] = this.slotTime;
     data['team1_name'] = this.team1Name;
     data['team1_logo'] = this.team1Logo;
     data['team2_name'] = this.team2Name;

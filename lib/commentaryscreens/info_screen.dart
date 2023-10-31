@@ -80,7 +80,7 @@ class _InfoScreenState extends State<InfoScreen> {
                             color: Color(0xff666666),
                           ),),
                           Spacer(),
-                          Text("${matchInfo!.data!.matchDetails!.date}",style: fontMedium.copyWith(
+                          Text("${matchInfo!.data!.matchDetails!.matchDate}",style: fontMedium.copyWith(
                             fontSize: 12.sp,
                             color: AppColor.blackColour,
                           ),),
@@ -101,7 +101,7 @@ class _InfoScreenState extends State<InfoScreen> {
                             color: Color(0xff666666),
                           ),),
                           Spacer(),
-                          Text("${matchInfo!.data!.matchDetails!.slotStartTime}",style: fontMedium.copyWith(
+                          Text("${matchInfo!.data!.matchDetails!.slotTime}",style: fontMedium.copyWith(
                             fontSize: 12.sp,
                             color: AppColor.blackColour,
                           ),),
@@ -122,7 +122,7 @@ class _InfoScreenState extends State<InfoScreen> {
                             color: Color(0xff666666),
                           ),),
                           Spacer(),
-                          Text("${matchInfo!.data!.matchDetails!.date}",style: fontMedium.copyWith(
+                          Text("${matchInfo!.data!.matchDetails!.matchDate}",style: fontMedium.copyWith(
                             fontSize: 12.sp,
                             color: AppColor.blackColour,
                           ),),

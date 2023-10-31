@@ -18,7 +18,7 @@ class AppConstants {
   static const String matchPlayers = '$baseUrl/match-players';
    static const String commentaryOvers = '$baseUrl/commentary-overs';
    static const String playerOverview = '$baseUrl/player-overview';
-//   static const String playerscornergroundlist = '$baseUrl/player/ground-list';
+   static const String playerStats = '$baseUrl/player-stats';
 //
 //   static const String jointeamcode = '$baseUrl/player/join-team';
 //
