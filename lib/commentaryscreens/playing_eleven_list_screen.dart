@@ -23,6 +23,8 @@ class _PlayingElevenListScreenState extends State<PlayingElevenListScreen>with S
   late TabController tabController;
   MatchPlayersModel? matchPlayers1;
   MatchPlayersModel? matchPlayers2;
+  List<PlayersDetails>? playersDetails1;
+  List<PlayersDetails>? playersDetails2;
 
   void initState() {
 
@@ -32,22 +34,25 @@ class _PlayingElevenListScreenState extends State<PlayingElevenListScreen>with S
   }
 
   fetchData()async{
-    await MatchProvider().getMatchPlayers(widget.matchId,widget.team1Id).then((value) {
+     MatchProvider().getMatchPlayers(widget.matchId,widget.team1Id).then((value) {
       setState(() {
         matchPlayers1=value;
+        playersDetails1=value.data!.playersDetails;
       });
     });
 
     MatchProvider().getMatchPlayers(widget.matchId,widget.team2Id).then((value) {
       setState(() {
         matchPlayers2=value;
+        playersDetails2=value.data!.playersDetails;
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    if(matchPlayers1==null || matchPlayers2==null ){
+    //|| matchPlayers1!.data==null||matchPlayers2!.data==null
+    if(playersDetails1==null || playersDetails2==null ){
       return const SizedBox(
           height: 100,
           width: 100,
@@ -95,8 +100,8 @@ class _PlayingElevenListScreenState extends State<PlayingElevenListScreen>with S
               child: TabBarView(
                   controller: tabController,
                   children: [
-                    TeamOnePlayingList(matchPlayers1!.data!.playersDetails!),
-                    TeamTwoPlayingList(matchPlayers2!.data!.playersDetails!),
+                     TeamOnePlayingList(playersDetails1!),
+                    TeamTwoPlayingList(playersDetails2!),
                   ]
               ),
             ),

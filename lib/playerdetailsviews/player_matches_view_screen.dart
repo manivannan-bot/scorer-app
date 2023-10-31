@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dash/flutter_dash.dart';
+import 'package:scorer/models/players/player_matches_model.dart';
+import 'package:scorer/provider/player_details_provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../utils/colours.dart';
@@ -10,7 +12,8 @@ import '../widgets/individual_player_live_matches.dart';
 import '../widgets/individual_player_upcoming_matches.dart';
 
 class PlayerMatchesViewScreen extends StatefulWidget {
-  const PlayerMatchesViewScreen({super.key});
+  final String playerId;
+  const PlayerMatchesViewScreen(this.playerId, {super.key});
 
   @override
   State<PlayerMatchesViewScreen> createState() => _PlayerMatchesViewScreenState();
@@ -32,14 +35,35 @@ class _PlayerMatchesViewScreenState extends State<PlayerMatchesViewScreen> {
 
     },
   ];
+  PlayerMatchesModel? playerMatchesModel;
 
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  fetchData(){
+    PlayerDetailsProvider().getPlayerMatches(widget.playerId).then((value) {
+      setState(() {
+        playerMatchesModel=value;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    if(playerMatchesModel==null){
+      return const SizedBox(
+        height: 50,
+        width: 50,
+        child: Center(child: CircularProgressIndicator()),
+      );
+    }
     return Container(
         padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 2.w),
         width: double.infinity,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30)),
             color: AppColor.lightColor
         ),
@@ -55,15 +79,15 @@ class _PlayerMatchesViewScreenState extends State<PlayerMatchesViewScreen> {
                     padding: EdgeInsets.only(bottom: 2.h),
                   );
                 },
-                itemCount:itemList.length ,
-                itemBuilder: (BuildContext, int index) {
-                  final item = itemList[index];
-                  final type = item['type'];
-                  if (type == 'live') {
-                    return IndividualPlayerLiveMatches();
-                  } else if (type == 'upcoming') {
+                itemCount:playerMatchesModel!.data!.length ,
+                itemBuilder: (context, int index) {
+                  final item = playerMatchesModel!.data![index];
+
+                  if (playerMatchesModel!.data![index].teams!.matchStatus == 0) {
+                    return IndividualPlayerLiveMatches(playerMatchesModel!.data![index].teams,playerMatchesModel!.data![index].teamInnings);
+                  } else if (playerMatchesModel!.data![index].teams!.matchStatus == 1) {
                     return IndividualPlayerUpcomingMatches();
-                  }  else if (type == 'completed') {
+                  }  else if (playerMatchesModel!.data![index].teams!.matchStatus == 2) {
                     return IndividualPlayerCompletedMatches();
                   }
                   return Container();

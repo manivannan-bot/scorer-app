@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dash/flutter_dash.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:scorer/models/players/player_matches_model.dart';
 import 'package:sizer/sizer.dart';
 
 import '../utils/colours.dart';
@@ -9,7 +10,9 @@ import '../utils/sizes.dart';
 
 
 class IndividualPlayerLiveMatches extends StatefulWidget {
-  const IndividualPlayerLiveMatches({super.key});
+  final Teams? teams;
+  final List<TeamInnings>? teamInnings;
+  const IndividualPlayerLiveMatches(this.teams, this.teamInnings,   {super.key});
 
   @override
   State<IndividualPlayerLiveMatches> createState() => _IndividualPlayerLiveMatchesState();
@@ -18,6 +21,13 @@ class IndividualPlayerLiveMatches extends StatefulWidget {
 class _IndividualPlayerLiveMatchesState extends State<IndividualPlayerLiveMatches> {
   @override
   Widget build(BuildContext context) {
+    if(widget.teams==null|| widget.teamInnings==null){
+      return const SizedBox(
+        height: 100,
+        width: 100,
+        child: CircularProgressIndicator(),
+      );
+    }
     return Padding(
       padding:  EdgeInsets.symmetric(horizontal: 3.w),
       child: Column(
@@ -26,7 +36,7 @@ class _IndividualPlayerLiveMatchesState extends State<IndividualPlayerLiveMatche
             padding: EdgeInsets.symmetric(vertical: 1.5.h),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: Color(0xffF8F9FA),
+              color: const Color(0xffF8F9FA),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,7 +54,7 @@ class _IndividualPlayerLiveMatchesState extends State<IndividualPlayerLiveMatche
                               Image.asset(Images.teamaLogo,width: 10.w,),
                               SizedBox(width: 2.w,),
                               Text(
-                                  "T&T",
+                                  "${widget.teams!.team1Name}",
                                   style: fontMedium.copyWith(
                                     fontSize: 13.sp,
                                     color: AppColor.pri,
@@ -54,7 +64,7 @@ class _IndividualPlayerLiveMatchesState extends State<IndividualPlayerLiveMatche
                               RichText(
                                   text: TextSpan(children: [
                                     TextSpan(
-                                        text: "28",
+                                        text: "${widget.teamInnings!.first.totalScore}",
                                         style: fontMedium.copyWith(
                                           fontSize: 13.sp,
                                           color: AppColor.pri,
@@ -66,7 +76,7 @@ class _IndividualPlayerLiveMatchesState extends State<IndividualPlayerLiveMatche
                                             color: AppColor.pri
                                         )),
                                     TextSpan(
-                                        text: "0",
+                                        text: "${widget.teamInnings!.first.totalWickets}",
                                         style: fontMedium.copyWith(
                                             fontSize: 13.sp,
                                             color: AppColor.pri
@@ -75,7 +85,7 @@ class _IndividualPlayerLiveMatchesState extends State<IndividualPlayerLiveMatche
                               SizedBox(width: 2.w,),
                               RichText(text: TextSpan(children: [
                                 TextSpan(
-                                    text: "0.0",
+                                    text: "${widget.teamInnings!.first.currOvers}",
                                     style: fontMedium.copyWith(
                                         fontSize: 13.sp,
                                         color: const Color(0xff444444)
@@ -87,7 +97,7 @@ class _IndividualPlayerLiveMatchesState extends State<IndividualPlayerLiveMatche
                                         color: const Color(0xff444444)
                                     )),
                                 TextSpan(
-                                    text: "20",
+                                    text: "${widget.teamInnings!.first.totalOvers}",
                                     style: fontMedium.copyWith(
                                         fontSize: 13.sp,
                                         color: const Color(0xff444444)
@@ -104,7 +114,7 @@ class _IndividualPlayerLiveMatchesState extends State<IndividualPlayerLiveMatche
                             children: [
                               Image.asset(Images.teamblogo,width: 10.w,fit: BoxFit.fill,),
                               SizedBox(width: 2.w,),
-                              Text("DCC", style: fontMedium.copyWith(
+                              Text("${widget.teams!.team2Name}", style: fontMedium.copyWith(
                                 fontSize: 13.sp,
                                 color:const Color(0xff555555),
                               ),),
@@ -136,7 +146,7 @@ class _IndividualPlayerLiveMatchesState extends State<IndividualPlayerLiveMatche
                     Column(
                       children: [
                         Padding(
-                          padding:  EdgeInsets.only(right: 6.w),
+                          padding:  EdgeInsets.only(right: 2.w),
                           child: Container(
                             padding:  EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.5.h),
                             decoration:  BoxDecoration(

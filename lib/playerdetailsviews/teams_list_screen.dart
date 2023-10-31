@@ -1,5 +1,7 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
+import 'package:scorer/models/players/player_team_info_model.dart';
+import 'package:scorer/provider/player_details_provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../teamsdetailsview/team_detail_view_screens.dart';
@@ -8,28 +10,42 @@ import '../utils/images.dart';
 import '../utils/sizes.dart';
 
 class TeamListScreen extends StatefulWidget {
-  const TeamListScreen({super.key});
+  final String playerId;
+  const TeamListScreen(this.playerId, {super.key});
 
   @override
   State<TeamListScreen> createState() => _TeamListScreenState();
 }
 
 class _TeamListScreenState extends State<TeamListScreen> {
-  List<Map<String,dynamic>> itemList=[
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Akash",
-      "team":"(Toss and Tails)",
-      "dot":".",
-      "batsman":"Right hand batsman",
-      "button":"Connect",
-    },
-    {}, {}, {}, {},{}, {}, {}, {},
 
+  PlayerTeamInfoModel? playerTeamInfoModel;
 
-  ];
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+  fetchData(){
+    PlayerDetailsProvider().getPlayerTeamInfo(widget.playerId).then((value) {
+      setState(() {
+        playerTeamInfoModel=value;
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
+    if(playerTeamInfoModel==null||playerTeamInfoModel!.data!.isEmpty){
+      return const SizedBox(
+        height: 50,
+        width: 50,
+        child: Center(
+          child: CircularProgressIndicator(
+            backgroundColor: Colors.white,
+          ),
+        ),
+      );
+    }
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -41,7 +57,7 @@ class _TeamListScreenState extends State<TeamListScreen> {
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 4.w),
                 width: double.infinity,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30)),
                     color: AppColor.lightColor
                 ),
@@ -65,9 +81,9 @@ class _TeamListScreenState extends State<TeamListScreen> {
                               padding: EdgeInsets.only(bottom: 1.h)
                             );
                           },
-                          itemCount: itemList.length,
-                          itemBuilder: (BuildContext, int index) {
-                            final item = itemList[index];
+                          itemCount: playerTeamInfoModel!.data!.length,
+                          itemBuilder: (context, int index) {
+
                             return   Column(
                               children: [
                                 Container(
@@ -90,12 +106,12 @@ class _TeamListScreenState extends State<TeamListScreen> {
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Text("Toss & Tails", style: fontMedium.copyWith(
+                                            Text("${playerTeamInfoModel!.data![index].teamName}", style: fontMedium.copyWith(
                                               fontSize: 14.sp,
                                               color: AppColor.blackColour,
                                             )),
                                             SizedBox(height: 1.h,),
-                                            DottedLine(
+                                            const DottedLine(
                                               dashColor: Color(0xffD2D2D2),
                                             ),
                                             SizedBox(height: 1.h,),
@@ -110,7 +126,7 @@ class _TeamListScreenState extends State<TeamListScreen> {
                                                             color: AppColor.textGrey,
                                                           )),
                                                       TextSpan(
-                                                          text: " 30",
+                                                          text: "${playerTeamInfoModel!.data![index].played}",
                                                           style: fontRegular.copyWith(
                                                             fontSize: 12.sp,
                                                             color: AppColor.blackColour,
@@ -126,7 +142,7 @@ class _TeamListScreenState extends State<TeamListScreen> {
                                                             color: AppColor.textGrey,
                                                           )),
                                                       TextSpan(
-                                                          text: " 30",
+                                                          text: "${playerTeamInfoModel!.data![index].matchWonBy}",
                                                           style: fontRegular.copyWith(
                                                             fontSize: 12.sp,
                                                             color: AppColor.blackColour,
@@ -142,7 +158,7 @@ class _TeamListScreenState extends State<TeamListScreen> {
                                                             color: AppColor.textGrey,
                                                           )),
                                                       TextSpan(
-                                                          text: " 30",
+                                                          text: "${playerTeamInfoModel!.data![index].matchLossBy}",
                                                           style: fontRegular.copyWith(
                                                             fontSize: 12.sp,
                                                             color: AppColor.blackColour,

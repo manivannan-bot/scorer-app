@@ -33,6 +33,14 @@ class _TeamOnePlayingListState extends State<TeamOnePlayingList> {
 
   @override
   Widget build(BuildContext context) {
+    if(playersCapDetails==null|| playersList==null){
+      return const SizedBox(
+          height: 100,
+          width: 100,
+          child: Center(child: CircularProgressIndicator(
+            backgroundColor: Colors.white,
+          )));
+    }
     return  Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -100,11 +108,7 @@ class _TeamOnePlayingListState extends State<TeamOnePlayingList> {
               Divider(
                 color: Color(0xffD3D3D3),
               ),
-              GestureDetector(
-                onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => PlayerDetailViewScreen()));
-                },
-                  child: Text(' Players',style: fontMedium.copyWith(fontSize: 14.sp,color: AppColor.pri),)),
+               Text(' Players',style: fontMedium.copyWith(fontSize: 14.sp,color: AppColor.pri),),
               SizedBox(height: 0.5.h,),
               ListView.separated(
                   shrinkWrap: true,
@@ -112,13 +116,13 @@ class _TeamOnePlayingListState extends State<TeamOnePlayingList> {
                   separatorBuilder: (context, _) {
                     return Padding(
                       padding: EdgeInsets.only(bottom: 0.h),
-                      child: Divider(
+                      child: const Divider(
                         color: Color(0xffD3D3D3),
                       ),
                     );
                   },
                   itemCount: playersList!.length,
-                  itemBuilder: (BuildContext, int index) {
+                  itemBuilder: (context, int index) {
                     final item = playersList![index];
                     return   Padding(
                       padding:  EdgeInsets.only(top: 0.5.h,bottom: 0.8.h),
@@ -149,7 +153,11 @@ class _TeamOnePlayingListState extends State<TeamOnePlayingList> {
                               )
                             ],),
                           Spacer(),
-                          SvgPicture.asset(Images.arrowICon,width: 6.5.w,),
+                            GestureDetector(
+                            onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => PlayerDetailViewScreen(item.playerId.toString())));
+                            },
+                            child: SvgPicture.asset(Images.arrowICon,width: 6.5.w,)),
                         ],
                       ),
                     );

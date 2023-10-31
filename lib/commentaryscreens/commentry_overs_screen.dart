@@ -1,9 +1,10 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:scorer/provider/match_provider.dart';
 import 'package:scorer/utils/colours.dart';
 import 'package:sizer/sizer.dart';
-
+import '../models/commentary/commentary_overs_model.dart';
 import '../utils/images.dart';
 import '../utils/sizes.dart';
 
@@ -19,79 +20,121 @@ class _CommentryOversState extends State<CommentryOvers> {
     {},{},{},{},{},{},{},{},{},{},{},{},
   ];
 
+  CommentaryOversModel? oversModel;
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+  fetchData(){
+    MatchProvider().getCommentaryOvers('1', '2').then((value){
+      setState(() {
+        oversModel=value;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding:  EdgeInsets.symmetric(horizontal: 2.w,vertical: 1.h),
-      child: ListView.separated(
-        physics: const BouncingScrollPhysics(),
-        separatorBuilder: (context, _) {
-          return Padding(
-            padding: EdgeInsets.only(right: 2.w,bottom: 1.h),
-          );
-        },
-        itemCount: 10,
-        itemBuilder: (BuildContext context, int index) {
-          return  Column(
-            children: [
-              Row(
-                children: [
-                  Text('Over 9',style: fontMedium.copyWith(
-                    fontSize: 13.sp,
-                    color: Color(0xff666666),
-                  ),),
-                   SizedBox(width: 3.w,),
-                   Expanded(
-                     child: SizedBox(
-                       height: 4.h,
-                       child: ListView.separated(
-                         scrollDirection: Axis.horizontal,
-                  physics: const BouncingScrollPhysics(),
-                  separatorBuilder: (context, _) {
-                        return Padding(
-                          padding: EdgeInsets.only(right: 2.w,bottom: 0.h),
-                        );
-                  },
-                  itemCount:itemList.length ,
-                  itemBuilder: (context, int index) {
-                        final item = itemList[index];
-                        return Container(
-                          padding: EdgeInsets.symmetric(horizontal: 2.5.w,vertical: 0.5.h),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            border: Border.all(color: Color(0xffDADADA)),
-                            color: Color(0xffFBFAF7),
-                          ),
-                          child: Center(
-                            child: Text('2nb',style: fontMedium.copyWith(
-                              fontSize: 11.sp,
-                              color: AppColor.blackColour,
-                            ),),
-                          ),
-                        );
-                  }),
-                     ),
-                   ),
-                  SizedBox(width: 3.w,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text('=',
-                        style: fontRegular.copyWith(
-                          color: Colors.black,
-                          fontSize: 24,
-                        ),
-                      ),
-                      Text('15' ?? 'N/A',
-                        style: fontRegular.copyWith(
-                          color: Colors.black,
-                          fontSize: 24,
-                        ),
-                      ),
-                    ],
-                  ),
 
-                ],
+    if(oversModel==null){
+      return const SizedBox(
+          height: 100,
+          width: 100,
+          child: Center(child: CircularProgressIndicator(
+            backgroundColor: Colors.white,
+          )));
+    }
+    return ListView.builder(
+      itemCount: oversModel!.data!.length,
+      itemBuilder: (BuildContext context, int index) {
+        return  SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              Text('Hello'),
+              //Row1
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    for(var bal in [1,2,3,4,5,6,7,8])
+                    Container(
+                      width: 40,
+                      height: 40,
+                      margin: const EdgeInsets.symmetric(horizontal: 5),
+                      decoration: const BoxDecoration(
+                        color: Colors.black,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Center(
+                        child: Text(
+                          '$bal',
+                          style:  fontRegular.copyWith(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: 40,
+                      height: 40,
+                      margin: const EdgeInsets.symmetric(horizontal: 5),
+                      decoration: const BoxDecoration(
+                        color: Colors.black,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Center(
+                        child: Text(
+                          '2',
+                          style:  fontRegular.copyWith(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: 40,
+                      height: 40,
+                      margin: const EdgeInsets.symmetric(horizontal: 5),
+                      decoration: const BoxDecoration(
+                        color: Colors.black,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Center(
+                        child: Text(
+                          '2',
+                          style:  fontRegular.copyWith(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: 40,
+                      height: 40,
+                      margin: const EdgeInsets.symmetric(horizontal: 5),
+                      decoration: const BoxDecoration(
+                        color: Colors.black,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Center(
+                        child: Text(
+                          '2',
+                          style:  fontRegular.copyWith(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                  ],
+                ),
               ),
               SizedBox(height: 1.h,),
               DottedLine(

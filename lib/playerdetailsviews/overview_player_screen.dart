@@ -4,12 +4,17 @@ import 'package:scorer/playerdetailsviews/player_batting_details.dart';
 import 'package:scorer/playerdetailsviews/player_bowling_details.dart';
 import 'package:sizer/sizer.dart';
 
+import '../models/players/players_overview_model.dart';
 import '../utils/colours.dart';
 import '../utils/images.dart';
 import '../utils/sizes.dart';
 
 class OverviewPlayerScreen extends StatefulWidget {
-  const OverviewPlayerScreen({super.key});
+ final List<BattingPerformance>? battingPerformance;
+ final List<BowlingPerformance>? bowlingPerformance;
+ final List<RecentBatting>? recentBatting;
+ final List<RecentBowling>? recentBowling;
+  const OverviewPlayerScreen(this.battingPerformance,this.bowlingPerformance, this.recentBatting, this.recentBowling, {super.key});
 
   @override
   State<OverviewPlayerScreen> createState() => _OverviewPlayerScreenState();
@@ -20,13 +25,24 @@ class _OverviewPlayerScreenState extends State<OverviewPlayerScreen>with SingleT
 
 
   void initState() {
-    // TODO: implement initState
     super.initState();
     tabController = TabController(length: 2, vsync: this);
-
   }
+
   @override
   Widget build(BuildContext context) {
+    if(widget.battingPerformance ==null ||widget.bowlingPerformance==null||widget.recentBatting==null ||widget.recentBowling==null){
+      return const SizedBox(
+        height: 100,
+        width:100,
+        child: Center(
+          child: CircularProgressIndicator(
+            backgroundColor: Colors.white,
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -35,7 +51,7 @@ class _OverviewPlayerScreenState extends State<OverviewPlayerScreen>with SingleT
               padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 4.w),
               width: double.infinity,
                height: 70.h,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30)),
                   color: AppColor.lightColor
               ),
@@ -46,7 +62,7 @@ class _OverviewPlayerScreenState extends State<OverviewPlayerScreen>with SingleT
                     padding:  EdgeInsets.symmetric(horizontal: 4.w,vertical: 2.h),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: Color(0xffF8F9FA)
+                        color: const Color(0xffF8F9FA)
                     ), child: Column(
                     children: [
                       Row(
@@ -70,7 +86,7 @@ class _OverviewPlayerScreenState extends State<OverviewPlayerScreen>with SingleT
                                 color: AppColor.textGrey,
                               ),),
                               SizedBox(height: 0.6.h,),
-                              Text("245",style: fontMedium.copyWith(
+                              Text("${widget.battingPerformance!.first.totalRuns}",style: fontMedium.copyWith(
                                 fontSize: 12.sp,
                                 color: AppColor.blackColour,
                               ),),
@@ -83,7 +99,7 @@ class _OverviewPlayerScreenState extends State<OverviewPlayerScreen>with SingleT
                                 color: AppColor.textGrey,
                               ),),
                               SizedBox(height: 0.6.h,),
-                              Text("205",style: fontMedium.copyWith(
+                              Text("${widget.battingPerformance!.first.highestScore}",style: fontMedium.copyWith(
                                 fontSize: 12.sp,
                                 color: AppColor.blackColour,
                               ),),
@@ -96,7 +112,7 @@ class _OverviewPlayerScreenState extends State<OverviewPlayerScreen>with SingleT
                                 color: AppColor.textGrey,
                               ),),
                               SizedBox(height: 0.6.h,),
-                              Text("24.5",style: fontMedium.copyWith(
+                              Text("${widget.battingPerformance!.first.average}",style: fontMedium.copyWith(
                                 fontSize: 12.sp,
                                 color: AppColor.blackColour,
                               ),),
@@ -109,7 +125,7 @@ class _OverviewPlayerScreenState extends State<OverviewPlayerScreen>with SingleT
                                 color: AppColor.textGrey,
                               ),),
                               SizedBox(height: 0.6.h,),
-                              Text("122",style: fontMedium.copyWith(
+                              Text("${widget.battingPerformance!.first.strikeRate}",style: fontMedium.copyWith(
                                 fontSize: 12.sp,
                                 color: AppColor.blackColour,
                               ),),
@@ -150,7 +166,7 @@ class _OverviewPlayerScreenState extends State<OverviewPlayerScreen>with SingleT
                                 color: AppColor.textGrey,
                               ),),
                               SizedBox(height: 0.6.h,),
-                              Text("25",style: fontMedium.copyWith(
+                              Text("${widget.bowlingPerformance!.first.totalWickets}",style: fontMedium.copyWith(
                                 fontSize: 12.sp,
                                 color: AppColor.blackColour,
                               ),),
@@ -163,7 +179,7 @@ class _OverviewPlayerScreenState extends State<OverviewPlayerScreen>with SingleT
                                 color: AppColor.textGrey,
                               ),),
                               SizedBox(height: 0.6.h,),
-                              Text("5-10",style: fontMedium.copyWith(
+                              Text("${widget.bowlingPerformance!.first.bowlingBest}",style: fontMedium.copyWith(
                                 fontSize: 12.sp,
                                 color: AppColor.blackColour,
                               ),),
@@ -176,7 +192,7 @@ class _OverviewPlayerScreenState extends State<OverviewPlayerScreen>with SingleT
                                 color: AppColor.textGrey,
                               ),),
                               SizedBox(height: 0.6.h,),
-                              Text("1",style: fontMedium.copyWith(
+                              Text("${widget.bowlingPerformance!.first.bowlingMaidens}",style: fontMedium.copyWith(
                                 fontSize: 12.sp,
                                 color: AppColor.blackColour,
                               ),),
@@ -189,7 +205,7 @@ class _OverviewPlayerScreenState extends State<OverviewPlayerScreen>with SingleT
                                 color: AppColor.textGrey,
                               ),),
                               SizedBox(height: 0.6.h,),
-                              Text("10.2",style: fontMedium.copyWith(
+                              Text("${widget.bowlingPerformance!.first.bowlingAverage}",style: fontMedium.copyWith(
                                 fontSize: 12.sp,
                                 color: AppColor.blackColour,
                               ),),
@@ -240,8 +256,8 @@ class _OverviewPlayerScreenState extends State<OverviewPlayerScreen>with SingleT
                     child: TabBarView(
                         controller: tabController,
                         children:  [
-                          PlayerBattingDetails(),
-                          PlayerBowlingDetails(),
+                          RecentBattingDetails(widget.recentBatting!),
+                          RecentBowlingDetails(widget.recentBowling!),
                         ]),
                   ),
 

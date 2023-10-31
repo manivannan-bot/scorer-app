@@ -1,32 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:scorer/models/players/players_overview_model.dart';
 import 'package:sizer/sizer.dart';
 
 import '../utils/colours.dart';
 import '../utils/images.dart';
 import '../utils/sizes.dart';
 
-class PlayerBattingDetails extends StatefulWidget {
-  const PlayerBattingDetails({super.key});
+class RecentBattingDetails extends StatefulWidget {
+  final List<RecentBatting> recentBatting;
+  const RecentBattingDetails(this.recentBatting, {super.key});
 
   @override
-  State<PlayerBattingDetails> createState() => _PlayerBattingDetailsState();
+  State<RecentBattingDetails> createState() => _RecentBattingDetailsState();
 }
 
-class _PlayerBattingDetailsState extends State<PlayerBattingDetails> {
-  List<Map<String,dynamic>> itemList=[
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Akash",
-      "team":"(Toss and Tails)",
-      "dot":".",
-      "batsman":"Right hand batsman",
-      "button":"Connect",
-    },
-    {}, {}, {}, {},
+class _RecentBattingDetailsState extends State<RecentBattingDetails> {
 
-
-  ];
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -52,7 +42,7 @@ class _PlayerBattingDetailsState extends State<PlayerBattingDetails> {
           ],
         ),
         SizedBox(height: 1.5.h,),
-        Expanded(
+        (widget.recentBatting.isNotEmpty)?Expanded(
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
               shrinkWrap: true,
@@ -60,14 +50,14 @@ class _PlayerBattingDetailsState extends State<PlayerBattingDetails> {
               separatorBuilder: (context, _) {
                 return Padding(
                   padding: EdgeInsets.only(right: 2.w),
-                  child: Divider(
+                  child: const Divider(
                     color: Color(0xffD3D3D3),
                   ),
                 );
               },
-              itemCount: itemList.length,
-              itemBuilder: (BuildContext, int index) {
-                final item = itemList[index];
+              itemCount: widget.recentBatting.length,
+              itemBuilder: (context, int index) {
+                final item = widget.recentBatting[index];
                 return   Column(
                   children: [
                     Container(
@@ -83,13 +73,13 @@ class _PlayerBattingDetailsState extends State<PlayerBattingDetails> {
                           RichText(
                               text: TextSpan(children: [
                                 TextSpan(
-                                    text: ("54"),
+                                    text: ("${item.runsScored}"),
                                     style: fontMedium.copyWith(
                                       fontSize: 12.sp,
                                       color: AppColor.blackColour,
                                     )),
                                 TextSpan(
-                                    text: "(29)",
+                                    text: "(${item.ballsFaced})",
                                     style: fontMedium.copyWith(
                                         fontSize: 12.sp,
                                         color: AppColor.blackColour
@@ -101,7 +91,7 @@ class _PlayerBattingDetailsState extends State<PlayerBattingDetails> {
                             color: AppColor.textGrey,
                           ),),
                           SizedBox(height: 0.5.h,),
-                          Text("Spartans",style: fontRegular.copyWith(
+                          Text("${item.opponent}",style: fontRegular.copyWith(
                             fontSize: 12.sp,
                             color: AppColor.textGrey,
                           ),),
@@ -111,7 +101,7 @@ class _PlayerBattingDetailsState extends State<PlayerBattingDetails> {
                   ],
                 );
               }),
-        ),
+        ):const Text('No Data Found'),
 
       ],
     );

@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:laravel_flutter_pusher/laravel_flutter_pusher.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:scorer/models/get_live_score_model.dart';
-import 'package:scorer/pages/scoring_tab.dart';
 import 'package:scorer/utils/colours.dart';
 import 'package:scorer/utils/pusher_service.dart';
 import 'package:scorer/utils/sizes.dart';
@@ -18,6 +17,7 @@ import '../commentaryscreens/info_screen.dart';
 import '../provider/scoring_provider.dart';
 import '../scorecardScreens/scorecard_screen.dart';
 import '../utils/images.dart';
+import '../view/scoring_tab.dart';
 
 class ScoreUpdateScreen extends StatefulWidget  {
   final String matchId; // Add matchId as a parameter

@@ -17,9 +17,9 @@ import '../widgets/out_button.dart';
 
 class OutMethodDialog extends StatefulWidget {
   final String label;
-  final int Id;
+  final int id;
   final ScoringDetailResponseModel scoringData;
-  const OutMethodDialog({required this.label,required this.Id,required this.scoringData,super.key});
+  const OutMethodDialog({required this.label,required this.id,required this.scoringData,super.key});
 
   @override
   State<OutMethodDialog> createState() => _OutMethodDialogState();
@@ -126,7 +126,7 @@ var oversBowled=prefs.getInt('overs_bowled')??0;
                       scoreUpdateRequestModel.runsScored=0;
                       scoreUpdateRequestModel.extras=0;
                       scoreUpdateRequestModel.wicket=0;
-                      scoreUpdateRequestModel.dismissalType=widget.Id;
+                      scoreUpdateRequestModel.dismissalType=widget.id;
                       scoreUpdateRequestModel.commentary=0;
                       scoreUpdateRequestModel.innings=1;
                       scoreUpdateRequestModel.battingTeamId=widget.scoringData.data!.batting![0].teamId??0;
@@ -140,7 +140,6 @@ var oversBowled=prefs.getInt('overs_bowled')??0;
                       scoreUpdateRequestModel.endInnings=false;
                       scoreUpdateRequestModel.bowlerPosition=bowlerPosition;
                       ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
-
                         SharedPreferences prefs = await SharedPreferences.getInstance();
                         await prefs.setInt('over_number', value.data!.overNumber??0);
                         await prefs.setInt('ball_number', value.data!.ballNumber??0);
@@ -148,9 +147,11 @@ var oversBowled=prefs.getInt('overs_bowled')??0;
                         await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
                         await prefs.setInt('bowler_change', value.data!.bowlerChange??0);
                         await prefs.setInt('bowlerPosition',0);
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          });
                       });
-
-                      Navigator.pop(context);
                     },
                         child: OkBtn("ok")),
                   ],

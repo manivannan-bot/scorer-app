@@ -1,6 +1,6 @@
 class MatchPlayersModel {
   bool? status;
-  String? message;
+  dynamic message;
   Data? data;
 
   MatchPlayersModel({this.status, this.message, this.data});
@@ -57,14 +57,14 @@ class Data {
 }
 
 class PlayersDetails {
-  int? playerId;
-  String? playerRole;
-  String? playerName;
-  String? battingStyle;
-  int? playingRole;
-  String? bowlingAction;
-  String? bowingStyle;
-  String? profileImage;
+  dynamic playerId;
+  dynamic playerRole;
+  dynamic playerName;
+  dynamic battingStyle;
+  dynamic playingRole;
+  dynamic bowlingAction;
+  dynamic bowingStyle;
+  dynamic profileImage;
 
   PlayersDetails(
       {this.playerId,
@@ -102,8 +102,8 @@ class PlayersDetails {
 }
 
 class Teams {
-  String? team1Name;
-  String? team2Name;
+  dynamic team1Name;
+  dynamic team2Name;
 
   Teams({this.team1Name, this.team2Name});
 

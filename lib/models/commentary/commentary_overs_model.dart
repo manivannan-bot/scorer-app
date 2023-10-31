@@ -1,11 +1,11 @@
-class commentaryOversModel {
+class CommentaryOversModel {
   bool? status;
   String? message;
   List<Data>? data;
 
-  commentaryOversModel({this.status, this.message, this.data});
+  CommentaryOversModel({this.status, this.message, this.data});
 
-  commentaryOversModel.fromJson(Map<String, dynamic> json) {
+  CommentaryOversModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     if (json['data'] != null) {

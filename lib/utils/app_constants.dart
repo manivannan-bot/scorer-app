@@ -1,9 +1,8 @@
 class AppConstants {
 
-  //static const String baseUrl = 'https://storm.rezendus.in/api';
   static const String baseUrl = 'https://11storm.stagin.xyz/api';
-//   static const String imageBaseUrl = 'https://11s.staging-sg.com/';
-//
+
+  //static const String baseUrl = 'https://app.strange-noyce.139-59-13-7.plesk.page/api';
   static const String Allmatches = '$baseUrl/matches';
   static const String getPlayerList = '$baseUrl/get-players';
   static const String saveBatsman = '$baseUrl/batsman-save';
@@ -18,13 +17,12 @@ class AppConstants {
    static const String dlMethod = '$baseUrl/dl-method';
    static const String matchInfo = '$baseUrl/match-info';
   static const String matchPlayers = '$baseUrl/match-players';
-//
-//
-//   static const String captainlist = '$baseUrl/player/captain-list';
-//   static const String playerscornerteamlist = '$baseUrl/player/team-list';
-//   static const String playerscornergroundlist = '$baseUrl/player/ground-list';
-//
-//   static const String jointeamcode = '$baseUrl/player/join-team';
+   static const String commentaryOvers = '$baseUrl/commentary-overs';
+   static const String playerOverview = '$baseUrl/player-overview';
+   static const String playerStats = '$baseUrl/player-stats';
+   static const String playerMatches = '$baseUrl/player-matches';
+   static const String playerTeamInfo= '$baseUrl/player-team-info';
+  static const String playerInfo= '$baseUrl/player-info';
 //
 // //intrestmodel
 //   static const String interest = '$baseUrl/player/interest';

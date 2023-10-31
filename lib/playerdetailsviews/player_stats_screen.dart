@@ -3,30 +3,48 @@ import 'package:scorer/playerdetailsviews/player_batting_details.dart';
 import 'package:scorer/playerdetailsviews/player_bowling_details.dart';
 import 'package:scorer/playerdetailsviews/stats_batting_details.dart';
 import 'package:scorer/playerdetailsviews/stats_bowling_details.dart';
+import 'package:scorer/provider/player_details_provider.dart';
 import 'package:sizer/sizer.dart';
 
+import '../models/players/player_stats_model.dart';
 import '../utils/colours.dart';
 import '../utils/sizes.dart';
 
-class StatsViewScreen extends StatefulWidget {
-  const StatsViewScreen({super.key});
+class PlayerStatsScreen extends StatefulWidget {
+  final String playerId;
+  const PlayerStatsScreen(this.playerId, {super.key});
 
   @override
-  State<StatsViewScreen> createState() => _StatsViewScreenState();
+  State<PlayerStatsScreen> createState() => _PlayerStatsScreenState();
 }
 
-class _StatsViewScreenState extends State<StatsViewScreen>with SingleTickerProviderStateMixin {
+class _PlayerStatsScreenState extends State<PlayerStatsScreen>with SingleTickerProviderStateMixin {
   late TabController tabController;
-
+  PlayerStatsModel? playerStatsModel;
 
   void initState() {
     // TODO: implement initState
     super.initState();
     tabController = TabController(length: 2, vsync: this);
-
+       fetchData();
   }
+  fetchData(){
+        PlayerDetailsProvider().getPlayerStats(widget.playerId).then((value) {
+          setState(() {
+            playerStatsModel=value;
+          });
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
+    if(playerStatsModel==null){
+      return const SizedBox(
+        height: 100,
+        width: 100,
+        child: Center(child: CircularProgressIndicator()),
+      );
+    }
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -76,8 +94,8 @@ class _StatsViewScreenState extends State<StatsViewScreen>with SingleTickerProvi
                   child: TabBarView(
                       controller: tabController,
                       children:  [
-                        StatsBatting(),
-                        StatsBowling(),
+                        StatsBatting(playerStatsModel!.data!.battingPerformance),
+                        StatsBowling(playerStatsModel!.data!.bowlingPerformance),
                       ]),
                 ),
               ],
