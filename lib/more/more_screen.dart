@@ -218,7 +218,7 @@ class _MoreScreenState extends State<MoreScreen> {
                           children: [
                             GestureDetector(
                               onTap: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => PlayerDetailViewScreen()));
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => PlayerDetailViewScreen('1')));
                               },
                               child: Container(
                                 padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 1.5.h),
