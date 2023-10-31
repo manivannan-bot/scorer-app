@@ -72,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
                         GestureDetector(
                           onTap: (){
-                            _displayBottomSheetDoScoring(context);
+                            //_displayBottomSheetDoScoring(context);
                           },
                           child: Text('Hello!\n prasanth',style: fontMedium.copyWith(
                             fontSize: 15.sp,
