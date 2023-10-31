@@ -54,6 +54,29 @@ class PlayerSelectionProvider extends ChangeNotifier {
 
   setPlayerSelectionValueToPrefs() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setString("current_striker_id", selectedStrikerId);
+    preferences.setString("current_non_striker_id", selectedNonStrikerId);
+    preferences.setString("current_bowler_id", selectedBowlerId);
+    preferences.setString("current_wicket_keeper_id", selectedWicketKeeperId);
+    preferences.setString("current_striker_name", selectedStrikerName);
+    preferences.setString("current_non_striker_name", selectedNonStrikerName);
+    preferences.setString("current_bowler_name", selectedBowlerName);
+    preferences.setString("current_wicket_keeper_name", selectedWicketKeeperName);
+    print("setting striker id to prefs $selectedStrikerId");
+  }
+
+  getPlayerSelectionValueFromPrefs() async{
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    selectedStrikerId = preferences.getString("current_striker_id") ?? "";
+    selectedNonStrikerId = preferences.getString("current_non_striker_id") ?? "";
+    selectedBowlerId = preferences.getString("current_bowler_id") ?? "";
+    selectedWicketKeeperId = preferences.getString("current_wicket_keeper_id") ?? "";
+    selectedStrikerName = preferences.getString("current_striker_name") ?? "";
+    selectedNonStrikerName = preferences.getString("current_non_striker_name") ?? "";
+    selectedBowlerName = preferences.getString("current_bowler_name") ?? "";
+    selectedWicketKeeperName = preferences.getString("current_wicket_keeper_name") ?? "";
+    print("selected striker id from prefs $selectedStrikerId");
+    notifyListeners();
   }
 
 
