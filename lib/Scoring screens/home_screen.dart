@@ -9,6 +9,7 @@ import 'package:sizer/sizer.dart';
 
 import '../commentaryscreens/sample_screen.dart';
 import '../models/all_matches_model.dart';
+import '../more/more_screen.dart';
 import '../utils/images.dart';
 import '../widgets/Individual_player_completed_list.dart';
 import '../widgets/cancel_btn.dart';
@@ -73,7 +74,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           ),),
                         ),
                         Spacer(),
-                        SvgPicture.asset(Images.notificationIcon,color: AppColor.lightColor,)
+                        GestureDetector(
+                            onTap: (){
+                              Navigator.push(context,
+                                                            MaterialPageRoute(builder: (context) => MoreScreen()));
+                            },
+                            child: SvgPicture.asset(Images.notificationIcon,color: AppColor.lightColor,))
                       ],
                     ),
                     SizedBox(height: 2.h,),
