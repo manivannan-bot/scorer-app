@@ -1,19 +1,14 @@
 class MatchPlayersModel {
   bool? status;
-  String? message;
-  List<Data>? data;
+  dynamic message;
+  Data? data;
 
   MatchPlayersModel({this.status, this.message, this.data});
 
   MatchPlayersModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    if (json['data'] != null) {
-      data = <Data>[];
-      json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
-      });
-    }
+    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -21,23 +16,57 @@ class MatchPlayersModel {
     data['status'] = this.status;
     data['message'] = this.message;
     if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
+      data['data'] = this.data!.toJson();
     }
     return data;
   }
 }
 
 class Data {
-  int? playerId;
-  String? playerRole;
-  String? playerName;
-  String? battingStyle;
-  int? playingRole;
-  String? bowlingAction;
-  String? bowingStyle;
-  String? profileImage;
+  List<PlayersDetails>? playersDetails;
+  List<Teams>? teams;
 
-  Data(
+  Data({this.playersDetails, this.teams});
+
+  Data.fromJson(Map<String, dynamic> json) {
+    if (json['playersDetails'] != null) {
+      playersDetails = <PlayersDetails>[];
+      json['playersDetails'].forEach((v) {
+        playersDetails!.add(new PlayersDetails.fromJson(v));
+      });
+    }
+    if (json['teams'] != null) {
+      teams = <Teams>[];
+      json['teams'].forEach((v) {
+        teams!.add(new Teams.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.playersDetails != null) {
+      data['playersDetails'] =
+          this.playersDetails!.map((v) => v.toJson()).toList();
+    }
+    if (this.teams != null) {
+      data['teams'] = this.teams!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class PlayersDetails {
+  dynamic playerId;
+  dynamic playerRole;
+  dynamic playerName;
+  dynamic battingStyle;
+  dynamic playingRole;
+  dynamic bowlingAction;
+  dynamic bowingStyle;
+  dynamic profileImage;
+
+  PlayersDetails(
       {this.playerId,
         this.playerRole,
         this.playerName,
@@ -47,7 +76,7 @@ class Data {
         this.bowingStyle,
         this.profileImage});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  PlayersDetails.fromJson(Map<String, dynamic> json) {
     playerId = json['player_id'];
     playerRole = json['player_role'];
     playerName = json['player_name'];
@@ -68,6 +97,25 @@ class Data {
     data['bowling_action'] = this.bowlingAction;
     data['bowing_style'] = this.bowingStyle;
     data['profile_image'] = this.profileImage;
+    return data;
+  }
+}
+
+class Teams {
+  dynamic team1Name;
+  dynamic team2Name;
+
+  Teams({this.team1Name, this.team2Name});
+
+  Teams.fromJson(Map<String, dynamic> json) {
+    team1Name = json['team1_name'];
+    team2Name = json['team2_name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['team1_name'] = this.team1Name;
+    data['team2_name'] = this.team2Name;
     return data;
   }
 }

@@ -122,6 +122,8 @@ class ScoringProvider extends ChangeNotifier{
     // SharedPreferences preferences = await SharedPreferences.getInstance();
     // String? accToken = preferences.getString("access_token");
     // print("usertoken $accToken");
+    playerListModel = PlayerListModel();
+    notifyListeners();
     try {
       final String baseUrl = "${AppConstants.getPlayerList}/$matchid/$teamid/$option";
       // final Map<String, String> queryParams = {
@@ -244,7 +246,7 @@ class ScoringProvider extends ChangeNotifier{
         // },
       );
       var decodedJson = json.decode(response.body);
-      print(decodedJson);
+      print("scoring detail $decodedJson");
       if (response.statusCode == 200) {
         scoringDetailResponseModel = ScoringDetailResponseModel.fromJson(decodedJson);
 
@@ -289,7 +291,7 @@ class ScoringProvider extends ChangeNotifier{
         body: body,
       );
       var decodedJson = json.decode(response.body);
-      print(decodedJson);
+      print("score update response $decodedJson");
       if (response.statusCode == 200) {
         scoreUpdateResponseModel = ScoreUpdateResponseModel.fromJson(decodedJson);
         notifyListeners();

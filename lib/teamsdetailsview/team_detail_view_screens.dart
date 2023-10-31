@@ -7,7 +7,7 @@ import 'package:scorer/teamsdetailsview/team_players_detail_view_screen.dart';
 import 'package:sizer/sizer.dart';
 
 import '../playerdetailsviews/overview_player_screen.dart';
-import '../playerdetailsviews/stats_view_screen.dart';
+import '../playerdetailsviews/player_stats_screen.dart';
 import '../playerdetailsviews/teams_list_screen.dart';
 import '../utils/colours.dart';
 import '../utils/images.dart';

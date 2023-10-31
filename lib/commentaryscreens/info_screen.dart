@@ -21,6 +21,8 @@ class InfoScreen extends StatefulWidget {
 
 class _InfoScreenState extends State<InfoScreen> {
   MatchInfoModel? matchInfo;
+  String team1Id='';
+  String team2Id='';
   @override
   void initState() {
     super.initState();
@@ -78,7 +80,7 @@ class _InfoScreenState extends State<InfoScreen> {
                             color: Color(0xff666666),
                           ),),
                           Spacer(),
-                          Text("${matchInfo!.data!.matchDetails!.date}",style: fontMedium.copyWith(
+                          Text("${matchInfo!.data!.matchDetails!.matchDate}",style: fontMedium.copyWith(
                             fontSize: 12.sp,
                             color: AppColor.blackColour,
                           ),),
@@ -99,7 +101,7 @@ class _InfoScreenState extends State<InfoScreen> {
                             color: Color(0xff666666),
                           ),),
                           Spacer(),
-                          Text("${matchInfo!.data!.matchDetails!.slotStartTime}",style: fontMedium.copyWith(
+                          Text("${matchInfo!.data!.matchDetails!.slotTime}",style: fontMedium.copyWith(
                             fontSize: 12.sp,
                             color: AppColor.blackColour,
                           ),),
@@ -120,7 +122,7 @@ class _InfoScreenState extends State<InfoScreen> {
                             color: Color(0xff666666),
                           ),),
                           Spacer(),
-                          Text("${matchInfo!.data!.matchDetails!.date}",style: fontMedium.copyWith(
+                          Text("${matchInfo!.data!.matchDetails!.matchDate}",style: fontMedium.copyWith(
                             fontSize: 12.sp,
                             color: AppColor.blackColour,
                           ),),
@@ -176,16 +178,10 @@ class _InfoScreenState extends State<InfoScreen> {
               ),
               SizedBox(height: 2.h,),
               //playingx1
-              GestureDetector(
-                onTap: (){
-                  Navigator.push(context,
-                                                MaterialPageRoute(builder: (context) => PlayingElevenListScreen()));
-                },
-                child: Text('Playing XI',style: fontMedium.copyWith(
-                  fontSize: 14.sp,
-                  color: AppColor.blackColour,
-                ),),
-              ),
+              Text('Playing XI',style: fontMedium.copyWith(
+                fontSize: 14.sp,
+                color: AppColor.blackColour,
+              ),),
               Divider(
                 color: Color(0xffD3D3D3),
               ),
@@ -201,14 +197,15 @@ class _InfoScreenState extends State<InfoScreen> {
                     ),),
                     Spacer(),
                     GestureDetector(onTap: (){
-
+                      Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                          PlayingElevenListScreen(widget.matchId,matchInfo!.data!.playing11!.team1Id.toString(),matchInfo!.data!.playing11!.team2Id.toString())));
                     },
                         child: SvgPicture.asset(Images.arrowICon,width: 6.5.w,)),
 
                   ],
                 ),
               ),
-              DottedLine(
+              const DottedLine(
                 dashColor: Color(0xffD2D2D2),
               ),
               SizedBox(height: 1.h,),
@@ -223,7 +220,11 @@ class _InfoScreenState extends State<InfoScreen> {
                       color: AppColor.blackColour,
                     ),),
                     Spacer(),
-                    SvgPicture.asset(Images.arrowICon,width: 6.5.w,)
+                    GestureDetector(onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                          PlayingElevenListScreen(widget.matchId,matchInfo!.data!.playing11!.team1Id.toString(),matchInfo!.data!.playing11!.team2Id.toString())));
+                    },
+                    child:   SvgPicture.asset(Images.arrowICon,width: 6.5.w,))
 
                   ],
                 ),

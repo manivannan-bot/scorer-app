@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:r_dotted_line_border/r_dotted_line_border.dart';
 import 'package:sizer/sizer.dart';
 
+import '../utils/colours.dart';
 import '../utils/images.dart';
 import '../utils/styles.dart';
 
@@ -13,27 +14,36 @@ class ChooseContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Container(
-      height: 18.h,
       width: 36.w,
+      padding: EdgeInsets.symmetric(
+        vertical: 5.h,
+        horizontal: 3.w
+      ),
       decoration: BoxDecoration(
         border: RDottedLineBorder.all(
-          color: Color(0xffCCCCCC),
+          color: const Color(0xffCCCCCC),
           width: 1,
         ),
-        color: Color(0xffF8F9FA),
+        color: const Color(0xffF8F9FA),
         borderRadius: BorderRadius.circular(30),
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Padding(
-            padding:  EdgeInsets.only(top: 5.h,bottom: 2.h),
-            child: SvgPicture.asset(Images.plusIcon,width: 10.w,),
-          ),
+          if(label == "Striker" || label == "Non-Striker" || label == "Bowler" || label == "Wicket Keeper")...[
+            SvgPicture.asset(Images.plusIcon, width: 10.w,),
+          ] else ...[
+            Icon(Icons.person, color: AppColor.primaryColor, size: 10.w,),
+          ],
           SizedBox(height: 2.h,),
-          Text(label,style: fontMedium.copyWith(
-            fontSize: 14.sp,
-            color: Color(0xff444444),
-          ),),
+          FittedBox(
+            child: Text(label,
+              textAlign: TextAlign.center,
+              style: fontMedium.copyWith(
+              fontSize: 14.sp,
+              color: const Color(0xff444444),
+            ),),
+          ),
         ],
       ),
     );

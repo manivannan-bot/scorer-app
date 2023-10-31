@@ -1,12 +1,14 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
+import 'package:scorer/models/players/player_stats_model.dart';
 import 'package:sizer/sizer.dart';
 
 import '../utils/colours.dart';
 import '../utils/sizes.dart';
 
 class StatsBowling extends StatefulWidget {
-  const StatsBowling({super.key});
+  final List<BowlingPerformance>? bowlingPerformance;
+  const StatsBowling(this.bowlingPerformance, {super.key});
 
   @override
   State<StatsBowling> createState() => _StatsBowlingState();
@@ -44,7 +46,7 @@ class _StatsBowlingState extends State<StatsBowling> {
                           ),
                           SizedBox(width: 15.w),
                           Text(
-                            '250',
+                            '${widget.bowlingPerformance!.first.totalMatches}',
                             style: fontRegular.copyWith(fontSize: 12.sp, color: AppColor.blackColour),
                           ),
                         ],
@@ -65,7 +67,7 @@ class _StatsBowlingState extends State<StatsBowling> {
                           ),
                           SizedBox(width: 15.w),
                           Text(
-                            '220',
+                            '${widget.bowlingPerformance!.first.totalInnings}',
                             style: fontRegular.copyWith(fontSize: 12.sp, color: AppColor.blackColour),
                           ),
                         ],
@@ -92,7 +94,7 @@ class _StatsBowlingState extends State<StatsBowling> {
                           ),
                           SizedBox(width: 15.w),
                           Text(
-                            '220',
+                            '${widget.bowlingPerformance!.first.bowlingTotalBalls}',
                             style: fontRegular.copyWith(fontSize: 12.sp, color: AppColor.blackColour),
                           ),
                         ],
@@ -113,7 +115,7 @@ class _StatsBowlingState extends State<StatsBowling> {
                           ),
                           SizedBox(width: 15.w),
                           Text(
-                            '250',
+                            '${widget.bowlingPerformance!.first.bowlingTotalRuns}',
                             style: fontRegular.copyWith(fontSize: 12.sp, color: AppColor.blackColour),
                           ),
                         ],
@@ -141,7 +143,7 @@ class _StatsBowlingState extends State<StatsBowling> {
                           ),
                           SizedBox(width: 15.w),
                           Text(
-                            '1',
+                            '${widget.bowlingPerformance!.first.bowlingMaidens}',
                             style: fontRegular.copyWith(fontSize: 12.sp, color: AppColor.blackColour),
                           ),
                         ],
@@ -162,7 +164,7 @@ class _StatsBowlingState extends State<StatsBowling> {
                           ),
                           SizedBox(width: 15.w),
                           Text(
-                            '22',
+                            '${widget.bowlingPerformance!.first.totalWickets}',
                             style: fontRegular.copyWith(fontSize: 12.sp, color: AppColor.blackColour),
                           ),
                         ],
@@ -189,7 +191,7 @@ class _StatsBowlingState extends State<StatsBowling> {
                           ),
                           SizedBox(width: 15.w),
                           Text(
-                            '15',
+                            '${widget.bowlingPerformance!.first.bowlingAverage}',
                             style: fontRegular.copyWith(fontSize: 12.sp, color: AppColor.blackColour),
                           ),
                         ],
@@ -210,7 +212,7 @@ class _StatsBowlingState extends State<StatsBowling> {
                           ),
                           SizedBox(width: 15.w),
                           Text(
-                            '5',
+                            '${widget.bowlingPerformance!.first.bowlingEconomy}',
                             style: fontRegular.copyWith(fontSize: 12.sp, color: AppColor.blackColour),
                           ),
                         ],
@@ -237,7 +239,7 @@ class _StatsBowlingState extends State<StatsBowling> {
                           ),
                           SizedBox(width: 15.w),
                           Text(
-                            '15',
+                            '${widget.bowlingPerformance!.first.bowlingStrikeRate}',
                             style: fontRegular.copyWith(fontSize: 12.sp, color: AppColor.blackColour),
                           ),
                         ],
@@ -258,7 +260,7 @@ class _StatsBowlingState extends State<StatsBowling> {
                           ),
                           SizedBox(width: 15.w),
                           Text(
-                            '2',
+                            '${widget.bowlingPerformance!.first.bowlingFourWicket}',
                             style: fontRegular.copyWith(fontSize: 12.sp, color: AppColor.blackColour),
                           ),
                         ],
@@ -285,7 +287,7 @@ class _StatsBowlingState extends State<StatsBowling> {
                           ),
                           SizedBox(width: 15.w),
                           Text(
-                            '1',
+                            '${widget.bowlingPerformance!.first.bowlingFiveWicket}',
                             style: fontRegular.copyWith(fontSize: 12.sp, color: AppColor.blackColour),
                           ),
                         ],
@@ -306,7 +308,7 @@ class _StatsBowlingState extends State<StatsBowling> {
                           ),
                           SizedBox(width: 15.w),
                           Text(
-                            '0',
+                            '${widget.bowlingPerformance!.first.bowlingTenWicket}',
                             style: fontRegular.copyWith(fontSize: 12.sp, color: AppColor.blackColour),
                           ),
                         ],
