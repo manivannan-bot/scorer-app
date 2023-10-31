@@ -95,7 +95,7 @@ class ScoringProvider extends ChangeNotifier{
         // },
       );
       var decodedJson = json.decode(response.body);
-      print(decodedJson);
+      print("live score $decodedJson");
       if (response.statusCode == 200) {
         getLiveScoreResponseModel = GetLiveScoreResponseModel.fromJson(decodedJson);
 
@@ -117,6 +117,7 @@ class ScoringProvider extends ChangeNotifier{
 
 
   Future<PlayerListModel> getPlayerList(String matchid,String teamid,String option) async{
+    print("match id $matchid team id $teamid option $option");
     // SharedPreferences preferences = await SharedPreferences.getInstance();
     // String? accToken = preferences.getString("access_token");
     // print("usertoken $accToken");
@@ -244,10 +245,9 @@ class ScoringProvider extends ChangeNotifier{
         // },
       );
       var decodedJson = json.decode(response.body);
-      print(decodedJson);
+      print("scoring detail $decodedJson");
       if (response.statusCode == 200) {
         scoringDetailResponseModel = ScoringDetailResponseModel.fromJson(decodedJson);
-
         notifyListeners();
       } else {
         throw const HttpException('Failed to load data');
@@ -274,8 +274,6 @@ class ScoringProvider extends ChangeNotifier{
 
     print(json.decode(body));
     try {
-
-
       final response = await http.post(
         Uri.parse(AppConstants.scoreUpdate),
         headers: {

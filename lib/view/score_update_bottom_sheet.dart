@@ -1,11 +1,14 @@
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:scorer/models/scoring_detail_response_model.dart';
+import 'package:scorer/provider/score_update_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 import '../models/score_update_request_model.dart';
 import '../models/score_update_response_model.dart';
+import '../provider/player_selection_provider.dart';
 import '../provider/scoring_provider.dart';
 import '../utils/colours.dart';
 import '../utils/images.dart';
@@ -23,8 +26,8 @@ class ScoreBottomSheet extends StatefulWidget {
 }
 
 class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
-  ScoreUpdateRequestModel scoreUpdateRequestModel=ScoreUpdateRequestModel();
 
+  ScoreUpdateRequestModel scoreUpdateRequestModel=ScoreUpdateRequestModel();
 
   List<Color> rowColors = [
     const Color(0xff797873),
@@ -838,9 +841,12 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                     alignment: Alignment.topRight,
                     child: ElevatedButton(
                       onPressed: () async{
+                        final player = Provider.of<PlayerSelectionProvider>(context, listen: false);
+                        final score = Provider.of<ScoreUpdateProvider>(context, listen: false);
+                        print("striker id ${player.selectedStrikerId}");
                         SharedPreferences prefs = await SharedPreferences.getInstance();
-                        var overNumber= prefs.getInt('over_number');
-                        var ballNumber= prefs.getInt('ball_number');
+                        var overNumber= prefs.getInt('over_number_innings');
+                        var ballNumber= prefs.getInt('ball_number_innings');
                         var strikerId=prefs.getInt('striker_id')??0;
                         var nonStrikerId=prefs.getInt('non_striker_id')??0;
                         var bowlerId=prefs.getInt('bowler_id')??0;
@@ -850,10 +856,10 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                         scoreUpdateRequestModel.ballTypeId=widget.run;
                         scoreUpdateRequestModel.matchId=widget.scoringData.data!.batting![0].matchId;
                         scoreUpdateRequestModel.scorerId=1;
-                        scoreUpdateRequestModel.strikerId=strikerId;
-                        scoreUpdateRequestModel.nonStrikerId=nonStrikerId;
-                        scoreUpdateRequestModel.wicketKeeperId=keeperId;
-                        scoreUpdateRequestModel.bowlerId=bowlerId;
+                        scoreUpdateRequestModel.strikerId=int.parse(player.selectedStrikerId.toString());
+                        scoreUpdateRequestModel.nonStrikerId=int.parse(player.selectedNonStrikerId.toString());
+                        scoreUpdateRequestModel.wicketKeeperId=int.parse(player.selectedWicketKeeperId.toString());
+                        scoreUpdateRequestModel.bowlerId=int.parse(player.selectedBowlerId.toString());
                         scoreUpdateRequestModel.overNumber=overNumber;
                         scoreUpdateRequestModel.ballNumber=ballNumber;
                         scoreUpdateRequestModel.runsScored=widget.run;
@@ -874,6 +880,8 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                         scoreUpdateRequestModel.bowlerPosition= bowlerPosition;
                         ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
                           widget.onSave(value);
+                          score.setOverNumber(value.data!.overNumber??0);
+                          score.setBallNumber(value.data!.ballNumber??0);
                           SharedPreferences prefs = await SharedPreferences.getInstance();
                           await prefs.setInt('over_number', value.data!.overNumber??0);
                           await prefs.setInt('ball_number', value.data!.ballNumber??0);

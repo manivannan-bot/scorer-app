@@ -445,7 +445,7 @@ class _DOScoringState extends State<DOScoring> {
                                         striker: false),
                                   ],
                                 );
-                                ScoringProvider()
+                                await ScoringProvider()
                                     .saveBatsman(requestModel)
                                     .then((value) {
                                   if(value.status == true){
@@ -454,7 +454,7 @@ class _DOScoringState extends State<DOScoring> {
                                     });
                                   }
                                 });
-                                ScoringProvider()
+                                await ScoringProvider()
                                     .saveBatsman(request1Model).then((value) {
                                   if(value.status == true){
                                     setState(() {
@@ -462,7 +462,7 @@ class _DOScoringState extends State<DOScoring> {
                                     });
                                   }
                                 });
-                                ScoringProvider()
+                                await ScoringProvider()
                                     .saveBowler(widget.matchId, widget.team2id, players.selectedBowlerId)
                                     .then((value) {
                                   if(value.status == true){
@@ -471,15 +471,18 @@ class _DOScoringState extends State<DOScoring> {
                                     });
                                   }
                                 });
-                                if(striker && nonStriker && bowler){
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => ScoreUpdateScreen(
-                                              widget.matchId, widget.team1id, widget.team2id)));
-                                } else {
-                                  Dialogs.snackBar("Something went wrong. Please try again", context, isError: true);
-                                }
+                                WidgetsBinding.instance.addPostFrameCallback((_) {
+                                  if(striker && nonStriker && bowler){
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ScoreUpdateScreen(
+                                                widget.matchId, widget.team1id, widget.team2id)));
+                                  } else {
+                                    Dialogs.snackBar("Something went wrong. Please try again", context, isError: true);
+                                  }
+                                });
+
                               }
                             });
                       }

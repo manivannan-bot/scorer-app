@@ -3,8 +3,10 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:laravel_flutter_pusher/laravel_flutter_pusher.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:scorer/models/scoring_detail_response_model.dart';
+import 'package:scorer/provider/player_selection_provider.dart';
 import 'package:scorer/view/widgets/scorer_grid_four.dart';
 import 'package:scorer/view/widgets/scorer_grid_item.dart';
 import 'package:scorer/view/widgets/scorer_grid_out.dart';
@@ -239,13 +241,15 @@ class _ScoringTabState extends State<ScoringTab> {
                         Row(
                           children: [
                             Text('${scoringData!.data!.batting![index1].playerName??'-'}',
-                                style:  fontRegular.copyWith(
-                                    color: Colors.black, fontSize: 10.sp)),
+                                style: fontRegular.copyWith(
+                                    color: Colors.black,
+                                    fontSize: 10.sp)),
                             scoringData!.data!.batting![index1].striker == 1
                                 ? SvgPicture.asset(Images.batIcon) :  SizedBox(width:1.w),
                             Text('${scoringData!.data!.batting![index1].runsScored??'0'}(${scoringData!.data!.batting![index1].ballsFaced??'0'})',
-                                style:  fontRegular.copyWith(
-                                    color: Colors.black, fontSize: 10.sp)),
+                                style: fontRegular.copyWith(
+                                    color: Colors.black,
+                                    fontSize: 10.sp)),
                           ],
                         ),
                         SizedBox(
@@ -254,14 +258,16 @@ class _ScoringTabState extends State<ScoringTab> {
                         Row(
                           children: [
                             Text((scoringData!.data!.batting?[index2]!=null)?'${scoringData!.data!.batting![index2].playerName??'-'} ':'-',
-                                style:  fontRegular.copyWith(
-                                    color: Colors.black, fontSize: 10.sp)),
+                                style: fontRegular.copyWith(
+                                    color: Colors.black,
+                                    fontSize: 10.sp)),
                             scoringData!.data!.batting![index2].striker == 1
                                 ? SvgPicture.asset(Images.batIcon) :  SizedBox(width:1.w),
                             Text((scoringData!.data!.batting?[index2]!=null)?
                             '  ${scoringData!.data!.batting![index2].runsScored??'0'}(${scoringData!.data!.batting![index2].ballsFaced??'0'})':'-',
-                                style:  fontRegular.copyWith(
-                                    color: Colors.black, fontSize: 10.sp)),
+                                style: fontRegular.copyWith(
+                                    color: Colors.black,
+                                    fontSize: 10.sp)),
                           ],
                         ),
                       ],
@@ -301,7 +307,7 @@ class _ScoringTabState extends State<ScoringTab> {
                             ),
                             //over data
                             Text('${selectedBowlerName.isEmpty?scoringData!.data!.bowling!.playerName??'-':selectedBowlerName}  '
-                                '  ${scoringData!.data!.bowling!.totalBalls??'0'}-'
+                                '  ${scoringData!.data!.bowling!.overBall??'0'}-'
                                 '${scoringData!.data!.bowling!.maiden??'0'}-'
                                 '${scoringData!.data!.bowling!.runsConceded??'0'}-'
                                 '${scoringData!.data!.bowling!.wickets??'0'}',
@@ -458,6 +464,7 @@ class _ScoringTabState extends State<ScoringTab> {
             ),
           ),
           SizedBox(height: 2.h),
+          //score update box
           Container(
             color: Colors.black,
             child: Column(
@@ -469,6 +476,8 @@ class _ScoringTabState extends State<ScoringTab> {
                         children:[
                           GestureDetector(
                             onTap:() async {
+                              final player = Provider.of<PlayerSelectionProvider>(context, listen: false);
+                              print("striker id ${player.selectedStrikerId}");
                               SharedPreferences prefs = await SharedPreferences.getInstance();
                               var overNumber= prefs.getInt('over_number');
                               var ballNumber= prefs.getInt('ball_number');
@@ -480,10 +489,10 @@ class _ScoringTabState extends State<ScoringTab> {
                               scoreUpdateRequestModel.ballTypeId=0;
                               scoreUpdateRequestModel.matchId=int.parse(widget.matchId);
                               scoreUpdateRequestModel.scorerId=1;
-                              scoreUpdateRequestModel.strikerId=strikerId;
-                              scoreUpdateRequestModel.nonStrikerId=nonStrikerId;
-                              scoreUpdateRequestModel.wicketKeeperId=keeperId;
-                              scoreUpdateRequestModel.bowlerId=bowlerId;
+                              scoreUpdateRequestModel.strikerId=int.parse(player.selectedStrikerId.toString());
+                              scoreUpdateRequestModel.nonStrikerId=int.parse(player.selectedNonStrikerId.toString());
+                              scoreUpdateRequestModel.wicketKeeperId=int.parse(player.selectedWicketKeeperId.toString());
+                              scoreUpdateRequestModel.bowlerId=int.parse(player.selectedBowlerId.toString());
                               scoreUpdateRequestModel.overNumber=overNumber;
                               scoreUpdateRequestModel.ballNumber=ballNumber;
                               scoreUpdateRequestModel.runsScored=0;
@@ -770,10 +779,11 @@ class _ScoringTabState extends State<ScoringTab> {
 
         return SizedBox(height: sheetHeight,
           child: ScoreBottomSheet(run,scoringData!,onSave: (value){
-            setState(() {
-              scoreUpdateResponseModel=value;
-            });
-
+            if(mounted){
+              setState(() {
+                scoreUpdateResponseModel=value;
+              });
+            }
           },),
         );
       },

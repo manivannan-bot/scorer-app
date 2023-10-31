@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:scorer/provider/player_selection_provider.dart';
+import 'package:scorer/provider/score_update_provider.dart';
 import 'package:scorer/provider/scoring_provider.dart';
 import 'package:sizer/sizer.dart';
 import 'Scoring screens/home_screen.dart';
@@ -16,6 +17,7 @@ Future<void> main() async {
       providers: [
         ChangeNotifierProvider(create: (context) => ScoringProvider()),
         ChangeNotifierProvider(create: (context) => PlayerSelectionProvider()),
+        ChangeNotifierProvider(create: (context) => ScoreUpdateProvider()),
       ],
       child:  const MyApp(),
     ),
@@ -31,11 +33,16 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
+  getData(){
+    Provider.of<PlayerSelectionProvider>(context, listen: false).getPlayerSelectionValueFromPrefs();
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    getData();
   }
 
   @override
@@ -58,6 +65,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     final isResumed = state == AppLifecycleState.resumed;
     if(isBackground){
       print("app went background");
+      Provider.of<PlayerSelectionProvider>(context, listen: false).setPlayerSelectionValueToPrefs();
     } else if(isResumed){
       print("app is live again");
     }
