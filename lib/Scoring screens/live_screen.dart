@@ -308,14 +308,14 @@ class _LiveScreenState extends State<LiveScreen> {
                                                   if(((scoringData!.data!.batting!.length<2) || scoringData!.data!.bowling==null)){
                                                     //if team 1 won the toss & chose to bat
                                                     if(matchList!.first.tossWonBy==matchList![index].team1Id && matchList!.first.choseTo=='Bat' ) {
-                                                      Provider.of<PlayerSelectionProvider>(context, listen: false).clearAllSelectedIds();
+                                                      // Provider.of<PlayerSelectionProvider>(context, listen: false).clearAllSelectedIds();
                                                       Navigator.push(context, MaterialPageRoute(builder: (context) =>
                                                           DOScoring(matchList![index].matchId.toString(),
                                                               matchList![index].team1Id.toString(),
                                                               matchList![index].team2Id.toString())))
                                                           .then((value) {getData();});
                                                     }else{ //if team 2 won the toss & chose to bat
-                                                      Provider.of<PlayerSelectionProvider>(context, listen: false).clearAllSelectedIds();
+                                                      // Provider.of<PlayerSelectionProvider>(context, listen: false).clearAllSelectedIds();
                                                       Navigator.push(context, MaterialPageRoute(builder: (context) =>
                                                           DOScoring(matchList![index].matchId.toString(),
                                                               matchList![index].team2Id.toString(),
@@ -350,14 +350,14 @@ class _LiveScreenState extends State<LiveScreen> {
                                                 else if(matchList!.first.currentInnings==2){
                                                   if(((scoringData!.data!.batting!.length<2) || scoringData!.data!.bowling==null)){
                                                     if(matchList!.first.tossWonBy==matchList![index].team1Id && matchList!.first.choseTo=='Bat' ) {
-                                                      Provider.of<PlayerSelectionProvider>(context, listen: false).clearAllSelectedIds();
+                                                      // Provider.of<PlayerSelectionProvider>(context, listen: false).clearAllSelectedIds();
                                                       Navigator.push(context, MaterialPageRoute(builder: (context) =>
                                                           DOScoring(matchList![index].matchId.toString(),
                                                               matchList![index].team1Id.toString(),
                                                               matchList![index].team2Id.toString())))
                                                           .then((value) {getData();});
                                                     }else{
-                                                      Provider.of<PlayerSelectionProvider>(context, listen: false).clearAllSelectedIds();
+                                                      // Provider.of<PlayerSelectionProvider>(context, listen: false).clearAllSelectedIds();
                                                       Navigator.push(context, MaterialPageRoute(builder: (context) =>
                                                           DOScoring(matchList![index].matchId.toString(),
                                                               matchList![index].team2Id.toString(),

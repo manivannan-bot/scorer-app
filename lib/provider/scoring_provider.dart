@@ -246,7 +246,7 @@ class ScoringProvider extends ChangeNotifier{
         // },
       );
       var decodedJson = json.decode(response.body);
-      print(decodedJson);
+      print("scoring detail $decodedJson");
       if (response.statusCode == 200) {
         scoringDetailResponseModel = ScoringDetailResponseModel.fromJson(decodedJson);
 
@@ -291,7 +291,7 @@ class ScoringProvider extends ChangeNotifier{
         body: body,
       );
       var decodedJson = json.decode(response.body);
-      print(decodedJson);
+      print("score update response $decodedJson");
       if (response.statusCode == 200) {
         scoreUpdateResponseModel = ScoreUpdateResponseModel.fromJson(decodedJson);
         notifyListeners();
