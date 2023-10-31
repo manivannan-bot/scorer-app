@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:scorer/models/players/players_overview_model.dart';
 import 'package:sizer/sizer.dart';
 
 import '../utils/colours.dart';
@@ -7,26 +8,15 @@ import '../utils/images.dart';
 import '../utils/sizes.dart';
 
 class RecentBowlingDetails extends StatefulWidget {
-  const RecentBowlingDetails({super.key});
+  final List<RecentBowling>? bowlingList;
+  const RecentBowlingDetails(this.bowlingList, {super.key});
 
   @override
   State<RecentBowlingDetails> createState() => _RecentBowlingDetailsState();
 }
 
 class _RecentBowlingDetailsState extends State<RecentBowlingDetails> {
-  List<Map<String,dynamic>> itemList=[
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Akash",
-      "team":"(Toss and Tails)",
-      "dot":".",
-      "batsman":"Right hand batsman",
-      "button":"Connect",
-    },
-    {}, {}, {}, {},
 
-
-  ];
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -52,7 +42,7 @@ class _RecentBowlingDetailsState extends State<RecentBowlingDetails> {
           ],
         ),
         SizedBox(height: 1.5.h,),
-        Expanded(
+        (widget.bowlingList!.isNotEmpty)?Expanded(
           child: ListView.separated(
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,
@@ -60,14 +50,14 @@ class _RecentBowlingDetailsState extends State<RecentBowlingDetails> {
               separatorBuilder: (context, _) {
                 return Padding(
                   padding: EdgeInsets.only(right: 2.w),
-                  child: Divider(
+                  child: const Divider(
                     color: Color(0xffD3D3D3),
                   ),
                 );
               },
-              itemCount: itemList.length,
-              itemBuilder: (BuildContext, int index) {
-                final item = itemList[index];
+              itemCount: widget.bowlingList!.length,
+              itemBuilder: (context, int index) {
+                final item = widget.bowlingList![index];
                 return   Column(
                   children: [
                     Container(
@@ -76,20 +66,20 @@ class _RecentBowlingDetailsState extends State<RecentBowlingDetails> {
                       height: 12.h,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: Color(0xffF8F9FA),
+                        color: const Color(0xffF8F9FA),
                       ),
                       child: Column(
                         children: [
                           RichText(
                               text: TextSpan(children: [
                                 TextSpan(
-                                    text: ("2-"),
+                                    text: ("${item.wickets}-"),
                                     style: fontMedium.copyWith(
                                       fontSize: 12.sp,
                                       color: AppColor.blackColour,
                                     )),
                                 TextSpan(
-                                    text: "(29)",
+                                    text: "(${item.runsConceded})",
                                     style: fontMedium.copyWith(
                                         fontSize: 12.sp,
                                         color: AppColor.blackColour
@@ -101,7 +91,7 @@ class _RecentBowlingDetailsState extends State<RecentBowlingDetails> {
                             color: AppColor.textGrey,
                           ),),
                           SizedBox(height: 0.5.h,),
-                          Text("Spartans",style: fontRegular.copyWith(
+                          Text("${item.opponent}",style: fontRegular.copyWith(
                             fontSize: 12.sp,
                             color: AppColor.textGrey,
                           ),),
@@ -111,7 +101,7 @@ class _RecentBowlingDetailsState extends State<RecentBowlingDetails> {
                   ],
                 );
               }),
-        ),
+        ):const Text('No Data Found'),
 
       ],
     );

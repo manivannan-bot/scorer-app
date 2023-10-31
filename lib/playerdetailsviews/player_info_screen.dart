@@ -1,20 +1,45 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
+import 'package:scorer/models/players/player_info_model.dart';
+import 'package:scorer/provider/player_details_provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../utils/colours.dart';
 import '../utils/sizes.dart';
 
 class PlayerInfoScreen extends StatefulWidget {
-  const PlayerInfoScreen({super.key});
+  final String playerId;
+  const PlayerInfoScreen(this.playerId, {super.key});
 
   @override
   State<PlayerInfoScreen> createState() => _PlayerInfoScreenState();
 }
 
 class _PlayerInfoScreenState extends State<PlayerInfoScreen> {
+  PlayerInfoModel? playerInfoModel;
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+  fetchData(){
+    PlayerDetailsProvider().getPlayerInfo(widget.playerId).then((value) {
+      setState(() {
+        playerInfoModel=value;
+      });
+    });
+
+  }
   @override
   Widget build(BuildContext context) {
+    if(playerInfoModel==null||playerInfoModel!.data!.userDetails==null){
+      return const SizedBox(
+          height: 100,
+          width: 100,
+          child: Center(child: CircularProgressIndicator(
+            backgroundColor: Colors.white,
+          )));
+    }
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -46,23 +71,23 @@ class _PlayerInfoScreenState extends State<PlayerInfoScreen> {
                  ),
                  child: Column(
                    children: [
-                     _buildRow("Name", "Sathish durai pandian"),
+                     _buildRow("Name", "${playerInfoModel!.data!.userDetails!.name}"),
                      _buildDivider(),
-                     _buildRow("Role", "Batting"),
+                     _buildRow("Role", "${playerInfoModel!.data!.userDetails!.battingRole==1?'Batting':'Bowling'}"),
                      _buildDivider(),
-                     _buildRow("Batting Style", "Right hand batsman"),
+                     _buildRow("Batting Style", "${playerInfoModel!.data!.userDetails!.battingStyle}"),
                      _buildDivider(),
-                     _buildRow("Batting Order", "Top Order"),
+                     _buildRow("Batting Order", "${playerInfoModel!.data!.userDetails!.battingOrder}"),
                      _buildDivider(),
-                     _buildRow("Bowling action", "Left arm"),
+                     _buildRow("Bowling action", "${playerInfoModel!.data!.userDetails!.bowlingAction}"),
                      _buildDivider(),
-                     _buildRow("Bowling Style", "Off Spin"),
+                     _buildRow("Bowling Style", "${playerInfoModel!.data!.userDetails!.bowlingStyle}"),
                      _buildDivider(),
-                     _buildRow("Bowling Proficiency", "Others"),
+                     _buildRow("Bowling Proficiency", "${playerInfoModel!.data!.userDetails!.bowlingProficiency}"),
                      _buildDivider(),
-                     _buildRow("Date of Birth", "28/09/1994"),
+                     _buildRow("Date of Birth", "${playerInfoModel!.data!.userDetails!.dob}"),
                      _buildDivider(),
-                     _buildRow("Location", "Medavakkam"),
+                     _buildRow("Location", "${playerInfoModel!.data!.userDetails!.location}"),
 
                    ],
 

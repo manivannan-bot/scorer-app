@@ -42,7 +42,7 @@ class _PlayerStatsScreenState extends State<PlayerStatsScreen>with SingleTickerP
       return const SizedBox(
         height: 100,
         width: 100,
-        child: CircularProgressIndicator(),
+        child: Center(child: CircularProgressIndicator()),
       );
     }
     return SingleChildScrollView(

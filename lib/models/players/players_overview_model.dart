@@ -23,18 +23,23 @@ class PlayerOverview {
 }
 
 class Data {
+  PlayerInfo? playerInfo;
   List<BattingPerformance>? battingPerformance;
   List<BowlingPerformance>? bowlingPerformance;
   List<RecentBatting>? recentBatting;
   List<RecentBowling>? recentBowling;
 
   Data(
-      {this.battingPerformance,
+      {this.playerInfo,
+        this.battingPerformance,
         this.bowlingPerformance,
         this.recentBatting,
         this.recentBowling});
 
   Data.fromJson(Map<String, dynamic> json) {
+    playerInfo = json['playerInfo'] != null
+        ? new PlayerInfo.fromJson(json['playerInfo'])
+        : null;
     if (json['battingPerformance'] != null) {
       battingPerformance = <BattingPerformance>[];
       json['battingPerformance'].forEach((v) {
@@ -63,6 +68,9 @@ class Data {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.playerInfo != null) {
+      data['playerInfo'] = this.playerInfo!.toJson();
+    }
     if (this.battingPerformance != null) {
       data['battingPerformance'] =
           this.battingPerformance!.map((v) => v.toJson()).toList();
@@ -79,6 +87,43 @@ class Data {
       data['recentBowling'] =
           this.recentBowling!.map((v) => v.toJson()).toList();
     }
+    return data;
+  }
+}
+
+class PlayerInfo {
+  int? playerId;
+  String? playerName;
+  String? battingStyle;
+  String? bowlingAction;
+  String? bowlingStyle;
+  String? profilePhoto;
+
+  PlayerInfo(
+      {this.playerId,
+        this.playerName,
+        this.battingStyle,
+        this.bowlingAction,
+        this.bowlingStyle,
+        this.profilePhoto});
+
+  PlayerInfo.fromJson(Map<String, dynamic> json) {
+    playerId = json['player_id'];
+    playerName = json['player_name'];
+    battingStyle = json['batting_style'];
+    bowlingAction = json['bowling_action'];
+    bowlingStyle = json['bowling_style'];
+    profilePhoto = json['profile_photo'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['player_id'] = this.playerId;
+    data['player_name'] = this.playerName;
+    data['batting_style'] = this.battingStyle;
+    data['bowling_action'] = this.bowlingAction;
+    data['bowling_style'] = this.bowlingStyle;
+    data['profile_photo'] = this.profilePhoto;
     return data;
   }
 }
@@ -148,44 +193,47 @@ class BowlingPerformance {
 class RecentBatting {
   int? runsScored;
   int? ballsFaced;
-  int? teamId;
+  String? opponent;
 
-  RecentBatting({this.runsScored, this.ballsFaced, this.teamId});
+  RecentBatting({this.runsScored, this.ballsFaced, this.opponent});
 
   RecentBatting.fromJson(Map<String, dynamic> json) {
     runsScored = json['runs_scored'];
     ballsFaced = json['balls_faced'];
-    teamId = json['team_id'];
+    opponent = json['opponent'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['runs_scored'] = this.runsScored;
     data['balls_faced'] = this.ballsFaced;
-    data['team_id'] = this.teamId;
+    data['opponent'] = this.opponent;
     return data;
   }
 }
 
-
 class RecentBowling {
-  int? runsScored;
-  int? ballsFaced;
-  int? teamId;
+  int? oversBowled;
+  int? runsConceded;
+  int? wickets;
+  String? opponent;
 
-  RecentBowling({this.runsScored, this.ballsFaced, this.teamId});
+  RecentBowling(
+      {this.oversBowled, this.runsConceded, this.wickets, this.opponent});
 
   RecentBowling.fromJson(Map<String, dynamic> json) {
-    runsScored = json['runs_scored'];
-    ballsFaced = json['balls_faced'];
-    teamId = json['team_id'];
+    oversBowled = json['overs_bowled'];
+    runsConceded = json['runs_conceded'];
+    wickets = json['wickets'];
+    opponent = json['opponent'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['runs_scored'] = this.runsScored;
-    data['balls_faced'] = this.ballsFaced;
-    data['team_id'] = this.teamId;
+    data['overs_bowled'] = this.oversBowled;
+    data['runs_conceded'] = this.runsConceded;
+    data['wickets'] = this.wickets;
+    data['opponent'] = this.opponent;
     return data;
   }
 }

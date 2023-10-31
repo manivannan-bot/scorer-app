@@ -16,19 +16,7 @@ class RecentBattingDetails extends StatefulWidget {
 }
 
 class _RecentBattingDetailsState extends State<RecentBattingDetails> {
-  List<Map<String,dynamic>> itemList=[
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Akash",
-      "team":"(Toss and Tails)",
-      "dot":".",
-      "batsman":"Right hand batsman",
-      "button":"Connect",
-    },
-    {}, {}, {}, {},
 
-
-  ];
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -54,7 +42,7 @@ class _RecentBattingDetailsState extends State<RecentBattingDetails> {
           ],
         ),
         SizedBox(height: 1.5.h,),
-        Expanded(
+        (widget.recentBatting.isNotEmpty)?Expanded(
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
               shrinkWrap: true,
@@ -62,13 +50,13 @@ class _RecentBattingDetailsState extends State<RecentBattingDetails> {
               separatorBuilder: (context, _) {
                 return Padding(
                   padding: EdgeInsets.only(right: 2.w),
-                  child: Divider(
+                  child: const Divider(
                     color: Color(0xffD3D3D3),
                   ),
                 );
               },
               itemCount: widget.recentBatting.length,
-              itemBuilder: (BuildContext, int index) {
+              itemBuilder: (context, int index) {
                 final item = widget.recentBatting[index];
                 return   Column(
                   children: [
@@ -85,13 +73,13 @@ class _RecentBattingDetailsState extends State<RecentBattingDetails> {
                           RichText(
                               text: TextSpan(children: [
                                 TextSpan(
-                                    text: ("54"),
+                                    text: ("${item.runsScored}"),
                                     style: fontMedium.copyWith(
                                       fontSize: 12.sp,
                                       color: AppColor.blackColour,
                                     )),
                                 TextSpan(
-                                    text: "(29)",
+                                    text: "(${item.ballsFaced})",
                                     style: fontMedium.copyWith(
                                         fontSize: 12.sp,
                                         color: AppColor.blackColour
@@ -103,7 +91,7 @@ class _RecentBattingDetailsState extends State<RecentBattingDetails> {
                             color: AppColor.textGrey,
                           ),),
                           SizedBox(height: 0.5.h,),
-                          Text("Spartans",style: fontRegular.copyWith(
+                          Text("${item.opponent}",style: fontRegular.copyWith(
                             fontSize: 12.sp,
                             color: AppColor.textGrey,
                           ),),
@@ -113,7 +101,7 @@ class _RecentBattingDetailsState extends State<RecentBattingDetails> {
                   ],
                 );
               }),
-        ),
+        ):const Text('No Data Found'),
 
       ],
     );
