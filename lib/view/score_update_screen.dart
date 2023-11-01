@@ -26,7 +26,7 @@ class ScoreUpdateScreen extends StatefulWidget  {
 
 class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTickerProviderStateMixin{
    late TabController tabController;
-   List<Matches>? matchList;
+   Matches? matchList;
    RefreshController refreshController = RefreshController();
    int? batTeamId;
    int? bowlTeamId;
@@ -95,7 +95,7 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
            score.setOverNumber(overNumber);
            score.setBallNumber(ballNumber);
          });
-     await prefs.setInt('current_innings',data.matches!.first.currentInnings??1);
+     await prefs.setInt('current_innings',data.matches!.currentInnings??1);
      refreshController.refreshCompleted();
      });
    }
@@ -169,7 +169,7 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
                               children: [
                                Image.asset(Images.teamaLogo,width: 20.w,),
                                 Text(
-                                  '${matchList!.first.team1Name}',
+                                  '${matchList!.team1Name}',
                                   style: fontMedium.copyWith(
                                       fontSize: 14.sp,
                                       color: AppColor.lightColor
@@ -180,14 +180,14 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
                             Column(
                               children: [
                                 Text(
-                                  '${matchList!.first.tossWinnerName} won the Toss\nand Choose to ${matchList!.first.choseTo} ',
+                                  '${matchList!.tossWinnerName} won the Toss\nand Choose to ${matchList!.choseTo} ',
                                   textAlign: TextAlign.center,
                                   style: fontRegular.copyWith(
                                       fontSize: 11.sp,
                                       color: AppColor.lightColor
                                   )
                                 ),
-                                Text('${matchList!.first.teams!.first.totalRuns}/${matchList!.first.teams!.first.totalWickets}',
+                                Text('${matchList!.teams!.first.totalRuns}/${matchList!.teams!.first.totalWickets}',
                                     style: fontMedium.copyWith(
                                     fontSize: 25.sp,
                                     color: AppColor.lightColor
@@ -199,7 +199,7 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
                                     color: AppColor.primaryColor,
                                   ),
                                   child: Text(
-                                    'Overs: ${matchList!.first.teams!.first.currentOverDetails}/${matchList!.first.overs}',
+                                    'Overs: ${matchList!.teams!.first.currentOverDetails}/${matchList!.overs}',
                                     style: fontMedium.copyWith(
                                       fontSize: 11.sp,
                                       color: AppColor.blackColour,
@@ -207,7 +207,7 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
                                   ),
                                 ),
                                 SizedBox(height: 1.h,),
-                                Text("Innings ${matchList!.first.currentInnings??'0'}",
+                                Text("Innings ${matchList!.currentInnings??'0'}",
                                   style: fontRegular.copyWith(
                                   fontSize: 12.sp,
                                   color: AppColor.lightColor,
@@ -218,7 +218,7 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
                               children: [
                                 Image.asset(Images.teamaLogo,width: 20.w,),
                                  Text(
-                                     '${matchList!.first.team2Name}',
+                                     '${matchList!.team2Name}',
                                   style:fontMedium.copyWith(
                                       fontSize: 14.sp,
                                       color: AppColor.lightColor)

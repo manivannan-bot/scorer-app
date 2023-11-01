@@ -1,19 +1,15 @@
 class GetLiveScoreResponseModel {
   bool? status;
-  dynamic message;
-  List<Matches>? matches;
+  String? message;
+  Matches? matches;
 
   GetLiveScoreResponseModel({this.status, this.message, this.matches});
 
   GetLiveScoreResponseModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    if (json['matches'] != null) {
-      matches = <Matches>[];
-      json['matches'].forEach((v) {
-        matches!.add(new Matches.fromJson(v));
-      });
-    }
+    matches =
+    json['matches'] != null ? new Matches.fromJson(json['matches']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -21,39 +17,39 @@ class GetLiveScoreResponseModel {
     data['status'] = this.status;
     data['message'] = this.message;
     if (this.matches != null) {
-      data['matches'] = this.matches!.map((v) => v.toJson()).toList();
+      data['matches'] = this.matches!.toJson();
     }
     return data;
   }
 }
 
 class Matches {
-  dynamic matchId;
-  dynamic matchNumber;
-  dynamic team1Id;
-  dynamic team2Id;
-  dynamic scorerId;
-  dynamic umpireId;
-  dynamic date;
-  dynamic venue;
-  dynamic slotStartTime;
-  dynamic slotEndTime;
-  dynamic organiser;
-  dynamic ground;
-  dynamic tossWonBy;
-  dynamic choseTo;
-  dynamic overs;
-  dynamic currentInnings;
-  dynamic matchStatus;
-  dynamic matchWonBy;
-  dynamic matchLossBy;
-  dynamic resultDescription;
-  dynamic createdAt;
-  dynamic updatedAt;
-  dynamic team1Name;
-  dynamic team2Name;
-  dynamic tossWinnerName;
-  dynamic status;
+  int? matchId;
+  String? matchNumber;
+  int? team1Id;
+  int? team2Id;
+  int? scorerId;
+  int? umpireId;
+  String? date;
+  String? venue;
+  String? slotStartTime;
+  String? slotEndTime;
+  String? organiser;
+  String? ground;
+  int? tossWonBy;
+  String? choseTo;
+  String? overs;
+  int? currentInnings;
+  int? matchStatus;
+  int? matchWonBy;
+  int? matchLossBy;
+  String? resultDescription;
+  String? createdAt;
+  String? updatedAt;
+  String? team1Name;
+  String? team2Name;
+  String? tossWinnerName;
+  String? status;
   List<Teams>? teams;
 
   Matches(
@@ -156,14 +152,14 @@ class Matches {
 }
 
 class Teams {
-  dynamic teamName;
-  dynamic totalRuns;
-  dynamic totalWickets;
-  dynamic ballNumber;
-  dynamic overNumber;
-  dynamic overs;
-  dynamic currentOverDetails;
-  dynamic ballRecordCheck;
+  String? teamName;
+  String? totalRuns;
+  String? totalWickets;
+  int? ballNumber;
+  int? overNumber;
+  int? overs;
+  String? currentOverDetails;
+  int? ballRecordCheck;
 
   Teams(
       {this.teamName,

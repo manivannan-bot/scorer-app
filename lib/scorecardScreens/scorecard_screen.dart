@@ -25,7 +25,7 @@ class ScorecardScreen extends StatefulWidget {
 class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProviderStateMixin{
   late TabController tabController;
    ScoreCardResponseModel? scoreCardResponseModel;
-  List<Matches>? matchlist;
+  Matches? matchlist;
   List<TeamsName>?teams;
   int? batTeamId;
   int? bowlTeamId;
@@ -42,21 +42,21 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
                   setState(() {
                     matchlist = data.matches;
 
-                    if(matchlist!.first.currentInnings==1){
-                      if(matchlist!.first.tossWonBy==int.parse(widget.team1Id) && matchlist!.first.choseTo=='Bat' ) {
-                        batTeamId=data.matches!.first.team1Id;
-                        bowlTeamId=data.matches!.first.team2Id;
+                    if(matchlist!.currentInnings==1){
+                      if(matchlist!.tossWonBy==int.parse(widget.team1Id) && matchlist!.choseTo=='Bat' ) {
+                        batTeamId=data.matches!.team1Id;
+                        bowlTeamId=data.matches!.team2Id;
                       }else{
-                        batTeamId=data.matches!.first.team2Id;
-                        bowlTeamId=data.matches!.first.team1Id;
+                        batTeamId=data.matches!.team2Id;
+                        bowlTeamId=data.matches!.team1Id;
                       }
-                    }else if(matchlist!.first.currentInnings==2){
-                      if(matchlist!.first.tossWonBy==int.parse(widget.team1Id) && matchlist!.first.choseTo=='Bat' ) {
-                        batTeamId=data.matches!.first.team2Id;
-                        bowlTeamId=data.matches!.first.team1Id;
+                    }else if(matchlist!.currentInnings==2){
+                      if(matchlist!.tossWonBy==int.parse(widget.team1Id) && matchlist!.choseTo=='Bat' ) {
+                        batTeamId=data.matches!.team2Id;
+                        bowlTeamId=data.matches!.team1Id;
                       }else{
-                        batTeamId=data.matches!.first.team1Id;
-                        bowlTeamId=data.matches!.first.team2Id;
+                        batTeamId=data.matches!.team1Id;
+                        bowlTeamId=data.matches!.team2Id;
                       }
                     }
                   });
