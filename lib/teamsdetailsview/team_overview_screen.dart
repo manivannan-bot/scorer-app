@@ -1,6 +1,8 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:scorer/models/teams/team_overview_model.dart';
+import 'package:scorer/provider/teams_provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../utils/colours.dart';
@@ -8,7 +10,8 @@ import '../utils/images.dart';
 import '../utils/sizes.dart';
 
 class TeamOverviewScreen extends StatefulWidget {
-  const TeamOverviewScreen({super.key});
+  final String teamId;
+  const TeamOverviewScreen(this.teamId, {super.key});
 
   @override
   State<TeamOverviewScreen> createState() => _TeamOverviewScreenState();
@@ -25,18 +28,40 @@ class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
       "button":"Connect",
     },
     {}, {}, {}, {},
-
-
   ];
+  TeamOverview? teamOverview;
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+  fetchData(){
+      TeamsProvider().getTeamOverview(widget.teamId).then((value){
+        setState(() {
+          teamOverview=value;
+        });
+      });
+  }
   @override
   Widget build(BuildContext context) {
+    if(teamOverview==null||teamOverview!.data==null){
+      return const SizedBox(
+        height: 50,
+        width: 50,
+        child: Center(
+          child: CircularProgressIndicator(
+            backgroundColor: Colors.white,
+          ),
+        ),
+      );
+    }
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 4.w),
           width: double.infinity,
           height: 75.h,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30)),
               color: AppColor.lightColor
           ),
@@ -73,14 +98,14 @@ class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
                     separatorBuilder: (context, _) {
                       return Padding(
                         padding: EdgeInsets.only(right: 2.w),
-                        child: Divider(
+                        child: const Divider(
                           color: Color(0xffD3D3D3),
                         ),
                       );
                     },
-                    itemCount: itemList.length,
-                    itemBuilder: (BuildContext, int index) {
-                      final item = itemList[index];
+                    itemCount: teamOverview!.data!.recentTeamForm!.length,
+                    itemBuilder: (context, int index) {
+                      final item = teamOverview!.data!.recentTeamForm![index];
                       return   Column(
                         children: [
                           Container(
@@ -89,11 +114,11 @@ class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
                             height: 15.h,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color: Color(0xffF8F9FA),
+                              color: const Color(0xffF8F9FA),
                             ),
                             child: Column(
                               children: [
-                                Text("Lost",style: fontMedium.copyWith(
+                                Text("${item.result}",style: fontMedium.copyWith(
                                   fontSize: 14.sp,
                                   color: AppColor.redColor,
                                 ),),
@@ -103,12 +128,12 @@ class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
                                   color: AppColor.textGrey,
                                 ),),
                                 SizedBox(height: 0.5.h,),
-                                Text("Spartans",style: fontRegular.copyWith(
+                                Text("${item.opponent}",style: fontRegular.copyWith(
                                   fontSize: 12.sp,
                                   color: AppColor.textGrey,
                                 ),),
                                 SizedBox(height: 0.5.h,),
-                                Text("28 Jun",style: fontRegular.copyWith(
+                                Text("${item.date}",style: fontRegular.copyWith(
                                   fontSize: 10.sp,
                                   color: AppColor.textGrey,
                                 ),),
@@ -177,7 +202,7 @@ class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
                                         color: Color(0xff008000)
                                     ),),
                                     Spacer(),
-                                    Text("57",style: fontMedium.copyWith(
+                                    Text("${teamOverview!.data!.teamStats!.matchWonCount}",style: fontMedium.copyWith(
                                         fontSize: 14.sp,
                                         color: AppColor.blackColour
                                     ),),
@@ -210,7 +235,7 @@ class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
                                         color: AppColor.redColor
                                     ),),
                                     Spacer(),
-                                    Text("57",style: fontMedium.copyWith(
+                                    Text("${teamOverview!.data!.teamStats!.matchLossCount}",style: fontMedium.copyWith(
                                         fontSize: 14.sp,
                                         color: AppColor.blackColour
                                     ),),
@@ -252,7 +277,7 @@ class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
                               children: [
                                 SizedBox(
                                   width: 20.w,
-                                  child: Text('Prasanth',style: fontRegular.copyWith(
+                                  child: Text('${teamOverview!.data!.mostRun!.userName}',style: fontRegular.copyWith(
                                     fontSize: 12.sp,
                                     color: AppColor.blackColour,
                                   ),),
@@ -265,7 +290,7 @@ class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
                                       radius: 4,
                                     ),
                                     SizedBox(width: 1.w,),
-                                    Text("LHB",style: fontRegular.copyWith(
+                                    Text("${teamOverview!.data!.mostRun!.specification}",style: fontRegular.copyWith(
                                       fontSize: 11.sp,
                                       color: Color(0xff666666),
                                     ),),
@@ -281,12 +306,12 @@ class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
                         SizedBox(height: 1.h,),
                         Row(
                           children: [
-                            Text("14 matches",style: fontRegular.copyWith(
+                            Text("${teamOverview!.data!.mostRun!.played} matches",style: fontRegular.copyWith(
                               fontSize: 10.sp,
                               color: Color(0xff666666)
                             ),),
                             Spacer(),
-                            Text("567",style: fontMedium.copyWith(
+                            Text("${teamOverview!.data!.mostRun!.runsScored}",style: fontMedium.copyWith(
                               fontSize: 13.sp,
                               color: AppColor.blackColour,
                             ),),
@@ -301,7 +326,7 @@ class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 2.w,vertical: 2.h),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Color(0xffF8F9FA),
+                      color: const Color(0xffF8F9FA),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -320,7 +345,7 @@ class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
                               children: [
                                 SizedBox(
                                   width: 20.w,
-                                  child: Text('Prasanth',style: fontRegular.copyWith(
+                                  child: Text('${teamOverview!.data!.mostWicket!.userName}',style: fontRegular.copyWith(
                                     fontSize: 12.sp,
                                     color: AppColor.blackColour,
                                   ),),
@@ -328,14 +353,14 @@ class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
                                 SizedBox(height: 0.5.h,),
                                 Row(
                                   children: [
-                                    CircleAvatar(
+                                    const CircleAvatar(
                                       backgroundColor: AppColor.pri,
                                       radius: 4,
                                     ),
                                     SizedBox(width: 1.w,),
-                                    Text("LHB",style: fontRegular.copyWith(
+                                    Text("${teamOverview!.data!.mostWicket!.specification}",style: fontRegular.copyWith(
                                       fontSize: 11.sp,
-                                      color: Color(0xff666666),
+                                      color: const Color(0xff666666),
                                     ),),
                                   ],
                                 ),
@@ -343,18 +368,18 @@ class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
                           ],
                         ),
                         SizedBox(height: 1.h,),
-                        DottedLine(
+                        const DottedLine(
                           dashColor: Color(0xffD2D2D2),
                         ),
                         SizedBox(height: 1.h,),
                         Row(
                           children: [
-                            Text("14 matches",style: fontRegular.copyWith(
+                            Text("${teamOverview!.data!.mostWicket!.played} matches",style: fontRegular.copyWith(
                                 fontSize: 10.sp,
                                 color: Color(0xff666666)
                             ),),
                             Spacer(),
-                            Text("567",style: fontMedium.copyWith(
+                            Text("${teamOverview!.data!.mostWicket!.wickets}",style: fontMedium.copyWith(
                               fontSize: 13.sp,
                               color: AppColor.blackColour,
                             ),),

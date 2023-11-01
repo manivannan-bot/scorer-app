@@ -50,48 +50,47 @@ class _TeamListScreenState extends State<TeamListScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            GestureDetector(
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => TeamDetailViewScreens()));
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 4.w),
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30)),
-                    color: AppColor.lightColor
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Teams",style: fontMedium.copyWith(
-                      fontSize: 14.sp,
-                      color: AppColor.blackColour,
-                    ),),
-                    SizedBox(height: 2.h,),
-                    MediaQuery.removePadding(
-                      context: context,
-                      removeTop: true,  // Set this to true to remove top padding
-                      removeBottom: true,
-                      child: ListView.separated(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          separatorBuilder: (context, _) {
-                            return Padding(
-                              padding: EdgeInsets.only(bottom: 1.h)
-                            );
-                          },
-                          itemCount: playerTeamInfoModel!.data!.length,
-                          itemBuilder: (context, int index) {
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 4.w),
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30)),
+                  color: AppColor.lightColor
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Teams",style: fontMedium.copyWith(
+                    fontSize: 14.sp,
+                    color: AppColor.blackColour,
+                  ),),
+                  SizedBox(height: 2.h,),
+                  MediaQuery.removePadding(
+                    context: context,
+                    removeTop: true,  // Set this to true to remove top padding
+                    removeBottom: true,
+                    child: ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        separatorBuilder: (context, _) {
+                          return Padding(
+                            padding: EdgeInsets.only(bottom: 1.h)
+                          );
+                        },
+                        itemCount: playerTeamInfoModel!.data!.length,
+                        itemBuilder: (context, int index) {
 
-                            return   Column(
+                          return   GestureDetector(onTap:(){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => TeamDetailViewScreens(playerTeamInfoModel!.data![index].teamId.toString())));
+                          },
+                            child: Column(
                               children: [
                                 Container(
                                   padding: EdgeInsets.symmetric(horizontal: 2.w,vertical: 2.5.h),
                                   width: double.infinity,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    color: Color(0xffF8F9FA),
+                                    color: const Color(0xffF8F9FA),
                                   ),
                                   child: Row(
                                     children: [
@@ -174,11 +173,11 @@ class _TeamListScreenState extends State<TeamListScreen> {
                                   ),
                                 ),
                               ],
-                            );
-                          }),
-                    ),
-                  ],
-                ),
+                            ),
+                          );
+                        }),
+                  ),
+                ],
               ),
             ),
 

@@ -1,19 +1,15 @@
 class GetLiveScoreResponseModel {
   bool? status;
-  dynamic message;
-  List<Matches>? matches;
+  String? message;
+  Matches? matches;
 
   GetLiveScoreResponseModel({this.status, this.message, this.matches});
 
   GetLiveScoreResponseModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    if (json['matches'] != null) {
-      matches = <Matches>[];
-      json['matches'].forEach((v) {
-        matches!.add(new Matches.fromJson(v));
-      });
-    }
+    matches =
+    json['matches'] != null ? new Matches.fromJson(json['matches']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -21,40 +17,40 @@ class GetLiveScoreResponseModel {
     data['status'] = this.status;
     data['message'] = this.message;
     if (this.matches != null) {
-      data['matches'] = this.matches!.map((v) => v.toJson()).toList();
+      data['matches'] = this.matches!.toJson();
     }
     return data;
   }
 }
 
 class Matches {
-  dynamic matchId;
-  dynamic matchNumber;
-  dynamic team1Id;
-  dynamic team2Id;
-  dynamic scorerId;
-  dynamic umpireId;
-  dynamic date;
-  dynamic venue;
-  dynamic slotStartTime;
-  dynamic slotEndTime;
-  dynamic organiser;
-  dynamic ground;
-  dynamic tossWonBy;
-  dynamic choseTo;
-  dynamic overs;
-  dynamic currentInnings;
-  dynamic matchStatus;
-  dynamic matchWonBy;
-  dynamic matchLossBy;
-  dynamic resultDescription;
-  dynamic createdAt;
-  dynamic updatedAt;
-  dynamic team1Name;
-  dynamic team2Name;
-  dynamic tossWinnerName;
-  dynamic status;
-  List<Teams>? teams;
+  int? matchId;
+  String? matchNumber;
+  int? team1Id;
+  int? team2Id;
+  int? scorerId;
+  int? umpireId;
+  String? date;
+  String? venue;
+  String? slotStartTime;
+  String? slotEndTime;
+  String? organiser;
+  String? ground;
+  int? tossWonBy;
+  String? choseTo;
+  String? overs;
+  int? currentInnings;
+  int? matchStatus;
+  int? matchWonBy;
+  int? matchLossBy;
+  String? resultDescription;
+  String? createdAt;
+  String? updatedAt;
+  String? team1Name;
+  String? team2Name;
+  String? tossWinnerName;
+  String? status;
+  Teams? teams;
 
   Matches(
       {this.matchId,
@@ -112,12 +108,7 @@ class Matches {
     team2Name = json['team2_name'];
     tossWinnerName = json['toss_winner_name'];
     status = json['status'];
-    if (json['teams'] != null) {
-      teams = <Teams>[];
-      json['teams'].forEach((v) {
-        teams!.add(new Teams.fromJson(v));
-      });
-    }
+    teams = json['teams'] != null ? new Teams.fromJson(json['teams']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -149,21 +140,22 @@ class Matches {
     data['toss_winner_name'] = this.tossWinnerName;
     data['status'] = this.status;
     if (this.teams != null) {
-      data['teams'] = this.teams!.map((v) => v.toJson()).toList();
+      data['teams'] = this.teams!.toJson();
     }
     return data;
   }
 }
 
 class Teams {
-  dynamic teamName;
-  dynamic totalRuns;
-  dynamic totalWickets;
-  dynamic ballNumber;
-  dynamic overNumber;
-  dynamic overs;
-  dynamic currentOverDetails;
-  dynamic ballRecordCheck;
+  String? teamName;
+  String? totalRuns;
+  String? totalWickets;
+  int? ballNumber;
+  int? overNumber;
+  int? overs;
+  String? currentOverDetails;
+  int? ballRecordCheck;
+  String? teamLogo;
 
   Teams(
       {this.teamName,
@@ -173,7 +165,8 @@ class Teams {
         this.overNumber,
         this.overs,
         this.currentOverDetails,
-        this.ballRecordCheck});
+        this.ballRecordCheck,
+        this.teamLogo});
 
   Teams.fromJson(Map<String, dynamic> json) {
     teamName = json['team_name'];
@@ -184,6 +177,7 @@ class Teams {
     overs = json['overs'];
     currentOverDetails = json['current_over_details'];
     ballRecordCheck = json['ball_record_check'];
+    teamLogo = json['team_logo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -196,6 +190,7 @@ class Teams {
     data['overs'] = this.overs;
     data['current_over_details'] = this.currentOverDetails;
     data['ball_record_check'] = this.ballRecordCheck;
+    data['team_logo'] = this.teamLogo;
     return data;
   }
 }

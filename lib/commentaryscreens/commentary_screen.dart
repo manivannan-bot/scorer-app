@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scorer/commentaryscreens/commentary_four_six_screen.dart';
 import 'package:sizer/sizer.dart';
 
 import '../models/score_card_response_model.dart';
@@ -136,9 +137,9 @@ class _CommentaryScreenState extends State<CommentaryScreen>with SingleTickerPro
                   children:  [
 
                     CommentaryAllScreen(),
-                    CommentryOvers(),
-                    CommentaryWicketScreen(),
-                    Container(),
+                    CommentryOvers(widget.matchId,widget.team1Id),
+                    CommentaryWicketScreen(widget.matchId,widget.team1Id),
+                    CommentaryFourSix(widget.matchId,widget.team1Id),
 
 
                   ]),
