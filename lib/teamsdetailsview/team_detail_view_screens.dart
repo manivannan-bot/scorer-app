@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:scorer/models/teams/team_info_model.dart';
+import 'package:scorer/provider/teams_provider.dart';
 import 'package:scorer/teamsdetailsview/team_info_screen.dart';
 import 'package:scorer/teamsdetailsview/team_matches_screen.dart';
 import 'package:scorer/teamsdetailsview/team_overview_screen.dart';
@@ -23,6 +25,7 @@ class TeamDetailViewScreens extends StatefulWidget {
 
 class _TeamDetailViewScreensState extends State<TeamDetailViewScreens>with SingleTickerProviderStateMixin {
   late TabController tabController;
+  TeamInfoModel? teamInfoModel;
 
   void initState() {
     super.initState();
@@ -30,10 +33,25 @@ class _TeamDetailViewScreensState extends State<TeamDetailViewScreens>with Singl
     fetchData();
   }
   fetchData(){
-
+    TeamsProvider().getTeamInfo(widget.teamId).then((value){
+      setState(() {
+        teamInfoModel=value;
+      });
+    });
   }
   @override
   Widget build(BuildContext context) {
+    if(teamInfoModel==null){
+      return const SizedBox(
+        height: 50,
+        width: 50,
+        child: Center(
+          child: CircularProgressIndicator(
+            backgroundColor: Colors.white,
+          ),
+        ),
+      );
+    }
     return Scaffold(
       body: Column(
         children: [
@@ -66,7 +84,7 @@ class _TeamDetailViewScreensState extends State<TeamDetailViewScreens>with Singl
                   children: [
                     ClipOval(child: Image.asset(Images.teamListImage,width: 25.w,)),
                     SizedBox(height: 0.h,),
-                    Text('Toss and Tails',
+                    Text('${teamInfoModel!.data!.teams!.teamName}',
                       style: fontSemiBold.copyWith(fontSize: 16.sp,color: AppColor.lightColor),),
                   ],
                 ),
@@ -96,9 +114,9 @@ class _TeamDetailViewScreensState extends State<TeamDetailViewScreens>with Singl
                 controller: tabController,
                 children: [
                   TeamOverviewScreen(widget.teamId),
-                  TeamMatchesScreen(),
-                  TeamPlayersDetailViewScreen(),
-                  TeamInfoScreen(),
+                  TeamMatchesScreen(widget.teamId),
+                  TeamPlayersDetailViewScreen(widget.teamId),
+                  TeamInfoScreen(teamInfoModel!.data!.teamsDetails),
                 ]
             ),
           ),

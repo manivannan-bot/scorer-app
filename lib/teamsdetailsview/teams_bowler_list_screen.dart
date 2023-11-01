@@ -7,15 +7,15 @@ import '../utils/colours.dart';
 import '../utils/images.dart';
 import '../utils/sizes.dart';
 
-class TeamsBatterListScreen extends StatefulWidget {
-  final List<Batsman>? batsman;
-  const TeamsBatterListScreen(this.batsman, {super.key});
+class TeamsBowlerListScreen extends StatefulWidget {
+  final List<Bowler>? bowler;
+  const TeamsBowlerListScreen(this.bowler,  {super.key});
 
   @override
-  State<TeamsBatterListScreen> createState() => _TeamsBatterListScreenState();
+  State<TeamsBowlerListScreen> createState() => _TeamsBowlerListScreenState();
 }
 
-class _TeamsBatterListScreenState extends State<TeamsBatterListScreen> {
+class _TeamsBowlerListScreenState extends State<TeamsBowlerListScreen> {
   List<Map<String,dynamic>> itemLists=[
     {
       "image":'assets/images/req_list.png',
@@ -47,9 +47,9 @@ class _TeamsBatterListScreenState extends State<TeamsBatterListScreen> {
                 ),
               );
             },
-            itemCount: widget.batsman!.length,
+            itemCount: widget.bowler!.length,
             itemBuilder: (context, int index) {
-              final item = widget.batsman![index];
+              final item =  widget.bowler![index];
               return   Padding(
                 padding:  EdgeInsets.only(top: 0.5.h,bottom: 0.8.h),
                 child: Row(
