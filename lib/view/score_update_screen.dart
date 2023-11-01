@@ -82,8 +82,8 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
      } else {
        print("0th over of the innings");
        print("getting the over number and ball number from getlive score api - ON $overNumber BN $ballNumber");
-       overNumber = data.matches!.first.teams!.first.overNumber ?? 0;
-       ballNumber = data.matches!.first.teams!.first.ballNumber ?? 0;
+       overNumber = data.matches!.teams!.overNumber ?? 0;
+       ballNumber = data.matches!.teams!.ballNumber ?? 0;
      }
      //incrementing over number and ball number
          if (overNumber == 0 && ballNumber == 0) {
@@ -124,7 +124,7 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
      });
          await Future.delayed(const Duration(seconds: 2));
      print("over number and ball number after conditions - ON ${score.overNumberInnings} BN ${score.ballNumberInnings}");
-     await prefs.setInt('current_innings',data.matches!.first.currentInnings??1);
+     await prefs.setInt('current_innings',data.matches!.currentInnings??1);
 
      refreshController.refreshCompleted();
      });
