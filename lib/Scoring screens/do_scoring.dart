@@ -235,27 +235,6 @@ class _DOScoringState extends State<DOScoring> {
                         GestureDetector(
                             onTap: () {
                               displayNonStrikerListBottomSheet();
-                              // _displayPlayer2BottomSheet(
-                              //     context, selectedPlayer2, (newIndex) async {
-                              //   setState(() {
-                              //     selectedPlayer2 = newIndex;
-                              //     if (selectedPlayer2 != null) {
-                              //       selectedPlayer2Name =
-                              //           itemsBatsman![selectedPlayer2!].playerName ??
-                              //               "";
-                              //     }
-                              //   });
-                              // });
-                              // ScoringProvider()
-                              //     .getPlayerList(
-                              //         widget.matchId, widget.team1id, 'bat')
-                              //     .then((value) {
-                              //   setState(() {
-                              //     searchedBatsman= value.battingPlayers;
-                              //     itemsBatsman = value.battingPlayers;
-                              //     selectedTeamName = value.team!.teamName;
-                              //   });
-                              // });
                             },
                             child: Consumer<PlayerSelectionProvider>(
                                 builder: (context, player, child) {
@@ -316,29 +295,6 @@ class _DOScoringState extends State<DOScoring> {
                         GestureDetector(
                             onTap: () {
                               displayBowlerListBottomSheet();
-                              // ScoringProvider()
-                              //     .getPlayerList(
-                              //         widget.matchId, widget.team2id, 'bowl')
-                              //     .then((value) {
-                              //   setState(() {
-                              //     searchedBowler=value.bowlingPlayers;
-                              //     itemsBowler = value.bowlingPlayers;
-                              //     selectedBTeamName = value.team!.teamName;
-                              //   });
-                              //   _displayBowlerBottomSheet(
-                              //       context, selectedBowler,
-                              //       (bowlerIndex) async {
-                              //     setState(() {
-                              //       selectedBowler = bowlerIndex;
-                              //       if (selectedBowler != null) {
-                              //         selectedBowlerName =
-                              //             itemsBowler![selectedBowler!]
-                              //                     .playerName ??
-                              //                 "";
-                              //       }
-                              //     });
-                              //   });
-                              // });
                             },
                             child: Consumer<PlayerSelectionProvider>(
                                 builder: (context, player, child) {
@@ -353,29 +309,6 @@ class _DOScoringState extends State<DOScoring> {
                         GestureDetector(
                             onTap: () async {
                               displayWicketKeeperListBottomSheet();
-                              // await ScoringProvider()
-                              //     .getPlayerList(
-                              //         widget.matchId, widget.team2id, 'wk')
-                              //     .then((value) {
-                              //   setState(() {
-                              //     searchedKeeper=value.wkPlayers;
-                              //     itemsKeeper = value.wkPlayers;
-                              //     selectedBTeamName = value.team!.teamName;
-                              //   });
-                              //   _displayKeeperBottomSheet(
-                              //       context, selectedWicketKeeper,
-                              //       (bowlerIndex) async {
-                              //     setState(() {
-                              //       selectedWicketKeeper = bowlerIndex;
-                              //       if (selectedWicketKeeper != null) {
-                              //         selectedWicketKeeperName =
-                              //             itemsKeeper![selectedWicketKeeper!]
-                              //                     .playerName ??
-                              //                 "";
-                              //       }
-                              //     });
-                              //   });
-                              // });
                             },
                             child: Consumer<PlayerSelectionProvider>(
                                 builder: (context, player, child) {
@@ -421,13 +354,6 @@ class _DOScoringState extends State<DOScoring> {
                             child: const OkBtn("Ok"),
                             onTap: () async {
                               final players = Provider.of<PlayerSelectionProvider>(context, listen: false);
-                              // SharedPreferences prefs =
-                              //     await SharedPreferences.getInstance();
-                              // var strikerId = prefs.getInt('striker_id') ?? 0;
-                              // var nonStrikerId =
-                              //     prefs.getInt('non_striker_id') ?? 0;
-                              // var bowlerId = prefs.getInt('bowler_id') ?? 0;
-                              // var keeperId = prefs.getInt('wicket_keeper_id') ?? 0;
                               if (players.selectedStrikerId == "" ||
                                   players.selectedNonStrikerId == "" ||
                                   players.selectedBowlerId == "" ||

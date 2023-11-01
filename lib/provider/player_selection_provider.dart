@@ -20,24 +20,28 @@ class PlayerSelectionProvider extends ChangeNotifier {
     selectedStrikerId = id;
     selectedStrikerName = name;
     notifyListeners();
+    print("updated striker id $selectedStrikerId");
   }
 
   setNonStrikerId(String id, String name){
     selectedNonStrikerId = id;
     selectedNonStrikerName = name;
     notifyListeners();
+    print("updated non-striker id $selectedNonStrikerId");
   }
 
   setBowlerId(String id, String name){
     selectedBowlerId = id;
     selectedBowlerName = name;
     notifyListeners();
+    print("updated bowler id $selectedBowlerId");
   }
 
   setWicketKeeperId(String id, String name){
     selectedWicketKeeperId = id;
     selectedWicketKeeperName = name;
     notifyListeners();
+    print("updated wicket keeper id $selectedWicketKeeperId");
   }
 
   clearAllSelectedIds(){
@@ -75,7 +79,7 @@ class PlayerSelectionProvider extends ChangeNotifier {
     selectedNonStrikerName = preferences.getString("current_non_striker_name") ?? "";
     selectedBowlerName = preferences.getString("current_bowler_name") ?? "";
     selectedWicketKeeperName = preferences.getString("current_wicket_keeper_name") ?? "";
-    print("selected striker id from prefs $selectedStrikerId");
+    print("getting striker id from prefs $selectedStrikerId");
     notifyListeners();
   }
 

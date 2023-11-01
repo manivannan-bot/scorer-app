@@ -1,12 +1,12 @@
 class ScoreUpdateResponseModel {
   String? message;
-  Data? data;
+  ScoreUpdatedData? data;
 
   ScoreUpdateResponseModel({this.message, this.data});
 
   ScoreUpdateResponseModel.fromJson(Map<String, dynamic> json) {
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? new ScoreUpdatedData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -19,7 +19,7 @@ class ScoreUpdateResponseModel {
   }
 }
 
-class Data {
+class ScoreUpdatedData {
   int? innings;
   bool? inningCompleted;
   String? inningsMessage;
@@ -29,7 +29,7 @@ class Data {
   int? strikerId;
   int? nonStrikerId;
 
-  Data(
+  ScoreUpdatedData(
       {this.innings,
         this.inningCompleted,
         this.inningsMessage,
@@ -39,7 +39,7 @@ class Data {
         this.strikerId,
         this.nonStrikerId});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  ScoreUpdatedData.fromJson(Map<String, dynamic> json) {
     innings = json['innings'];
     inningCompleted = json['inning_completed'];
     inningsMessage = json['innings_message'];

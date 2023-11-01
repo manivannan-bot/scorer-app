@@ -43,6 +43,8 @@ class ScoringProvider extends ChangeNotifier{
   ScoreCardResponseModel scoreCardResponseModel=ScoreCardResponseModel();
   ScoreCardYetTobat scoreCardYetTobat=ScoreCardYetTobat();
 
+  ScoreUpdatedData scoreUpdatedData = ScoreUpdatedData();
+
   String overNumber = "";
 
   storeOverNumber(String value){
@@ -85,7 +87,7 @@ class ScoringProvider extends ChangeNotifier{
 
 
   Future<GetLiveScoreResponseModel> getLiveScore(String matchId,String teamId) async {
-
+    print("matchid $matchId teamid $teamId");
     // SharedPreferences preferences = await SharedPreferences.getInstance();
     // String? accToken = preferences.getString("access_token");
     try {
@@ -97,7 +99,7 @@ class ScoringProvider extends ChangeNotifier{
         // },
       );
       var decodedJson = json.decode(response.body);
-      print(decodedJson);
+      print("get live score $decodedJson");
       if (response.statusCode == 200) {
         getLiveScoreResponseModel = GetLiveScoreResponseModel.fromJson(decodedJson);
 
@@ -269,20 +271,16 @@ class ScoringProvider extends ChangeNotifier{
 //score update
   Future<ScoreUpdateResponseModel> scoreUpdate( ScoreUpdateRequestModel scoreUpdate) async {
     var body = json.encode(scoreUpdate);
-
     final prefs = await SharedPreferences.getInstance();
     final scoreUpdateJson = json.encode(scoreUpdate.toJson());
-    
     final oldScoreUpdateJson = prefs.getString('scoreUpdate');
     if (oldScoreUpdateJson != null) {
       prefs.setString('oldScoreUpdate', oldScoreUpdateJson);
     }
     prefs.setString('scoreUpdate', scoreUpdateJson);
 
-    print(json.decode(body));
+    print("API score update ${json.decode(body)}");
     try {
-
-
       final response = await http.post(
         Uri.parse(AppConstants.scoreUpdate),
         headers: {
@@ -294,6 +292,8 @@ class ScoringProvider extends ChangeNotifier{
       print("score update response $decodedJson");
       if (response.statusCode == 200) {
         scoreUpdateResponseModel = ScoreUpdateResponseModel.fromJson(decodedJson);
+        scoreUpdatedData = ScoreUpdatedData.fromJson(decodedJson['data']);
+        print("score updated data $scoreUpdatedData");
         notifyListeners();
       } else {
         throw const HttpException('Failed to load data');
@@ -303,7 +303,7 @@ class ScoringProvider extends ChangeNotifier{
     } on HttpException {
       print('Failed to load data');
     } on FormatException {
-      print('Batsman save- Invalid data format');
+      print('score update - Invalid data format');
     } catch (e) {
       print(e);
     }

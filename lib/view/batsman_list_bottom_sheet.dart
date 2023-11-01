@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:scorer/widgets/snackbar.dart';
@@ -245,7 +243,7 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
                                     .start,
                                 children: [
                                   Text(
-                                    "${searchedBatsman![index].playerName ?? '-'}",
+                                    searchedBatsman![index].playerName ?? '-',
                                     style: fontMedium.copyWith(
                                       fontSize: 12.sp,
                                       color: AppColor.blackColour,
@@ -346,7 +344,7 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
                                       .start,
                                   children: [
                                     Text(
-                                      "${searchedBatsman![index].playerName ?? '-'}",
+                                      searchedBatsman![index].playerName ?? '-',
                                       style: fontMedium.copyWith(
                                         fontSize: 12.sp,
                                         color: AppColor.blackColour,
