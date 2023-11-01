@@ -20,9 +20,7 @@ class CommentryOvers extends StatefulWidget {
 
 class _CommentryOversState extends State<CommentryOvers> {
      CommentaryOversModel? commentaryOversModel;
-  final List<Map<String,dynamic>>itemList=[
-    {},{},{},{},{},{},{},{},{},{},{},{},
-  ];
+
 
   @override
   void initState() {

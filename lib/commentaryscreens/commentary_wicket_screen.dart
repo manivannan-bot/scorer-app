@@ -20,11 +20,6 @@ class CommentaryWicketScreen extends StatefulWidget {
 }
 
 class _CommentaryWicketScreenState extends State<CommentaryWicketScreen> {
-  final List<Map<String, dynamic>> itemList = [
-    {},
-    {},
-    {},
-  ];
   CommentaryWicketModel? commentaryWicketModel;
   @override
   void initState() {

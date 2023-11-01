@@ -24,6 +24,7 @@ class AppConstants {
    static const String playerTeamInfo= '$baseUrl/player-team-info';
   static const String playerInfo= '$baseUrl/player-info';
   static const String commentaryWickets = '$baseUrl/commentary-wickets';
+  static const String commentaryFoursSixes = '$baseUrl/commentary-foursandsix';
   static const String teamOverview = '$baseUrl/team-overview';
   static const String teamMatches = '$baseUrl/team-matches';
   static const String teamPlayers = '$baseUrl/team-players';
