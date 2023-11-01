@@ -466,26 +466,8 @@ class _ChooseNonStrikerBottomSheetState extends State<ChooseNonStrikerBottomShee
                 GestureDetector(
                     onTap: () async {
                       if (playerId != "") {
+                        //setting non-striker id when starting innings
                         Provider.of<PlayerSelectionProvider>(context, listen: false).setNonStrikerId(playerId.toString(), playerName.toString());
-                        // SaveBatsmanDetailRequestModel requestModel =
-                        // SaveBatsmanDetailRequestModel(
-                        //   batsman: [
-                        //     Batsman(
-                        //         matchId: int.parse(widget.matchId),
-                        //         teamId: int.parse(widget.teamId),
-                        //         playerId:
-                        //         int.parse(playerId),
-                        //         striker: true),
-                        //   ],
-                        // );
-                        //
-                        // ScoringProvider()
-                        //     .saveBatsman(requestModel);
-                        // SharedPreferences prefs =
-                        // await SharedPreferences.getInstance();
-                        // await prefs.setInt('striker_id',
-                        //     searchedBatsman![0].playerId!);
-
                         Navigator.pop(context);
                       } else {
                         Dialogs.snackBar("Choose a non striker", context, isError: true);

@@ -2,6 +2,7 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dash/flutter_dash.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:scorer/models/teams/team_matches_model.dart';
 import 'package:sizer/sizer.dart';
 
 import '../utils/colours.dart';
@@ -10,7 +11,8 @@ import '../utils/sizes.dart';
 
 
 class TeamLiveMatches extends StatefulWidget {
-  const TeamLiveMatches({super.key});
+  final List<LiveMatches>? liveMatches;
+  const TeamLiveMatches(this.liveMatches, {super.key});
 
   @override
   State<TeamLiveMatches> createState() => _TeamLiveMatchesState();
@@ -33,9 +35,9 @@ class _TeamLiveMatchesState extends State<TeamLiveMatches> {
               padding: EdgeInsets.only(bottom: 2.h),
             );
           },
-          itemCount:itemList!.length ,
+          itemCount:widget.liveMatches!.length ,
           itemBuilder: (context, int index) {
-            final item = itemList![index];
+            final item = widget.liveMatches![index];
             return Padding(
               padding:  EdgeInsets.symmetric(horizontal: 3.w),
               child: Column(
@@ -62,7 +64,7 @@ class _TeamLiveMatchesState extends State<TeamLiveMatches> {
                                       Image.asset(Images.teamaLogo,width: 10.w,),
                                       SizedBox(width: 2.w,),
                                       Text(
-                                          "T&T",
+                                          "${item.teams!.team1Name}",
                                           style: fontMedium.copyWith(
                                             fontSize: 13.sp,
                                             color: AppColor.pri,
@@ -72,7 +74,7 @@ class _TeamLiveMatchesState extends State<TeamLiveMatches> {
                                       RichText(
                                           text: TextSpan(children: [
                                             TextSpan(
-                                                text: "28",
+                                                text: "${item.teamInnings!.first.totalScore}",
                                                 style: fontMedium.copyWith(
                                                   fontSize: 13.sp,
                                                   color: AppColor.pri,
@@ -84,7 +86,7 @@ class _TeamLiveMatchesState extends State<TeamLiveMatches> {
                                                     color: AppColor.pri
                                                 )),
                                             TextSpan(
-                                                text: "0",
+                                                text: "${item.teamInnings!.first.totalWickets}",
                                                 style: fontMedium.copyWith(
                                                     fontSize: 13.sp,
                                                     color: AppColor.pri
@@ -93,7 +95,7 @@ class _TeamLiveMatchesState extends State<TeamLiveMatches> {
                                       SizedBox(width: 2.w,),
                                       RichText(text: TextSpan(children: [
                                         TextSpan(
-                                            text: "0.0",
+                                            text: "${item.teamInnings!.first.currOvers}",
                                             style: fontMedium.copyWith(
                                                 fontSize: 13.sp,
                                                 color: const Color(0xff444444)
@@ -105,7 +107,7 @@ class _TeamLiveMatchesState extends State<TeamLiveMatches> {
                                                 color: const Color(0xff444444)
                                             )),
                                         TextSpan(
-                                            text: "20",
+                                            text: "${item.teamInnings!.first.totalOvers}",
                                             style: fontMedium.copyWith(
                                                 fontSize: 13.sp,
                                                 color: const Color(0xff444444)
@@ -122,7 +124,7 @@ class _TeamLiveMatchesState extends State<TeamLiveMatches> {
                                     children: [
                                       Image.asset(Images.teamblogo,width: 10.w,fit: BoxFit.fill,),
                                       SizedBox(width: 2.w,),
-                                      Text("DCC", style: fontMedium.copyWith(
+                                      Text("${item.teams!.team2Name}", style: fontMedium.copyWith(
                                         fontSize: 13.sp,
                                         color:const Color(0xff555555),
                                       ),),

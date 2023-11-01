@@ -2,31 +2,28 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
-import 'package:scorer/models/commentary/commentary_wicket_model.dart';
-import 'package:scorer/models/match_info_model.dart';
+import 'package:scorer/models/teams/team_info_model.dart';
+import 'package:scorer/models/teams/team_matches_model.dart';
+import 'package:scorer/models/teams/team_overview_model.dart';
+import 'package:scorer/models/teams/team_players_model.dart';
 
-import '../models/commentary/commentary_four_six_model.dart';
-import '../models/commentary/commentary_overs_model.dart';
-import '../models/matches/match_players_model.dart';
-import '../models/matches/match_players_model.dart';
 import '../utils/app_constants.dart';
 import 'package:http/http.dart' as http;
 
-class MatchProvider extends ChangeNotifier{
-  MatchInfoModel matchInfoModel=MatchInfoModel();
-  MatchPlayersModel matchPlayersModel=MatchPlayersModel();
-  CommentaryOversModel commentaryOversModel=CommentaryOversModel();
-  CommentaryWicketModel commentaryWicketModel=CommentaryWicketModel();
-  CommentaryFourSixModel commentaryFoursSixesModel =CommentaryFourSixModel();
+class TeamsProvider extends ChangeNotifier{
 
+  TeamOverview teamOverview=TeamOverview();
+  TeamMatchesModel teamMatchesModel=TeamMatchesModel();
+  TeamPlayersModel teamPlayersModel=TeamPlayersModel();
+  TeamInfoModel teamInfoModel=TeamInfoModel();
 
-  Future<MatchInfoModel> getMatchInfo(String matchId) async {
+  Future<TeamOverview> getTeamOverview(String teamId) async {
 
     // SharedPreferences preferences = await SharedPreferences.getInstance();
     // String? accToken = preferences.getString("access_token");
     try {
       final response = await http.get(
-        Uri.parse('${AppConstants.matchInfo}/$matchId'),
+        Uri.parse('${AppConstants.teamOverview}/$teamId'),
         // headers: {
         //   // 'Content-Type': 'application/json; charset=UTF-8',
         //   // 'Authorization': 'Bearer $accToken',
@@ -35,7 +32,7 @@ class MatchProvider extends ChangeNotifier{
       var decodedJson = json.decode(response.body);
       print(decodedJson);
       if (response.statusCode == 200) {
-        matchInfoModel = MatchInfoModel.fromJson(decodedJson);
+        teamOverview = TeamOverview.fromJson(decodedJson);
 
         notifyListeners();
       } else {
@@ -50,15 +47,16 @@ class MatchProvider extends ChangeNotifier{
     } catch (e) {
       print(e);
     }
-    return matchInfoModel;
+    return teamOverview;
   }
-  Future<MatchPlayersModel> getMatchPlayers(String matchId,String teamId) async {
+
+  Future<TeamMatchesModel> getTeamMatches(String teamId) async {
 
     // SharedPreferences preferences = await SharedPreferences.getInstance();
     // String? accToken = preferences.getString("access_token");
     try {
       final response = await http.get(
-        Uri.parse('${AppConstants.matchPlayers}/$matchId/$teamId'),
+        Uri.parse('${AppConstants.teamMatches}/$teamId'),
         // headers: {
         //   // 'Content-Type': 'application/json; charset=UTF-8',
         //   // 'Authorization': 'Bearer $accToken',
@@ -67,7 +65,7 @@ class MatchProvider extends ChangeNotifier{
       var decodedJson = json.decode(response.body);
       print(decodedJson);
       if (response.statusCode == 200) {
-        matchPlayersModel = MatchPlayersModel.fromJson(decodedJson);
+        teamMatchesModel = TeamMatchesModel.fromJson(decodedJson);
 
         notifyListeners();
       } else {
@@ -82,15 +80,16 @@ class MatchProvider extends ChangeNotifier{
     } catch (e) {
       print(e);
     }
-    return matchPlayersModel;
+    return teamMatchesModel;
   }
-  Future<CommentaryOversModel> getCommentaryOvers(String matchId,String teamId) async {
+
+  Future<TeamPlayersModel> getTeamPlayers(String teamId) async {
 
     // SharedPreferences preferences = await SharedPreferences.getInstance();
     // String? accToken = preferences.getString("access_token");
     try {
       final response = await http.get(
-        Uri.parse('${AppConstants.commentaryOvers}/$matchId/$teamId'),
+        Uri.parse('${AppConstants.teamPlayers}/$teamId'),
         // headers: {
         //   // 'Content-Type': 'application/json; charset=UTF-8',
         //   // 'Authorization': 'Bearer $accToken',
@@ -99,7 +98,7 @@ class MatchProvider extends ChangeNotifier{
       var decodedJson = json.decode(response.body);
       print(decodedJson);
       if (response.statusCode == 200) {
-        commentaryOversModel = CommentaryOversModel.fromJson(decodedJson);
+        teamPlayersModel = TeamPlayersModel.fromJson(decodedJson);
 
         notifyListeners();
       } else {
@@ -114,15 +113,16 @@ class MatchProvider extends ChangeNotifier{
     } catch (e) {
       print(e);
     }
-    return commentaryOversModel;
+    return teamPlayersModel;
   }
-  Future<CommentaryWicketModel> getCommentaryWickets(String matchId,String teamId) async {
+
+  Future<TeamInfoModel> getTeamInfo(String teamId) async {
 
     // SharedPreferences preferences = await SharedPreferences.getInstance();
     // String? accToken = preferences.getString("access_token");
     try {
       final response = await http.get(
-        Uri.parse('${AppConstants.commentaryWickets}/$matchId/$teamId'),
+        Uri.parse('${AppConstants.teamInfo}/$teamId'),
         // headers: {
         //   // 'Content-Type': 'application/json; charset=UTF-8',
         //   // 'Authorization': 'Bearer $accToken',
@@ -131,7 +131,7 @@ class MatchProvider extends ChangeNotifier{
       var decodedJson = json.decode(response.body);
       print(decodedJson);
       if (response.statusCode == 200) {
-        commentaryWicketModel = CommentaryWicketModel.fromJson(decodedJson);
+        teamInfoModel = TeamInfoModel.fromJson(decodedJson);
 
         notifyListeners();
       } else {
@@ -146,41 +146,11 @@ class MatchProvider extends ChangeNotifier{
     } catch (e) {
       print(e);
     }
-    return commentaryWicketModel;
+    return teamInfoModel;
   }
 
-  Future<CommentaryFourSixModel> getCommentaryFoursSixes(String matchId,String teamId) async {
 
-    // SharedPreferences preferences = await SharedPreferences.getInstance();
-    // String? accToken = preferences.getString("access_token");
-    try {
-      final response = await http.get(
-        Uri.parse('${AppConstants.commentaryFoursSixes}/$matchId/$teamId'),
-        // headers: {
-        //   // 'Content-Type': 'application/json; charset=UTF-8',
-        //   // 'Authorization': 'Bearer $accToken',
-        // },
-      );
-      var decodedJson = json.decode(response.body);
-      print(decodedJson);
-      if (response.statusCode == 200) {
-        commentaryFoursSixesModel = CommentaryFourSixModel.fromJson(decodedJson);
 
-        notifyListeners();
-      } else {
-        throw const HttpException('Failed to load data');
-      }
-    } on SocketException {
-      print('No internet connection');
-    } on HttpException {
-      print('Failed to load data');
-    } on FormatException {
-      print('All Matches  - Invalid data format');
-    } catch (e) {
-      print(e);
-    }
-    return commentaryFoursSixesModel;
-  }
 
 
 }

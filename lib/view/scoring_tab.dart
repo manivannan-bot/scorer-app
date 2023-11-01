@@ -168,13 +168,13 @@ class _ScoringTabState extends State<ScoringTab> {
           height: 100,
           width: 100,
           child: Center(child: Text('Please Select Batsman'))): const SizedBox(
-            height: 100,
-            width: 100,
-            child: Center(child: Text('Please Select Bowler')));
+          height: 100,
+          width: 100,
+          child: Center(child: Text('Please Select Bowler')));
     }
     if(scoringData!.data!.batting!.length<2){
       var player=scoringData!.data!.batting!.first.striker==1?'non_striker_id':'striker_id';
-     // changeBatsman(player);
+      // changeBatsman(player);
       return const SizedBox(height: 100, width: 100,
           child: Center(child: Text('Please Select Batsman')));
     }
@@ -213,42 +213,42 @@ class _ScoringTabState extends State<ScoringTab> {
                                       child: Row(
                                           children: [
 
-                                         Text(
-                                          'Batsman',
-                                          style: fontMedium.copyWith(color: const Color(0xffD78108),fontSize: 16.sp),
-                                        ),
-                                        SizedBox(
-                                          width: 4.w,
-                                        ),
-                                        GestureDetector(
-                                          onTap:()async{
-                                          SharedPreferences prefs = await SharedPreferences.getInstance();
-                                          var strikerId=prefs.getInt('striker_id')??0;
-                                          var nonStrikerId=prefs.getInt('non_striker_id')??0;
-                                          await prefs.setInt('non_striker_id',strikerId);
-                                          await prefs.setInt('striker_id',nonStrikerId);
-
-                                          setState(() {
-                                            if(index1==1){
-                                              index2=1;
-                                              index1=0;
-                                            }else{
-                                              index2=0;
-                                              index1=1;
-                                            }
-                                          });
-                                        },
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(15),
-                                              shape: BoxShape.rectangle,
-                                                color: Colors.black
-
+                                            Text(
+                                              'Batsman',
+                                              style: fontMedium.copyWith(color: const Color(0xffD78108),fontSize: 16.sp),
                                             ),
-                                            padding: EdgeInsets.symmetric(horizontal: 3.w,vertical: 0.5.h),
-                                          child: Text('swap',style: fontMedium.copyWith(color: Colors.white,fontSize: 10.sp),),),
-                                        ),
-                                      ]),
+                                            SizedBox(
+                                              width: 4.w,
+                                            ),
+                                            GestureDetector(
+                                              onTap:()async{
+                                                SharedPreferences prefs = await SharedPreferences.getInstance();
+                                                var strikerId=prefs.getInt('striker_id')??0;
+                                                var nonStrikerId=prefs.getInt('non_striker_id')??0;
+                                                await prefs.setInt('non_striker_id',strikerId);
+                                                await prefs.setInt('striker_id',nonStrikerId);
+
+                                                setState(() {
+                                                  if(index1==1){
+                                                    index2=1;
+                                                    index1=0;
+                                                  }else{
+                                                    index2=0;
+                                                    index1=1;
+                                                  }
+                                                });
+                                              },
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(15),
+                                                    shape: BoxShape.rectangle,
+                                                    color: Colors.black
+
+                                                ),
+                                                padding: EdgeInsets.symmetric(horizontal: 3.w,vertical: 0.5.h),
+                                                child: Text('swap',style: fontMedium.copyWith(color: Colors.white,fontSize: 10.sp),),),
+                                            ),
+                                          ]),
                                     ),
                                     Row(
                                       children: [
@@ -273,7 +273,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                         scoringData!.data!.batting![index2].striker == 1
                                             ? SvgPicture.asset(Images.batIcon) :  SizedBox(width:1.w),
                                         Text((scoringData!.data!.batting?[index2]!=null)?
-                                            '  ${scoringData!.data!.batting![index2].runsScored??'0'}(${scoringData!.data!.batting![index2].ballsFaced??'0'})':'-',
+                                        '  ${scoringData!.data!.batting![index2].runsScored??'0'}(${scoringData!.data!.batting![index2].ballsFaced??'0'})':'-',
                                             style:  fontRegular.copyWith(
                                                 color: Colors.black, fontSize: 10.sp)),
                                       ],
@@ -293,7 +293,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                     Padding(
                                       padding:EdgeInsets.only(bottom: 2.h),
                                       child: Row(children: [
-                                         Text('Bowler',
+                                        Text('Bowler',
                                             style: fontMedium.copyWith(
                                                 color: const Color(0xffD78108),
                                                 fontSize: 16.sp)),
@@ -301,7 +301,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                           width: 4.w,
                                         ),
                                         GestureDetector(onTap:()async{
-                                           changeBowler();
+                                          changeBowler();
                                         },
                                           child: Container(
                                             decoration: BoxDecoration(
@@ -324,34 +324,34 @@ class _ScoringTabState extends State<ScoringTab> {
                                             color: Colors.black, fontSize: 10.sp)),
                                     SizedBox(height:0.8.h),
                                     Row(children:[
-                                     GestureDetector(onTap:()async{
-                                       setState(() {
-                                         bowlerPosition=0;
-                                       });
-                                       SharedPreferences pref=await SharedPreferences.getInstance();
-                                       await pref.setInt('bowlerPosition', 0);
-                                     },
-                                       child: Row(children:[
-                                         SvgPicture.asset(Images.stumpIcon1,width:3.w,height: 3.h,),
-                                         Padding(padding: EdgeInsets.only(left: 2.w,),
-                                             child:  Text('OW',style: fontRegular.copyWith(fontSize: 10.sp),)),
-                                       ]),
-                                     ),
+                                      GestureDetector(onTap:()async{
+                                        setState(() {
+                                          bowlerPosition=0;
+                                        });
+                                        SharedPreferences pref=await SharedPreferences.getInstance();
+                                        await pref.setInt('bowlerPosition', 0);
+                                      },
+                                        child: Row(children:[
+                                          SvgPicture.asset(Images.stumpIcon1,width:3.w,height: 3.h,),
+                                          Padding(padding: EdgeInsets.only(left: 2.w,),
+                                              child:  Text('OW',style: fontRegular.copyWith(fontSize: 10.sp),)),
+                                        ]),
+                                      ),
                                       SizedBox(width:8.w),
-                                        GestureDetector(
-                                          onTap:()async{
-                                            setState(() {
-                                              bowlerPosition=1;
-                                            });
-                                            SharedPreferences pref=await SharedPreferences.getInstance();
-                                            await pref.setInt('bowlerPosition', 1);
-                                          },
-                                          child: Row(children:[
-                                            Padding(padding: EdgeInsets.only(right: 2.w,),
-                                                child:  Text('RW',style: fontRegular.copyWith(fontSize: 10.sp),)),
-                                            SvgPicture.asset(Images.stumpIcon2,width:3.w,height: 3.h,)
-                                          ]),
-                                        ),
+                                      GestureDetector(
+                                        onTap:()async{
+                                          setState(() {
+                                            bowlerPosition=1;
+                                          });
+                                          SharedPreferences pref=await SharedPreferences.getInstance();
+                                          await pref.setInt('bowlerPosition', 1);
+                                        },
+                                        child: Row(children:[
+                                          Padding(padding: EdgeInsets.only(right: 2.w,),
+                                              child:  Text('RW',style: fontRegular.copyWith(fontSize: 10.sp),)),
+                                          SvgPicture.asset(Images.stumpIcon2,width:3.w,height: 3.h,)
+                                        ]),
+                                      ),
                                     ]),
 
                                   ],
@@ -475,250 +475,257 @@ class _ScoringTabState extends State<ScoringTab> {
           Container(
             width: 100.w,
             color: Colors.black,
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+            child: Consumer<ScoringProvider>(
+              builder: (context, updatedScore, child) {
+                return Column(
                   children: [
-                    Column(
-                        children:[
-                          GestureDetector(
-                            onTap:()async {
-                              final player = Provider.of<PlayerSelectionProvider>(context, listen: false);
-                              final score = Provider.of<ScoreUpdateProvider>(context, listen: false);
-                              print("striker id ${player.selectedStrikerId}");
-                              SharedPreferences prefs = await SharedPreferences.getInstance();
-                              var overNumber= prefs.getInt('over_number_innings');
-                              var ballNumber= prefs.getInt('ball_number_innings');
-                              var strikerId=prefs.getInt('striker_id')??0;
-                              var nonStrikerId=prefs.getInt('non_striker_id')??0;
-                              var bowlerId=prefs.getInt('bowler_id')??0;
-                              var oversBowled=prefs.getInt('overs_bowled')??0;
-                              var keeperId=prefs.getInt('wicket_keeper_id')??0;
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                            children:[
+                              GestureDetector(
+                                  onTap:()async {
+                                    final player = Provider.of<PlayerSelectionProvider>(context, listen: false);
+                                    final score = Provider.of<ScoreUpdateProvider>(context, listen: false);
+                                    bool continueOperations = await isBatsman();
+                                    if (!continueOperations) {
+                                      return;
+                                    } else {
+                                      print("striker id ${player.selectedStrikerId}");
+                                      print("non striker id ${player.selectedNonStrikerId}");
+                                      print("passing over number to score update api ${score.overNumberInnings}");
+                                      print("passing ball number to score update api ${score.ballNumberInnings}");
+                                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                                      var oversBowled=prefs.getInt('overs_bowled')??0;
 
-                              scoreUpdateRequestModel.ballTypeId=0;
-                              scoreUpdateRequestModel.matchId=int.parse(widget.matchId);
-                              scoreUpdateRequestModel.scorerId=1;
-                              scoreUpdateRequestModel.strikerId=int.parse(player.selectedStrikerId.toString());
-                              scoreUpdateRequestModel.nonStrikerId=int.parse(player.selectedNonStrikerId.toString());
-                              scoreUpdateRequestModel.wicketKeeperId=int.parse(player.selectedWicketKeeperId.toString());
-                              scoreUpdateRequestModel.bowlerId=int.parse(player.selectedBowlerId.toString());
-                              scoreUpdateRequestModel.overNumber=int.parse(score.overNumberInnings.toString());
-                              scoreUpdateRequestModel.ballNumber=int.parse(score.ballNumberInnings.toString());
-                              scoreUpdateRequestModel.runsScored=0;
-                              scoreUpdateRequestModel.extras=0;
-                              scoreUpdateRequestModel.wicket=0;
-                              scoreUpdateRequestModel.dismissalType=0;
-                              scoreUpdateRequestModel.commentary=0;
-                              scoreUpdateRequestModel.innings=1;
-                              scoreUpdateRequestModel.battingTeamId=scoringData!.data!.batting![index1].teamId??0;
-                              scoreUpdateRequestModel.bowlingTeamId=scoringData!.data!.bowling!.teamId??0;
-                              scoreUpdateRequestModel.overBowled=oversBowled;
-                              scoreUpdateRequestModel.totalOverBowled=0;
-                              scoreUpdateRequestModel.outByPlayer=0;
-                              scoreUpdateRequestModel.outPlayer=0;
-                              scoreUpdateRequestModel.totalWicket=0;
-                              scoreUpdateRequestModel.fieldingPositionsId=0;
-                              scoreUpdateRequestModel.endInnings=false;
-                              scoreUpdateRequestModel.bowlerPosition=bowlerPosition;
-                              ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value)async {
-                                setState(() {
-                                  scoreUpdateResponseModel=value;
-                                });
-                                print("after score update");
-                                print(value.data!.overNumber);
-                                print(value.data!.ballNumber);
-                                print(value.data!.bowlerChange);
-                                print("score update print end");
+                                      scoreUpdateRequestModel.ballTypeId=0;
+                                      scoreUpdateRequestModel.matchId=int.parse(widget.matchId);
+                                      scoreUpdateRequestModel.scorerId=46;
+                                      scoreUpdateRequestModel.strikerId=int.parse(player.selectedStrikerId.toString());
+                                      scoreUpdateRequestModel.nonStrikerId=int.parse(player.selectedNonStrikerId.toString());
+                                      scoreUpdateRequestModel.wicketKeeperId=int.parse(player.selectedWicketKeeperId.toString());
+                                      scoreUpdateRequestModel.bowlerId=int.parse(player.selectedBowlerId.toString());
+                                      scoreUpdateRequestModel.overNumber=int.parse(score.overNumberInnings.toString());
+                                      scoreUpdateRequestModel.ballNumber=int.parse(score.ballNumberInnings.toString());
+                                      scoreUpdateRequestModel.runsScored=0;
+                                      scoreUpdateRequestModel.extras=0;
+                                      scoreUpdateRequestModel.wicket=0;
+                                      scoreUpdateRequestModel.dismissalType=0;
+                                      scoreUpdateRequestModel.commentary=0;
+                                      scoreUpdateRequestModel.innings=1;
+                                      scoreUpdateRequestModel.battingTeamId=scoringData!.data!.batting![index1].teamId??0;
+                                      scoreUpdateRequestModel.bowlingTeamId=scoringData!.data!.bowling!.teamId??0;
+                                      scoreUpdateRequestModel.overBowled=oversBowled;
+                                      scoreUpdateRequestModel.totalOverBowled=0;
+                                      scoreUpdateRequestModel.outByPlayer=0;
+                                      scoreUpdateRequestModel.outPlayer=0;
+                                      scoreUpdateRequestModel.totalWicket=0;
+                                      scoreUpdateRequestModel.fieldingPositionsId=0;
+                                      scoreUpdateRequestModel.endInnings=false;
+                                      scoreUpdateRequestModel.bowlerPosition=bowlerPosition;
+                                      ScoringProvider().scoreUpdate(scoreUpdateRequestModel)
+                                          .then((value)async {
+                                        setState(() {
+                                          scoreUpdateResponseModel=value;
+                                        });
+                                        print("striker and non striker id - ${value.data?.strikerId.toString()} ${value.data?.nonStrikerId.toString()}");
 
-                                score.setOverNumber(value.data!.overNumber??0);
-                                score.setBallNumber(value.data!.ballNumber??0);
-                                score.setBowlerChangeValue(value.data!.bowlerChange??0);
-                                player.setStrikerId(value.data!.strikerId.toString(), "");
-                                player.setNonStrikerId(value.data!.nonStrikerId.toString(), "");
-                                SharedPreferences prefs = await SharedPreferences.getInstance();
-                                // await prefs.setInt('over_number_innings', value.data!.overNumber??0);
-                                // await prefs.setInt('ball_number_innings', value.data!.ballNumber??0);
-                                // await prefs.setInt('striker_id', value.data!.strikerId??0);
-                                // await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
-                                // await prefs.setInt('bowler_change', value.data!.bowlerChange??0);
-                                await prefs.setInt('bowlerPosition', 0);
-                                if(value.data!.strikerId==0 || value.data!.nonStrikerId==0){
-                                  String player = (value.data!.strikerId==0) ? 'striker_id':'non_striker_id';
-                                  changeBatsman(player);
+                                        print("after score update - 0");
+                                        print(value.data?.overNumber);
+                                        print(value.data?.ballNumber);
+                                        print(value.data?.bowlerChange);
+                                        print("score update print end - 0");
+
+                                        print("setting over number ${value.data?.overNumber} and ball number ${value.data?.ballNumber} and bowler change ${value.data?.bowlerChange} to provider after score update");
+                                        score.setOverNumber(value.data?.overNumber??0);
+                                        score.setBallNumber(value.data?.ballNumber??0);
+                                        score.setBowlerChangeValue(value.data?.bowlerChange??0);
+                                        player.setStrikerId(value.data!.strikerId.toString(), "");
+                                        player.setNonStrikerId(value.data!.nonStrikerId.toString(), "");
+                                        SharedPreferences prefs = await SharedPreferences.getInstance();
+                                        await prefs.setInt('bowlerPosition', 0);
+                                        await prefs.setInt('ball_number_check', value.data?.ballNumber ?? 0);
+                                        if(value.data?.strikerId==0 || value.data?.nonStrikerId==0){
+                                          String player = (value.data?.strikerId==0) ? 'striker_id':'non_striker_id';
+                                          changeBatsman(player);
+                                        }
+                                        _refreshData();
+                                      });
+                                    }
+
+                                  },
+                                  child: const ScorerGridItem('0','DOT')),
+
+                              const CustomHorizantalDottedLine(),]),
+                        const CustomVerticalDottedLine(),
+                        Column(
+                            children:[
+                              GestureDetector(onTap:()async {
+                                bool continueOperations = await isBatsman();
+                                if (!continueOperations) {
+                                  return;
                                 }
-                                _refreshData();
-                              });
-                              },
-                              child: const ScorerGridItem('0','DOT')),
+                                _displayScoreUpdateBottomSheet(1,scoringData);
+                              }, child: const ScorerGridItem('1','')),
 
-                          const CustomHorizantalDottedLine(),]),
-                    const CustomVerticalDottedLine(),
-                    Column(
-                        children:[
-                          GestureDetector(onTap:()async {
-                            bool continueOperations = await isBatsman();
-                            if (!continueOperations) {
-                              return;
-                            }
-                            _displayScoreUpdateBottomSheet(1,scoringData);
-                          }, child: const ScorerGridItem('1','')),
-
-                          const CustomHorizantalDottedLine(),]),
-                    const CustomVerticalDottedLine(),
-                    Column(
-                        children:[
-                          GestureDetector(onTap:()async{
-                            bool continueOperations =  await isBatsman();
-                            if (!continueOperations) {
-                              return;
-                            }
-                            _displayScoreUpdateBottomSheet(2,scoringData);
-                          }, child:const ScorerGridItem('2','')),
-                          const CustomHorizantalDottedLine(),]),
-                    const CustomVerticalDottedLine(),
-                    Column(
-                        children:[
-                          GestureDetector(onTap:()async{
-                            bool continueOperations = await isBatsman();
-                            if (!continueOperations) {
-                              return;
-                            }
-                            _displayScoreUpdateBottomSheet(3,scoringData);
-                          }, child:const ScorerGridItem('3','')),
-                          const CustomHorizantalDottedLine(),]),
-                    const CustomVerticalDottedLine(),
-                    Column(
-                        children:[
-                          GestureDetector(onTap:()async{
-                            bool continueOperations = await isBatsman();
-                            if (!continueOperations) {
-                              return;
-                            }
-                            _displayScoreUpdateBottomSheet(4,scoringData);
-                          }, child:const ScorerGridFour(Images.four,'FOUR')),
-                          const CustomHorizantalDottedLine(),]),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Column(
-                        children:[  GestureDetector(onTap:()async{
+                              const CustomHorizantalDottedLine(),]),
+                        const CustomVerticalDottedLine(),
+                        Column(
+                            children:[
+                              GestureDetector(onTap:()async{
+                                bool continueOperations =  await isBatsman();
+                                if (!continueOperations) {
+                                  return;
+                                }
+                                _displayScoreUpdateBottomSheet(2,scoringData);
+                              }, child:const ScorerGridItem('2','')),
+                              const CustomHorizantalDottedLine(),]),
+                        const CustomVerticalDottedLine(),
+                        Column(
+                            children:[
+                              GestureDetector(onTap:()async{
+                                bool continueOperations = await isBatsman();
+                                if (!continueOperations) {
+                                  return;
+                                }
+                                _displayScoreUpdateBottomSheet(3,scoringData);
+                              }, child:const ScorerGridItem('3','')),
+                              const CustomHorizantalDottedLine(),]),
+                        const CustomVerticalDottedLine(),
+                        Column(
+                            children:[
+                              GestureDetector(onTap:()async{
+                                bool continueOperations = await isBatsman();
+                                if (!continueOperations) {
+                                  return;
+                                }
+                                _displayScoreUpdateBottomSheet(4,scoringData);
+                              }, child:const ScorerGridFour(Images.four,'FOUR')),
+                              const CustomHorizantalDottedLine(),]),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                            children:[  GestureDetector(onTap:()async{
+                              bool continueOperations = await isBatsman();
+                              if (!continueOperations) {
+                                return;
+                              }
+                              _displayScoreUpdateBottomSheet(6,scoringData);
+                            }, child:const ScorerGridFour(Images.six,'SIX')),
+                              const CustomHorizantalDottedLine(),]),
+                        const CustomVerticalDottedLine(),
+                        Column(
+                            children:[ GestureDetector(
+                                onTap: ()async{
+                                  bool continueOperations = await isBatsman();
+                                  if (!continueOperations) {
+                                    return;
+                                  }
+                                  _displayBottomSheetWide(7,scoringData);
+                                },
+                                child: const ScorerGridItem('WD','WIDE')),
+                              const CustomHorizantalDottedLine(),]),
+                        const CustomVerticalDottedLine(),
+                        Column(
+                            children:[ GestureDetector(
+                                onTap: ()async{
+                                  bool continueOperations = await isBatsman();
+                                  if (!continueOperations) {
+                                    return;
+                                  }
+                                  _displayBottomSheetNoBall(8,scoringData);
+                                },
+                                child: const ScorerGridItem('NB','NO BALL')),
+                              const CustomHorizantalDottedLine(),]),
+                        const CustomVerticalDottedLine(),
+                        Column(
+                            children:[ GestureDetector(
+                                onTap:()async{
+                                  bool continueOperations = await isBatsman();
+                                  if (!continueOperations) {
+                                    return;
+                                  }
+                                  _displayBottomSheetLegBye(9,scoringData);
+                                },
+                                child: const ScorerGridItem('LB','LEG-BYE')),
+                              const CustomHorizantalDottedLine(),]),
+                        const CustomVerticalDottedLine(),
+                        Column(
+                            children:[ GestureDetector(
+                                onTap: ()async{
+                                  bool continueOperations = await isBatsman();
+                                  if (!continueOperations) {
+                                    return;
+                                  }
+                                  _displayBottomSheetByes(10,scoringData);
+                                },
+                                child: const ScorerGridItem('BYE','')),
+                              const CustomHorizantalDottedLine(),]),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(onTap:()async{
                           bool continueOperations = await isBatsman();
                           if (!continueOperations) {
                             return;
                           }
-                          _displayScoreUpdateBottomSheet(6,scoringData);
-                        }, child:const ScorerGridFour(Images.six,'SIX')),
-                          const CustomHorizantalDottedLine(),]),
-                    const CustomVerticalDottedLine(),
-                    Column(
-                        children:[ GestureDetector(
-                          onTap: ()async{
-                            bool continueOperations = await isBatsman();
-                            if (!continueOperations) {
-                              return;
-                            }
-                            _displayBottomSheetWide(7,scoringData);
-                          },
-                            child: const ScorerGridItem('WD','WIDE')),
-                          const CustomHorizantalDottedLine(),]),
-                    const CustomVerticalDottedLine(),
-                    Column(
-                        children:[ GestureDetector(
-                          onTap: ()async{
-                            bool continueOperations = await isBatsman();
-                            if (!continueOperations) {
-                              return;
-                            }
-                            _displayBottomSheetNoBall(8,scoringData);
-                          },
-                            child: const ScorerGridItem('NB','NO BALL')),
-                          const CustomHorizantalDottedLine(),]),
-                    const CustomVerticalDottedLine(),
-                    Column(
-                        children:[ GestureDetector(
-                          onTap:()async{
-                            bool continueOperations = await isBatsman();
-                            if (!continueOperations) {
-                              return;
-                            }
-                            _displayBottomSheetLegBye(9,scoringData);
-                          },
-                            child: const ScorerGridItem('LB','LEG-BYE')),
-                          const CustomHorizantalDottedLine(),]),
-                    const CustomVerticalDottedLine(),
-                    Column(
-                        children:[ GestureDetector(
-                          onTap: ()async{
-                            bool continueOperations = await isBatsman();
-                            if (!continueOperations) {
-                              return;
-                            }
-                            _displayBottomSheetByes(10,scoringData);
-                          },
-                            child: const ScorerGridItem('BYE','')),
-                          const CustomHorizantalDottedLine(),]),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(onTap:()async{
-                      bool continueOperations = await isBatsman();
-                      if (!continueOperations) {
-                        return;
-                      }
-                      _displayBottomSheetBonus(11,scoringData);
-                    },
-                        child: const ScorerGridItem('B/P','B/P')),
-                    const CustomVerticalDottedLine(),
-                    GestureDetector(onTap: ()async{
-                      bool continueOperations =  await isBatsman();
-                      if (!continueOperations) {
-                        return;
-                      }
-                      _displayBottomSheetMoreRuns(5,scoringData);
-                    },
-                        child: const ScorerGridItem('5,7..','RUNS')),
-                    const CustomVerticalDottedLine(),
-                    GestureDetector(
-                        onTap: ()async {
+                          _displayBottomSheetBonus(11,scoringData);
+                        },
+                            child: const ScorerGridItem('B/P','B/P')),
+                        const CustomVerticalDottedLine(),
+                        GestureDetector(onTap: ()async{
                           bool continueOperations =  await isBatsman();
                           if (!continueOperations) {
                             return;
                           }
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return const UndoScreen();
-                            },
-                          );
+                          _displayBottomSheetMoreRuns(5,scoringData);
                         },
-                        child: const ScorerGridItem('','UNDO')),
-                    const CustomVerticalDottedLine(),
-                    GestureDetector(
-                        onTap: ()async{
-                          bool continueOperations = await isBatsman();
-                          if (!continueOperations) {
-                            return;
-                          }
-                          _displayBottomSheetOther();},
-                        child: const ScorerGridItem('','OTHER')),
-                    const CustomVerticalDottedLine(),
-                    GestureDetector(
-                        onTap: ()async{
-                          bool continueOperations = await isBatsman();
-                          if (!continueOperations) {
-                            return;
-                          }
-                      _displayBottomOut(scoringData);
-                          },
-                        child: const ScorerGridOut('OUT','')),
+                            child: const ScorerGridItem('5,7..','RUNS')),
+                        const CustomVerticalDottedLine(),
+                        GestureDetector(
+                            onTap: ()async {
+                              bool continueOperations =  await isBatsman();
+                              if (!continueOperations) {
+                                return;
+                              }
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return const UndoScreen();
+                                },
+                              );
+                            },
+                            child: const ScorerGridItem('','UNDO')),
+                        const CustomVerticalDottedLine(),
+                        GestureDetector(
+                            onTap: ()async{
+                              bool continueOperations = await isBatsman();
+                              if (!continueOperations) {
+                                return;
+                              }
+                              _displayBottomSheetOther();},
+                            child: const ScorerGridItem('','OTHER')),
+                        const CustomVerticalDottedLine(),
+                        GestureDetector(
+                            onTap: ()async{
+                              bool continueOperations = await isBatsman();
+                              if (!continueOperations) {
+                                return;
+                              }
+                              _displayBottomOut(scoringData);
+                            },
+                            child: const ScorerGridOut('OUT','')),
+                      ],
+                    ),
                   ],
-                ),
-              ],
+                );
+              }
             ),
           )
 
@@ -727,7 +734,7 @@ class _ScoringTabState extends State<ScoringTab> {
     );
   }
 
-   isBatsman()async{
+  isBatsman()async{
     var players = Provider.of<PlayerSelectionProvider>(context, listen: false);
     var score = Provider.of<ScoreUpdateProvider>(context, listen: false);
     print(score.bowlerChange);
@@ -761,20 +768,20 @@ class _ScoringTabState extends State<ScoringTab> {
   void changeBowler() {
 
     ScoringProvider().getPlayerList(widget.matchId,widget.team2Id,'bowl').then((value) {
+      setState(() {
+        itemsBowler=[];
+        searchedList=value.bowlingPlayers!;
+        itemsBowler = value.bowlingPlayers;
+        selectedBTeamName= value.team!.teamName;
+      });
+      _displayBowlerBottomSheet (context,selectedBowler,(bowlerIndex) {
         setState(() {
-          itemsBowler=[];
-          searchedList=value.bowlingPlayers!;
-          itemsBowler = value.bowlingPlayers;
-          selectedBTeamName= value.team!.teamName;
+          selectedBowler = bowlerIndex;
+          if (selectedBowler != null) {
+            selectedBowlerName = itemsBowler![selectedBowler!].playerName ?? "";
+          }
         });
-            _displayBowlerBottomSheet (context,selectedBowler,(bowlerIndex) {
-              setState(() {
-                selectedBowler = bowlerIndex;
-                if (selectedBowler != null) {
-                  selectedBowlerName = itemsBowler![selectedBowler!].playerName ?? "";
-                }
-              });
-            });
+      });
     });
   }
 
@@ -1092,7 +1099,7 @@ class _ScoringTabState extends State<ScoringTab> {
                           },
                         ),
                       ),
-                  ],
+                    ],
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 2.h,horizontal: 5.w),
                     decoration: const BoxDecoration(
@@ -1117,16 +1124,16 @@ class _ScoringTabState extends State<ScoringTab> {
                             final score = Provider.of<ScoreUpdateProvider>(context, listen: false);
                             players.setBowlerId(playerId, "");
                             score.setBowlerChangeValue(0);
-                          SharedPreferences prefs = await SharedPreferences.getInstance();
-                          await prefs.setInt('bowler_id', searchedList[localBowlerIndex!].playerId!);
-                          await prefs.setInt('bowler_change', 0);
-                          Navigator.pop(context);
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            await prefs.setInt('bowler_id', searchedList[localBowlerIndex!].playerId!);
+                            await prefs.setInt('bowler_change', 0);
+                            Navigator.pop(context);
                           }else{
                             setState(() {showError=true;});
-                             Timer(const Duration(seconds: 4), () {setState(() {showError = false;});});
+                            Timer(const Duration(seconds: 4), () {setState(() {showError = false;});});
                           }
 
-                          },child: const OkBtn("Ok")),
+                        },child: const OkBtn("Ok")),
                       ],
                     ),
                   ),
@@ -1150,7 +1157,7 @@ class _ScoringTabState extends State<ScoringTab> {
         builder: (context)=> StatefulBuilder(
           builder: (context, setState) {
             return BatsmanListBottomSheet(widget.matchId, widget.team1Id, player);
-            },
+          },
         )
     );
   }
@@ -1558,75 +1565,622 @@ class _ScoringTabState extends State<ScoringTab> {
     );
   }
 
-Future<void> _displayBottomSheetWide (int balltype, ScoringDetailResponseModel? scoringData) async{
-  int? isOffSideSelected =0;
-  int? isWideSelected ;
-  bool showError =false;
-  List<Map<String, dynamic>> chipData =[
-    {
-      'label': 'Wd',
-    },
-    {
-      'label': '1 + Wd',
-    },
-    {
-      'label': '2 + Wd',
-    },
-    {
-      'label': '3 + Wd',
-    },
-    {
-      'label': '4 + Wd',
-    },
-    {
-      'label': '5 + Wd',
-    },
-    {
-      'label': '6 + Wd',
-    },
-  ];
-  showModalBottomSheet(context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context)=> StatefulBuilder(builder: (context, setState){
-        return Container(
-          height: 45.h,
-          // padding: EdgeInsets.symmetric(horizontal: 2.w),
-          decoration: const BoxDecoration(
-              color: AppColor.lightColor,
-              borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding:  EdgeInsets.symmetric(horizontal: 5.w,)+EdgeInsets.only(top: 2.h,),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                        onTap: (){
-                          Navigator.pop(context);
-                        },
-                        child: Icon(Icons.arrow_back,size: 7.w,)),
-                    Text("Wide",style: fontMedium.copyWith(
-                      fontSize: 17.sp,
-                      color: AppColor.blackColour,
-                    ),),
-                    SizedBox(width: 7.w,),
-                  ],
+  Future<void> _displayBottomSheetWide (int balltype, ScoringDetailResponseModel? scoringData) async{
+    int? isOffSideSelected =0;
+    int? isWideSelected ;
+    bool showError =false;
+    List<Map<String, dynamic>> chipData =[
+      {
+        'label': 'Wd',
+      },
+      {
+        'label': '1 + Wd',
+      },
+      {
+        'label': '2 + Wd',
+      },
+      {
+        'label': '3 + Wd',
+      },
+      {
+        'label': '4 + Wd',
+      },
+      {
+        'label': '5 + Wd',
+      },
+      {
+        'label': '6 + Wd',
+      },
+    ];
+    showModalBottomSheet(context: context,
+        backgroundColor: Colors.transparent,
+        builder: (context)=> StatefulBuilder(builder: (context, setState){
+          return Container(
+            height: 45.h,
+            // padding: EdgeInsets.symmetric(horizontal: 2.w),
+            decoration: const BoxDecoration(
+                color: AppColor.lightColor,
+                borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding:  EdgeInsets.symmetric(horizontal: 5.w,)+EdgeInsets.only(top: 2.h,),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                          onTap: (){
+                            Navigator.pop(context);
+                          },
+                          child: Icon(Icons.arrow_back,size: 7.w,)),
+                      Text("Wide",style: fontMedium.copyWith(
+                        fontSize: 17.sp,
+                        color: AppColor.blackColour,
+                      ),),
+                      SizedBox(width: 7.w,),
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(height: 1.h,),
-              const Divider(
-                color: Color(0xffD3D3D3),
-              ),
-              SizedBox(height: 1.h,),
-              Padding(
-                padding:  EdgeInsets.only(left: 5.w,right: 5.w),
-                child: Center(
+                SizedBox(height: 1.h,),
+                const Divider(
+                  color: Color(0xffD3D3D3),
+                ),
+                SizedBox(height: 1.h,),
+                Padding(
+                  padding:  EdgeInsets.only(left: 5.w,right: 5.w),
+                  child: Center(
+                    child: Wrap(
+                      spacing: 2.5.w, // Horizontal spacing between items
+                      runSpacing: 0.5.h, // Vertical spacing between lines
+                      alignment: WrapAlignment.center, // Alignment of items
+                      children:chipData.map((data) {
+                        final index = chipData.indexOf(data);
+                        return GestureDetector(
+                          onTap: (){
+                            setState(() {
+                              isWideSelected=index;
+                            });
+                          },
+                          child: Chip(
+                            padding: EdgeInsets.symmetric(horizontal: 1.w,vertical: 0.5.h),
+                            label: Text(data['label'],style: fontSemiBold.copyWith(
+                                fontSize: 12.sp,
+                                color: AppColor.blackColour
+                            ),),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                              side: const BorderSide(
+                                color: Color(0xffDADADA),
+                              ),
+                            ),
+                            backgroundColor: isWideSelected==index? AppColor.primaryColor : const Color(0xffF8F9FA),
+                            // backgroundColor:AppColor.lightColor
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 1.h,),
+                const DottedLine(
+                  dashColor: Color(0xffD2D2D2),
+                ),
+                SizedBox(height: 1.5.h,),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 5.w),
+                  child: Text("Which side?",style: fontMedium.copyWith(
+                    fontSize: 16.sp,
+                    color: AppColor.blackColour,
+                  ),),
+                ),
+                SizedBox(height: 1.5.h,),
+                //offside leg side
+                Padding(
+                  padding:  EdgeInsets.symmetric(horizontal: 5.w),
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: (){
+                          setState(() {
+                            isOffSideSelected=0;
+                          });
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.5.h),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: const Color(0xffDADADA),
+                            ),
+                            color: isOffSideSelected==0 ? AppColor.primaryColor : null,
+                          ),
+                          child: Text("Off side",style: fontMedium.copyWith(
+                            fontSize: 12.sp,
+                            color: AppColor.blackColour,
+                          ),),
+                        ),
+                      ),
+                      SizedBox(width: 8.w,),
+                      GestureDetector(
+                        onTap: (){
+                          setState(() {
+                            isOffSideSelected=1;
+                          });
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.5.h),
+                          decoration: BoxDecoration(
+                              color: isOffSideSelected==1?AppColor.primaryColor:null,
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                color: const Color(0xffDADADA),
+                              )
+                          ),
+                          child: Text("Leg side",style: fontMedium.copyWith(
+                            fontSize: 12.sp,
+                            color: AppColor.blackColour,
+                          ),),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding:  EdgeInsets.symmetric(horizontal: 5.w,vertical: 3.h),
+                    child:  Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Visibility(
+                          visible: showError,
+                          child: Text(
+                            'Please Select One Option',
+                            style: fontMedium.copyWith(color: AppColor.redColor),
+                          ),
+                        ),
+                        GestureDetector(
+                            onTap:()async{
+                              SharedPreferences prefs = await SharedPreferences.getInstance();
+                              var overNumber= prefs.getInt('over_number');
+                              var ballNumber= prefs.getInt('ball_number');
+                              var strikerId=prefs.getInt('striker_id')??0;
+                              var nonStrikerId=prefs.getInt('non_striker_id')??0;
+                              var bowlerId=prefs.getInt('bowler_id')??0;
+                              var oversBowled=prefs.getInt('overs_bowled')??0;
+                              var keeperId=prefs.getInt('wicket_keeper_id')??0;
+                              var bowlerPosition=prefs.getInt('bowlerPosition')??0;
+                              var wideRun=prefs.getInt('wideRun');
+
+
+
+                              if(isWideSelected!=null) {
+                                ScoreUpdateRequestModel scoreUpdateRequestModel = ScoreUpdateRequestModel();
+                                scoreUpdateRequestModel.ballTypeId = balltype;
+                                scoreUpdateRequestModel.matchId = scoringData!.data!.batting![0].matchId;
+                                scoreUpdateRequestModel.scorerId = 1;
+                                scoreUpdateRequestModel.strikerId = strikerId;
+                                scoreUpdateRequestModel.nonStrikerId = nonStrikerId;
+                                scoreUpdateRequestModel.wicketKeeperId = keeperId;
+                                scoreUpdateRequestModel.bowlerId = bowlerId;
+                                scoreUpdateRequestModel.overNumber = overNumber;
+                                scoreUpdateRequestModel.ballNumber = ballNumber;
+
+                                scoreUpdateRequestModel.runsScored =
+                                    1 + (isWideSelected ?? 0);
+                                scoreUpdateRequestModel.extras = (wideRun==1)?1:0;
+                                scoreUpdateRequestModel.wicket = 0;
+                                scoreUpdateRequestModel.dismissalType = 0;
+                                scoreUpdateRequestModel.commentary = 0;
+                                scoreUpdateRequestModel.innings = 1;
+                                scoreUpdateRequestModel.battingTeamId =
+                                    scoringData.data!.batting![0].teamId ?? 0;
+                                scoreUpdateRequestModel.bowlingTeamId =
+                                    scoringData.data!.bowling!.teamId ?? 0;
+                                scoreUpdateRequestModel.overBowled=oversBowled ;
+                                scoreUpdateRequestModel.totalOverBowled = 0;
+                                scoreUpdateRequestModel.outByPlayer = 0;
+                                scoreUpdateRequestModel.outPlayer = 0;
+                                scoreUpdateRequestModel.totalWicket = 0;
+                                scoreUpdateRequestModel.fieldingPositionsId = 0;
+                                scoreUpdateRequestModel.endInnings = false;
+                                scoreUpdateRequestModel.bowlerPosition = bowlerPosition;
+                                scoreUpdateRequestModel.wideType = isOffSideSelected;
+                                ScoringProvider().scoreUpdate(
+                                    scoreUpdateRequestModel).then((value) async {
+                                  SharedPreferences prefs = await SharedPreferences
+                                      .getInstance();
+                                  await prefs.setInt(
+                                      'over_number', value.data!.overNumber ?? 0);
+                                  await prefs.setInt(
+                                      'ball_number', value.data!.ballNumber ?? 1);
+                                  await prefs.setInt(
+                                      'striker_id', value.data!.strikerId ?? 0);
+                                  await prefs.setInt('non_striker_id', value.data!.nonStrikerId ?? 0);
+                                  await prefs.setInt('bowler_change', value.data!.bowlerChange ?? 0);
+                                  await prefs.setInt('bowlerPosition',0);
+                                  Navigator.pop(context);
+                                });
+                              }else{
+                                setState(() {
+                                  showError = true;
+                                });
+                                if (showError) {
+                                  Timer(const Duration(seconds: 4), () {
+                                    setState(() {
+                                      showError = false;
+                                    });
+                                  });
+                                }
+                              }
+                            },
+                            child: const OkBtn("Save")),
+                      ],
+                    ),
+                  ),
+                )
+
+              ],
+            ),
+          );
+        })
+    );
+  }
+
+  Future<void> _displayBottomSheetNoBall (int ballType,ScoringDetailResponseModel? scoringData) async{
+    int? isOffSideSelected=0 ;
+    int? isWideSelected ;
+    bool showError =false;
+    List<Map<String, dynamic>> chipData =[
+      {
+        'label': 'NB',
+      },
+      {
+        'label': '1 + NB',
+      },
+      {
+        'label': '2 + NB',
+      },
+      {
+        'label': '3 + NB',
+      },
+      {
+        'label': '4 + NB',
+      },
+      {
+        'label': '5 + NB',
+      },
+      {
+        'label': '6 + NB',
+      },
+      {
+        'label': '7 + NB',
+      },
+    ];
+    showModalBottomSheet(context: context,
+        backgroundColor: Colors.transparent,
+        builder: (context)=> StatefulBuilder(builder: (context, setState){
+          return Container(
+            height: 45.h,
+            // padding: EdgeInsets.symmetric(horizontal: 2.w),
+            decoration: const BoxDecoration(
+                color: AppColor.lightColor,
+                borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding:  EdgeInsets.symmetric(horizontal: 5.w,)+EdgeInsets.only(top: 2.h,),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                          onTap: (){
+                            Navigator.pop(context);
+                          },
+                          child: Icon(Icons.arrow_back,size: 7.w,)),
+                      Text("No ball",style: fontMedium.copyWith(
+                        fontSize: 17.sp,
+                        color: AppColor.blackColour,
+                      ),),
+                      SizedBox(width: 7.w,),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 1.h,),
+                const Divider(
+                  color: Color(0xffD3D3D3),
+                ),
+                SizedBox(height: 1.h,),
+                Padding(
+                  padding:  EdgeInsets.only(left: 5.w,right: 5.w),
                   child: Wrap(
                     spacing: 2.5.w, // Horizontal spacing between items
                     runSpacing: 0.5.h, // Vertical spacing between lines
+                    alignment: WrapAlignment.center, // Alignment of items
+                    children:chipData.map((data) {
+                      final index = chipData.indexOf(data);
+                      return GestureDetector(
+                        onTap: (){
+                          setState(() {
+                            isWideSelected=index;
+                          });
+                        },
+                        child: Chip(
+                          padding: EdgeInsets.symmetric(horizontal: 1.5.w,vertical: 0.5.h),
+                          label: Text(data['label'],style: fontSemiBold.copyWith(
+                              fontSize: 12.sp,
+                              color: AppColor.blackColour
+                          ),),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            side: const BorderSide(
+                              color: Color(0xffDADADA),
+                            ),
+                          ),
+                          backgroundColor: isWideSelected==index? AppColor.primaryColor : const Color(0xffF8F9FA),
+                          // backgroundColor:AppColor.lightColor
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+                SizedBox(height: 1.h,),
+                const DottedLine(
+                  dashColor: Color(0xffD2D2D2),
+                ),
+                SizedBox(height: 1.5.h,),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 5.w),
+                  child: Text("Type of No ball?",style: fontMedium.copyWith(
+                    fontSize: 16.sp,
+                    color: AppColor.blackColour,
+                  ),),
+                ),
+                SizedBox(height: 1.5.h,),
+                //offside leg side
+                Padding(
+                  padding:  EdgeInsets.symmetric(horizontal: 5.w),
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: (){
+                          setState(() {
+                            isOffSideSelected=0;
+                          });
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.5.h),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: const Color(0xffDADADA),
+                            ),
+                            color: isOffSideSelected==0 ? AppColor.primaryColor : const Color(0xffF8F9FA),
+                          ),
+                          child: Text("Grease",style: fontMedium.copyWith(
+                            fontSize: 12.sp,
+                            color: AppColor.blackColour,
+                          ),),
+                        ),
+                      ),
+                      SizedBox(width: 8.w,),
+                      GestureDetector(
+                        onTap: (){
+                          setState(() {
+                            isOffSideSelected=1;
+                          });
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.5.h),
+                          decoration: BoxDecoration(
+                              color: isOffSideSelected==1?AppColor.primaryColor:const Color(0xffF8F9FA),
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                color: const Color(0xffDADADA),
+                              )
+                          ),
+                          child: Text("Waist",style: fontMedium.copyWith(
+                            fontSize: 12.sp,
+                            color: AppColor.blackColour,
+                          ),),
+                        ),
+                      ),
+                      SizedBox(width: 8.w,),
+                      GestureDetector(
+                        onTap: (){
+                          setState(() {
+                            isOffSideSelected=2;
+                          });
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.5.h),
+                          decoration: BoxDecoration(
+                              color: isOffSideSelected==2?AppColor.primaryColor:const Color(0xffF8F9FA),
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                color: const Color(0xffDADADA),
+                              )
+                          ),
+                          child: Text("Shoulder",style: fontMedium.copyWith(
+                            fontSize: 12.sp,
+                            color: AppColor.blackColour,
+                          ),),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding:  EdgeInsets.symmetric(horizontal: 5.w,vertical: 3.h),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Visibility(
+                          visible: showError,
+                          child: Text(
+                            'Please Select One Option',
+                            style: fontMedium.copyWith(color: AppColor.redColor),
+                          ),
+                        ),
+                        GestureDetector(onTap:()async{
+                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                          var overNumber= prefs.getInt('over_number');
+                          var ballNumber= prefs.getInt('ball_number');
+                          var strikerId=prefs.getInt('striker_id')??0;
+                          var nonStrikerId=prefs.getInt('non_striker_id')??0;
+                          var bowlerId=prefs.getInt('bowler_id')??0;
+                          var oversBowled=prefs.getInt('overs_bowled')??0;
+                          var keeperId=prefs.getInt('wicket_keeper_id')??0;
+                          var bowlerPosition=prefs.getInt('bowlerPosition')??0;
+                          var noBallRun=prefs.getInt('noBallRun');
+
+                          if(isWideSelected!=null) {
+                            ScoreUpdateRequestModel scoreUpdateRequestModel = ScoreUpdateRequestModel();
+                            scoreUpdateRequestModel.ballTypeId = ballType ?? 0;
+                            scoreUpdateRequestModel.matchId =
+                                scoringData!.data!.batting![0].matchId;
+                            scoreUpdateRequestModel.scorerId = 1;
+                            scoreUpdateRequestModel.strikerId = strikerId;
+                            scoreUpdateRequestModel.nonStrikerId = nonStrikerId;
+                            scoreUpdateRequestModel.wicketKeeperId = keeperId;
+                            scoreUpdateRequestModel.bowlerId = bowlerId;
+                            scoreUpdateRequestModel.overNumber = overNumber;
+                            scoreUpdateRequestModel.ballNumber = ballNumber;
+                            scoreUpdateRequestModel.runsScored =
+                                1 + (isWideSelected ?? 0);
+                            scoreUpdateRequestModel.extras = (noBallRun==1)?1:0;
+                            scoreUpdateRequestModel.wicket = 0;
+                            scoreUpdateRequestModel.dismissalType = 0;
+                            scoreUpdateRequestModel.commentary = 0;
+                            scoreUpdateRequestModel.innings = 1;
+                            scoreUpdateRequestModel.battingTeamId =
+                                scoringData!.data!.batting![0].teamId ?? 0;
+                            scoreUpdateRequestModel.bowlingTeamId =
+                                scoringData!.data!.bowling!.teamId ?? 0;
+                            scoreUpdateRequestModel.overBowled=oversBowled ;
+                            scoreUpdateRequestModel.totalOverBowled = 0;
+                            scoreUpdateRequestModel.outByPlayer = 0;
+                            scoreUpdateRequestModel.outPlayer = 0;
+                            scoreUpdateRequestModel.totalWicket = 0;
+                            scoreUpdateRequestModel.fieldingPositionsId = 0;
+                            scoreUpdateRequestModel.endInnings = false;
+                            scoreUpdateRequestModel.bowlerPosition=bowlerPosition;
+                            scoreUpdateRequestModel.noBallsType=isOffSideSelected;
+                            ScoringProvider()
+                                .scoreUpdate(scoreUpdateRequestModel)
+                                .then((value) async {
+                              SharedPreferences prefs = await SharedPreferences
+                                  .getInstance();
+                              await prefs.setInt(
+                                  'over_number', value.data!.overNumber ?? 0);
+                              await prefs.setInt(
+                                  'ball_number', value.data!.ballNumber ?? 1);
+                              await prefs.setInt(
+                                  'striker_id', value.data!.strikerId ?? 0);
+                              await prefs.setInt('non_striker_id', value.data!.nonStrikerId ?? 0);
+                              await prefs.setInt('bowler_change', value.data!.bowlerChange ?? 0);
+                              await prefs.setInt('bowlerPosition',0);
+
+                              Navigator.pop(context);
+                            });
+                          }else{
+                            setState(() {
+                              showError = true;
+                            });
+                            if (showError) {
+                              Timer(const Duration(seconds: 4), () {
+                                setState(() {
+                                  showError = false;
+                                });
+                              });
+                            }
+                          }
+                        },child: const OkBtn("Save")),
+                      ],
+                    ),
+                  ),
+                )
+
+              ],
+            ),
+          );
+        })
+    );
+  }
+
+  Future<void> _displayBottomSheetLegBye (int ballType,ScoringDetailResponseModel? scoringData) async{
+    int? isOffSideSelected ;
+    int? isWideSelected ;
+    List<Map<String, dynamic>> chipData =[
+      {
+        'label': '1LB',
+      },
+      {
+        'label': '2LB',
+      },
+      {
+        'label': '3LB',
+      },
+      {
+        'label': '4LB',
+      },
+      {
+        'label': '5LB',
+      },
+      {
+        'label': '6LB',
+      },
+      {
+        'label': '7LB',
+      },
+    ];
+    showModalBottomSheet(context: context,
+        backgroundColor: Colors.transparent,
+        builder: (context)=> StatefulBuilder(builder: (context, setState){
+          return Container(
+            height: 33.h,
+            // padding: EdgeInsets.symmetric(horizontal: 2.w),
+            decoration: const BoxDecoration(
+                color: AppColor.lightColor,
+                borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding:  EdgeInsets.symmetric(horizontal: 5.w,)+EdgeInsets.only(top: 2.h,),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                          onTap: (){
+                            Navigator.pop(context);
+                          },
+                          child: Icon(Icons.arrow_back,size: 7.w,)),
+                      Text("Leg Byes",style: fontMedium.copyWith(
+                        fontSize: 17.sp,
+                        color: AppColor.blackColour,
+                      ),),
+                      SizedBox(width: 7.w,),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 1.h,),
+                const Divider(
+                  color: Color(0xffD3D3D3),
+                ),
+                SizedBox(height: 1.h,),
+                Padding(
+                  padding:  EdgeInsets.only(left: 5.w,right: 8.w),
+                  child: Wrap(
+                    spacing: 6.w, // Horizontal spacing between items
+                    runSpacing: 1.h, // Vertical spacing between lines
                     alignment: WrapAlignment.center, // Alignment of items
                     children:chipData.map((data) {
                       final index = chipData.indexOf(data);
@@ -1655,840 +2209,293 @@ Future<void> _displayBottomSheetWide (int balltype, ScoringDetailResponseModel? 
                     }).toList(),
                   ),
                 ),
-              ),
-              SizedBox(height: 1.h,),
-              const DottedLine(
-                dashColor: Color(0xffD2D2D2),
-              ),
-              SizedBox(height: 1.5.h,),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5.w),
-                child: Text("Which side?",style: fontMedium.copyWith(
-                  fontSize: 16.sp,
-                  color: AppColor.blackColour,
-                ),),
-              ),
-              SizedBox(height: 1.5.h,),
-              //offside leg side
-              Padding(
-                padding:  EdgeInsets.symmetric(horizontal: 5.w),
-                child: Row(
-                  children: [
-                    GestureDetector(
-                      onTap: (){
-                        setState(() {
-                          isOffSideSelected=0;
-                        });
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.5.h),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: const Color(0xffDADADA),
-                          ),
-                          color: isOffSideSelected==0 ? AppColor.primaryColor : null,
-                        ),
-                        child: Text("Off side",style: fontMedium.copyWith(
-                          fontSize: 12.sp,
-                          color: AppColor.blackColour,
-                        ),),
-                      ),
-                    ),
-                    SizedBox(width: 8.w,),
-                    GestureDetector(
-                      onTap: (){
-                        setState(() {
-                          isOffSideSelected=1;
-                        });
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.5.h),
-                        decoration: BoxDecoration(
-                            color: isOffSideSelected==1?AppColor.primaryColor:null,
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                              color: const Color(0xffDADADA),
-                            )
-                        ),
-                        child: Text("Leg side",style: fontMedium.copyWith(
-                          fontSize: 12.sp,
-                          color: AppColor.blackColour,
-                        ),),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding:  EdgeInsets.symmetric(horizontal: 5.w,vertical: 3.h),
-                  child:  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Visibility(
-                        visible: showError,
-                        child: Text(
-                          'Please Select One Option',
-                          style: fontMedium.copyWith(color: AppColor.redColor),
-                        ),
-                      ),
-                      GestureDetector(
-                          onTap:()async{
-                            SharedPreferences prefs = await SharedPreferences.getInstance();
-                            var overNumber= prefs.getInt('over_number');
-                            var ballNumber= prefs.getInt('ball_number');
-                            var strikerId=prefs.getInt('striker_id')??0;
-                            var nonStrikerId=prefs.getInt('non_striker_id')??0;
-                            var bowlerId=prefs.getInt('bowler_id')??0;
-                            var oversBowled=prefs.getInt('overs_bowled')??0;
-                            var keeperId=prefs.getInt('wicket_keeper_id')??0;
-                            var bowlerPosition=prefs.getInt('bowlerPosition')??0;
-                            var wideRun=prefs.getInt('wideRun');
-
-
-
-                            if(isWideSelected!=null) {
-                              ScoreUpdateRequestModel scoreUpdateRequestModel = ScoreUpdateRequestModel();
-                              scoreUpdateRequestModel.ballTypeId = balltype;
-                              scoreUpdateRequestModel.matchId = scoringData!.data!.batting![0].matchId;
-                              scoreUpdateRequestModel.scorerId = 1;
-                              scoreUpdateRequestModel.strikerId = strikerId;
-                              scoreUpdateRequestModel.nonStrikerId = nonStrikerId;
-                              scoreUpdateRequestModel.wicketKeeperId = keeperId;
-                              scoreUpdateRequestModel.bowlerId = bowlerId;
-                              scoreUpdateRequestModel.overNumber = overNumber;
-                              scoreUpdateRequestModel.ballNumber = ballNumber;
-
-                              scoreUpdateRequestModel.runsScored =
-                                  1 + (isWideSelected ?? 0);
-                              scoreUpdateRequestModel.extras = (wideRun==1)?1:0;
-                              scoreUpdateRequestModel.wicket = 0;
-                              scoreUpdateRequestModel.dismissalType = 0;
-                              scoreUpdateRequestModel.commentary = 0;
-                              scoreUpdateRequestModel.innings = 1;
-                              scoreUpdateRequestModel.battingTeamId =
-                                  scoringData.data!.batting![0].teamId ?? 0;
-                              scoreUpdateRequestModel.bowlingTeamId =
-                                  scoringData.data!.bowling!.teamId ?? 0;
-                              scoreUpdateRequestModel.overBowled=oversBowled ;
-                              scoreUpdateRequestModel.totalOverBowled = 0;
-                              scoreUpdateRequestModel.outByPlayer = 0;
-                              scoreUpdateRequestModel.outPlayer = 0;
-                              scoreUpdateRequestModel.totalWicket = 0;
-                              scoreUpdateRequestModel.fieldingPositionsId = 0;
-                              scoreUpdateRequestModel.endInnings = false;
-                              scoreUpdateRequestModel.bowlerPosition = bowlerPosition;
-                              scoreUpdateRequestModel.wideType = isOffSideSelected;
-                              ScoringProvider().scoreUpdate(
-                                  scoreUpdateRequestModel).then((value) async {
-                                SharedPreferences prefs = await SharedPreferences
-                                    .getInstance();
-                                await prefs.setInt(
-                                    'over_number', value.data!.overNumber ?? 0);
-                                await prefs.setInt(
-                                    'ball_number', value.data!.ballNumber ?? 1);
-                                await prefs.setInt(
-                                    'striker_id', value.data!.strikerId ?? 0);
-                                await prefs.setInt('non_striker_id', value.data!.nonStrikerId ?? 0);
-                                await prefs.setInt('bowler_change', value.data!.bowlerChange ?? 0);
-                                await prefs.setInt('bowlerPosition',0);
-                                Navigator.pop(context);
-                              });
-                            }else{
-                              setState(() {
-                                showError = true;
-                              });
-                              if (showError) {
-                                Timer(const Duration(seconds: 4), () {
-                                  setState(() {
-                                    showError = false;
-                                  });
-                                });
-                              }
-                            }
-                          },
-                          child: const OkBtn("Save")),
-                    ],
-                  ),
-                ),
-              )
-
-            ],
-          ),
-        );
-      })
-  );
-}
-
-Future<void> _displayBottomSheetNoBall (int ballType,ScoringDetailResponseModel? scoringData) async{
-  int? isOffSideSelected=0 ;
-  int? isWideSelected ;
-  bool showError =false;
-  List<Map<String, dynamic>> chipData =[
-    {
-      'label': 'NB',
-    },
-    {
-      'label': '1 + NB',
-    },
-    {
-      'label': '2 + NB',
-    },
-    {
-      'label': '3 + NB',
-    },
-    {
-      'label': '4 + NB',
-    },
-    {
-      'label': '5 + NB',
-    },
-    {
-      'label': '6 + NB',
-    },
-    {
-      'label': '7 + NB',
-    },
-  ];
-  showModalBottomSheet(context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context)=> StatefulBuilder(builder: (context, setState){
-        return Container(
-          height: 45.h,
-          // padding: EdgeInsets.symmetric(horizontal: 2.w),
-          decoration: const BoxDecoration(
-              color: AppColor.lightColor,
-              borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding:  EdgeInsets.symmetric(horizontal: 5.w,)+EdgeInsets.only(top: 2.h,),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                        onTap: (){
-                          Navigator.pop(context);
-                        },
-                        child: Icon(Icons.arrow_back,size: 7.w,)),
-                    Text("No ball",style: fontMedium.copyWith(
-                      fontSize: 17.sp,
-                      color: AppColor.blackColour,
-                    ),),
-                    SizedBox(width: 7.w,),
-                  ],
-                ),
-              ),
-              SizedBox(height: 1.h,),
-              const Divider(
-                color: Color(0xffD3D3D3),
-              ),
-              SizedBox(height: 1.h,),
-              Padding(
-                padding:  EdgeInsets.only(left: 5.w,right: 5.w),
-                child: Wrap(
-                  spacing: 2.5.w, // Horizontal spacing between items
-                  runSpacing: 0.5.h, // Vertical spacing between lines
-                  alignment: WrapAlignment.center, // Alignment of items
-                  children:chipData.map((data) {
-                    final index = chipData.indexOf(data);
-                    return GestureDetector(
-                      onTap: (){
-                        setState(() {
-                          isWideSelected=index;
-                        });
-                      },
-                      child: Chip(
-                        padding: EdgeInsets.symmetric(horizontal: 1.5.w,vertical: 0.5.h),
-                        label: Text(data['label'],style: fontSemiBold.copyWith(
-                            fontSize: 12.sp,
-                            color: AppColor.blackColour
-                        ),),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                          side: const BorderSide(
-                            color: Color(0xffDADADA),
-                          ),
-                        ),
-                        backgroundColor: isWideSelected==index? AppColor.primaryColor : const Color(0xffF8F9FA),
-                        // backgroundColor:AppColor.lightColor
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ),
-              SizedBox(height: 1.h,),
-              const DottedLine(
-                dashColor: Color(0xffD2D2D2),
-              ),
-              SizedBox(height: 1.5.h,),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5.w),
-                child: Text("Type of No ball?",style: fontMedium.copyWith(
-                  fontSize: 16.sp,
-                  color: AppColor.blackColour,
-                ),),
-              ),
-              SizedBox(height: 1.5.h,),
-              //offside leg side
-              Padding(
-                padding:  EdgeInsets.symmetric(horizontal: 5.w),
-                child: Row(
-                  children: [
-                    GestureDetector(
-                      onTap: (){
-                        setState(() {
-                          isOffSideSelected=0;
-                        });
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.5.h),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: const Color(0xffDADADA),
-                          ),
-                          color: isOffSideSelected==0 ? AppColor.primaryColor : const Color(0xffF8F9FA),
-                        ),
-                        child: Text("Grease",style: fontMedium.copyWith(
-                          fontSize: 12.sp,
-                          color: AppColor.blackColour,
-                        ),),
-                      ),
-                    ),
-                    SizedBox(width: 8.w,),
-                    GestureDetector(
-                      onTap: (){
-                        setState(() {
-                          isOffSideSelected=1;
-                        });
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.5.h),
-                        decoration: BoxDecoration(
-                            color: isOffSideSelected==1?AppColor.primaryColor:const Color(0xffF8F9FA),
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                              color: const Color(0xffDADADA),
-                            )
-                        ),
-                        child: Text("Waist",style: fontMedium.copyWith(
-                          fontSize: 12.sp,
-                          color: AppColor.blackColour,
-                        ),),
-                      ),
-                    ),
-                    SizedBox(width: 8.w,),
-                    GestureDetector(
-                      onTap: (){
-                        setState(() {
-                          isOffSideSelected=2;
-                        });
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.5.h),
-                        decoration: BoxDecoration(
-                            color: isOffSideSelected==2?AppColor.primaryColor:const Color(0xffF8F9FA),
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                              color: const Color(0xffDADADA),
-                            )
-                        ),
-                        child: Text("Shoulder",style: fontMedium.copyWith(
-                          fontSize: 12.sp,
-                          color: AppColor.blackColour,
-                        ),),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding:  EdgeInsets.symmetric(horizontal: 5.w,vertical: 3.h),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Visibility(
-                        visible: showError,
-                        child: Text(
-                          'Please Select One Option',
-                          style: fontMedium.copyWith(color: AppColor.redColor),
-                        ),
-                      ),
-                      GestureDetector(onTap:()async{
-                        SharedPreferences prefs = await SharedPreferences.getInstance();
-                        var overNumber= prefs.getInt('over_number');
-                        var ballNumber= prefs.getInt('ball_number');
-                        var strikerId=prefs.getInt('striker_id')??0;
-                        var nonStrikerId=prefs.getInt('non_striker_id')??0;
-                        var bowlerId=prefs.getInt('bowler_id')??0;
-                        var oversBowled=prefs.getInt('overs_bowled')??0;
-                        var keeperId=prefs.getInt('wicket_keeper_id')??0;
-                        var bowlerPosition=prefs.getInt('bowlerPosition')??0;
-                        var noBallRun=prefs.getInt('noBallRun');
-
-                        if(isWideSelected!=null) {
-                          ScoreUpdateRequestModel scoreUpdateRequestModel = ScoreUpdateRequestModel();
-                          scoreUpdateRequestModel.ballTypeId = ballType ?? 0;
-                          scoreUpdateRequestModel.matchId =
-                              scoringData!.data!.batting![0].matchId;
-                          scoreUpdateRequestModel.scorerId = 1;
-                          scoreUpdateRequestModel.strikerId = strikerId;
-                          scoreUpdateRequestModel.nonStrikerId = nonStrikerId;
-                          scoreUpdateRequestModel.wicketKeeperId = keeperId;
-                          scoreUpdateRequestModel.bowlerId = bowlerId;
-                          scoreUpdateRequestModel.overNumber = overNumber;
-                          scoreUpdateRequestModel.ballNumber = ballNumber;
-                          scoreUpdateRequestModel.runsScored =
-                              1 + (isWideSelected ?? 0);
-                          scoreUpdateRequestModel.extras = (noBallRun==1)?1:0;
-                          scoreUpdateRequestModel.wicket = 0;
-                          scoreUpdateRequestModel.dismissalType = 0;
-                          scoreUpdateRequestModel.commentary = 0;
-                          scoreUpdateRequestModel.innings = 1;
-                          scoreUpdateRequestModel.battingTeamId =
-                              scoringData!.data!.batting![0].teamId ?? 0;
-                          scoreUpdateRequestModel.bowlingTeamId =
-                              scoringData!.data!.bowling!.teamId ?? 0;
-                          scoreUpdateRequestModel.overBowled=oversBowled ;
-                          scoreUpdateRequestModel.totalOverBowled = 0;
-                          scoreUpdateRequestModel.outByPlayer = 0;
-                          scoreUpdateRequestModel.outPlayer = 0;
-                          scoreUpdateRequestModel.totalWicket = 0;
-                          scoreUpdateRequestModel.fieldingPositionsId = 0;
-                          scoreUpdateRequestModel.endInnings = false;
-                          scoreUpdateRequestModel.bowlerPosition=bowlerPosition;
-                          scoreUpdateRequestModel.noBallsType=isOffSideSelected;
-                          ScoringProvider()
-                              .scoreUpdate(scoreUpdateRequestModel)
-                              .then((value) async {
-                            SharedPreferences prefs = await SharedPreferences
-                                .getInstance();
-                            await prefs.setInt(
-                                'over_number', value.data!.overNumber ?? 0);
-                            await prefs.setInt(
-                                'ball_number', value.data!.ballNumber ?? 1);
-                            await prefs.setInt(
-                                'striker_id', value.data!.strikerId ?? 0);
-                            await prefs.setInt('non_striker_id', value.data!.nonStrikerId ?? 0);
-                            await prefs.setInt('bowler_change', value.data!.bowlerChange ?? 0);
-                            await prefs.setInt('bowlerPosition',0);
-
-                            Navigator.pop(context);
-                          });
-                        }else{
-                                setState(() {
-                                  showError = true;
-                                });
-                                if (showError) {
-                                  Timer(const Duration(seconds: 4), () {
-                                    setState(() {
-                                      showError = false;
-                                    });
-                                  });
-                                }
-                        }
-                      },child: const OkBtn("Save")),
-                    ],
-                  ),
-                ),
-              )
-
-            ],
-          ),
-        );
-      })
-  );
-}
-
-Future<void> _displayBottomSheetLegBye (int ballType,ScoringDetailResponseModel? scoringData) async{
-  int? isOffSideSelected ;
-  int? isWideSelected ;
-  List<Map<String, dynamic>> chipData =[
-    {
-      'label': '1LB',
-    },
-    {
-      'label': '2LB',
-    },
-    {
-      'label': '3LB',
-    },
-    {
-      'label': '4LB',
-    },
-    {
-      'label': '5LB',
-    },
-    {
-      'label': '6LB',
-    },
-    {
-      'label': '7LB',
-    },
-  ];
-  showModalBottomSheet(context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context)=> StatefulBuilder(builder: (context, setState){
-        return Container(
-          height: 33.h,
-          // padding: EdgeInsets.symmetric(horizontal: 2.w),
-          decoration: const BoxDecoration(
-              color: AppColor.lightColor,
-              borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding:  EdgeInsets.symmetric(horizontal: 5.w,)+EdgeInsets.only(top: 2.h,),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                        onTap: (){
-                          Navigator.pop(context);
-                        },
-                        child: Icon(Icons.arrow_back,size: 7.w,)),
-                    Text("Leg Byes",style: fontMedium.copyWith(
-                      fontSize: 17.sp,
-                      color: AppColor.blackColour,
-                    ),),
-                    SizedBox(width: 7.w,),
-                  ],
-                ),
-              ),
-              SizedBox(height: 1.h,),
-              const Divider(
-                color: Color(0xffD3D3D3),
-              ),
-              SizedBox(height: 1.h,),
-              Padding(
-                padding:  EdgeInsets.only(left: 5.w,right: 8.w),
-                child: Wrap(
-                  spacing: 6.w, // Horizontal spacing between items
-                  runSpacing: 1.h, // Vertical spacing between lines
-                  alignment: WrapAlignment.center, // Alignment of items
-                  children:chipData.map((data) {
-                    final index = chipData.indexOf(data);
-                    return GestureDetector(
-                      onTap: (){
-                        setState(() {
-                          isWideSelected=index;
-                        });
-                      },
-                      child: Chip(
-                        padding: EdgeInsets.symmetric(horizontal: 1.w,vertical: 0.5.h),
-                        label: Text(data['label'],style: fontSemiBold.copyWith(
-                            fontSize: 12.sp,
-                            color: AppColor.blackColour
-                        ),),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                          side: const BorderSide(
-                            color: Color(0xffDADADA),
-                          ),
-                        ),
-                        backgroundColor: isWideSelected==index? AppColor.primaryColor : const Color(0xffF8F9FA),
-                        // backgroundColor:AppColor.lightColor
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding:  EdgeInsets.symmetric(horizontal: 2.w,vertical: 1.h),
-                  child:  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      GestureDetector(onTap:()async {
-                        SharedPreferences prefs = await SharedPreferences.getInstance();
-                        var overNumber= prefs.getInt('over_number');
-                        var ballNumber= prefs.getInt('ball_number');
-                        var strikerId=prefs.getInt('striker_id')??0;
-                        var nonStrikerId=prefs.getInt('non_striker_id')??0;
-                        var bowlerId=prefs.getInt('bowler_id')??0;
-                        var oversBowled=prefs.getInt('overs_bowled')??0;
-                        var keeperId=prefs.getInt('wicket_keeper_id')??0;
-                        var bowlerPosition=prefs.getInt('bowlerPosition')??0;
-
-                        ScoreUpdateRequestModel scoreUpdateRequestModel=ScoreUpdateRequestModel();
-                        scoreUpdateRequestModel.ballTypeId=ballType??0;
-                        scoreUpdateRequestModel.matchId=scoringData!.data!.batting![0].matchId;
-                        scoreUpdateRequestModel.scorerId=1;
-                        scoreUpdateRequestModel.strikerId=strikerId;
-                        scoreUpdateRequestModel.nonStrikerId=nonStrikerId;
-                        scoreUpdateRequestModel.wicketKeeperId=keeperId;
-                        scoreUpdateRequestModel.bowlerId=bowlerId;
-                        scoreUpdateRequestModel.overNumber=overNumber;
-                        scoreUpdateRequestModel.ballNumber=ballNumber;
-                        scoreUpdateRequestModel.runsScored=isWideSelected??0;
-                        scoreUpdateRequestModel.extras=0;
-                        scoreUpdateRequestModel.wicket=0;
-                        scoreUpdateRequestModel.dismissalType=0;
-                        scoreUpdateRequestModel.commentary=0;
-                        scoreUpdateRequestModel.innings=1;
-                        scoreUpdateRequestModel.battingTeamId=scoringData!.data!.batting![0].teamId??0;
-                        scoreUpdateRequestModel.bowlingTeamId=scoringData!.data!.bowling!.teamId??0;
-                        scoreUpdateRequestModel.overBowled=oversBowled;
-                        scoreUpdateRequestModel.totalOverBowled=0;
-                        scoreUpdateRequestModel.outByPlayer=0;
-                        scoreUpdateRequestModel.outPlayer=0;
-                        scoreUpdateRequestModel.totalWicket=0;
-                        scoreUpdateRequestModel.fieldingPositionsId=0;
-                        scoreUpdateRequestModel.endInnings=false;
-                        scoreUpdateRequestModel.bowlerPosition=bowlerPosition;
-                        ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
-                          SharedPreferences prefs = await SharedPreferences.getInstance();
-                          await prefs.setInt('over_number', value.data!.overNumber??0);
-                          await prefs.setInt('ball_number', value.data!.ballNumber??0);
-                          await prefs.setInt('striker_id', value.data!.strikerId??0);
-                          await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
-                          await prefs.setInt('bowler_change', value.data!.bowlerChange ?? 0);
-                          await prefs.setInt('bowlerPosition', 0);
-                          if(value.data!.strikerId==0 || value.data!.nonStrikerId==0){
-                            String player=(value.data!.strikerId==0)?'striker_id':'non_striker_id';
-                            changeBatsman(player);
-                          }
-
-                          Navigator.pop(context);
-                        });
-                      },child: const OkBtn("Save")),
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
-        );
-      })
-  );
-}
-
-Future<void> _displayBottomSheetByes (int ballType,ScoringDetailResponseModel? scoringData) async{
-  showModalBottomSheet(context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context)=> StatefulBuilder(builder: (context, setState){
-        return ByesBottomSheet(ballType, scoringData);
-      })
-  );
-}
-
-Future<void> _displayBottomSheetBonus (int? ballType, ScoringDetailResponseModel? scoringData,) async{
-  showModalBottomSheet(context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context)=> StatefulBuilder(builder: (context, setState){
-        return BonusBottomSheet(ballType, scoringData);
-      })
-  ).then((value) {
-    _refreshData();
-  });
-}
-
-Future<void> _displayBottomSheetMoreRuns(int ballType,ScoringDetailResponseModel? scoringData) async{
-  showModalBottomSheet(context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context)=> StatefulBuilder(builder: (context, setState){
-        return MoreRunsBottomSheet(ballType, scoringData);
-      })
-  ).then((value) {
-    _refreshData();
-  });
-}
-
-
-Future<void> _displayBottomSheetSettings (BuildContext context) async{
-  bool value1=false;
-  bool value2=false;
-  bool value3=false;
-  bool value4=false;
-  getScoringArea().then((val) {
-    value1 = val == 1;
-  });
-  getBowlingArea().then((val) {
-    value2 = val == 1;
-  });
-  getWideRun().then((val) {
-    value3 = val == 1;
-  });
-  getNoBallRun().then((val) {
-    value4 = val == 1;
-  });
-
-  showModalBottomSheet(context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context)=> StatefulBuilder(builder: (context, setState){
-        return Container(
-          height: 45.h,
-          // padding: EdgeInsets.symmetric(horizontal: 2.w),
-          decoration: const BoxDecoration(
-              color: AppColor.lightColor,
-              borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
-          ),
-          child: Padding(
-            padding:  EdgeInsets.symmetric(horizontal: 4.w,vertical: 2.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                        onTap: (){
-                          Navigator.pop(context);
-                        },
-                        child: Icon(Icons.arrow_back,size: 7.w,)),
-                    Text("Settings",style: fontMedium.copyWith(
-                      fontSize: 17.sp,
-                      color: AppColor.blackColour,
-                    ),),
-                    SizedBox(width: 7.w,),
-                  ],
-                ),
-                SizedBox(height: 1.h,),
-                const Divider(
-                  color: Color(0xffD3D3D3),
-                ),
-                SizedBox(height: 1.h,),
-                Row(
-                  children: [
-                    Text("Scoring area",style: fontMedium.copyWith(
-                      fontSize: 14.sp,
-                      color: AppColor.blackColour,
-                    ),),
-                    const Spacer(),
-                    Switch(value: value1,
-                        onChanged:(bool newValue) async{
-                          SharedPreferences pref=await SharedPreferences.getInstance();
-                          var isFourOrSix=pref.getInt('fourOrSix');
-                          if(isFourOrSix==1){
-                            await pref.setInt('fourOrSix',0);
-                          }else{
-                            await pref.setInt('fourOrSix',1);
-                          }
-
-                          setState(() {
-                            value1 = newValue;
-                          });
-                        })
-                  ],
-                ),
-                SizedBox(height: 0.5.h,),
-                const DottedLine(
-                  dashColor: Color(0xffD2D2D2),
-                ),
-                Row(
-                  children: [
-                    Text("Bowling area",style: fontMedium.copyWith(
-                      fontSize: 14.sp,
-                      color: AppColor.blackColour,
-                    ),),
-                    const Spacer(),
-                    Switch(value: value2,
-                        onChanged:(bool newValue) async{
-                          SharedPreferences pref=await SharedPreferences.getInstance();
-                          var bowlingArea=pref.getInt('bowlingArea');
-                          if(bowlingArea==1){
-                            await pref.setInt('bowlingArea',0);
-                          }else{
-                            await pref.setInt('bowlingArea',1);
-                          }
-                          setState(() {
-                            value2 = newValue;
-                          });
-                        })
-                  ],
-                ),
-                SizedBox(height: 0.5.h,),
-                const DottedLine(
-                  dashColor: Color(0xffD2D2D2),
-                ),
-                Row(
-                  children: [
-                    Text("Extras wide",style: fontMedium.copyWith(
-                      fontSize: 14.sp,
-                      color: AppColor.blackColour,
-                    ),),
-                    const Spacer(),
-                    Switch(value: value3,
-                        onChanged:(bool newValue) async{
-                          SharedPreferences pref=await SharedPreferences.getInstance();
-                          var extraWide=pref.getInt('wideRun');
-                          if(extraWide==1){
-                            await pref.setInt('wideRun',0);
-                          }else{
-                            await pref.setInt('wideRun',1);
-                          }
-                          setState(() {
-                            value3 = newValue;
-                          });
-                        })
-                  ],
-                ),
-                SizedBox(height: 0.5.h,),
-                const DottedLine(
-                  dashColor: Color(0xffD2D2D2),
-                ),
-                Row(
-                  children: [
-                    Text("No ball run",style: fontMedium.copyWith(
-                      fontSize: 14.sp,
-                      color: AppColor.blackColour,
-                    ),),
-                    const Spacer(),
-                    Switch(value: value4,
-                        onChanged:(bool newValue) async{
-                          SharedPreferences pref=await SharedPreferences.getInstance();
-                          var noballRun=pref.getInt('noBallRun');
-                          if(noballRun==1){
-                            await pref.setInt('noBallRun',0);
-                          }else{
-                            await pref.setInt('noBallRun',1);
-                          }
-                          setState(() {
-                            value4 = newValue;
-                          });
-                        })
-                  ],
-                ),
-                SizedBox(height: 0.5.h,),
-                const DottedLine(
-                  dashColor: Color(0xffD2D2D2),
-                ),
                 Expanded(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      GestureDetector(
-                          onTap:(){
+                  child: Padding(
+                    padding:  EdgeInsets.symmetric(horizontal: 2.w,vertical: 1.h),
+                    child:  Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        GestureDetector(onTap:()async {
+                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                          var overNumber= prefs.getInt('over_number');
+                          var ballNumber= prefs.getInt('ball_number');
+                          var strikerId=prefs.getInt('striker_id')??0;
+                          var nonStrikerId=prefs.getInt('non_striker_id')??0;
+                          var bowlerId=prefs.getInt('bowler_id')??0;
+                          var oversBowled=prefs.getInt('overs_bowled')??0;
+                          var keeperId=prefs.getInt('wicket_keeper_id')??0;
+                          var bowlerPosition=prefs.getInt('bowlerPosition')??0;
+
+                          ScoreUpdateRequestModel scoreUpdateRequestModel=ScoreUpdateRequestModel();
+                          scoreUpdateRequestModel.ballTypeId=ballType??0;
+                          scoreUpdateRequestModel.matchId=scoringData!.data!.batting![0].matchId;
+                          scoreUpdateRequestModel.scorerId=1;
+                          scoreUpdateRequestModel.strikerId=strikerId;
+                          scoreUpdateRequestModel.nonStrikerId=nonStrikerId;
+                          scoreUpdateRequestModel.wicketKeeperId=keeperId;
+                          scoreUpdateRequestModel.bowlerId=bowlerId;
+                          scoreUpdateRequestModel.overNumber=overNumber;
+                          scoreUpdateRequestModel.ballNumber=ballNumber;
+                          scoreUpdateRequestModel.runsScored=isWideSelected??0;
+                          scoreUpdateRequestModel.extras=0;
+                          scoreUpdateRequestModel.wicket=0;
+                          scoreUpdateRequestModel.dismissalType=0;
+                          scoreUpdateRequestModel.commentary=0;
+                          scoreUpdateRequestModel.innings=1;
+                          scoreUpdateRequestModel.battingTeamId=scoringData!.data!.batting![0].teamId??0;
+                          scoreUpdateRequestModel.bowlingTeamId=scoringData!.data!.bowling!.teamId??0;
+                          scoreUpdateRequestModel.overBowled=oversBowled;
+                          scoreUpdateRequestModel.totalOverBowled=0;
+                          scoreUpdateRequestModel.outByPlayer=0;
+                          scoreUpdateRequestModel.outPlayer=0;
+                          scoreUpdateRequestModel.totalWicket=0;
+                          scoreUpdateRequestModel.fieldingPositionsId=0;
+                          scoreUpdateRequestModel.endInnings=false;
+                          scoreUpdateRequestModel.bowlerPosition=bowlerPosition;
+                          ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            await prefs.setInt('over_number', value.data!.overNumber??0);
+                            await prefs.setInt('ball_number', value.data!.ballNumber??0);
+                            await prefs.setInt('striker_id', value.data!.strikerId??0);
+                            await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
+                            await prefs.setInt('bowler_change', value.data!.bowlerChange ?? 0);
+                            await prefs.setInt('bowlerPosition', 0);
+                            if(value.data!.strikerId==0 || value.data!.nonStrikerId==0){
+                              String player=(value.data!.strikerId==0)?'striker_id':'non_striker_id';
+                              changeBatsman(player);
+                            }
+
                             Navigator.pop(context);
-                          },
-                          child: const CancelBtn("Reset")),
-                      SizedBox(width: 4.w,),
-                      GestureDetector(onTap:(){
-                        Navigator.pop(context);
-                      },
-                          child: const OkBtn("Save")),
-                    ],
+                          });
+                        },child: const OkBtn("Save")),
+                      ],
+                    ),
                   ),
-                ),
+                )
               ],
             ),
-          ),
-        );
-      })
-  );
+          );
+        })
+    );
+  }
 
-}
+  Future<void> _displayBottomSheetByes (int ballType,ScoringDetailResponseModel? scoringData) async{
+    showModalBottomSheet(context: context,
+        backgroundColor: Colors.transparent,
+        builder: (context)=> StatefulBuilder(builder: (context, setState){
+          return ByesBottomSheet(ballType, scoringData);
+        })
+    );
+  }
+
+  Future<void> _displayBottomSheetBonus (int? ballType, ScoringDetailResponseModel? scoringData,) async{
+    showModalBottomSheet(context: context,
+        backgroundColor: Colors.transparent,
+        builder: (context)=> StatefulBuilder(builder: (context, setState){
+          return BonusBottomSheet(ballType, scoringData);
+        })
+    ).then((value) {
+      _refreshData();
+    });
+  }
+
+  Future<void> _displayBottomSheetMoreRuns(int ballType,ScoringDetailResponseModel? scoringData) async{
+    showModalBottomSheet(context: context,
+        backgroundColor: Colors.transparent,
+        builder: (context)=> StatefulBuilder(builder: (context, setState){
+          return MoreRunsBottomSheet(ballType, scoringData);
+        })
+    ).then((value) {
+      _refreshData();
+    });
+  }
+
+
+  Future<void> _displayBottomSheetSettings (BuildContext context) async{
+    bool value1=false;
+    bool value2=false;
+    bool value3=false;
+    bool value4=false;
+    getScoringArea().then((val) {
+      value1 = val == 1;
+    });
+    getBowlingArea().then((val) {
+      value2 = val == 1;
+    });
+    getWideRun().then((val) {
+      value3 = val == 1;
+    });
+    getNoBallRun().then((val) {
+      value4 = val == 1;
+    });
+
+    showModalBottomSheet(context: context,
+        backgroundColor: Colors.transparent,
+        builder: (context)=> StatefulBuilder(builder: (context, setState){
+          return Container(
+            height: 45.h,
+            // padding: EdgeInsets.symmetric(horizontal: 2.w),
+            decoration: const BoxDecoration(
+                color: AppColor.lightColor,
+                borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
+            ),
+            child: Padding(
+              padding:  EdgeInsets.symmetric(horizontal: 4.w,vertical: 2.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                          onTap: (){
+                            Navigator.pop(context);
+                          },
+                          child: Icon(Icons.arrow_back,size: 7.w,)),
+                      Text("Settings",style: fontMedium.copyWith(
+                        fontSize: 17.sp,
+                        color: AppColor.blackColour,
+                      ),),
+                      SizedBox(width: 7.w,),
+                    ],
+                  ),
+                  SizedBox(height: 1.h,),
+                  const Divider(
+                    color: Color(0xffD3D3D3),
+                  ),
+                  SizedBox(height: 1.h,),
+                  Row(
+                    children: [
+                      Text("Scoring area",style: fontMedium.copyWith(
+                        fontSize: 14.sp,
+                        color: AppColor.blackColour,
+                      ),),
+                      const Spacer(),
+                      Switch(value: value1,
+                          onChanged:(bool newValue) async{
+                            SharedPreferences pref=await SharedPreferences.getInstance();
+                            var isFourOrSix=pref.getInt('fourOrSix');
+                            if(isFourOrSix==1){
+                              await pref.setInt('fourOrSix',0);
+                            }else{
+                              await pref.setInt('fourOrSix',1);
+                            }
+
+                            setState(() {
+                              value1 = newValue;
+                            });
+                          })
+                    ],
+                  ),
+                  SizedBox(height: 0.5.h,),
+                  const DottedLine(
+                    dashColor: Color(0xffD2D2D2),
+                  ),
+                  Row(
+                    children: [
+                      Text("Bowling area",style: fontMedium.copyWith(
+                        fontSize: 14.sp,
+                        color: AppColor.blackColour,
+                      ),),
+                      const Spacer(),
+                      Switch(value: value2,
+                          onChanged:(bool newValue) async{
+                            SharedPreferences pref=await SharedPreferences.getInstance();
+                            var bowlingArea=pref.getInt('bowlingArea');
+                            if(bowlingArea==1){
+                              await pref.setInt('bowlingArea',0);
+                            }else{
+                              await pref.setInt('bowlingArea',1);
+                            }
+                            setState(() {
+                              value2 = newValue;
+                            });
+                          })
+                    ],
+                  ),
+                  SizedBox(height: 0.5.h,),
+                  const DottedLine(
+                    dashColor: Color(0xffD2D2D2),
+                  ),
+                  Row(
+                    children: [
+                      Text("Extras wide",style: fontMedium.copyWith(
+                        fontSize: 14.sp,
+                        color: AppColor.blackColour,
+                      ),),
+                      const Spacer(),
+                      Switch(value: value3,
+                          onChanged:(bool newValue) async{
+                            SharedPreferences pref=await SharedPreferences.getInstance();
+                            var extraWide=pref.getInt('wideRun');
+                            if(extraWide==1){
+                              await pref.setInt('wideRun',0);
+                            }else{
+                              await pref.setInt('wideRun',1);
+                            }
+                            setState(() {
+                              value3 = newValue;
+                            });
+                          })
+                    ],
+                  ),
+                  SizedBox(height: 0.5.h,),
+                  const DottedLine(
+                    dashColor: Color(0xffD2D2D2),
+                  ),
+                  Row(
+                    children: [
+                      Text("No ball run",style: fontMedium.copyWith(
+                        fontSize: 14.sp,
+                        color: AppColor.blackColour,
+                      ),),
+                      const Spacer(),
+                      Switch(value: value4,
+                          onChanged:(bool newValue) async{
+                            SharedPreferences pref=await SharedPreferences.getInstance();
+                            var noballRun=pref.getInt('noBallRun');
+                            if(noballRun==1){
+                              await pref.setInt('noBallRun',0);
+                            }else{
+                              await pref.setInt('noBallRun',1);
+                            }
+                            setState(() {
+                              value4 = newValue;
+                            });
+                          })
+                    ],
+                  ),
+                  SizedBox(height: 0.5.h,),
+                  const DottedLine(
+                    dashColor: Color(0xffD2D2D2),
+                  ),
+                  Expanded(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        GestureDetector(
+                            onTap:(){
+                              Navigator.pop(context);
+                            },
+                            child: const CancelBtn("Reset")),
+                        SizedBox(width: 4.w,),
+                        GestureDetector(onTap:(){
+                          Navigator.pop(context);
+                        },
+                            child: const OkBtn("Save")),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        })
+    );
+
+  }
 
   Future<int?> getScoringArea() async {
     SharedPreferences pref = await SharedPreferences.getInstance();

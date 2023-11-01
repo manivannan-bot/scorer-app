@@ -474,12 +474,8 @@ class _ChooseStrikerBottomSheetState extends State<ChooseStrikerBottomSheet> {
                 GestureDetector(
                     onTap: () async {
                       if (playerId != "") {
+                        //setting striker id when starting innings
                         Provider.of<PlayerSelectionProvider>(context, listen: false).setStrikerId(playerId, playerName);
-                        // SharedPreferences prefs =
-                        // await SharedPreferences.getInstance();
-                        // await prefs.setInt('striker_id',
-                        //     searchedBatsman![0].playerId!);
-
                         Navigator.pop(context);
                       } else {
                         Dialogs.snackBar("Choose a striker", context, isError: true);

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:scorer/models/teams/team_info_model.dart';
+import 'package:scorer/provider/teams_provider.dart';
 import 'package:scorer/teamsdetailsview/team_info_screen.dart';
 import 'package:scorer/teamsdetailsview/team_matches_screen.dart';
 import 'package:scorer/teamsdetailsview/team_overview_screen.dart';
@@ -14,7 +16,8 @@ import '../utils/images.dart';
 import '../utils/sizes.dart';
 
 class TeamDetailViewScreens extends StatefulWidget {
-  const TeamDetailViewScreens({super.key});
+  final String teamId;
+  const TeamDetailViewScreens(this.teamId, {super.key});
 
   @override
   State<TeamDetailViewScreens> createState() => _TeamDetailViewScreensState();
@@ -22,13 +25,33 @@ class TeamDetailViewScreens extends StatefulWidget {
 
 class _TeamDetailViewScreensState extends State<TeamDetailViewScreens>with SingleTickerProviderStateMixin {
   late TabController tabController;
+  TeamInfoModel? teamInfoModel;
+
   void initState() {
-    // TODO: implement initState
     super.initState();
     tabController = TabController(length: 4, vsync: this);
+    fetchData();
+  }
+  fetchData(){
+    TeamsProvider().getTeamInfo(widget.teamId).then((value){
+      setState(() {
+        teamInfoModel=value;
+      });
+    });
   }
   @override
   Widget build(BuildContext context) {
+    if(teamInfoModel==null){
+      return const SizedBox(
+        height: 50,
+        width: 50,
+        child: Center(
+          child: CircularProgressIndicator(
+            backgroundColor: Colors.white,
+          ),
+        ),
+      );
+    }
     return Scaffold(
       body: Column(
         children: [
@@ -61,7 +84,7 @@ class _TeamDetailViewScreensState extends State<TeamDetailViewScreens>with Singl
                   children: [
                     ClipOval(child: Image.asset(Images.teamListImage,width: 25.w,)),
                     SizedBox(height: 0.h,),
-                    Text('Toss and Tails',
+                    Text('${teamInfoModel!.data!.teams!.teamName}',
                       style: fontSemiBold.copyWith(fontSize: 16.sp,color: AppColor.lightColor),),
                   ],
                 ),
@@ -90,10 +113,10 @@ class _TeamDetailViewScreensState extends State<TeamDetailViewScreens>with Singl
             child: TabBarView(
                 controller: tabController,
                 children: [
-                  TeamOverviewScreen(),
-                  TeamMatchesScreen(),
-                  TeamPlayersDetailViewScreen(),
-                  TeamInfoScreen(),
+                  TeamOverviewScreen(widget.teamId),
+                  TeamMatchesScreen(widget.teamId),
+                  TeamPlayersDetailViewScreen(widget.teamId),
+                  TeamInfoScreen(teamInfoModel!.data!.teamsDetails),
                 ]
             ),
           ),
