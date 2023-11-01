@@ -187,7 +187,7 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
                                       color: AppColor.lightColor
                                   )
                                 ),
-                                Text('${matchList!.teams!.first.totalRuns}/${matchList!.teams!.first.totalWickets}',
+                                Text('${matchList!.teams!.totalRuns}/${matchList!.teams!.totalWickets}',
                                     style: fontMedium.copyWith(
                                     fontSize: 25.sp,
                                     color: AppColor.lightColor
@@ -199,7 +199,7 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
                                     color: AppColor.primaryColor,
                                   ),
                                   child: Text(
-                                    'Overs: ${matchList!.teams!.first.currentOverDetails}/${matchList!.overs}',
+                                    'Overs: ${matchList!.teams!.currentOverDetails}/${matchList!.overs}',
                                     style: fontMedium.copyWith(
                                       fontSize: 11.sp,
                                       color: AppColor.blackColour,

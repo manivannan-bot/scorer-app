@@ -50,7 +50,7 @@ class Matches {
   String? team2Name;
   String? tossWinnerName;
   String? status;
-  List<Teams>? teams;
+  Teams? teams;
 
   Matches(
       {this.matchId,
@@ -108,12 +108,7 @@ class Matches {
     team2Name = json['team2_name'];
     tossWinnerName = json['toss_winner_name'];
     status = json['status'];
-    if (json['teams'] != null) {
-      teams = <Teams>[];
-      json['teams'].forEach((v) {
-        teams!.add(new Teams.fromJson(v));
-      });
-    }
+    teams = json['teams'] != null ? new Teams.fromJson(json['teams']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -145,7 +140,7 @@ class Matches {
     data['toss_winner_name'] = this.tossWinnerName;
     data['status'] = this.status;
     if (this.teams != null) {
-      data['teams'] = this.teams!.map((v) => v.toJson()).toList();
+      data['teams'] = this.teams!.toJson();
     }
     return data;
   }
@@ -160,6 +155,7 @@ class Teams {
   int? overs;
   String? currentOverDetails;
   int? ballRecordCheck;
+  String? teamLogo;
 
   Teams(
       {this.teamName,
@@ -169,7 +165,8 @@ class Teams {
         this.overNumber,
         this.overs,
         this.currentOverDetails,
-        this.ballRecordCheck});
+        this.ballRecordCheck,
+        this.teamLogo});
 
   Teams.fromJson(Map<String, dynamic> json) {
     teamName = json['team_name'];
@@ -180,6 +177,7 @@ class Teams {
     overs = json['overs'];
     currentOverDetails = json['current_over_details'];
     ballRecordCheck = json['ball_record_check'];
+    teamLogo = json['team_logo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -192,6 +190,7 @@ class Teams {
     data['overs'] = this.overs;
     data['current_over_details'] = this.currentOverDetails;
     data['ball_record_check'] = this.ballRecordCheck;
+    data['team_logo'] = this.teamLogo;
     return data;
   }
 }
