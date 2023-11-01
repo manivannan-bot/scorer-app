@@ -14,7 +14,8 @@ import '../utils/images.dart';
 import '../utils/sizes.dart';
 
 class TeamDetailViewScreens extends StatefulWidget {
-  const TeamDetailViewScreens({super.key});
+  final String teamId;
+  const TeamDetailViewScreens(this.teamId, {super.key});
 
   @override
   State<TeamDetailViewScreens> createState() => _TeamDetailViewScreensState();
@@ -22,10 +23,14 @@ class TeamDetailViewScreens extends StatefulWidget {
 
 class _TeamDetailViewScreensState extends State<TeamDetailViewScreens>with SingleTickerProviderStateMixin {
   late TabController tabController;
+
   void initState() {
-    // TODO: implement initState
     super.initState();
     tabController = TabController(length: 4, vsync: this);
+    fetchData();
+  }
+  fetchData(){
+
   }
   @override
   Widget build(BuildContext context) {
@@ -90,7 +95,7 @@ class _TeamDetailViewScreensState extends State<TeamDetailViewScreens>with Singl
             child: TabBarView(
                 controller: tabController,
                 children: [
-                  TeamOverviewScreen(),
+                  TeamOverviewScreen(widget.teamId),
                   TeamMatchesScreen(),
                   TeamPlayersDetailViewScreen(),
                   TeamInfoScreen(),

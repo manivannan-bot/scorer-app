@@ -136,8 +136,8 @@ class _CommentaryScreenState extends State<CommentaryScreen>with SingleTickerPro
                   children:  [
 
                     CommentaryAllScreen(),
-                    CommentryOvers(),
-                    CommentaryWicketScreen(),
+                    CommentryOvers(widget.matchId,widget.team1Id),
+                    CommentaryWicketScreen(widget.matchId,widget.team1Id),
                     Container(),
 
 

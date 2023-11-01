@@ -23,6 +23,7 @@ class AppConstants {
    static const String playerMatches = '$baseUrl/player-matches';
    static const String playerTeamInfo= '$baseUrl/player-team-info';
   static const String playerInfo= '$baseUrl/player-info';
+  static const String commentaryWickets = '$baseUrl/commentary-wickets';
 //
 // //intrestmodel
 //   static const String interest = '$baseUrl/player/interest';

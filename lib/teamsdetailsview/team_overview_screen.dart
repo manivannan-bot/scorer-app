@@ -1,6 +1,7 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:scorer/models/teams/team_overview_model.dart';
 import 'package:sizer/sizer.dart';
 
 import '../utils/colours.dart';
@@ -8,7 +9,8 @@ import '../utils/images.dart';
 import '../utils/sizes.dart';
 
 class TeamOverviewScreen extends StatefulWidget {
-  const TeamOverviewScreen({super.key});
+  final String teamId;
+  const TeamOverviewScreen(this.teamId, {super.key});
 
   @override
   State<TeamOverviewScreen> createState() => _TeamOverviewScreenState();
@@ -25,9 +27,16 @@ class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
       "button":"Connect",
     },
     {}, {}, {}, {},
-
-
   ];
+  TeamOverview? teamOverview;
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+  fetchData(){
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +45,7 @@ class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
           padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 4.w),
           width: double.infinity,
           height: 75.h,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30)),
               color: AppColor.lightColor
           ),
