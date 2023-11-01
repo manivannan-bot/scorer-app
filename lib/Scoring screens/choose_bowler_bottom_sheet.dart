@@ -467,38 +467,11 @@ class _ChooseBowlerBottomSheetState extends State<ChooseBowlerBottomSheet> {
                 GestureDetector(
                     onTap: () async {
                       if (playerId != "") {
+                        //setting bowler id when starting innings
                         Provider.of<PlayerSelectionProvider>(context, listen: false).setBowlerId(playerId.toString(), playerName.toString());
-                        // SaveBatsmanDetailRequestModel requestModel =
-                        // SaveBatsmanDetailRequestModel(
-                        //   batsman: [
-                        //     Batsman(
-                        //         matchId: int.parse(widget.matchId),
-                        //         teamId: int.parse(widget.teamId),
-                        //         playerId:
-                        //         int.parse(id),
-                        //         striker: true),
-                        //   ],
-                        // );
-
-                        // ScoringProvider()
-                        //     .saveBowler(widget.matchId, widget.teamId, playerId)
-                        // .then((value) {
-                        //   if(value.status == true){
-                        //     // Dialogs.snackBar("Bowler selected", context);
-                        //     Navigator.pop(context);
-                        //   } else if(value.status == false){
-                        //     Dialogs.snackBar("Something went wrong. Please try again", context, isError: true);
-                        //   } else {
-                        //     Dialogs.snackBar("Something went wrong. Please try again", context, isError: true);
-                        //   }
-                        // });
-                        // SharedPreferences prefs =
-                        // await SharedPreferences.getInstance();
-                        // await prefs.setInt('striker_id',
-                        //     searchedBatsman![0].playerId!);
                         Navigator.pop(context);
                       } else {
-                        Dialogs.snackBar("Choose a striker", context, isError: true);
+                        Dialogs.snackBar("Choose a bowler", context, isError: true);
                         // displayError();
                       }
                     },

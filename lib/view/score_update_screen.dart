@@ -25,6 +25,7 @@ class ScoreUpdateScreen extends StatefulWidget  {
 }
 
 class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTickerProviderStateMixin{
+
    late TabController tabController;
    Matches? matchList;
    RefreshController refreshController = RefreshController();
@@ -51,51 +52,80 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
      matchList=null;
     super.initState();
     tabController = TabController(length: 4, vsync: this);
-     fetchData();
+    fetchData();
   }
 
    Future<void> fetchData() async {
+     final score = Provider.of<ScoreUpdateProvider>(context, listen: false);
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+     //setting batting and bowling team id's
      WidgetsBinding.instance.addPostFrameCallback((_) {
        setState(() {
          batTeamId = int.parse(widget.team1id);
          bowlTeamId = int.parse(widget.team2id);
        });
      });
+     //getting live score
      await ScoringProvider().getLiveScore(widget.matchId, widget.team1id).then((data) async{
+       //setting match list
      setState(() {
        matchList = data.matches;
      });
-     final score = Provider.of<ScoreUpdateProvider>(context, listen: false);
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-     var overNumber = score.overNumberInnings;
-     var ballNumber = score.ballNumberInnings;
-     WidgetsBinding.instance.addPostFrameCallback((_) {
-       score.setOverNumber(overNumber);
-       score.setBallNumber(ballNumber);
-       score.setOverAndBallNumberToPrefs();
-     });
+     int overNumber = 0;
+     int ballNumber = 0;
 
-     print("over number $overNumber ball number $ballNumber");
+     if(score.overNumberInnings != 0 || score.ballNumberInnings != 0){
+       print("crossed 0th over - ON ${score.overNumberInnings} BN ${score.ballNumberInnings}");
+       print("getting the over number and ball number from score update response");
+       overNumber = score.overNumberInnings;
+       ballNumber = score.ballNumberInnings;
+     } else {
+       print("0th over of the innings");
+       print("getting the over number and ball number from getlive score api - ON $overNumber BN $ballNumber");
+       overNumber = data.matches!.first.teams!.first.overNumber ?? 0;
+       ballNumber = data.matches!.first.teams!.first.ballNumber ?? 0;
+     }
      //incrementing over number and ball number
          if (overNumber == 0 && ballNumber == 0) {
            overNumber = 0;
            ballNumber = 1;
-         } else if (ballNumber >= 6) {
-           overNumber += 1;
-           ballNumber = 1;
-           score.incrementOverNumber();
-           score.setBallNumber(1);
-         } else if ( ballNumber == 0) {
-           ballNumber = 1;
-         } else if (ballNumber < 6) {
-           ballNumber += 1;
-           score.incrementBallNumber();
+           print("over number and ball number are 0");
          }
-         WidgetsBinding.instance.addPostFrameCallback((_) {
-           score.setOverNumber(overNumber);
-           score.setBallNumber(ballNumber);
-         });
-     await prefs.setInt('current_innings',data.matches!.currentInnings??1);
+         // else if (ballNumber >= 6) {
+         //   overNumber += 1;
+         //   ballNumber = 0;
+         //   print("ball number >= 6");
+         // }
+         else if(ballNumber == 1){
+           print("ball number is 1");
+           ballNumber = 1;
+         }
+
+         else if(overNumber != 0 && ballNumber == 2){
+           print("ball number is 2");
+           ballNumber = 2;
+         } else if(ballNumber == 3){
+           print("ball number is 3");
+           ballNumber = 3;
+         } else if(ballNumber == 4){
+           print("ball number is 4");
+           ballNumber = 4;
+         } else if(ballNumber == 5){
+           print("ball number is 5");
+           ballNumber = 5;
+         } else if (ballNumber == 6) {
+           ballNumber == 6;
+           print("next ball is 6");
+         }
+     WidgetsBinding.instance.addPostFrameCallback((_) {
+       print("while setting value to provider");
+       score.setOverNumber(overNumber);
+       score.setBallNumber(ballNumber);
+     });
+         await Future.delayed(const Duration(seconds: 2));
+     print("over number and ball number after conditions - ON ${score.overNumberInnings} BN ${score.ballNumberInnings}");
+     await prefs.setInt('current_innings',data.matches!.first.currentInnings??1);
+
      refreshController.refreshCompleted();
      });
    }

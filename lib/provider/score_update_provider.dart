@@ -20,16 +20,19 @@ class ScoreUpdateProvider extends ChangeNotifier {
   setOverNumber(int value){
     overNumberInnings = value;
     notifyListeners();
+    print("updated over number $overNumberInnings");
   }
 
   setBallNumber(int value){
     ballNumberInnings = value;
     notifyListeners();
+    print("updated ball number $ballNumberInnings");
   }
 
   setBowlerChangeValue(int value){
     bowlerChange = value;
     notifyListeners();
+    print("updated bowler change $bowlerChange");
   }
 
   clearOverAndBallNumber(){

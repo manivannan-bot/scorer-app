@@ -83,8 +83,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         GestureDetector(
                             onTap: (){
                               Navigator.push(context,
-                                                            MaterialPageRoute(builder: (context) => MoreScreen()));
-
+                               MaterialPageRoute(builder: (context) => MoreScreen()));
                             },
                             child: SvgPicture.asset(Images.notificationIcon,color: AppColor.lightColor,))
                       ],

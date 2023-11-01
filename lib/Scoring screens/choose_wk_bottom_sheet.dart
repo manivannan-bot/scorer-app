@@ -466,24 +466,8 @@ class _ChooseWicketKeeperBottomSheetState extends State<ChooseWicketKeeperBottom
                 GestureDetector(
                     onTap: () async {
                       if (playerId != "") {
+                        //setting wicket keeper id when starting innings
                         Provider.of<PlayerSelectionProvider>(context, listen: false).setWicketKeeperId(playerId.toString(), playerName.toString());
-                        // SaveBatsmanDetailRequestModel requestModel = SaveBatsmanDetailRequestModel(
-                        //   batsman: [
-                        //     Batsman(
-                        //         matchId: int.parse(widget.matchId),
-                        //         teamId: int.parse(widget.teamId),
-                        //         playerId:
-                        //         int.parse(id),
-                        //         striker: true),
-                        //   ],
-                        // );
-                        //
-                        // ScoringProvider()
-                        //     .saveBatsman(requestModel);
-                        // SharedPreferences prefs =
-                        // await SharedPreferences.getInstance();
-                        // await prefs.setInt('striker_id',
-                        //     searchedBatsman![0].playerId!);
                         Navigator.pop(context);
                       } else {
                         Dialogs.snackBar("Choose a wicket keeper", context, isError: true);

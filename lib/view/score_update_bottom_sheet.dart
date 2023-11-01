@@ -839,19 +839,14 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                           final player = Provider.of<PlayerSelectionProvider>(context, listen: false);
                           final score = Provider.of<ScoreUpdateProvider>(context, listen: false);
                           print("striker id ${player.selectedStrikerId}");
+                          print("non striker id ${player.selectedNonStrikerId}");
                           SharedPreferences prefs = await SharedPreferences.getInstance();
-                          // var overNumber= prefs.getInt('over_number_innings');
-                          // var ballNumber= prefs.getInt('ball_number_innings');
-                          // var strikerId=prefs.getInt('striker_id')??0;
-                          // var nonStrikerId=prefs.getInt('non_striker_id')??0;
-                          // var bowlerId=prefs.getInt('bowler_id')??0;
-                          // var keeperId=prefs.getInt('wicket_keeper_id')??0;
                           var bowlerPosition=prefs.getInt('bowlerPosition')??0;
                           var oversBowled=prefs.getInt('overs_bowled')??0;
                           print("score update from bottom sheet - over number ${score.overNumberInnings} ball number - ${score.ballNumberInnings}");
                           scoreUpdateRequestModel.ballTypeId=widget.run;
                           scoreUpdateRequestModel.matchId=widget.scoringData.data!.batting![0].matchId;
-                          scoreUpdateRequestModel.scorerId=1;
+                          scoreUpdateRequestModel.scorerId=46;
                           scoreUpdateRequestModel.strikerId=int.parse(player.selectedStrikerId.toString());
                           scoreUpdateRequestModel.nonStrikerId=int.parse(player.selectedNonStrikerId.toString());
                           scoreUpdateRequestModel.wicketKeeperId=int.parse(player.selectedWicketKeeperId.toString());
@@ -887,11 +882,6 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                             player.setNonStrikerId(value.data!.nonStrikerId.toString(), "");
                             player.setStrikerId(value.data!.strikerId.toString(), "");
                             SharedPreferences prefs = await SharedPreferences.getInstance();
-                            // await prefs.setInt('over_number_innings', value.data!.overNumber??0);
-                            // await prefs.setInt('ball_number_innings', value.data!.ballNumber??0);
-                            // await prefs.setInt('striker_id', value.data!.strikerId??0);
-                            // await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
-                            // await prefs.setInt('bowler_change', value.data!.bowlerChange??0);
                             await prefs.setInt('bowlerPosition', 0);
                           });
                           WidgetsBinding.instance.addPostFrameCallback((_) {
