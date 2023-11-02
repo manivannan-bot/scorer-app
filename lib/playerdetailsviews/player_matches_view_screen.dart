@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dash/flutter_dash.dart';
 import 'package:scorer/models/players/player_matches_model.dart';
+import 'package:scorer/playerdetailsviews/player_completed_matches.dart';
 import 'package:scorer/provider/player_details_provider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -88,7 +89,8 @@ class _PlayerMatchesViewScreenState extends State<PlayerMatchesViewScreen> {
                   } else if (playerMatchesModel!.data![index].teams!.matchStatus == 1) {
                     return IndividualPlayerUpcomingMatches();
                   }  else if (playerMatchesModel!.data![index].teams!.matchStatus == 2) {
-                    return IndividualPlayerCompletedMatches();
+                    return PlayerCompletedMatches();
+                    //return Container();
                   }
                   return Container();
                 }),

@@ -96,7 +96,7 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
               borderRadius: BorderRadius.only(topRight: Radius.circular(20),topLeft: Radius.circular(20)),
               color: AppColor.blackColour,
             ),
-            child: Text("CRR: 4.50",style: fontMedium.copyWith(
+            child: Text("CRR: ${scoreCardResponseModel!.data!.currRunRate!.runRate??'-'}",style: fontMedium.copyWith(
               fontSize: 10.sp,
               color: AppColor.lightColor,
             ),),

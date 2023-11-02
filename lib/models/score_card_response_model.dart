@@ -24,6 +24,7 @@ class ScoreCardResponseModel {
 
 class Data {
   List<TeamsName>? teamsName;
+  CurrRunRate? currRunRate;
   List<Batting>? batting;
   List<YetToBatPlayers>? yetToBatPlayers;
   List<Bowling>? bowling;
@@ -33,6 +34,7 @@ class Data {
 
   Data(
       {this.teamsName,
+        this.currRunRate,
         this.batting,
         this.yetToBatPlayers,
         this.bowling,
@@ -47,6 +49,9 @@ class Data {
         teamsName!.add(new TeamsName.fromJson(v));
       });
     }
+    currRunRate = json['currRunRate'] != null
+        ? new CurrRunRate.fromJson(json['currRunRate'])
+        : null;
     if (json['batting'] != null) {
       batting = <Batting>[];
       json['batting'].forEach((v) {
@@ -86,6 +91,9 @@ class Data {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.teamsName != null) {
       data['teamsName'] = this.teamsName!.map((v) => v.toJson()).toList();
+    }
+    if (this.currRunRate != null) {
+      data['currRunRate'] = this.currRunRate!.toJson();
     }
     if (this.batting != null) {
       data['batting'] = this.batting!.map((v) => v.toJson()).toList();
@@ -128,6 +136,22 @@ class TeamsName {
     data['team1_name'] = this.team1Name;
     data['team2_name'] = this.team2Name;
     data['current_innings'] = this.currentInnings;
+    return data;
+  }
+}
+
+class CurrRunRate {
+  dynamic runRate;
+
+  CurrRunRate({this.runRate});
+
+  CurrRunRate.fromJson(Map<String, dynamic> json) {
+    runRate = json['run_rate'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['run_rate'] = this.runRate;
     return data;
   }
 }

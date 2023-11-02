@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:scorer/models/matches/user_information_model.dart';
+import 'package:scorer/provider/match_provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../utils/colours.dart';
@@ -17,15 +19,32 @@ class AboutScreen extends StatefulWidget {
 
 class _AboutScreenState extends State<AboutScreen>with SingleTickerProviderStateMixin {
   late TabController tabController;
+  UserInformationModel? userInformationModel;
+  String userName='Name';
   void initState() {
-    // TODO: implement initState
     super.initState();
     tabController = TabController(length: 2, vsync: this);
+    fetchData();
+  }
+  fetchData(){
+    MatchProvider().getUserDetails('1').then((value){
+      setState(() {
+        userInformationModel=value;
+        userName=value.data!.first.name??"Name";
+      });
+    });
   }
 
   Color color = Colors.white.withOpacity(0.2);
   @override
   Widget build(BuildContext context) {
+    if(userInformationModel==null){
+      return const SizedBox(
+        height: 50,
+        width: 50,
+        child: Center(child: CircularProgressIndicator()),
+      );
+    }
     return Scaffold(
       body: Column(
         children: [
@@ -45,7 +64,7 @@ class _AboutScreenState extends State<AboutScreen>with SingleTickerProviderState
                     Column(
                       children: [
                         Image.asset(Images.playersImage,width: 30.w,),
-                        Text('Murugaprasanth',
+                        Text('$userName',
                           style: fontMedium.copyWith(fontSize: 15.sp,color: AppColor.lightColor),),
                       ],
                     ),
@@ -76,7 +95,7 @@ class _AboutScreenState extends State<AboutScreen>with SingleTickerProviderState
             child: TabBarView(
                 controller: tabController,
                 children: [
-                  AboutDetailScreen(),
+                  AboutDetailScreen(userInformationModel!.data),
                   AboutMatchesScreen(),
                 ]
             ),

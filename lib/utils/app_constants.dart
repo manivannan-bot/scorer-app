@@ -29,9 +29,9 @@ class AppConstants {
   static const String teamMatches = '$baseUrl/team-matches';
   static const String teamPlayers = '$baseUrl/team-players';
   static const String teamInfo = '$baseUrl/team-info';
-//
-// //intrestmodel
-//   static const String interest = '$baseUrl/player/interest';
+  static const String userDetails = '$baseUrl/user-details';
+   static const String umpireMatches = '$baseUrl/umpire-matches';
+   static const String scorerMatches = '$baseUrl/scorer-matches';
 
 
 }
