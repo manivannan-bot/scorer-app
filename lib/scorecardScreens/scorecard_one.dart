@@ -89,7 +89,7 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                 );
               },
               itemCount: widget.scoreCardData.batting!.length,
-              itemBuilder: (BuildContext, int index) {
+              itemBuilder: (context, int index) {
                 final item = widget.scoreCardData.batting![index];
                 return Row(
                   children: [
@@ -110,10 +110,10 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                             ],
                           ),
                           SizedBox(height: 0.5.h,),
-                          RichText(
+                          (item.isOut==1)?RichText(
                               text: TextSpan(children: [
                                 TextSpan(
-                                    text: ("c ${item.wicketerName}\n"),
+                                    text: ("${item.outName??'-'} ${item.wicketerName}\n"),
                                     style: fontRegular.copyWith(
                                       fontSize: 11.sp,
                                         color: const Color(0xff777777),
@@ -124,7 +124,7 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                                         fontSize: 11.sp,
                                         color: const Color(0xff777777)
                                     )),
-                              ])),
+                              ])):Text('Batting',style: fontRegular.copyWith(fontSize: 11.sp,color: const Color(0xff777777)),),
                           SizedBox(height: 1.h,),
                         ],
                       ),

@@ -164,6 +164,7 @@ class Batting {
   dynamic strikeRate;
   dynamic isOut;
   dynamic outType;
+  dynamic outName;
   dynamic wicketBowlerName;
   dynamic wicketerName;
   dynamic playerName;
@@ -176,6 +177,7 @@ class Batting {
         this.strikeRate,
         this.isOut,
         this.outType,
+        this.outName,
         this.wicketBowlerName,
         this.wicketerName,
         this.playerName});
@@ -188,6 +190,7 @@ class Batting {
     strikeRate = json['strike_rate'];
     isOut = json['is_out'];
     outType = json['out_type'];
+    outName = json['out_name'];
     wicketBowlerName = json['wicket_bowler_name'];
     wicketerName = json['wicketer_name'];
     playerName = json['player_name'];
@@ -202,6 +205,7 @@ class Batting {
     data['strike_rate'] = this.strikeRate;
     data['is_out'] = this.isOut;
     data['out_type'] = this.outType;
+    data['out_name'] = this.outName;
     data['wicket_bowler_name'] = this.wicketBowlerName;
     data['wicketer_name'] = this.wicketerName;
     data['player_name'] = this.playerName;

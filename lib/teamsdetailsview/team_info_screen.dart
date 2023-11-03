@@ -25,7 +25,7 @@ class _TeamInfoScreenState extends State<TeamInfoScreen> {
               padding: EdgeInsets.symmetric(vertical: 1.5.h,horizontal: 5.w),
               width: double.infinity,
               height: 70.h,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30)),
                   color: AppColor.lightColor
               ),
