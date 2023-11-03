@@ -42,7 +42,7 @@ class _TeamsBowlerListScreenState extends State<TeamsBowlerListScreen> {
             separatorBuilder: (context, _) {
               return Padding(
                 padding: EdgeInsets.only(bottom: 0.h),
-                child: Divider(
+                child: const Divider(
                   color: Color(0xffD3D3D3),
                 ),
               );
@@ -67,7 +67,7 @@ class _TeamsBowlerListScreenState extends State<TeamsBowlerListScreen> {
                           ),),
                         ),
                         SizedBox(height: 0.5.h,),
-                        Row(
+                        (item.battingStyle!=null)?Row(
                           children: [
                             const CircleAvatar(
                               backgroundColor: AppColor.pri,
@@ -79,7 +79,7 @@ class _TeamsBowlerListScreenState extends State<TeamsBowlerListScreen> {
                               color: Color(0xff555555),
                             ),),
                           ],
-                        )
+                        ):const Text(''),
                       ],),
                     Spacer(),
                     SvgPicture.asset(Images.arrowICon,width: 6.5.w,),

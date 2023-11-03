@@ -83,7 +83,7 @@ class _TeamOnePlayingListState extends State<TeamOnePlayingList> {
                                 color: AppColor.blackColour,
                               ),),
                               SizedBox(height: 0.5.h,),
-                              Row(
+                              (item.battingStyle!=null)?Row(
                                 children: [
                                   const CircleAvatar(
                                     backgroundColor: AppColor.pri,
@@ -95,7 +95,7 @@ class _TeamOnePlayingListState extends State<TeamOnePlayingList> {
                                     color: Color(0xff555555),
                                   ),),
                                 ],
-                              ),
+                              ):const Text(''),
                           ],),
 
                           Spacer(),
@@ -138,7 +138,7 @@ class _TeamOnePlayingListState extends State<TeamOnePlayingList> {
                                 color: AppColor.blackColour,
                               ),),
                               SizedBox(height: 0.5.h,),
-                              Row(
+                              (item.battingStyle!=null)?Row(
                                 children: [
                                   CircleAvatar(
                                     backgroundColor: AppColor.pri,
@@ -150,7 +150,7 @@ class _TeamOnePlayingListState extends State<TeamOnePlayingList> {
                                     color: Color(0xff555555),
                                   ),),
                                 ],
-                              )
+                              ):const Text('')
                             ],),
                           Spacer(),
                             GestureDetector(

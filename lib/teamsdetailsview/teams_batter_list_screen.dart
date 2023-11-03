@@ -67,7 +67,7 @@ class _TeamsBatterListScreenState extends State<TeamsBatterListScreen> {
                           ),),
                         ),
                         SizedBox(height: 0.5.h,),
-                        Row(
+                        (item.battingStyle!=null)?Row(
                           children: [
                             const CircleAvatar(
                               backgroundColor: AppColor.pri,
@@ -79,7 +79,7 @@ class _TeamsBatterListScreenState extends State<TeamsBatterListScreen> {
                               color: Color(0xff555555),
                             ),),
                           ],
-                        )
+                        ):Text('')
                       ],),
                     Spacer(),
                     SvgPicture.asset(Images.arrowICon,width: 6.5.w,),

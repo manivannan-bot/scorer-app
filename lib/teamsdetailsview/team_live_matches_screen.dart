@@ -20,9 +20,7 @@ class TeamLiveMatches extends StatefulWidget {
 }
 
 class _TeamLiveMatchesState extends State<TeamLiveMatches> {
-  final List<Map<String,dynamic>>itemList=[
-    {},{},
-  ];
+
   @override
   Widget build(BuildContext context) {
     return MediaQuery.removePadding(
@@ -68,8 +66,7 @@ class _TeamLiveMatchesState extends State<TeamLiveMatches> {
                                       children: [
                                         Image.asset(Images.teamaLogo,width: 10.w,),
                                         SizedBox(width: 2.w,),
-                                        Text(
-                                            "${item.teams!.team1Name}",
+                                        Text("${item.teams!.team1Name}",
                                             style: fontMedium.copyWith(
                                               fontSize: 13.sp,
                                               color: AppColor.pri,
@@ -119,7 +116,7 @@ class _TeamLiveMatchesState extends State<TeamLiveMatches> {
                                               )),
                                         ])),
                                         SizedBox(width: 1.w,),
-                                        SvgPicture.asset(Images.batIcon,width: 5.w,),
+                                        (item.teams!.currentInnings==1)?SvgPicture.asset(Images.batIcon,width: 5.w,):Text(''),
                                       ],
                                     ),
                                   ),
@@ -134,10 +131,55 @@ class _TeamLiveMatchesState extends State<TeamLiveMatches> {
                                           color:const Color(0xff555555),
                                         ),),
                                         SizedBox(width: 2.w,),
-                                        Text("Yet to bat", style: fontRegular.copyWith(
+                                        (item.teams!.currentInnings==1)?Text("Yet to bat", style: fontRegular.copyWith(
                                           fontSize: 12.sp,
                                           color:const Color(0xff666666),
-                                        ),),
+                                        ),):Row(children:[
+                                          RichText(
+                                              text: TextSpan(children: [
+                                                TextSpan(
+                                                    text: "${item.teamInnings![1].totalScore}",
+                                                    style: fontMedium.copyWith(
+                                                      fontSize: 13.sp,
+                                                      color: AppColor.pri,
+                                                    )),
+                                                TextSpan(
+                                                    text: "/",
+                                                    style: fontMedium.copyWith(
+                                                        fontSize: 13.sp,
+                                                        color: AppColor.pri
+                                                    )),
+                                                TextSpan(
+                                                    text: "${item.teamInnings![1].totalWickets}",
+                                                    style: fontMedium.copyWith(
+                                                        fontSize: 13.sp,
+                                                        color: AppColor.pri
+                                                    )),
+                                              ])),
+                                          SizedBox(width: 2.w,),
+                                          RichText(text: TextSpan(children: [
+                                            TextSpan(
+                                                text: "${item.teamInnings![1].currOvers}",
+                                                style: fontMedium.copyWith(
+                                                    fontSize: 13.sp,
+                                                    color: const Color(0xff444444)
+                                                )),
+                                            TextSpan(
+                                                text: "/",
+                                                style: fontMedium.copyWith(
+                                                    fontSize: 13.sp,
+                                                    color: const Color(0xff444444)
+                                                )),
+                                            TextSpan(
+                                                text: "${item.teamInnings![1].totalOvers}",
+                                                style: fontMedium.copyWith(
+                                                    fontSize: 13.sp,
+                                                    color: const Color(0xff444444)
+                                                )),
+                                          ])),
+                                          SizedBox(width: 1.w,),
+                                          SvgPicture.asset(Images.batIcon,width: 5.w,),
+                                        ]),
                                       ],
                                     ),
                                   ),

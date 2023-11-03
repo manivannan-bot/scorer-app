@@ -265,7 +265,7 @@ class _TeamLiveScoreCardState extends State<TeamLiveScoreCard> {
                           color: AppColor.blackColour,
                         ),),
                       ),
-                      Row(
+                      (item.battingStyle!=null)?Row(
                         children: [
                           CircleAvatar(
                             backgroundColor: AppColor.pri,
@@ -277,7 +277,7 @@ class _TeamLiveScoreCardState extends State<TeamLiveScoreCard> {
                               color: Color(0xff666666)
                           ),),
                         ],
-                      )
+                      ):Text('')
                     ],
                   ),
 

@@ -20,57 +20,7 @@ class ScoreCardTwo extends StatefulWidget {
 }
 
 class _ScoreCardTwoState extends State<ScoreCardTwo> {
-  List<Map<String,dynamic>> itemList=[
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Akash",
-      "team":"(Toss and Tails)",
-      "dot":".",
-      "batsman":"Right hand batsman",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Vigneswaran",
-      "team":"(Royal Kings)",
-      "dot":".",
-      "batsman":"All rounder",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Akash",
-      "team":"(Toss and Tails)",
-      "dot":".",
-      "batsman":"Right hand batsman",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Vigneswaran",
-      "team":"(Royal Kings)",
-      "dot":".",
-      "batsman":"All rounder",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Akash",
-      "team":"(Toss and Tails)",
-      "dot":".",
-      "batsman":"Right hand batsman",
-      "button":"Connect",
-    },
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Vigneswaran",
-      "team":"(Royal Kings)",
-      "dot":".",
-      "batsman":"All rounder",
-      "button":"Connect",
-    },{},{},{},{},{},{},{},
 
-  ];
   ScoreCardYetTobat? playersList;
 
   @override
@@ -150,9 +100,9 @@ class _ScoreCardTwoState extends State<ScoreCardTwo> {
                                 ),),
                               ),
                               SizedBox(height: 0.5.h,),
-                              Row(
+                              (item.battingStyle!=null)?Row(
                                 children: [
-                                  CircleAvatar(
+                                  const CircleAvatar(
                                     backgroundColor: AppColor.pri,
                                     radius: 4,
                                   ),
@@ -164,7 +114,7 @@ class _ScoreCardTwoState extends State<ScoreCardTwo> {
 
 
                                 ],
-                              )
+                              ):const Text(''),
                             ],
                           ),
 

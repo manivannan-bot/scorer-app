@@ -104,7 +104,7 @@ class _IndividualPlayerLiveMatchesState extends State<IndividualPlayerLiveMatche
                                     )),
                               ])),
                               SizedBox(width: 1.w,),
-                              SvgPicture.asset(Images.batIcon,width: 5.w,),
+                              (widget.teams!.currentInnings==1)?SvgPicture.asset(Images.batIcon,width: 5.w,):Text(''),
                             ],
                           ),
                         ),
@@ -119,10 +119,55 @@ class _IndividualPlayerLiveMatchesState extends State<IndividualPlayerLiveMatche
                                 color:const Color(0xff555555),
                               ),),
                               SizedBox(width: 2.w,),
-                              Text("Yet to bat", style: fontRegular.copyWith(
+                              (widget.teams!.currentInnings==1)?Text("Yet to bat", style: fontRegular.copyWith(
                                 fontSize: 12.sp,
                                 color:const Color(0xff666666),
-                              ),),
+                              ),):Row(children: [
+                                RichText(
+                                    text: TextSpan(children: [
+                                      TextSpan(
+                                          text: "${widget.teamInnings![1].totalScore}",
+                                          style: fontMedium.copyWith(
+                                            fontSize: 13.sp,
+                                            color: AppColor.pri,
+                                          )),
+                                      TextSpan(
+                                          text: "/",
+                                          style: fontMedium.copyWith(
+                                              fontSize: 13.sp,
+                                              color: AppColor.pri
+                                          )),
+                                      TextSpan(
+                                          text: "${widget.teamInnings![1].totalWickets}",
+                                          style: fontMedium.copyWith(
+                                              fontSize: 13.sp,
+                                              color: AppColor.pri
+                                          )),
+                                    ])),
+                                SizedBox(width: 2.w,),
+                                RichText(text: TextSpan(children: [
+                                  TextSpan(
+                                      text: "${widget.teamInnings![1].currOvers}",
+                                      style: fontMedium.copyWith(
+                                          fontSize: 13.sp,
+                                          color: const Color(0xff444444)
+                                      )),
+                                  TextSpan(
+                                      text: "/",
+                                      style: fontMedium.copyWith(
+                                          fontSize: 13.sp,
+                                          color: const Color(0xff444444)
+                                      )),
+                                  TextSpan(
+                                      text: "${widget.teamInnings![1].totalOvers}",
+                                      style: fontMedium.copyWith(
+                                          fontSize: 13.sp,
+                                          color: const Color(0xff444444)
+                                      )),
+                                ])),
+                                SizedBox(width: 1.w,),
+                                SvgPicture.asset(Images.batIcon,width: 5.w,),
+                              ],),
                             ],
                           ),
                         ),

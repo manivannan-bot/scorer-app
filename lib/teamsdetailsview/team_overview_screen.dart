@@ -212,7 +212,7 @@ class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
                             ],
                           ),
                           SizedBox(height: 1.h,),
-                          DottedLine(
+                          const DottedLine(
                             dashColor: Color(0xffD2D2D2),
                           ),
                           SizedBox(height: 1.h,),
@@ -285,7 +285,7 @@ class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
                                 SizedBox(height: 0.5.h,),
                                 Row(
                                   children: [
-                                    CircleAvatar(
+                                    const CircleAvatar(
                                       backgroundColor: AppColor.pri,
                                       radius: 4,
                                     ),
@@ -300,7 +300,7 @@ class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
                           ],
                         ),
                         SizedBox(height: 1.h,),
-                        DottedLine(
+                        const DottedLine(
                           dashColor: Color(0xffD2D2D2),
                         ),
                         SizedBox(height: 1.h,),

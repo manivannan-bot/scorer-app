@@ -23,7 +23,7 @@ class _PlayerInfoScreenState extends State<PlayerInfoScreen> {
     fetchData();
   }
   fetchData(){
-    PlayerDetailsProvider().getPlayerInfo(widget.playerId).then((value) {
+    PlayerDetailsProvider().getPlayerInfo('3').then((value) {
       setState(() {
         playerInfoModel=value;
       });

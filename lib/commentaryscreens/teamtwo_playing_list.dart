@@ -76,7 +76,7 @@ class _TeamTwoPlayingListState extends State<TeamTwoPlayingList> {
                                 color: AppColor.blackColour,
                               ),),
                               SizedBox(height: 0.5.h,),
-                              Row(
+                              (item.battingStyle!=null)? Row(
                                 children: [
                                   const CircleAvatar(
                                     backgroundColor: AppColor.pri,
@@ -88,7 +88,7 @@ class _TeamTwoPlayingListState extends State<TeamTwoPlayingList> {
                                     color: Color(0xff555555),
                                   ),),
                                 ],
-                              ),
+                              ):const Text(''),
                             ],),
 
                           Spacer(),
@@ -131,7 +131,7 @@ class _TeamTwoPlayingListState extends State<TeamTwoPlayingList> {
                                 color: AppColor.blackColour,
                               ),),
                               SizedBox(height: 0.5.h,),
-                              Row(
+                              (item.battingStyle!=null)? Row(
                                 children: [
                                   CircleAvatar(
                                     backgroundColor: AppColor.pri,
@@ -143,7 +143,7 @@ class _TeamTwoPlayingListState extends State<TeamTwoPlayingList> {
                                     color: Color(0xff555555),
                                   ),),
                                 ],
-                              )
+                              ):const Text('')
                             ],),
                           Spacer(),
                             GestureDetector(

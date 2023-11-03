@@ -4,6 +4,8 @@ import 'package:flutter_dash/flutter_dash.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
 
+import '../models/all_matches_model.dart';
+import '../provider/scoring_provider.dart';
 import '../utils/colours.dart';
 import '../utils/images.dart';
 import '../utils/styles.dart';
@@ -19,11 +21,32 @@ class CompletedScreen extends StatefulWidget {
 }
 
 class _CompletedScreenState extends State<CompletedScreen> {
-  final List<Map<String,dynamic>>itemList=[
-    {},{},{},
-  ];
+
+
+  List<Matches>? matchList=[];
+  Future<List<Matches>?>? futureData;
+  getData(){
+    futureData = ScoringProvider().getAllMatches().then((value) {
+      setState(() {
+        matchList=[];
+        matchList=value.matches;
+      });
+
+      return matchList;
+    } );
+  }
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
   @override
   Widget build(BuildContext context) {
+    if(matchList!.isEmpty){
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return ListView.separated(
         physics: const BouncingScrollPhysics(),
         separatorBuilder: (context, _) {
@@ -31,9 +54,9 @@ class _CompletedScreenState extends State<CompletedScreen> {
             padding: EdgeInsets.only(bottom: 2.h),
           );
         },
-        itemCount:itemList.length ,
-        itemBuilder: (BuildContext, int index) {
-          final item = itemList[index];
+        itemCount:matchList!.length ,
+        itemBuilder: (context, int index) {
+          final item = matchList![index];
           return Padding(
             padding:  EdgeInsets.symmetric(horizontal: 3.w),
             child: Column(
@@ -62,29 +85,18 @@ class _CompletedScreenState extends State<CompletedScreen> {
                                     RichText(
                                         text: TextSpan(children: [
                                           TextSpan(
-                                              text: ('T'),
+                                              text: ('${item.team1Name}'),
                                               style: fontMedium.copyWith(
                                                 fontSize: 13.sp,
                                                 color: AppColor.blackColour,
                                               )),
-                                          TextSpan(
-                                              text: "&",
-                                              style: fontMedium.copyWith(
-                                                  fontSize: 13.sp,
-                                                  color: AppColor.blackColour
-                                              )),
-                                          TextSpan(
-                                              text: "T",
-                                              style: fontMedium.copyWith(
-                                                  fontSize: 13.sp,
-                                                  color: AppColor.blackColour
-                                              )),
+
                                         ])),
                                     SizedBox(width: 3.w,),
                                     RichText(
                                         text: TextSpan(children: [
                                           TextSpan(
-                                              text: ('0'),
+                                              text: ('${item.teams!.first.totalRuns}'),
                                               style: fontMedium.copyWith(
                                                 fontSize: 13.sp,
                                                 color: AppColor.pri,
@@ -96,7 +108,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
                                                   color: AppColor.pri
                                               )),
                                           TextSpan(
-                                              text: "0",
+                                              text: "${item.teams!.first.totalWickets}",
                                               style: fontMedium.copyWith(
                                                   fontSize: 13.sp,
                                                   color: AppColor.pri
@@ -106,7 +118,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
                                     RichText(
                                         text: TextSpan(children: [
                                           TextSpan(
-                                              text: ('0.0'),
+                                              text: ('${item.teams!.first.currentOverDetails}'),
                                               style: fontMedium.copyWith(
                                                   fontSize: 13.sp,
                                                   color: Color(0xff444444)
@@ -118,7 +130,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
                                                   color: Color(0xff444444)
                                               )),
                                           TextSpan(
-                                              text: "10",
+                                              text: "${item.overs}",
                                               style: fontMedium.copyWith(
                                                   fontSize: 13.sp,
                                                   color: Color(0xff444444)
@@ -138,29 +150,18 @@ class _CompletedScreenState extends State<CompletedScreen> {
                                     RichText(
                                         text: TextSpan(children: [
                                           TextSpan(
-                                              text: ('T'),
+                                              text: ('${item.team2Name}'),
                                               style: fontMedium.copyWith(
                                                 fontSize: 13.sp,
                                                 color: AppColor.blackColour,
                                               )),
-                                          TextSpan(
-                                              text: "&",
-                                              style: fontMedium.copyWith(
-                                                  fontSize: 13.sp,
-                                                  color: AppColor.blackColour
-                                              )),
-                                          TextSpan(
-                                              text: "T",
-                                              style: fontMedium.copyWith(
-                                                  fontSize: 13.sp,
-                                                  color: AppColor.blackColour
-                                              )),
+
                                         ])),
                                     SizedBox(width: 3.w,),
                                     RichText(
                                         text: TextSpan(children: [
                                           TextSpan(
-                                              text: ('0'),
+                                              text: ('${item.teams![1].totalRuns}'),
                                               style: fontMedium.copyWith(
                                                 fontSize: 13.sp,
                                                 color: AppColor.pri,
@@ -172,7 +173,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
                                                   color: AppColor.pri
                                               )),
                                           TextSpan(
-                                              text: "0",
+                                              text: "${item.teams![1].totalWickets}",
                                               style: fontMedium.copyWith(
                                                   fontSize: 13.sp,
                                                   color: AppColor.pri
@@ -182,7 +183,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
                                     RichText(
                                         text: TextSpan(children: [
                                           TextSpan(
-                                              text: ('0.0'),
+                                              text: ('${item.teams![1].currentOverDetails}'),
                                               style: fontMedium.copyWith(
                                                   fontSize: 13.sp,
                                                   color: Color(0xff444444)
@@ -194,7 +195,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
                                                   color: Color(0xff444444)
                                               )),
                                           TextSpan(
-                                              text: "10",
+                                              text: "${item.overs}",
                                               style: fontMedium.copyWith(
                                                   fontSize: 13.sp,
                                                   color: Color(0xff444444)
@@ -230,28 +231,14 @@ class _CompletedScreenState extends State<CompletedScreen> {
                                     RichText(
                                         text: TextSpan(children: [
                                           TextSpan(
-                                              text: ('T&T '),
+                                              text: ('${item.resultDescription??'-'} '),
                                               style: fontMedium.copyWith(
                                                 fontSize: 13.sp,
                                                 color: AppColor.pri,
                                               )),
-                                          TextSpan(
-                                              text: "won",
-                                              style: fontMedium.copyWith(
-                                                  fontSize: 13.sp,
-                                                  color: AppColor.pri
-                                              )),
-                                          TextSpan(
-                                              text: "\nby 9 runs",
-                                              style: fontMedium.copyWith(
-                                                  fontSize: 13.sp,
-                                                  color: AppColor.blackColour
-                                              )),
+
                                         ])),
-                                    // Text("T&T won\nby 9 runs",style: fontRegular.copyWith(
-                                    //     fontSize: 12.sp,
-                                    //     color: Color(0xff666666)
-                                    // ),),
+
                                   ],
                                 ),
                               ),

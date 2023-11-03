@@ -108,7 +108,7 @@ class _PlayerDetailViewScreenState extends State<PlayerDetailViewScreen>with Sin
                               SvgPicture.asset(Images.batIcon,width: 5.w,),
                             ],
                           ),
-                          Text("${playerOverview!.data!.playerInfo!.battingStyle}",style: fontMedium.copyWith(
+                          Text("${playerOverview!.data!.playerInfo!.battingStyle??'-'}",style: fontMedium.copyWith(
                             fontSize: 12.sp,
                             color: AppColor.lightColor,
                           ),),
@@ -128,7 +128,7 @@ class _PlayerDetailViewScreenState extends State<PlayerDetailViewScreen>with Sin
                               SvgPicture.asset(Images.ballIcon,width: 5.w,),
                             ],
                           ),
-                          Text("${playerOverview!.data!.playerInfo!.bowlingStyle}",style: fontMedium.copyWith(
+                          Text("${playerOverview!.data!.playerInfo!.bowlingStyle??'-'}",style: fontMedium.copyWith(
                             fontSize: 12.sp,
                             color: AppColor.lightColor,
                           ),),

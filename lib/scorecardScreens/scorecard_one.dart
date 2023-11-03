@@ -77,7 +77,7 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
           const Divider(
             color: Color(0xffD3D3D3),
           ),
-          ListView.separated(
+          (widget.scoreCardData.batting!.isEmpty)?Text('No data found'): ListView.separated(
             shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               separatorBuilder: (context, _) {
@@ -90,9 +90,6 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
               },
               itemCount: widget.scoreCardData.batting!.length,
               itemBuilder: (BuildContext, int index) {
-                if(widget.scoreCardData.batting!.isEmpty){
-                  return Text('No data found');
-                }
                 final item = widget.scoreCardData.batting![index];
                 return Row(
                   children: [
@@ -178,22 +175,22 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
               const Spacer(),
               Row(
                 children: [
-                  Text("${widget.scoreCardData.bowlingExtras!.totalExtras}",style: fontMedium.copyWith(
+                  Text("${widget.scoreCardData.bowlingExtras!.totalExtras??'0'}",style: fontMedium.copyWith(
                     fontSize: 12.sp,
                     color: AppColor.blackColour,
                   ),),
                   SizedBox(width: 2.w,),
-                  Text("${widget.scoreCardData.bowlingExtras!.legByes}lb,",style: fontRegular.copyWith(
+                  Text("${widget.scoreCardData.bowlingExtras!.legByes??'0'}lb,",style: fontRegular.copyWith(
                     fontSize: 12.sp,
                     color: const Color(0xff777777),
                   ),),
                   SizedBox(width: 2.w,),
-                  Text("${widget.scoreCardData.bowlingExtras!.wides}w,",style: fontRegular.copyWith(
+                  Text("${widget.scoreCardData.bowlingExtras!.wides??'0'}w,",style: fontRegular.copyWith(
                     fontSize: 12.sp,
                     color: const Color(0xff777777),
                   ),),
                   SizedBox(width: 2.w,),
-                  Text("${widget.scoreCardData.bowlingExtras!.noBalls}nb",style: fontRegular.copyWith(
+                  Text("${widget.scoreCardData.bowlingExtras!.noBalls??'0'}nb",style: fontRegular.copyWith(
                     fontSize: 12.sp,
                     color: const Color(0xff777777),
                   ),),
@@ -220,7 +217,7 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
             ],
           ),
          SizedBox(height: 1.h,),
-         GridView.builder(
+          (widget.scoreCardData.yetToBatPlayers!.isEmpty)? Text('No data found'):GridView.builder(
            physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2, // 1 column
@@ -229,9 +226,7 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
       itemCount: widget.scoreCardData.yetToBatPlayers!.length,
       shrinkWrap: true,
       itemBuilder: (BuildContext context, int index) {
-        if(widget.scoreCardData.yetToBatPlayers!.isEmpty){
-          return Text('No data found');
-        }
+
         final item = widget.scoreCardData.yetToBatPlayers![index];
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -248,9 +243,9 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                     color: AppColor.blackColour,
                   ),),
                 ),
-                Row(
+                (item.battingStyle!=null)?Row(
                   children: [
-                    CircleAvatar(
+                    const CircleAvatar(
                       backgroundColor: AppColor.pri,
                       radius: 4,
                     ),
@@ -260,7 +255,7 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                       color: Color(0xff666666)
                     ),),
                   ],
-                )
+                ):const Text('')
               ],
             ),
 
@@ -329,7 +324,7 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
           const Divider(
             color: Color(0xffD3D3D3),
           ),
-          ListView.separated(
+          (widget.scoreCardData.bowling!.isEmpty)?Text('No data found'): ListView.separated(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               separatorBuilder: (context, _) {
@@ -342,9 +337,7 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
               },
               itemCount: widget.scoreCardData.bowling!.length,
               itemBuilder: (BuildContext, int index) {
-                if(widget.scoreCardData.bowling!.isEmpty){
-                  return Text('No data found');
-                }
+
                 final item = widget.scoreCardData.bowling![index];
                 return Row(
                   children: [
@@ -357,7 +350,7 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                             children: [
                               Padding(
                                 padding:  EdgeInsets.only(top: 0.5.h,bottom: 0.5.h),
-                                child: Text("${item.playerName}",style: fontRegular.copyWith(
+                                child: Text("${item.playerName??'-'}",style: fontRegular.copyWith(
                                   fontSize: 12.sp,
                                   color: AppColor.blackColour,
                                 ),),
@@ -451,7 +444,7 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
           const Divider(
             color: Color(0xffD3D3D3),
           ),
-          ListView.separated(
+          (widget.scoreCardData.fallOfWicket!.isEmpty)?Text('No data found'):ListView.separated(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               separatorBuilder: (context, _) {
@@ -464,9 +457,7 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
               },
               itemCount: widget.scoreCardData.fallOfWicket!.length,
               itemBuilder: (BuildContext, int index) {
-                if(widget.scoreCardData.fallOfWicket!.isEmpty){
-                  return Text('No data found');
-                }
+
                 final item = widget.scoreCardData.fallOfWicket![index];
                 return Row(
                   children: [
@@ -495,7 +486,7 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text("${item.teamScore}",style: fontMedium.copyWith(
+                          Text("${item.wicketNumber}-${item.teamScore}",style: fontMedium.copyWith(
                             fontSize: 12.sp,
                             color: AppColor.blackColour,
                           ),),
@@ -545,7 +536,7 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
           const Divider(
             color: Color(0xffD3D3D3),
           ),
-          ListView.separated(
+          (widget.scoreCardData.partnerships!.isEmpty)?Text('No data found'): ListView.separated(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               separatorBuilder: (context, _) {
@@ -557,10 +548,8 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                 );
               },
               itemCount: widget.scoreCardData.partnerships!.length,
-              itemBuilder: (BuildContext, int index) {
-                if(widget.scoreCardData.partnerships!.isEmpty){
-                  return Text('No data found');
-                }
+              itemBuilder: (context, int index) {
+
                 final item = widget.scoreCardData.partnerships![index];
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -597,13 +586,13 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                               RichText(
                                   text: TextSpan(children: [
                                     TextSpan(
-                                        text: ("${item.player1BallsFaced}"),
+                                        text: ("${item.player1RunsScored}"),
                                         style: fontMedium.copyWith(
                                           fontSize: 11.sp,
                                           color: AppColor.blackColour
                                         )),
                                     TextSpan(
-                                        text: "(${item.player1RunsScored})",
+                                        text: "(${item.player1BallsFaced})",
                                         style: fontRegular.copyWith(
                                             fontSize: 11.sp,
                                             color: const Color(0xff666666)
@@ -649,13 +638,13 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                               RichText(
                                   text: TextSpan(children: [
                                     TextSpan(
-                                        text: ("${item.player2BallsFaced}"),
+                                        text: ("${item.player2RunsScored}"),
                                         style: fontMedium.copyWith(
                                             fontSize: 11.sp,
                                             color: AppColor.blackColour
                                         )),
                                     TextSpan(
-                                        text: "(${item.player2RunsScored})",
+                                        text: "(${item.player2BallsFaced})",
                                         style: fontRegular.copyWith(
                                             fontSize: 11.sp,
                                             color: const Color(0xff666666)
