@@ -1,7 +1,6 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:pie_chart/pie_chart.dart';
 import 'package:scorer/models/teams/team_overview_model.dart';
 import 'package:scorer/provider/teams_provider.dart';
 import 'package:sizer/sizer.dart';
@@ -33,10 +32,7 @@ class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
         });
       });
   }
-  Map<String, double> dataMap = {
-  "Won": 87,
-  "Lost": 37,
-};
+
   @override
   Widget build(BuildContext context) {
     if(teamOverview==null||teamOverview!.data==null){

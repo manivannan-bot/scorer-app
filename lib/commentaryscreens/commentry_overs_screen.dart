@@ -79,20 +79,7 @@ class _CommentryOversState extends State<CommentryOvers> {
                           itemCount:option.noOfBalls!.length ,
                           itemBuilder: (context, int index) {
                             final item = option.noOfBalls![index];
-                            return Container(
-                              padding: EdgeInsets.symmetric(horizontal: 2.5.w,vertical: 0.5.h),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                border: Border.all(color: Color(0xffDADADA)),
-                                color: const Color(0xffFBFAF7),
-                              ),
-                              child: Center(
-                                child: Text('${item.runsScored}',style: fontMedium.copyWith(
-                                  fontSize: 11.sp,
-                                  color: AppColor.blackColour,
-                                ),),
-                              ),
-                            );
+                            return ScoreContainer( runsScored: '${item.runsScored??'0'}');
                           }),
                     ),
                   ),
@@ -125,6 +112,51 @@ class _CommentryOversState extends State<CommentryOvers> {
           );
         },
 
+      ),
+    );
+  }
+}
+
+
+class ScoreContainer extends StatelessWidget {
+  final String runsScored;
+
+  ScoreContainer({required this.runsScored});
+
+  @override
+  Widget build(BuildContext context) {
+    Color bgColor;
+    Color textColor;
+
+    if (runsScored == '6') {
+      bgColor = const Color(0xff1A134C);
+      textColor=Colors.white;
+    } else if (runsScored == '4') {
+      bgColor = const Color(0xff6654EB);
+      textColor=Colors.white;
+    } else if (runsScored == '0') {
+      bgColor = const Color(0xffFF0000);
+      textColor=Colors.white;
+    } else {
+      bgColor = const Color(0xffDADADA);
+      textColor=Colors.black;
+    }
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.5.h),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(30),
+        border: Border.all(color: Color(0xffDADADA)),
+        color: bgColor, // Use the determined background color
+      ),
+      child: Center(
+        child: Text(
+          runsScored,
+          style: fontMedium.copyWith(
+            fontSize: 11.sp,
+            color: textColor,
+          ),
+        ),
       ),
     );
   }
