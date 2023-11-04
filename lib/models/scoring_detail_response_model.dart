@@ -263,7 +263,7 @@ class Over {
     innings = json['innings'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    slug = json['slug'];
+    slug = json['slug_data'];
   }
 
   Map<String, dynamic> toJson() {
@@ -291,7 +291,7 @@ class Over {
     data['innings'] = innings;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
-    data['slug'] = slug;
+    data['slug_data'] = slug;
     return data;
   }
 }

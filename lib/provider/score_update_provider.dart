@@ -6,6 +6,13 @@ class ScoreUpdateProvider extends ChangeNotifier {
   int overNumberInnings = 0;
   int ballNumberInnings = 0;
   int bowlerChange = 0;
+  List<String> overFollowup = [];
+
+  trackOvers(int overNumber, int ballNumber){
+    overFollowup.add("$overNumber - $ballNumber");
+    notifyListeners();
+    print("over followup ${overFollowup.toString()}");
+  }
 
   incrementOverNumber(){
     overNumberInnings = overNumberInnings + 1;
