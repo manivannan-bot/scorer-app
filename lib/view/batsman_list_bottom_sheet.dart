@@ -30,6 +30,7 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
   TextEditingController searchController = TextEditingController();
   List<BattingPlayers>? searchedBatsman = [];
   List<BattingPlayers>? itemsBatsman = [];
+  String batsmanId = "", batsmanName = "";
 
 
   onSearchBatsman(String search) {
@@ -197,6 +198,10 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
 
                     return GestureDetector(
                       onTap: () {
+                        setState(() {
+                          batsmanId = searchedBatsman![index].playerId.toString();
+                          batsmanName = searchedBatsman![index].playerName.toString();
+                        });
                         if (isPlayerOut) {
 
                         } else {
@@ -284,7 +289,7 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
               ),
             ),
           ]
-          else...[
+          else if(isResultEmpty || !searching)...[
               Expanded(
                 child: ListView.separated(
                     separatorBuilder:(context ,_) {
@@ -292,12 +297,16 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
                         thickness: 0.6,
                       );
                     },
-                    itemCount: searchedBatsman!.length,
+                    itemCount: itemsBatsman!.length,
                     itemBuilder: (context, index) {
-                      final isPlayerOut = searchedBatsman![index].isOut == 1 || searchedBatsman![index].isOut == 0;
+                      final isPlayerOut = itemsBatsman![index].isOut == 1 || itemsBatsman![index].isOut == 0;
 
                       return GestureDetector(
                         onTap: () {
+                          setState(() {
+                            batsmanId = itemsBatsman![index].playerId.toString();
+                            batsmanName = itemsBatsman![index].playerName.toString();
+                          });
                           if (isPlayerOut) {
 
                           } else {
@@ -344,7 +353,7 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
                                       .start,
                                   children: [
                                     Text(
-                                      searchedBatsman![index].playerName ?? '-',
+                                      itemsBatsman![index].playerName ?? '-',
                                       style: fontMedium.copyWith(
                                         fontSize: 12.sp,
                                         color: AppColor.blackColour,
@@ -362,7 +371,7 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
                                         ),
                                         SizedBox(width: 2.w,),
                                         Text(
-                                          searchedBatsman![index].battingStyle ??
+                                          itemsBatsman![index].battingStyle ??
                                               '-', style: fontMedium.copyWith(
                                             fontSize: 11.sp,
                                             color: const Color(0xff555555)
@@ -396,7 +405,8 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
                 GestureDetector(
                     onTap:(){
                       Navigator.pop(context);
-                    },child: const CancelBtn("Cancel")),
+                    },
+                    child: const CancelBtn("Cancel")),
                 SizedBox(width: 2.w,),
                 GestureDetector(onTap:()async {
                   if(localBowlerIndex!=null){

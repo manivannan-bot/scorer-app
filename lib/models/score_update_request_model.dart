@@ -10,6 +10,7 @@ class ScoreUpdateRequestModel {
   int? ballNumber;
   int? runsScored;
   int? extras;
+  int? extrasSlug;
   int? wicket;
   int? dismissalType;
   int? commentary;
@@ -39,6 +40,7 @@ class ScoreUpdateRequestModel {
         this.ballNumber,
         this.runsScored,
         this.extras,
+        this.extrasSlug,
         this.wicket,
         this.dismissalType,
         this.commentary,
@@ -68,6 +70,7 @@ class ScoreUpdateRequestModel {
     ballNumber = json['ball_number'];
     runsScored = json['runs_scored'];
     extras = json['extras'];
+    extrasSlug = json['extras_slug'];
     wicket = json['wicket'];
     dismissalType = json['dismissal_type'];
     commentary = json['commentary'];
@@ -99,6 +102,7 @@ class ScoreUpdateRequestModel {
     data['ball_number'] = this.ballNumber;
     data['runs_scored'] = this.runsScored;
     data['extras'] = this.extras;
+    data['extras_slug'] = this.extrasSlug;
     data['wicket'] = this.wicket;
     data['dismissal_type'] = this.dismissalType;
     data['commentary'] = this.commentary;

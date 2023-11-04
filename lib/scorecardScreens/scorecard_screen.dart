@@ -39,27 +39,29 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
 
   void fetchData()async{
                 await ScoringProvider().getLiveScore(widget.matchId, widget.team1Id).then((data) async{
-                  setState(() {
-                    matchlist = data.matches;
+                  if(mounted){
+                    setState(() {
+                      matchlist = data.matches;
 
-                    if(matchlist!.currentInnings==1){
-                      if(matchlist!.tossWonBy==int.parse(widget.team1Id) && matchlist!.choseTo=='Bat' ) {
-                        batTeamId=data.matches!.team1Id;
-                        bowlTeamId=data.matches!.team2Id;
-                      }else{
-                        batTeamId=data.matches!.team2Id;
-                        bowlTeamId=data.matches!.team1Id;
+                      if(matchlist!.currentInnings==1){
+                        if(matchlist!.tossWonBy==int.parse(widget.team1Id) && matchlist!.choseTo=='Bat' ) {
+                          batTeamId=data.matches!.team1Id;
+                          bowlTeamId=data.matches!.team2Id;
+                        }else{
+                          batTeamId=data.matches!.team2Id;
+                          bowlTeamId=data.matches!.team1Id;
+                        }
+                      }else if(matchlist!.currentInnings==2){
+                        if(matchlist!.tossWonBy==int.parse(widget.team1Id) && matchlist!.choseTo=='Bat' ) {
+                          batTeamId=data.matches!.team2Id;
+                          bowlTeamId=data.matches!.team1Id;
+                        }else{
+                          batTeamId=data.matches!.team1Id;
+                          bowlTeamId=data.matches!.team2Id;
+                        }
                       }
-                    }else if(matchlist!.currentInnings==2){
-                      if(matchlist!.tossWonBy==int.parse(widget.team1Id) && matchlist!.choseTo=='Bat' ) {
-                        batTeamId=data.matches!.team2Id;
-                        bowlTeamId=data.matches!.team1Id;
-                      }else{
-                        batTeamId=data.matches!.team1Id;
-                        bowlTeamId=data.matches!.team2Id;
-                      }
-                    }
-                  });
+                    });
+                  }
                 });
 
         ScoringProvider().getScoreCard(widget.matchId, widget.team1Id).then((value){

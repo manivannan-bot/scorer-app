@@ -76,54 +76,51 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
 
      if(score.overNumberInnings != 0 || score.ballNumberInnings != 0){
        print("crossed 0th over - ON ${score.overNumberInnings} BN ${score.ballNumberInnings}");
-       print("getting the over number and ball number from score update response");
+       print("getting the over number and ball number from previous score update response for next ball");
        overNumber = score.overNumberInnings;
        ballNumber = score.ballNumberInnings;
      } else {
-       print("0th over of the innings");
+       print("0th over of the innings - over number and ball number are 0");
        print("getting the over number and ball number from getlive score api - ON $overNumber BN $ballNumber");
        overNumber = data.matches!.teams!.overNumber ?? 0;
        ballNumber = data.matches!.teams!.ballNumber ?? 0;
      }
-     //incrementing over number and ball number
+     //setting over number and ball number values for next ball
          if (overNumber == 0 && ballNumber == 0) {
            overNumber = 0;
            ballNumber = 1;
            print("over number and ball number are 0");
          }
+
          // else if (ballNumber >= 6) {
          //   overNumber += 1;
          //   ballNumber = 0;
          //   print("ball number >= 6");
          // }
-         else if(ballNumber == 1){
-           print("ball number is 1");
-           ballNumber = 1;
-         }
 
-         else if(overNumber != 0 && ballNumber == 2){
-           print("ball number is 2");
-           ballNumber = 2;
-         } else if(ballNumber == 3){
-           print("ball number is 3");
-           ballNumber = 3;
-         } else if(ballNumber == 4){
-           print("ball number is 4");
-           ballNumber = 4;
-         } else if(ballNumber == 5){
-           print("ball number is 5");
-           ballNumber = 5;
-         } else if (ballNumber == 6) {
-           ballNumber == 6;
-           print("next ball is 6");
-         }
-     WidgetsBinding.instance.addPostFrameCallback((_) {
+         // else if(ballNumber == 1){
+         //   print("ball number is 1");
+         //   ballNumber = 1;
+         // }
+         // else if(overNumber != 0 && ballNumber == 2){
+         //   print("ball number is 2");
+         //   ballNumber = 2;
+         // } else if(ballNumber == 3){
+         //   print("ball number is 3");
+         //   ballNumber = 3;
+         // } else if(ballNumber == 4){
+         //   print("ball number is 4");
+         //   ballNumber = 4;
+         // } else if(ballNumber == 5){
+         //   print("ball number is 5");
+         //   ballNumber = 5;
+         // } else if (ballNumber == 6) {
+         //   ballNumber = 6;
+         //   print("next ball is 6");
+         // }
        print("while setting value to provider");
        score.setOverNumber(overNumber);
        score.setBallNumber(ballNumber);
-     });
-         await Future.delayed(const Duration(seconds: 2));
-     print("over number and ball number after conditions - ON ${score.overNumberInnings} BN ${score.ballNumberInnings}");
      await prefs.setInt('current_innings',data.matches!.currentInnings??1);
 
      refreshController.refreshCompleted();
@@ -217,11 +214,25 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
                                       color: AppColor.lightColor
                                   )
                                 ),
-                                Text('${matchList!.teams!.totalRuns}/${matchList!.teams!.totalWickets}',
-                                    style: fontMedium.copyWith(
-                                    fontSize: 25.sp,
-                                    color: AppColor.lightColor
-                                )),
+                                Row(
+                                  children: [
+                                    Text('${matchList!.teams!.totalRuns}',
+                                        style: fontMedium.copyWith(
+                                        fontSize: 25.sp,
+                                        color: AppColor.lightColor
+                                    )),
+                                    Text('/',
+                                        style: fontMedium.copyWith(
+                                            fontSize: 25.sp,
+                                            color: AppColor.lightColor
+                                        )),
+                                    Text('${matchList!.teams!.totalWickets}',
+                                        style: fontMedium.copyWith(
+                                            fontSize: 25.sp,
+                                            color: AppColor.lightColor
+                                        )),
+                                  ],
+                                ),
                                 Container(
                                   padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.8.h),
                                   decoration: BoxDecoration(

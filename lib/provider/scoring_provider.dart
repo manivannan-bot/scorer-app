@@ -102,7 +102,6 @@ class ScoringProvider extends ChangeNotifier{
       print("get live score $decodedJson");
       if (response.statusCode == 200) {
         getLiveScoreResponseModel = GetLiveScoreResponseModel.fromJson(decodedJson);
-
         notifyListeners();
       } else {
         throw const HttpException('Failed to load data');

@@ -147,15 +147,15 @@ class Matches {
 }
 
 class Teams {
-  String? teamName;
-  String? totalRuns;
-  String? totalWickets;
-  int? ballNumber;
-  int? overNumber;
-  int? overs;
-  String? currentOverDetails;
-  int? ballRecordCheck;
-  String? teamLogo;
+  dynamic teamName;
+  dynamic totalRuns;
+  dynamic totalWickets;
+  dynamic ballNumber;
+  dynamic overNumber;
+  dynamic overs;
+  dynamic currentOverDetails;
+  dynamic ballRecordCheck;
+  dynamic teamLogo;
 
   Teams(
       {this.teamName,
