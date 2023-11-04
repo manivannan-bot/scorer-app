@@ -231,11 +231,26 @@ class _CompletedScreenState extends State<CompletedScreen> {
                                     RichText(
                                         text: TextSpan(children: [
                                           TextSpan(
-                                              text: ('${item.resultDescription??'-'} '),
-                                              style: fontMedium.copyWith(
-                                                fontSize: 13.sp,
-                                                color: AppColor.pri,
-                                              )),
+                                            text: '${item.wonTeam??''} ',
+                                            style: fontMedium.copyWith(
+                                              fontSize: 13.sp,
+                                              color: AppColor.pri,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: '${item.resultDescription?.split(' ')[0] ?? ''} \n',
+                                            style: fontMedium.copyWith(
+                                              fontSize: 13.sp,
+                                              color: AppColor.pri,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: '${item.resultDescription?.split(' ')[1] ?? ''} ${item.resultDescription?.split(' ')[2]??''} ${item.resultDescription?.split(' ')[3]??''}',
+                                            style: fontMedium.copyWith(
+                                              fontSize: 13.sp,
+                                              color: AppColor.pri,
+                                            ),
+                                          ),
 
                                         ])),
 

@@ -549,8 +549,11 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
               },
               itemCount: widget.scoreCardData.partnerships!.length,
               itemBuilder: (context, int index) {
-
                 final item = widget.scoreCardData.partnerships![index];
+                int player1Runs = int.tryParse(item.player1RunsScored?.toString() ?? "0") ?? 0;
+                int player2Runs = int.tryParse(item.player2RunsScored?.toString() ?? "0") ?? 0;
+                int totalRuns = player1Runs + player2Runs;
+
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -618,14 +621,7 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                                         )),
                                   ])),
                               SizedBox(height: 0.5.h),
-                              Container(
-                                height:1.h,
-                                width:10.w,
-                                decoration: BoxDecoration(
-                                  color: AppColor.pri,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
+                              MyProgressIndicator(currentValue: player1Runs,totalValue: totalRuns,),
                             ],
                           ),
                           Column(
@@ -656,6 +652,7 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                         ],
                       ),
                     ),
+
                   ],
                 );
               }),
@@ -663,6 +660,39 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
             color: Color(0xffD3D3D3),
           ),
     ],
+      ),
+    );
+  }
+}
+
+
+
+class MyProgressIndicator extends StatelessWidget {
+   int currentValue = 40;
+   int totalValue = 100;
+
+  MyProgressIndicator({super.key, required this.currentValue, required this.totalValue});
+
+
+  @override
+  Widget build(BuildContext context) {
+    double progress = currentValue / totalValue;
+
+    return SizedBox(
+      width: 10.w,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            LinearProgressIndicator(
+              minHeight: 1.h,
+              borderRadius: BorderRadius.circular(4),
+              value: progress,
+              backgroundColor: const Color(0xffAD8E2E),
+              valueColor: AlwaysStoppedAnimation<Color>(Color(0xffFFD200)),
+            ),
+          ],
+        ),
       ),
     );
   }

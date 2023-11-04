@@ -81,7 +81,7 @@ class _ScoreCardTwoState extends State<ScoreCardTwo> {
                     );
                   },
                   itemCount: playersList!.data!.length,
-                  itemBuilder: (BuildContext, int index) {
+                  itemBuilder: (context, int index) {
                     final item = playersList!.data![index];
                     return Padding(
                       padding:  EdgeInsets.symmetric(vertical: 1.h),

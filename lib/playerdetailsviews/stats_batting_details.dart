@@ -77,7 +77,7 @@ class _StatsBattingState extends State<StatsBatting> {
                   ],
                 ),
               ),
-              DottedLine(
+              const DottedLine(
                 dashColor: Color(0xffD2D2D2),
               ),
               Padding(

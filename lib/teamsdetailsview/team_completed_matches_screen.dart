@@ -207,17 +207,26 @@ class _TeamCompletedMatchesScreenState extends State<TeamCompletedMatchesScreen>
                                       RichText(
                                           text: TextSpan(children: [
                                             TextSpan(
-                                                text: ('${item.teams!.resultDescription}'),
+                                                text: ('${item.teams!.wonTeam} '),
                                                 style: fontMedium.copyWith(
                                                   fontSize: 13.sp,
                                                   color: AppColor.pri,
                                                 )),
+                                            TextSpan(
+                                                text: ('${item.teams!.resultDescription?.split(' ')[0]??''} \n'),
+                                                style: fontMedium.copyWith(
+                                                  fontSize: 13.sp,
+                                                  color: AppColor.pri,
+                                                )),
+                                            TextSpan(
+                                                text: ('${item.teams!.resultDescription?.split(' ')[1]??''} ${item.teams!.resultDescription?.split(' ')[2]??''} ${item.teams!.resultDescription?.split(' ')[3]??''}'),
+                                                style: fontMedium.copyWith(
+                                                  fontSize: 13.sp,
+                                                  color: AppColor.pri,
+                                                ))
 
                                           ])),
-                                      // Text("T&T won\nby 9 runs",style: fontRegular.copyWith(
-                                      //     fontSize: 12.sp,
-                                      //     color: Color(0xff666666)
-                                      // ),),
+
                                     ],
                                   ),
                                 ),

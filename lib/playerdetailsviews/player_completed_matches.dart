@@ -219,7 +219,19 @@ class _PlayerCompletedMatchesState extends State<PlayerCompletedMatches> {
                               RichText(
                                   text: TextSpan(children: [
                                     TextSpan(
-                                        text: ('${widget.teams!.resultDescription??'-'}'),
+                                        text: ('${widget.teams!.wonTeam??'-'} '),
+                                        style: fontMedium.copyWith(
+                                          fontSize: 13.sp,
+                                          color: AppColor.pri,
+                                        )),
+                                    TextSpan(
+                                        text: ('${widget.teams!.resultDescription?.split(' ')[0]??''} \n'),
+                                        style: fontMedium.copyWith(
+                                          fontSize: 13.sp,
+                                          color: AppColor.pri,
+                                        )),
+                                    TextSpan(
+                                        text: ('${widget.teams!.resultDescription?.split(' ')[1]??''} ${widget.teams!.resultDescription?.split(' ')[2]??''} ${widget.teams!.resultDescription?.split(' ')[3]??''}'),
                                         style: fontMedium.copyWith(
                                           fontSize: 13.sp,
                                           color: AppColor.pri,
