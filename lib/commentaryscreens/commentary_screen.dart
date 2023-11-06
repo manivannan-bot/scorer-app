@@ -56,7 +56,7 @@ class _CommentaryScreenState extends State<CommentaryScreen>with SingleTickerPro
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 0.w),
         width: double.infinity,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(topRight: Radius.circular(20),topLeft: Radius.circular(20)),
         color: AppColor.lightColor
         ),

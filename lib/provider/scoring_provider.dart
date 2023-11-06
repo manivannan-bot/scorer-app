@@ -406,7 +406,7 @@ class ScoringProvider extends ChangeNotifier{
     }
     return scoreCardResponseModel;
   }
-  Future<ScoreCardYetTobat> getScoreCard1(String matchId,String teamId) async {
+  Future<ScoreCardYetTobat> playersYetToBat(String matchId,String teamId) async {
 
     try {
       final response = await http.get(

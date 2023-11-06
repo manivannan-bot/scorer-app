@@ -31,7 +31,7 @@ class _TeamMatchesLiveViewState extends State<TeamMatchesLiveView> with SingleTi
   late TabController tabController;
   Matches? matchList;
   RefreshController refreshController = RefreshController();
-  ScoreCardResponseModel? scoreCardResponseModel;
+
   int? batTeamId;
   int? bowlTeamId;
   bool loading = false;
@@ -82,7 +82,7 @@ class _TeamMatchesLiveViewState extends State<TeamMatchesLiveView> with SingleTi
 
   @override
   Widget build(BuildContext context) {
-    if(matchList==null||scoreCardResponseModel==null){
+    if(matchList==null){
       return  const SizedBox( height: 100,width: 100,
           child: Center(child: CircularProgressIndicator()));
     }

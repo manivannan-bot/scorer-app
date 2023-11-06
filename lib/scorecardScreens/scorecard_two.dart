@@ -29,7 +29,7 @@ class _ScoreCardTwoState extends State<ScoreCardTwo> {
     fetchData();
   }
   fetchData(){
-    ScoringProvider().getScoreCard1(widget.matchId, widget.bowlTeamId).then((value){
+    ScoringProvider().playersYetToBat(widget.matchId, widget.bowlTeamId).then((value){
       setState(() {
         playersList=value;
       });

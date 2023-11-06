@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:scorer/models/user_profile_model.dart';
 
 import '../models/players/player_info_model.dart';
 import '../models/players/player_matches_model.dart';
@@ -17,6 +18,7 @@ class PlayerDetailsProvider extends ChangeNotifier{
   PlayerMatchesModel playerMatchesModel=PlayerMatchesModel();
   PlayerTeamInfoModel playerTeamInfoModel=PlayerTeamInfoModel();
   PlayerInfoModel playerInfoModel=PlayerInfoModel();
+  UserProfileModel userProfileModel=UserProfileModel();
 
   Future<PlayerOverview> getPlayerOverView(String playerId) async {
 
@@ -177,6 +179,41 @@ class PlayerDetailsProvider extends ChangeNotifier{
       print(e);
     }
     return playerInfoModel;
+  }
+  Future<UserProfileModel> getUserProfile(String userId) async {
+    var body = json.encode({
+      "user_id":userId
+    });
+    // SharedPreferences preferences = await SharedPreferences.getInstance();
+    // String? accToken = preferences.getString("access_token");
+    try {
+      final response = await http.post(
+        Uri.parse('${AppConstants.userProfile}'),
+        body: body,
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          //'Authorization': 'Bearer $accToken',
+        },
+      );
+      var decodedJson = json.decode(response.body);
+      print(decodedJson);
+      if (response.statusCode == 200) {
+        userProfileModel = UserProfileModel.fromJson(decodedJson);
+
+        notifyListeners();
+      } else {
+        throw const HttpException('Failed to load data');
+      }
+    } on SocketException {
+      print('No internet connection');
+    } on HttpException {
+      print('Failed to load data');
+    } on FormatException {
+      print('All Matches  - Invalid data format');
+    } catch (e) {
+      print(e);
+    }
+    return userProfileModel;
   }
 
 }

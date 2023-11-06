@@ -33,6 +33,7 @@ class AppConstants {
    static const String umpireMatches = '$baseUrl/umpire-matches';
    static const String scorerMatches = '$baseUrl/scorer-matches';
     static const String yetToStart = '$baseUrl/yet-to-start';
+    static const String userProfile = '$baseUrl/user-profile';
 
 
 }
