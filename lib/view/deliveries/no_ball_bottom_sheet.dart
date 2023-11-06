@@ -271,13 +271,13 @@ class _NoBallBottomSheetState extends State<NoBallBottomSheet> {
                       ScoringProvider()
                           .scoreUpdate(scoreUpdateRequestModel)
                           .then((value) async {
-                        print("after score update - wide");
+                        print("after score update - no ball");
                         score.setOverNumber(int.parse(value.data!.overNumber.toString()));
                         score.setBallNumber(int.parse(value.data!.ballNumber.toString()));
                         score.setBowlerChangeValue(int.parse(value.data!.bowlerChange.toString()));
 
                         player.setStrikerId(value.data!.strikerId.toString(), "");
-                        player.setStrikerId(value.data!.nonStrikerId.toString(), "");
+                        player.setNonStrikerId(value.data!.nonStrikerId.toString(), "");
                         print("score update print end - wide");
                         SharedPreferences prefs = await SharedPreferences
                             .getInstance();

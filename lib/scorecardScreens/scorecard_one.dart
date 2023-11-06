@@ -689,7 +689,7 @@ class MyProgressIndicator extends StatelessWidget {
               borderRadius: BorderRadius.circular(4),
               value: progress,
               backgroundColor: const Color(0xffAD8E2E),
-              valueColor: AlwaysStoppedAnimation<Color>(Color(0xffFFD200)),
+              valueColor: const AlwaysStoppedAnimation<Color>(Color(0xffFFD200)),
             ),
           ],
         ),
