@@ -36,13 +36,16 @@ class _CommentaryFourSixState extends State<CommentaryFourSix> {
   }
   @override
   Widget build(BuildContext context) {
-    if(commentaryFourSixModel==null){
+    if(commentaryFourSixModel==null||commentaryFourSixModel!.data==null){
       return const SizedBox(
           height: 100,
           width: 100,
           child: Center(child: CircularProgressIndicator(
             backgroundColor: Colors.white,
           )));
+    }
+    if(commentaryFourSixModel!.data!.isEmpty){
+      return const Center(child: Text('No data found'));
     }
     return SingleChildScrollView(
       child: Column(

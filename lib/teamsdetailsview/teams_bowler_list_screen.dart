@@ -16,18 +16,7 @@ class TeamsBowlerListScreen extends StatefulWidget {
 }
 
 class _TeamsBowlerListScreenState extends State<TeamsBowlerListScreen> {
-  List<Map<String,dynamic>> itemLists=[
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Akash",
-      "team":"(Toss and Tails)",
-      "dot":".",
-      "batsman":"Right hand batsman",
-      "button":"Connect",
-    },{},{},{},{},{},{},{},{},{},{},{},
 
-
-  ];
   @override
   Widget build(BuildContext context) {
     return Padding(

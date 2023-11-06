@@ -5,12 +5,15 @@ import 'package:scorer/models/score_card_response_model.dart';
 import 'package:scorer/utils/colours.dart';
 import 'package:sizer/sizer.dart';
 
+import '../provider/scoring_provider.dart';
 import '../utils/images.dart';
 import '../utils/sizes.dart';
 
 class TeamLiveScoreCard extends StatefulWidget {
-  final Data? scoreCardData;
-  const TeamLiveScoreCard(this.scoreCardData, {super.key});
+  final String matchId;
+  final String team1Id;
+  final String team2Id;
+  const TeamLiveScoreCard(this.matchId,this.team1Id,this.team2Id, {super.key});
 
   @override
   State<TeamLiveScoreCard> createState() => _TeamLiveScoreCardState();
@@ -18,11 +21,27 @@ class TeamLiveScoreCard extends StatefulWidget {
 
 class _TeamLiveScoreCardState extends State<TeamLiveScoreCard> {
 
+  Data? scoreCardData;
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+  fetchData() async {
+     await ScoringProvider().getScoreCard(widget.matchId, widget.team1Id).then((data) async{
+
+      setState(() {
+       scoreCardData =data.data;
+      });
+  });
+         }
+
   @override
   Widget build(BuildContext context) {
-    if(widget.scoreCardData==null){
-      return const SizedBox(height: 100,width: 100,
-          child: Center(child: CircularProgressIndicator(),));
+    if(scoreCardData==null){
+      // return const SizedBox(height: 100,width: 100,
+      //     child: Center(child: CircularProgressIndicator(),));
+      return const Center(child: Text('No data found'),);
     }
     return Padding(
       padding:  EdgeInsets.symmetric(horizontal: 4.w),
@@ -35,7 +54,7 @@ class _TeamLiveScoreCardState extends State<TeamLiveScoreCard> {
               borderRadius: BorderRadius.only(topRight: Radius.circular(20),topLeft: Radius.circular(20)),
               color: AppColor.blackColour,
             ),
-            child: Text("CRR: ${widget.scoreCardData!.currRunRate!.runRate??'-'}",style: fontMedium.copyWith(
+            child: Text("CRR: ${scoreCardData!.currRunRate!.runRate??'-'}",style: fontMedium.copyWith(
               fontSize: 10.sp,
               color: AppColor.lightColor,
             ),),
@@ -105,12 +124,12 @@ class _TeamLiveScoreCardState extends State<TeamLiveScoreCard> {
                   ),
                 );
               },
-              itemCount: widget.scoreCardData!.batting!.length,
+              itemCount: scoreCardData!.batting!.length,
               itemBuilder: (BuildContext, int index) {
-                if(widget.scoreCardData!.batting!.isEmpty){
+                if(scoreCardData!.batting!.isEmpty){
                   return Text('No data found');
                 }
-                final item = widget.scoreCardData!.batting![index];
+                final item = scoreCardData!.batting![index];
                 return Row(
                   children: [
                     SizedBox(
@@ -195,22 +214,22 @@ class _TeamLiveScoreCardState extends State<TeamLiveScoreCard> {
               const Spacer(),
               Row(
                 children: [
-                  Text("${widget.scoreCardData!.bowlingExtras!.totalExtras}",style: fontMedium.copyWith(
+                  Text("${scoreCardData!.bowlingExtras!.totalExtras}",style: fontMedium.copyWith(
                     fontSize: 12.sp,
                     color: AppColor.blackColour,
                   ),),
                   SizedBox(width: 2.w,),
-                  Text("${widget.scoreCardData!.bowlingExtras!.legByes}lb,",style: fontRegular.copyWith(
+                  Text("${scoreCardData!.bowlingExtras!.legByes}lb,",style: fontRegular.copyWith(
                     fontSize: 12.sp,
                     color: const Color(0xff777777),
                   ),),
                   SizedBox(width: 2.w,),
-                  Text("${widget.scoreCardData!.bowlingExtras!.wides}w,",style: fontRegular.copyWith(
+                  Text("${scoreCardData!.bowlingExtras!.wides}w,",style: fontRegular.copyWith(
                     fontSize: 12.sp,
                     color: const Color(0xff777777),
                   ),),
                   SizedBox(width: 2.w,),
-                  Text("${widget.scoreCardData!.bowlingExtras!.noBalls}nb",style: fontRegular.copyWith(
+                  Text("${scoreCardData!.bowlingExtras!.noBalls}nb",style: fontRegular.copyWith(
                     fontSize: 12.sp,
                     color: const Color(0xff777777),
                   ),),
@@ -243,13 +262,11 @@ class _TeamLiveScoreCardState extends State<TeamLiveScoreCard> {
               crossAxisCount: 2, // 1 column
               childAspectRatio: 2.5, // Adjust the aspect ratio as needed
             ),
-            itemCount: widget.scoreCardData!.yetToBatPlayers!.length,
+            itemCount: scoreCardData!.yetToBatPlayers!.length,
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) {
-              if(widget.scoreCardData!.yetToBatPlayers!.isEmpty){
-                return Text('No data found');
-              }
-              final item = widget.scoreCardData!.yetToBatPlayers![index];
+
+              final item = scoreCardData!.yetToBatPlayers![index];
               return Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -357,12 +374,10 @@ class _TeamLiveScoreCardState extends State<TeamLiveScoreCard> {
                   ),
                 );
               },
-              itemCount: widget.scoreCardData!.bowling!.length,
+              itemCount: scoreCardData!.bowling!.length,
               itemBuilder: (BuildContext, int index) {
-                if(widget.scoreCardData!.bowling!.isEmpty){
-                  return Text('No data found');
-                }
-                final item = widget.scoreCardData!.bowling![index];
+
+                final item = scoreCardData!.bowling![index];
                 return Row(
                   children: [
                     SizedBox(
@@ -479,12 +494,12 @@ class _TeamLiveScoreCardState extends State<TeamLiveScoreCard> {
                   ),
                 );
               },
-              itemCount: widget.scoreCardData!.fallOfWicket!.length,
+              itemCount: scoreCardData!.fallOfWicket!.length,
               itemBuilder: (BuildContext, int index) {
-                if(widget.scoreCardData!.fallOfWicket!.isEmpty){
+                if(scoreCardData!.fallOfWicket!.isEmpty){
                   return Text('No data found');
                 }
-                final item = widget.scoreCardData!.fallOfWicket![index];
+                final item =scoreCardData!.fallOfWicket![index];
                 return Row(
                   children: [
                     SizedBox(
@@ -573,12 +588,12 @@ class _TeamLiveScoreCardState extends State<TeamLiveScoreCard> {
                   ),
                 );
               },
-              itemCount: widget.scoreCardData!.partnerships!.length,
+              itemCount: scoreCardData!.partnerships!.length,
               itemBuilder: (BuildContext, int index) {
-                if(widget.scoreCardData!.partnerships!.isEmpty){
+                if(scoreCardData!.partnerships!.isEmpty){
                   return Text('No data found');
                 }
-                final item = widget.scoreCardData!.partnerships![index];
+                final item = scoreCardData!.partnerships![index];
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

@@ -35,7 +35,7 @@ class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if(teamOverview==null||teamOverview!.data==null){
+    if(teamOverview==null){
       return const SizedBox(
         height: 50,
         width: 50,
@@ -45,6 +45,9 @@ class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
           ),
         ),
       );
+    }
+    if(teamOverview!.data==null){
+      return const Center(child: Text('No data found'),);
     }
     return Scaffold(
       body: SingleChildScrollView(

@@ -90,7 +90,7 @@ class _TeamInfoScreenState extends State<TeamInfoScreen> {
   }
 
   Widget _buildDivider() {
-    return DottedLine(
+    return const DottedLine(
       dashColor: Color(0xffD2D2D2),
     );
   }

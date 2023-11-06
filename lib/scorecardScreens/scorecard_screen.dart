@@ -73,13 +73,16 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
 
   @override
   Widget build(BuildContext context) {
-    if(scoreCardResponseModel==null||scoreCardResponseModel!.data==null || scoreCardResponseModel!.data!.batting!.isEmpty){
+    if(scoreCardResponseModel==null){
       return const SizedBox(
           height: 100,
           width: 100,
           child: Center(child: CircularProgressIndicator(
             backgroundColor: Colors.white,
           )));
+    }
+    if(scoreCardResponseModel!.data==null){
+      return const Center(child: Text('No data found'),);
     }
     if(scoreCardResponseModel!=null){
        teams= scoreCardResponseModel!.data!.teamsName;
@@ -98,10 +101,25 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
               borderRadius: BorderRadius.only(topRight: Radius.circular(20),topLeft: Radius.circular(20)),
               color: AppColor.blackColour,
             ),
-            child: Text("CRR: ${scoreCardResponseModel!.data!.currRunRate!.runRate??'-'}",style: fontMedium.copyWith(
-              fontSize: 10.sp,
-              color: AppColor.lightColor,
-            ),),
+            child: Row(
+              children:[
+                Text("CRR: ${scoreCardResponseModel!.data!.currRunRate!.runRate??'-'}",style: fontMedium.copyWith(
+                fontSize: 10.sp,
+                color: AppColor.lightColor,
+              ),),
+                (teams!.first.currentInnings==2)?Row(children: [
+                  SizedBox(width: 2.w,),
+                  Text("RRR: ${scoreCardResponseModel!.data!.currRunRate!.reqRunRate??'-'}",style: fontMedium.copyWith(
+                    fontSize: 10.sp,
+                    color: AppColor.lightColor,
+                  ),),
+                  SizedBox(width: 40.w,),
+                  Text("Target: ${scoreCardResponseModel!.data!.currRunRate!.targetScore??'-'}",style: fontMedium.copyWith(
+                    fontSize: 10.sp,
+                    color: AppColor.lightColor,
+                  ),),],):const Text('')
+              ]
+            ),
           ),
           SizedBox(height: 1.h,),
           TabBar(

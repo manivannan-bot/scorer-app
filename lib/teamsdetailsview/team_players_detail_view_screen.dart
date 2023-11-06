@@ -45,6 +45,9 @@ class _TeamPlayersDetailViewScreenState extends State<TeamPlayersDetailViewScree
         ),
       );
     }
+    if(teamPlayersModel!.data==null){
+      return const Center(child: Text('No data found'),);
+    }
     return Scaffold(
       body: Container(
         width: double.infinity,

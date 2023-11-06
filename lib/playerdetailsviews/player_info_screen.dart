@@ -32,13 +32,16 @@ class _PlayerInfoScreenState extends State<PlayerInfoScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    if(playerInfoModel==null||playerInfoModel!.data!.userDetails==null){
+    if(playerInfoModel==null){
       return const SizedBox(
           height: 100,
           width: 100,
           child: Center(child: CircularProgressIndicator(
             backgroundColor: Colors.white,
           )));
+    }
+    if(playerInfoModel!.data!.userDetails==null){
+      return const Center(child: Text('No data found'),);
     }
     return Scaffold(
       body: SingleChildScrollView(

@@ -21,21 +21,7 @@ class PlayerMatchesViewScreen extends StatefulWidget {
 }
 
 class _PlayerMatchesViewScreenState extends State<PlayerMatchesViewScreen> {
-  final List<Map<String, dynamic>> itemList = [
-    {
-      'type': 'live',
 
-
-    },
-    {
-      'type': 'upcoming',
-
-    },
-    {
-      'type': 'completed',
-
-    },
-  ];
   PlayerMatchesModel? playerMatchesModel;
 
   @override
@@ -60,6 +46,9 @@ class _PlayerMatchesViewScreenState extends State<PlayerMatchesViewScreen> {
         width: 50,
         child: Center(child: CircularProgressIndicator()),
       );
+    }
+    if(playerMatchesModel!.data!.isEmpty){
+      return const Center(child: Text('No data found'),);
     }
     return Container(
         padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 2.w),

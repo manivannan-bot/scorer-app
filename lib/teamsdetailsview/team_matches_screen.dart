@@ -34,7 +34,7 @@ class _TeamMatchesScreenState extends State<TeamMatchesScreen>with SingleTickerP
   }
   @override
   Widget build(BuildContext context) {
-    if(teamMatchesModel==null||teamMatchesModel!.data==null){
+    if(teamMatchesModel==null){
       return const SizedBox(
         height: 50,
         width: 50,
@@ -44,6 +44,9 @@ class _TeamMatchesScreenState extends State<TeamMatchesScreen>with SingleTickerP
           ),
         ),
       );
+    }
+    if(teamMatchesModel!.data==null){
+      return const Center(child: Text('No data found'),);
     }
     return Scaffold(
       body: Container(

@@ -45,13 +45,16 @@ class _PlayerStatsScreenState extends State<PlayerStatsScreen>with SingleTickerP
         child: Center(child: CircularProgressIndicator()),
       );
     }
+    if(playerStatsModel!.data==null){
+      return const Center(child: Text('No data found'),);
+    }
     return SingleChildScrollView(
       child: Column(
         children: [
           Container(
             height: 68.h,
             padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 4.w),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30)),
                 color: AppColor.lightColor
             ),

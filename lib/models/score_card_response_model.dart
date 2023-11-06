@@ -142,16 +142,22 @@ class TeamsName {
 
 class CurrRunRate {
   dynamic runRate;
+  dynamic reqRunRate;
+  dynamic targetScore;
 
-  CurrRunRate({this.runRate});
+  CurrRunRate({this.runRate, this.reqRunRate, this.targetScore});
 
   CurrRunRate.fromJson(Map<String, dynamic> json) {
     runRate = json['run_rate'];
+    reqRunRate = json['req_run_rate'];
+    targetScore = json['target_score'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['run_rate'] = this.runRate;
+    data['req_run_rate'] = this.reqRunRate;
+    data['target_score'] = this.targetScore;
     return data;
   }
 }

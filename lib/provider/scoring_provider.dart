@@ -410,7 +410,7 @@ class ScoringProvider extends ChangeNotifier{
 
     try {
       final response = await http.get(
-        Uri.parse('${AppConstants.scoreCardDetail}/$matchId/$teamId'),
+        Uri.parse('${AppConstants.yetToStart}/$matchId/$teamId'),
         // headers: {
         //   // 'Content-Type': 'application/json; charset=UTF-8',
         //   // 'Authorization': 'Bearer $accToken',

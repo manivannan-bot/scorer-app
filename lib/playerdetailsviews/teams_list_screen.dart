@@ -35,7 +35,7 @@ class _TeamListScreenState extends State<TeamListScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    if(playerTeamInfoModel==null||playerTeamInfoModel!.data!.isEmpty){
+    if(playerTeamInfoModel==null){
       return const SizedBox(
         height: 50,
         width: 50,
@@ -45,6 +45,9 @@ class _TeamListScreenState extends State<TeamListScreen> {
           ),
         ),
       );
+    }
+    if(playerTeamInfoModel!.data!.isEmpty){
+      return const Center(child: Text('No data found'),);
     }
     return Scaffold(
       body: SingleChildScrollView(

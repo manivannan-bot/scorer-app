@@ -35,13 +35,16 @@ class _CommentaryWicketScreenState extends State<CommentaryWicketScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    if(commentaryWicketModel==null){
+    if(commentaryWicketModel==null||commentaryWicketModel!.data==null){
       return const SizedBox(
           height: 100,
           width: 100,
           child: Center(child: CircularProgressIndicator(
             backgroundColor: Colors.white,
           )));
+    }
+    if(commentaryWicketModel!.data!.isEmpty){
+      return const Center(child: Text('No data found'));
     }
     return SingleChildScrollView(
       child: Column(

@@ -16,18 +16,7 @@ class TeamsBatterListScreen extends StatefulWidget {
 }
 
 class _TeamsBatterListScreenState extends State<TeamsBatterListScreen> {
-  List<Map<String,dynamic>> itemLists=[
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Akash",
-      "team":"(Toss and Tails)",
-      "dot":".",
-      "batsman":"Right hand batsman",
-      "button":"Connect",
-    },{},{},{},{},{},{},{},{},{},{},{},
 
-
-  ];
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -79,7 +68,7 @@ class _TeamsBatterListScreenState extends State<TeamsBatterListScreen> {
                               color: Color(0xff555555),
                             ),),
                           ],
-                        ):Text('')
+                        ):const Text('')
                       ],),
                     Spacer(),
                     SvgPicture.asset(Images.arrowICon,width: 6.5.w,),

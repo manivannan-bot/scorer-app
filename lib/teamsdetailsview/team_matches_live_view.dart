@@ -74,11 +74,7 @@ class _TeamMatchesLiveViewState extends State<TeamMatchesLiveView> with SingleTi
       setState(() {
         matchList = data.matches;
       });
-      await ScoringProvider().getScoreCard(widget.matchId, widget.team1id).then((value){
-          setState(() {
-            scoreCardResponseModel=value;
-          });
-      });
+
 
       refreshController.refreshCompleted();
     });
@@ -90,6 +86,7 @@ class _TeamMatchesLiveViewState extends State<TeamMatchesLiveView> with SingleTi
       return  const SizedBox( height: 100,width: 100,
           child: Center(child: CircularProgressIndicator()));
     }
+
     return  Scaffold(
         body: SmartRefresher(
           enablePullDown: true,
@@ -229,7 +226,7 @@ class _TeamMatchesLiveViewState extends State<TeamMatchesLiveView> with SingleTi
                     controller: tabController,
                     children:  [
                       //Container(),
-                      TeamLiveScoreCard(scoreCardResponseModel!.data!),
+                      TeamLiveScoreCard(widget.matchId,widget.team1id,widget.team2id),
                       ScorecardScreen(widget.matchId,batTeamId.toString(),fetchData),
                       CommentaryScreen(widget.matchId,batTeamId.toString(),bowlTeamId.toString(),fetchData),
                       InfoScreen(widget.matchId),
