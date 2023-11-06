@@ -24,9 +24,6 @@ class _ThreeCirclesState extends State<ThreeCircles> {
       body: Stack(
         alignment: Alignment.center,
         children: [
-          // ClipOval(child: Image.network("https://i.pinimg.com/736x/25/16/fe/2516fe2678a70c7a4112367a67a4fe6f--grasses.jpg", fit: BoxFit.cover,
-          // width: MediaQuery.of(context).size.width / 1, height: MediaQuery.of(context).size.height / 2.2,)),
-          //circle
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: CustomPaint(
@@ -34,8 +31,8 @@ class _ThreeCirclesState extends State<ThreeCircles> {
               size: Size(width, height),
               child: Center(
                 child: Container(
-                  width: 20,
-                  height: 80,
+                  width: 7.w,
+                  height: 10.h,
                   color: Colors.orangeAccent,
                 ),
               ),

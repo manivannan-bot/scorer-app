@@ -53,12 +53,14 @@ class ScoreUpdateProvider extends ChangeNotifier {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setInt("over_number_innings", overNumberInnings);
     preferences.setInt("ball_number_innings", ballNumberInnings);
+    preferences.setInt("bowler_change", bowlerChange);
   }
 
   getOverAndBallNumberFromPrefs() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
     overNumberInnings = preferences.getInt("over_number_innings") ?? 0;
     ballNumberInnings = preferences.getInt("ball_number_innings") ?? 0;
+    bowlerChange = preferences.getInt("bowler_change") ?? 0;
   }
 
 }

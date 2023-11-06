@@ -250,13 +250,14 @@ class _WideBottomSheetState extends State<WideBottomSheet> {
                               scoreUpdateRequestModel).then((value) async {
                             SharedPreferences prefs = await SharedPreferences
                                 .getInstance();
+                            print(value.data!.overNumber.toString());
                             print("after score update - wide");
                             score.setOverNumber(int.parse(value.data!.overNumber.toString()));
                             score.setBallNumber(int.parse(value.data!.ballNumber.toString()));
                             score.setBowlerChangeValue(int.parse(value.data!.bowlerChange.toString()));
 
                             player.setStrikerId(value.data!.strikerId.toString(), "");
-                            player.setStrikerId(value.data!.nonStrikerId.toString(), "");
+                            player.setNonStrikerId(value.data!.nonStrikerId.toString(), "");
                             print("score update print end - wide");
                             // await prefs.setInt(
                             //     'over_number', value.data!.overNumber ?? 0);

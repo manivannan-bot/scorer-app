@@ -209,7 +209,7 @@ class _DOScoringState extends State<DOScoring> {
                     Text(
                       "Batsman*",
                       style: fontMedium.copyWith(
-                        fontSize: 16.sp,
+                        fontSize: 14.sp,
                         color: AppColor.blackColour,
                       ),
                     ),
@@ -268,56 +268,62 @@ class _DOScoringState extends State<DOScoring> {
                   children: [
                     Row(
                       children: [
-                        Text(
-                          "Bowler*",
-                          style: fontMedium.copyWith(
-                            fontSize: 16.sp,
-                            color: AppColor.blackColour,
-                          ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Bowler*",
+                              style: fontMedium.copyWith(
+                                fontSize: 14.sp,
+                                color: AppColor.blackColour,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 1.h,
+                            ),
+                            GestureDetector(
+                                onTap: () {
+                                  displayBowlerListBottomSheet();
+                                },
+                                child: Consumer<PlayerSelectionProvider>(
+                                    builder: (context, player, child) {
+                                    return ChooseContainer(player.selectedBowlerName == ""
+                                        ? "Bowler"
+                                        : player.selectedBowlerName);
+                                  }
+                                )),
+                          ],
                         ),
-                        SizedBox(
-                          width: 15.w,
-                        ),
-                        Text(
-                          "Wicket Keeper*",
-                          style: fontMedium.copyWith(
-                            fontSize: 16.sp,
-                            color: AppColor.blackColour,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 1.h,
-                    ),
-                    Row(
-                      children: [
-                        GestureDetector(
-                            onTap: () {
-                              displayBowlerListBottomSheet();
-                            },
-                            child: Consumer<PlayerSelectionProvider>(
-                                builder: (context, player, child) {
-                                return ChooseContainer(player.selectedBowlerName == ""
-                                    ? "Bowler"
-                                    : player.selectedBowlerName);
-                              }
-                            )),
                         SizedBox(
                           width: 8.w,
                         ),
-                        GestureDetector(
-                            onTap: () async {
-                              displayWicketKeeperListBottomSheet();
-                            },
-                            child: Consumer<PlayerSelectionProvider>(
-                                builder: (context, player, child) {
-                                return ChooseContainer(
-                                    player.selectedWicketKeeperName == ""
-                                        ? "Wicket Keeper"
-                                        : player.selectedWicketKeeperName);
-                              }
-                            )),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Wicket Keeper*",
+                              style: fontMedium.copyWith(
+                                fontSize: 14.sp,
+                                color: AppColor.blackColour,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 1.h,
+                            ),
+                            GestureDetector(
+                                onTap: () async {
+                                  displayWicketKeeperListBottomSheet();
+                                },
+                                child: Consumer<PlayerSelectionProvider>(
+                                    builder: (context, player, child) {
+                                    return ChooseContainer(
+                                        player.selectedWicketKeeperName == ""
+                                            ? "Wicket Keeper"
+                                            : player.selectedWicketKeeperName);
+                                  }
+                                )),
+                          ],
+                        ),
                       ],
                     )
                   ],
