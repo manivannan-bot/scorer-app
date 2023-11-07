@@ -59,7 +59,7 @@ class _CommentryOversState extends State<CommentryOvers> {
         itemCount: commentaryOversModel!.data!.length,
         itemBuilder: (BuildContext context, int index) {
           final option=commentaryOversModel!.data![index];
-          var overNo=option.overNumber??0+1;
+          var overNo=(option.overNumber??0)+1;
           return  Column(
             children: [
               Row(
@@ -83,7 +83,10 @@ class _CommentryOversState extends State<CommentryOvers> {
                           itemCount:option.noOfBalls!.length ,
                           itemBuilder: (context, int index) {
                             final item = option.noOfBalls![index];
-                            return ScoreContainer( runsScored: '${item.runsScored??'0'}');
+                            if(item.wicket==1){
+                              return ScoreContainer( runsScored: 'w');
+                            }
+                            return ScoreContainer( runsScored: item.slugData??'0');
                           }),
                     ),
                   ),
@@ -138,7 +141,7 @@ class ScoreContainer extends StatelessWidget {
     } else if (runsScored == '4') {
       bgColor = const Color(0xff6654EB);
       textColor=Colors.white;
-    } else if (runsScored == '0') {
+    } else if (runsScored == 'w') {
       bgColor = const Color(0xffFF0000);
       textColor=Colors.white;
     } else {
