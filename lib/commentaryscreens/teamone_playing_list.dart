@@ -138,7 +138,7 @@ class _TeamOnePlayingListState extends State<TeamOnePlayingList> {
                                 color: AppColor.blackColour,
                               ),),
                               SizedBox(height: 0.5.h,),
-                              (item.battingStyle!=null)?Row(
+                              (item.battingStyle!=null|| item.battingStyle.toString().isNotEmpty)?Row(
                                 children: [
                                   CircleAvatar(
                                     backgroundColor: AppColor.pri,

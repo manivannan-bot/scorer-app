@@ -100,7 +100,7 @@ class _ScoreCardTwoState extends State<ScoreCardTwo> {
                                 ),),
                               ),
                               SizedBox(height: 0.5.h,),
-                              (item.battingStyle!=null)?Row(
+                              (item.battingStyle!=null || item.battingStyle!.isNotEmpty)?Row(
                                 children: [
                                   const CircleAvatar(
                                     backgroundColor: AppColor.pri,
