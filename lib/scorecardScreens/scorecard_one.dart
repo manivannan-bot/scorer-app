@@ -22,459 +22,374 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
   Widget build(BuildContext context) {
     return Padding(
       padding:  EdgeInsets.symmetric(horizontal: 4.w),
-      child: MediaQuery.removePadding(
-        removeTop: true,
-        context: context,
-        child: ListView(
-          children: [
-            Row(
-              children: [
-                Text("Batting",style: fontMedium.copyWith(
+      child: ListView(
+        children: [
+          Row(
+            children: [
+              Text("Batting",style: fontMedium.copyWith(
+                fontSize: 14.sp,
+                color: AppColor.blackColour,
+              ),),
+              SizedBox(width: 1.w,),
+              SvgPicture.asset(Images.batIcon,width: 5.w,),
+            ],
+          ),
+          SizedBox(height: 2.h,),
+          Row(
+            children: [
+              SizedBox(
+                width: 35.w,
+                child: Text("Batsman",style: fontRegular.copyWith(
                   fontSize: 12.sp,
-                  color: AppColor.blackColour,
+                  color: AppColor.pri,
                 ),),
-                SizedBox(width: 1.w,),
-                SvgPicture.asset(Images.batIcon,width: 4.w,),
-              ],
-            ),
-            SizedBox(height: 2.h,),
-            Row(
-              children: [
-                SizedBox(
-                  width: 35.w,
-                  child: Text("Batsman",style: fontRegular.copyWith(
-                    fontSize: 12.sp,
-                    color: AppColor.pri,
-                  ),),
-                ),
-                SizedBox(width: 5.w,),
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text("R",style: fontRegular.copyWith(
-                        fontSize: 11.sp,
-                        color: const Color(0xff777777),
-                      ),),
-                      Text("B",style: fontRegular.copyWith(
-                        fontSize: 11.sp,
-                        color: const Color(0xff777777),
-                      ),),
-                      Text("4s",style: fontRegular.copyWith(
-                        fontSize: 11.sp,
-                        color: const Color(0xff777777),
-                      ),),
-                      Text("6s",style: fontRegular.copyWith(
-                        fontSize: 11.sp,
-                        color: const Color(0xff777777),
-                      ),),
-                      Text("SR",style: fontRegular.copyWith(
-                        fontSize: 12.sp,
-                        color: const Color(0xff777777),
-                      ),),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const Divider(
-              color: Color(0xffD3D3D3),
-            ),
-            (widget.scoreCardData.batting!.isEmpty)?const Text('No data found'): ListView.separated(
-              shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                separatorBuilder: (context, _) {
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 0.5.h),
-                    child: const DottedLine(
-                      dashColor: Color(0xffD2D2D2),
-                    ),
-                  );
-                },
-                itemCount: widget.scoreCardData.batting!.length,
-                itemBuilder: (context, int index) {
-                  final item = widget.scoreCardData.batting![index];
-                  return Row(
-                    children: [
-                      SizedBox(
-                        width: 35.w,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Text("${item.playerName}",style: fontRegular.copyWith(
-                                  fontSize: 11.sp,
-                                  color: AppColor.blackColour,
-                                ),),
-                                SizedBox(width: 2.w,),
-                                (item.isOut!=1)?
-                                SvgPicture.asset(Images.batIcon,width: 3.w,color: AppColor.blackColour,):const Text(''),
-                              ],
-                            ),
-                            SizedBox(height: 0.5.h,),
-                            (item.isOut==1)?RichText(
-                                text: TextSpan(children: [
-                                  TextSpan(
-                                      text: ("${item.outName??'-'} ${item.wicketerName}\n"),
-                                      style: fontRegular.copyWith(
-                                        fontSize: 10.sp,
-                                          color: const Color(0xff777777),
-                                      )),
-                                  TextSpan(
-                                      text: "b ${item.wicketBowlerName}",
-                                      style: fontRegular.copyWith(
-                                          fontSize: 10.sp,
-                                          color: const Color(0xff777777)
-                                      )),
-                                ])):Text('Batting',style: fontRegular.copyWith(fontSize: 10.sp,color: const Color(0xff777777)),),
-                            SizedBox(height: 1.h,),
-                          ],
-                        ),
-                      ),
-                      SizedBox(width: 5.w,),
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text("${item.runsScored}",style: fontRegular.copyWith(
-                              fontSize: 10.sp,
-                              color: const Color(0xff777777),
-                            ),),
-                            Text("${item.ballsFaced}",style: fontRegular.copyWith(
-                              fontSize: 10.sp,
-                              color: const Color(0xff777777),
-                            ),),
-                            Text("${item.fours}",style: fontRegular.copyWith(
-                              fontSize: 10.sp,
-                              color: const Color(0xff777777),
-                            ),),
-                            Text("${item.sixes}",style: fontRegular.copyWith(
-                              fontSize: 10.sp,
-                              color: const Color(0xff777777),
-                            ),),
-                            Text("${item.strikeRate}",style: fontRegular.copyWith(
-                              fontSize: 10.sp,
-                              color: const Color(0xff777777),
-                            ),),
-                          ],
-                        ),
-                      ),
-                    ],
-                  );
-                }),
-            const Divider(
-              color: Color(0xffD3D3D3),
-            ),
-            Row(
-              children: [
-                SizedBox(
-                  width: 35.w,
-                  child: Text("Extras:",style: fontRegular.copyWith(
-                    fontSize: 11.sp,
-                    color: AppColor.blackColour,
-                  ),),
-                ),
-                const Spacer(),
-                Row(
+              ),
+              SizedBox(width: 5.w,),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text("${widget.scoreCardData.bowlingExtras!.totalExtras??'0'}",style: fontMedium.copyWith(
-                      fontSize: 11.sp,
-                      color: AppColor.blackColour,
-                    ),),
-                    SizedBox(width: 2.w,),
-                    Text("${widget.scoreCardData.bowlingExtras!.legByes??'0'}lb,",style: fontRegular.copyWith(
-                      fontSize: 10.sp,
+                    Text("R",style: fontRegular.copyWith(
+                      fontSize: 12.sp,
                       color: const Color(0xff777777),
                     ),),
-                    SizedBox(width: 2.w,),
-                    Text("${widget.scoreCardData.bowlingExtras!.wides??'0'}w,",style: fontRegular.copyWith(
-                      fontSize: 10.sp,
+                    Text("B",style: fontRegular.copyWith(
+                      fontSize: 12.sp,
                       color: const Color(0xff777777),
                     ),),
-                    SizedBox(width: 2.w,),
-                    Text("${widget.scoreCardData.bowlingExtras!.noBalls??'0'}nb",style: fontRegular.copyWith(
-                      fontSize: 10.sp,
+                    Text("4s",style: fontRegular.copyWith(
+                      fontSize: 12.sp,
+                      color: const Color(0xff777777),
+                    ),),
+                    Text("6s",style: fontRegular.copyWith(
+                      fontSize: 12.sp,
+                      color: const Color(0xff777777),
+                    ),),
+                    Text("SR",style: fontRegular.copyWith(
+                      fontSize: 12.sp,
                       color: const Color(0xff777777),
                     ),),
                   ],
                 ),
-              ],
-            ),
-            const Divider(
-              color: Color(0xffD3D3D3),
-            ),
-            SizedBox(height: 1.h,),
-
-            //yet to bat
-            Row(
-              children: [
-                Text("Yet to bat",style: fontMedium.copyWith(
+              ),
+            ],
+          ),
+          const Divider(
+            color: Color(0xffD3D3D3),
+          ),
+          (widget.scoreCardData.batting!.isEmpty)?Text('No data found'): ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              separatorBuilder: (context, _) {
+                return Padding(
+                  padding: EdgeInsets.only(bottom: 0.5.h),
+                  child: const DottedLine(
+                    dashColor: Color(0xffD2D2D2),
+                  ),
+                );
+              },
+              itemCount: widget.scoreCardData.batting!.length,
+              itemBuilder: (context, int index) {
+                final item = widget.scoreCardData.batting![index];
+                return Row(
+                  children: [
+                    SizedBox(
+                      width: 35.w,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text("${item.playerName}",style: fontRegular.copyWith(
+                                fontSize: 12.sp,
+                                color: AppColor.blackColour,
+                              ),),
+                              SizedBox(width: 1.w,),
+                              (item.isOut!=1)?
+                              SvgPicture.asset(Images.batIcon,width: 4.w,color: AppColor.blackColour,):Text(''),
+                            ],
+                          ),
+                          SizedBox(height: 0.5.h,),
+                          (item.isOut==1)?RichText(
+                              text: TextSpan(children: [
+                                TextSpan(
+                                    text: ("${item.outName??'-'} ${item.wicketerName}\n"),
+                                    style: fontRegular.copyWith(
+                                      fontSize: 11.sp,
+                                      color: const Color(0xff777777),
+                                    )),
+                                TextSpan(
+                                    text: "b ${item.wicketBowlerName}",
+                                    style: fontRegular.copyWith(
+                                        fontSize: 11.sp,
+                                        color: const Color(0xff777777)
+                                    )),
+                              ])):Text('Batting',style: fontRegular.copyWith(fontSize: 11.sp,color: const Color(0xff777777)),),
+                          SizedBox(height: 1.h,),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 5.w,),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text("${item.runsScored}",style: fontRegular.copyWith(
+                            fontSize: 12.sp,
+                            color: const Color(0xff777777),
+                          ),),
+                          Text("${item.ballsFaced}",style: fontRegular.copyWith(
+                            fontSize: 12.sp,
+                            color: const Color(0xff777777),
+                          ),),
+                          Text("${item.fours}",style: fontRegular.copyWith(
+                            fontSize: 12.sp,
+                            color: const Color(0xff777777),
+                          ),),
+                          Text("${item.sixes}",style: fontRegular.copyWith(
+                            fontSize: 12.sp,
+                            color: const Color(0xff777777),
+                          ),),
+                          Text("${item.strikeRate}",style: fontRegular.copyWith(
+                            fontSize: 12.sp,
+                            color: const Color(0xff777777),
+                          ),),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              }),
+          const Divider(
+            color: Color(0xffD3D3D3),
+          ),
+          Row(
+            children: [
+              SizedBox(
+                width: 35.w,
+                child: Text("Extras:",style: fontRegular.copyWith(
                   fontSize: 12.sp,
                   color: AppColor.blackColour,
                 ),),
-                SizedBox(width: 1.w,),
-                SvgPicture.asset(Images.helmetIcon,width: 4.w,),
-              ],
-            ),
-           SizedBox(height: 3.h,),
-            (widget.scoreCardData.yetToBatPlayers!.isEmpty)
-                ? const Text('No data found')
-                :GridView.builder(
-             physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, // 1 column
-          childAspectRatio: 2.5, // Adjust the aspect ratio as needed
-        ),
-        itemCount: widget.scoreCardData.yetToBatPlayers!.length,
-        shrinkWrap: true,
-        itemBuilder: (BuildContext context, int index) {
-          final item = widget.scoreCardData.yetToBatPlayers![index];
-          return Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-             ClipOval(child: Image.asset(Images.profileImage,width: 10.w,)),
-              SizedBox(width: 3.w,),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              ),
+              const Spacer(),
+              Row(
                 children: [
-                  SizedBox(
-                    width: 30.w,
-                    child: Text("${item.playerName}",style: fontRegular.copyWith(
-                      fontSize: 11.sp,
-                      color: AppColor.blackColour,
-                    ),),
-                  ),
-                  (item.battingStyle!=null)?Row(
-                    children: [
-                      const CircleAvatar(
-                        backgroundColor: AppColor.pri,
-                        radius: 3,
-                      ),
-                      SizedBox(width: 1.w,),
-                      Text("${item.battingStyle}",style: fontRegular.copyWith(
-                        fontSize: 10.sp,
-                        color: const Color(0xff666666)
-                      ),),
-                    ],
-                  ):const Text('')
+                  Text("${widget.scoreCardData.bowlingExtras!.totalExtras??'0'}",style: fontMedium.copyWith(
+                    fontSize: 12.sp,
+                    color: AppColor.blackColour,
+                  ),),
+                  SizedBox(width: 2.w,),
+                  Text("${widget.scoreCardData.bowlingExtras!.legByes??'0'}lb,",style: fontRegular.copyWith(
+                    fontSize: 12.sp,
+                    color: const Color(0xff777777),
+                  ),),
+                  SizedBox(width: 2.w,),
+                  Text("${widget.scoreCardData.bowlingExtras!.wides??'0'}w,",style: fontRegular.copyWith(
+                    fontSize: 12.sp,
+                    color: const Color(0xff777777),
+                  ),),
+                  SizedBox(width: 2.w,),
+                  Text("${widget.scoreCardData.bowlingExtras!.noBalls??'0'}nb",style: fontRegular.copyWith(
+                    fontSize: 12.sp,
+                    color: const Color(0xff777777),
+                  ),),
                 ],
               ),
-
             ],
-          );
-        },
-    ),
-            const Divider(
-              color: Color(0xffD3D3D3),
-            ),
-            SizedBox(height: 1.h,),
-            //bowling
-            Row(
-              children: [
-                Text("Bowling",style: fontMedium.copyWith(
-                  fontSize: 12.sp,
-                  color: AppColor.blackColour,
-                ),),
-                SizedBox(width: 1.w,),
-                SvgPicture.asset(Images.ballIcon,width: 4.w,),
-              ],
-            ),
-            SizedBox(height: 1.h,),
-            Row(
-              children: [
-                SizedBox(
-                  width: 35.w,
-                  child: Text("Bowling",style: fontRegular.copyWith(
-                    fontSize: 11.sp,
-                    color: AppColor.pri,
-                  ),),
-                ),
-                SizedBox(width: 5.w,),
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text("O",style: fontRegular.copyWith(
-                        fontSize: 11.sp,
-                        color: const Color(0xff777777),
-                      ),),
-                      Text("M",style: fontRegular.copyWith(
-                        fontSize: 11.sp,
-                        color: const Color(0xff777777),
-                      ),),
-                      Text("R",style: fontRegular.copyWith(
-                        fontSize: 11.sp,
-                        color: const Color(0xff777777),
-                      ),),
-                      Text("W",style: fontRegular.copyWith(
-                        fontSize: 11.sp,
-                        color: const Color(0xff777777),
-                      ),),
-                      Text("Eco",style: fontRegular.copyWith(
-                        fontSize: 11.sp,
-                        color: const Color(0xff777777),
-                      ),),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const Divider(
-              color: Color(0xffD3D3D3),
-            ),
-            (widget.scoreCardData.bowling!.isEmpty)?const Text('No data found'): ListView.separated(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                separatorBuilder: (context, _) {
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 0.5.h),
-                    child: const DottedLine(
-                      dashColor: Color(0xffD2D2D2),
-                    ),
-                  );
-                },
-                itemCount: widget.scoreCardData.bowling!.length,
-                itemBuilder: (context, int index) {
+          ),
+          const Divider(
+            color: Color(0xffD3D3D3),
+          ),
+          SizedBox(height: 1.h,),
 
-                  final item = widget.scoreCardData.bowling![index];
-                  return Row(
+
+
+          //yet to bat
+          Row(
+            children: [
+              Text("Yet to bat",style: fontMedium.copyWith(
+                fontSize: 14.sp,
+                color: AppColor.blackColour,
+              ),),
+              SizedBox(width: 1.w,),
+              SvgPicture.asset(Images.helmetIcon,width: 5.w,),
+            ],
+          ),
+          SizedBox(height: 1.h,),
+          (widget.scoreCardData.yetToBatPlayers!.isEmpty)? Text('No data found'):GridView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, // 1 column
+              childAspectRatio: 2.5, // Adjust the aspect ratio as needed
+            ),
+            itemCount: widget.scoreCardData.yetToBatPlayers!.length,
+            shrinkWrap: true,
+            itemBuilder: (BuildContext context, int index) {
+
+              final item = widget.scoreCardData.yetToBatPlayers![index];
+              return Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipOval(child: Image.asset(Images.profileImage,width: 12.w,)),
+                  SizedBox(width: 2.w,),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
-                        width: 35.w,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Padding(
-                                  padding:  EdgeInsets.only(top: 0.5.h,bottom: 0.5.h),
-                                  child: Text("${item.playerName??'-'}",style: fontRegular.copyWith(
-                                    fontSize: 11.sp,
-                                    color: AppColor.blackColour,
-                                  ),),
-                                ),
-                                SizedBox(width: 2.w,),
-                                (item.active==1)?
-                                SvgPicture.asset(Images.ballBlackIcon,width: 3.w,color: AppColor.blackColour,):const Text(''),
-                              ],
-                            ),
-                            SizedBox(height: 1.h,),
-                          ],
-                        ),
+                        width: 30.w,
+                        child: Text("${item.playerName}",style: fontRegular.copyWith(
+                          fontSize: 12.sp,
+                          color: AppColor.blackColour,
+                        ),),
                       ),
-                      SizedBox(width: 5.w,),
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text("${item.overBall}",style: fontMedium.copyWith(
+                      (item.battingStyle!=null)?Row(
+                        children: [
+                          const CircleAvatar(
+                            backgroundColor: AppColor.pri,
+                            radius: 4,
+                          ),
+                          SizedBox(width: 1.w,),
+                          Text("${item.battingStyle}",style: fontRegular.copyWith(
                               fontSize: 11.sp,
-                              color: AppColor.blackColour,
-                            ),),
-                            Text("${item.maiden}",style: fontRegular.copyWith(
-                              fontSize: 11.sp,
-                              color: const Color(0xff777777),
-                            ),),
-                            Text("${item.runsConceded}",style: fontRegular.copyWith(
-                              fontSize: 11.sp,
-                              color: const Color(0xff777777),
-                            ),),
-                            Text("${item.wickets}",style: fontMedium.copyWith(
-                              fontSize: 11.sp,
-                              color: AppColor.blackColour,
-                            ),),
-                            Text("${item.economy}",style: fontRegular.copyWith(
-                              fontSize: 11.sp,
-                              color: const Color(0xff777777),
-                            ),),
-                          ],
-                        ),
-                      ),
-                    ],
-                  );
-                }),
-            const Divider(
-              color: Color(0xffD3D3D3),
-            ),
-            SizedBox(height: 1.h,),
-            //fall of wickets
-            Row(
-              children: [
-                Text("Fall of wickets",style: fontMedium.copyWith(
-                  fontSize: 12.sp,
-                  color: AppColor.blackColour,
-                ),),
-                SizedBox(width: 1.w,),
-                SvgPicture.asset(Images.stupmsIconss,width: 4.w,),
-              ],
-            ),
-            SizedBox(height: 1.h,),
-            Row(
-              children: [
-                SizedBox(
-                  width: 50.w,
-                  child: Text("Bowling",style: fontRegular.copyWith(
-                    fontSize: 11.sp,
-                    color: AppColor.pri,
-                  ),),
-                ),
-                SizedBox(width: 5.w,),
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text("Score",style: fontRegular.copyWith(
-                        fontSize: 11.sp,
-                        color: const Color(0xff777777),
-                      ),),
-                      Text("Over",style: fontRegular.copyWith(
-                        fontSize: 11.sp,
-                        color: const Color(0xff777777),
-                      ),),
+                              color: Color(0xff666666)
+                          ),),
+                        ],
+                      ):const Text('')
                     ],
                   ),
+
+                ],
+              );
+            },
+          ),
+          const Divider(
+            color: Color(0xffD3D3D3),
+          ),
+          SizedBox(height: 2.h,),
+
+
+
+          //bowling
+          Row(
+            children: [
+              Text("Bowling",style: fontMedium.copyWith(
+                fontSize: 14.sp,
+                color: AppColor.blackColour,
+              ),),
+              SizedBox(width: 1.w,),
+              SvgPicture.asset(Images.ballIcon,width: 5.w,),
+            ],
+          ),
+          SizedBox(height: 1.h,),
+          Row(
+            children: [
+              SizedBox(
+                width: 35.w,
+                child: Text("Bowling",style: fontRegular.copyWith(
+                  fontSize: 12.sp,
+                  color: AppColor.pri,
+                ),),
+              ),
+              SizedBox(width: 5.w,),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text("O",style: fontRegular.copyWith(
+                      fontSize: 12.sp,
+                      color: const Color(0xff777777),
+                    ),),
+                    Text("M",style: fontRegular.copyWith(
+                      fontSize: 12.sp,
+                      color: const Color(0xff777777),
+                    ),),
+                    Text("R",style: fontRegular.copyWith(
+                      fontSize: 12.sp,
+                      color: const Color(0xff777777),
+                    ),),
+                    Text("W",style: fontRegular.copyWith(
+                      fontSize: 12.sp,
+                      color: const Color(0xff777777),
+                    ),),
+                    Text("Eco",style: fontRegular.copyWith(
+                      fontSize: 12.sp,
+                      color: const Color(0xff777777),
+                    ),),
+                  ],
                 ),
-              ],
-            ),
-            const Divider(
-              color: Color(0xffD3D3D3),
-            ),
-            (widget.scoreCardData.fallOfWicket!.isEmpty)?const Text('No data found'):ListView.separated(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                separatorBuilder: (context, _) {
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 0.5.h),
-                    child: const DottedLine(
-                      dashColor: Color(0xffD2D2D2),
+              ),
+            ],
+          ),
+          const Divider(
+            color: Color(0xffD3D3D3),
+          ),
+          (widget.scoreCardData.bowling!.isEmpty)?Text('No data found'): ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              separatorBuilder: (context, _) {
+                return Padding(
+                  padding: EdgeInsets.only(bottom: 0.5.h),
+                  child: const DottedLine(
+                    dashColor: Color(0xffD2D2D2),
+                  ),
+                );
+              },
+              itemCount: widget.scoreCardData.bowling!.length,
+              itemBuilder: (BuildContext, int index) {
+
+                final item = widget.scoreCardData.bowling![index];
+                return Row(
+                  children: [
+                    SizedBox(
+                      width: 35.w,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Padding(
+                                padding:  EdgeInsets.only(top: 0.5.h,bottom: 0.5.h),
+                                child: Text("${item.playerName??'-'}",style: fontRegular.copyWith(
+                                  fontSize: 12.sp,
+                                  color: AppColor.blackColour,
+                                ),),
+                              ),
+                              SizedBox(width: 1.w,),
+                              (item.active==1)?
+                              SvgPicture.asset(Images.ballBlackIcon,width: 4.w,color: AppColor.blackColour,):Text(''),
+                            ],
+                          ),
+                          SizedBox(height: 1.h,),
+                        ],
+                      ),
                     ),
-                  );
-                },
-                itemCount: widget.scoreCardData.fallOfWicket!.length,
-                itemBuilder: (context, int index) {
-                  final item = widget.scoreCardData.fallOfWicket![index];
-                  return Row(
-                    children: [
-                      SizedBox(
-                        width: 50.w,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Padding(
-                                  padding:  EdgeInsets.only(top: 0.5.h,bottom: 0.5.h),
-                                  child: Text("${item.playerOutName}",style: fontRegular.copyWith(
-                                    fontSize: 11.sp,
-                                    color: AppColor.blackColour,
-                                  ),),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 1.h,),
-                          ],
-                        ),
+                    SizedBox(width: 5.w,),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text("${item.overBall}",style: fontMedium.copyWith(
+                            fontSize: 12.sp,
+                            color: AppColor.blackColour,
+                          ),),
+                          Text("${item.maiden}",style: fontRegular.copyWith(
+                            fontSize: 12.sp,
+                            color: const Color(0xff777777),
+                          ),),
+                          Text("${item.runsConceded}",style: fontRegular.copyWith(
+                            fontSize: 12.sp,
+                            color: const Color(0xff777777),
+                          ),),
+                          Text("${item.wickets}",style: fontMedium.copyWith(
+                            fontSize: 12.sp,
+                            color: AppColor.blackColour,
+                          ),),
+                          Text("${item.economy}",style: fontRegular.copyWith(
+                            fontSize: 12.sp,
+                            color: const Color(0xff777777),
+                          ),),
+                        ],
                       ),
                     ),
                   ],
@@ -503,28 +418,141 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
             children: [
               SizedBox(
                 width: 50.w,
-                child: Text("Batsman",style: fontRegular.copyWith(
-
+                child: Text("Bowling",style: fontRegular.copyWith(
                   fontSize: 12.sp,
-                  color: AppColor.blackColour,
-                ),),
-                SizedBox(width: 1.w,),
-                SvgPicture.asset(Images.partnerShipIcon,width: 4.w,),
-              ],
-            ),
-            SizedBox(height: 1.h,),
-            Row(
-              children: [
-                Text("Batsman 1",style: fontRegular.copyWith(
-                  fontSize: 11.sp,
                   color: AppColor.pri,
                 ),),
-              const Spacer(),
-                Text("Batsman 2",style: fontRegular.copyWith(
-                  fontSize: 11.sp,
-                  color: AppColor.pri,
-                ),),
+              ),
+              SizedBox(width: 5.w,),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text("Score",style: fontRegular.copyWith(
+                      fontSize: 12.sp,
+                      color: const Color(0xff777777),
+                    ),),
+                    Text("Over",style: fontRegular.copyWith(
+                      fontSize: 12.sp,
+                      color: const Color(0xff777777),
+                    ),),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const Divider(
+            color: Color(0xffD3D3D3),
+          ),
+          (widget.scoreCardData.fallOfWicket!.isEmpty)?Text('No data found'):ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              separatorBuilder: (context, _) {
+                return Padding(
+                  padding: EdgeInsets.only(bottom: 0.5.h),
+                  child: const DottedLine(
+                    dashColor: Color(0xffD2D2D2),
+                  ),
+                );
+              },
+              itemCount: widget.scoreCardData.fallOfWicket!.length,
+              itemBuilder: (BuildContext, int index) {
 
+                final item = widget.scoreCardData.fallOfWicket![index];
+                return Row(
+                  children: [
+                    SizedBox(
+                      width: 50.w,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Padding(
+                                padding:  EdgeInsets.only(top: 0.5.h,bottom: 0.5.h),
+                                child: Text("${item.playerOutName}",style: fontRegular.copyWith(
+                                  fontSize: 12.sp,
+                                  color: AppColor.blackColour,
+                                ),),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 1.h,),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 5.w,),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text("${item.wicketNumber}-${item.teamScore}",style: fontMedium.copyWith(
+                            fontSize: 12.sp,
+                            color: AppColor.blackColour,
+                          ),),
+                          Text("${item.over}",style: fontRegular.copyWith(
+                            fontSize: 12.sp,
+                            color: const Color(0xff777777),
+                          ),),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              }),
+          const Divider(
+            color: Color(0xffD3D3D3),
+          ),
+          SizedBox(height: 2.h,),
+
+
+          //patrnership
+          Row(
+            children: [
+              Text("Partnerships",style: fontMedium.copyWith(
+                fontSize: 14.sp,
+                color: AppColor.blackColour,
+              ),),
+              SizedBox(width: 1.w,),
+              SvgPicture.asset(Images.partnerShipIcon,width: 5.w,),
+            ],
+          ),
+          SizedBox(height: 1.h,),
+          Row(
+            children: [
+              Text("Batsman 1",style: fontRegular.copyWith(
+                fontSize: 12.sp,
+                color: AppColor.pri,
+              ),),
+              Spacer(),
+              Text("Batsman 2",style: fontRegular.copyWith(
+                fontSize: 12.sp,
+                color: AppColor.pri,
+              ),),
+
+
+            ],
+          ),
+          const Divider(
+            color: Color(0xffD3D3D3),
+          ),
+          (widget.scoreCardData.partnerships!.isEmpty)?Text('No data found'): ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              separatorBuilder: (context, _) {
+                return Padding(
+                  padding: EdgeInsets.only(bottom: 0.5.h),
+                  child: const DottedLine(
+                    dashColor: Color(0xffD2D2D2),
+                  ),
+                );
+              },
+              itemCount: widget.scoreCardData.partnerships!.length,
+              itemBuilder: (context, int index) {
+                final item = widget.scoreCardData.partnerships![index];
+                int player1Runs = int.tryParse(item.player1RunsScored?.toString() ?? "0") ?? 0;
+                int player2Runs = int.tryParse(item.player2RunsScored?.toString() ?? "0") ?? 0;
+                int totalRuns = player1Runs + player2Runs;
 
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -533,144 +561,105 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                       padding:  EdgeInsets.only(top: 0.5.h,bottom: 1.h),
                       child: Row(
                         children: [
-                          Text("${index+1}st",style: fontRegular.copyWith(
-                            fontSize: 12.sp,
-                            color: const Color(0xff666666)
+                          Text("1st",style: fontRegular.copyWith(
+                              fontSize: 12.sp,
+                              color: Color(0xff666666)
                           ),),
                           SizedBox(width: 1.w,),
                           Text("Wicket",style: fontRegular.copyWith(
                               fontSize: 12.sp,
                               color: Color(0xff666666)
                           ),),
-              ],
-            ),
-            const Divider(
-              color: Color(0xffD3D3D3),
-            ),
-            (widget.scoreCardData.partnerships!.isEmpty)?const Text('No data found'): ListView.separated(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                separatorBuilder: (context, _) {
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 0.5.h),
-                    child: const DottedLine(
-                      dashColor: Color(0xffD2D2D2),
+
+                        ],
+                      ),
                     ),
-                  );
-                },
-                itemCount: widget.scoreCardData.partnerships!.length,
-                itemBuilder: (context, int index) {
-                  final item = widget.scoreCardData.partnerships![index];
-                  int player1Runs = int.tryParse(item.player1RunsScored?.toString() ?? "0") ?? 0;
-                  int player2Runs = int.tryParse(item.player2RunsScored?.toString() ?? "0") ?? 0;
-                  int totalRuns = player1Runs + player2Runs;
-
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding:  EdgeInsets.only(top: 0.5.h,bottom: 1.h),
-                        child: Row(
-                          children: [
-                            Text("1st",style: fontRegular.copyWith(
-                              fontSize: 12.sp,
-                              color: const Color(0xff666666)
-                            ),),
-                            SizedBox(width: 1.w,),
-                            Text("Wicket",style: fontRegular.copyWith(
+                    Padding(
+                      padding:  EdgeInsets.only(top: 0.5.h,bottom: 1.h),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            children: [
+                              Text("${item.player1Name}",style: fontRegular.copyWith(
                                 fontSize: 12.sp,
-                                color: const Color(0xff666666)
-                            ),),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding:  EdgeInsets.only(top: 0.5.h,bottom: 1.h),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              children: [
-                                Text("${item.player1Name}",style: fontRegular.copyWith(
-                                  fontSize: 11.sp,
-                                  color: AppColor.blackColour,
-                                ),),
-                                SizedBox(height: 0.5.h),
-                                RichText(
-                                    text: TextSpan(children: [
-                                      TextSpan(
-                                          text: ("${item.player1RunsScored}"),
-                                          style: fontMedium.copyWith(
-                                            fontSize: 10.sp,
+                                color: AppColor.blackColour,
+                              ),),
+                              SizedBox(height: 0.5.h),
+                              RichText(
+                                  text: TextSpan(children: [
+                                    TextSpan(
+                                        text: ("${item.player1RunsScored}"),
+                                        style: fontMedium.copyWith(
+                                            fontSize: 11.sp,
                                             color: AppColor.blackColour
-                                          )),
-                                      TextSpan(
-                                          text: "(${item.player1BallsFaced})",
-                                          style: fontRegular.copyWith(
-                                              fontSize: 10.sp,
-                                              color: const Color(0xff666666)
-                                          )),
-                                    ])),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                RichText(
-                                    text: TextSpan(children: [
-                                      TextSpan(
-                                          text: ("${item.totalRunsScored}"),
-                                          style: fontMedium.copyWith(
-                                              fontSize: 10.sp,
-                                              color: AppColor.blackColour
-                                          )),
-                                      TextSpan(
-                                          text: "(${item.totalBallsFaced})",
-                                          style: fontRegular.copyWith(
-                                              fontSize: 10.sp,
-                                              color: const Color(0xff666666)
-                                          )),
-                                    ])),
-                                SizedBox(height: 0.5.h),
-                                MyProgressIndicator(currentValue: player1Runs,totalValue: totalRuns,),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Text("${item.player2Name}",style: fontRegular.copyWith(
-                                  fontSize: 11.sp,
-                                  color: AppColor.blackColour,
-                                ),),
-                                SizedBox(height: 0.5.h),
-                                RichText(
-                                    text: TextSpan(children: [
-                                      TextSpan(
-                                          text: ("${item.player2RunsScored}"),
-                                          style: fontMedium.copyWith(
-                                              fontSize: 10.sp,
-                                              color: AppColor.blackColour
-                                          )),
-                                      TextSpan(
-                                          text: "(${item.player2BallsFaced})",
-                                          style: fontRegular.copyWith(
-                                              fontSize: 10.sp,
-                                              color: const Color(0xff666666)
-                                          )),
-                                    ])),
-                              ],
-                            ),
+                                        )),
+                                    TextSpan(
+                                        text: "(${item.player1BallsFaced})",
+                                        style: fontRegular.copyWith(
+                                            fontSize: 11.sp,
+                                            color: const Color(0xff666666)
+                                        )),
+                                  ])),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              RichText(
+                                  text: TextSpan(children: [
+                                    TextSpan(
+                                        text: ("${item.totalRunsScored}"),
+                                        style: fontMedium.copyWith(
+                                            fontSize: 11.sp,
+                                            color: AppColor.blackColour
+                                        )),
+                                    TextSpan(
+                                        text: "(${item.totalBallsFaced})",
+                                        style: fontRegular.copyWith(
+                                            fontSize: 11.sp,
+                                            color: const Color(0xff666666)
+                                        )),
+                                  ])),
+                              SizedBox(height: 0.5.h),
+                              MyProgressIndicator(currentValue: player1Runs,totalValue: totalRuns,),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text("${item.player2Name}",style: fontRegular.copyWith(
+                                fontSize: 12.sp,
+                                color: AppColor.blackColour,
+                              ),),
+                              SizedBox(height: 0.5.h),
+                              RichText(
+                                  text: TextSpan(children: [
+                                    TextSpan(
+                                        text: ("${item.player2RunsScored}"),
+                                        style: fontMedium.copyWith(
+                                            fontSize: 11.sp,
+                                            color: AppColor.blackColour
+                                        )),
+                                    TextSpan(
+                                        text: "(${item.player2BallsFaced})",
+                                        style: fontRegular.copyWith(
+                                            fontSize: 11.sp,
+                                            color: const Color(0xff666666)
+                                        )),
+                                  ])),
+                            ],
+                          ),
 
-                          ],
-                        ),
+                        ],
                       ),
+                    ),
 
-                    ],
-                  );
-                }),
-            const Divider(
-              color: Color(0xffD3D3D3),
-            ),
-    ],
-        ),
+                  ],
+                );
+              }),
+          const Divider(
+            color: Color(0xffD3D3D3),
+          ),
+        ],
       ),
     );
   }
@@ -679,9 +668,11 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
 
 
 class MyProgressIndicator extends StatelessWidget {
-   int currentValue = 40;
-   int totalValue = 100;
+  int currentValue = 40;
+  int totalValue = 100;
+
   MyProgressIndicator({super.key, required this.currentValue, required this.totalValue});
+
 
   @override
   Widget build(BuildContext context) {
@@ -698,7 +689,7 @@ class MyProgressIndicator extends StatelessWidget {
               borderRadius: BorderRadius.circular(4),
               value: progress,
               backgroundColor: const Color(0xffAD8E2E),
-              valueColor: const AlwaysStoppedAnimation<Color>(Color(0xffFFD200)),
+              valueColor: AlwaysStoppedAnimation<Color>(Color(0xffFFD200)),
             ),
           ],
         ),
