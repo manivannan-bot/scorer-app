@@ -49,7 +49,7 @@ class _InfoScreenState extends State<InfoScreen> {
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 6.w),
         width: double.infinity,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30)),
             color: AppColor.lightColor
         ),
@@ -87,7 +87,7 @@ class _InfoScreenState extends State<InfoScreen> {
                         ],
                       ),
                     ),
-                    DottedLine(
+                    const DottedLine(
                       dashColor: Color(0xffD2D2D2),
                     ),
                     Padding(
@@ -108,7 +108,7 @@ class _InfoScreenState extends State<InfoScreen> {
                         ],
                       ),
                     ),
-                    DottedLine(
+                    const DottedLine(
                       dashColor: Color(0xffD2D2D2),
                     ),
                     Padding(
@@ -129,7 +129,7 @@ class _InfoScreenState extends State<InfoScreen> {
                         ],
                       ),
                     ),
-                    DottedLine(
+                    const DottedLine(
                       dashColor: Color(0xffD2D2D2),
                     ),
                     Padding(
@@ -182,7 +182,7 @@ class _InfoScreenState extends State<InfoScreen> {
                 fontSize: 14.sp,
                 color: AppColor.blackColour,
               ),),
-              Divider(
+              const Divider(
                 color: Color(0xffD3D3D3),
               ),
               Padding(

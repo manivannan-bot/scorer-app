@@ -476,33 +476,35 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                           ],
                         ),
                       ),
-                      SizedBox(width: 5.w,),
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text("${item.wicketNumber}-${item.teamScore}",style: fontMedium.copyWith(
-                              fontSize: 11.sp,
-                              color: AppColor.blackColour,
-                            ),),
-                            Text("${item.over}",style: fontRegular.copyWith(
-                              fontSize: 11.sp,
-                              color: const Color(0xff777777),
-                            ),),
-                          ],
-                        ),
-                      ),
-                    ],
-                  );
-                }),
-            const Divider(
-              color: Color(0xffD3D3D3),
-            ),
-            SizedBox(height: 2.h,),
-            //patrnership
-            Row(
-              children: [
-                Text("Partnerships",style: fontMedium.copyWith(
+                    ),
+                  ],
+                );
+              }),
+          const Divider(
+            color: Color(0xffD3D3D3),
+          ),
+          SizedBox(height: 2.h,),
+
+
+
+          //fall of wickets
+          Row(
+            children: [
+              Text("Fall of wickets",style: fontMedium.copyWith(
+                fontSize: 14.sp,
+                color: AppColor.blackColour,
+              ),),
+              SizedBox(width: 1.w,),
+              SvgPicture.asset(Images.stupmsIconss,width: 5.w,),
+            ],
+          ),
+          SizedBox(height: 1.h,),
+          Row(
+            children: [
+              SizedBox(
+                width: 50.w,
+                child: Text("Batsman",style: fontRegular.copyWith(
+
                   fontSize: 12.sp,
                   color: AppColor.blackColour,
                 ),),
@@ -524,6 +526,22 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                 ),),
 
 
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding:  EdgeInsets.only(top: 0.5.h,bottom: 1.h),
+                      child: Row(
+                        children: [
+                          Text("${index+1}st",style: fontRegular.copyWith(
+                            fontSize: 12.sp,
+                            color: const Color(0xff666666)
+                          ),),
+                          SizedBox(width: 1.w,),
+                          Text("Wicket",style: fontRegular.copyWith(
+                              fontSize: 12.sp,
+                              color: Color(0xff666666)
+                          ),),
               ],
             ),
             const Divider(

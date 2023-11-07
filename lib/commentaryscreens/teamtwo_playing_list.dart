@@ -131,9 +131,9 @@ class _TeamTwoPlayingListState extends State<TeamTwoPlayingList> {
                                 color: AppColor.blackColour,
                               ),),
                               SizedBox(height: 0.5.h,),
-                              (item.battingStyle!=null)? Row(
+                              (item.battingStyle!=null|| item.battingStyle.toString().isNotEmpty)? Row(
                                 children: [
-                                  CircleAvatar(
+                                  const CircleAvatar(
                                     backgroundColor: AppColor.pri,
                                     radius: 4,
                                   ),

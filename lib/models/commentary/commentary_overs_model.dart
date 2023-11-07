@@ -60,13 +60,15 @@ class NoOfBalls {
   int? runsScored;
   int? wicket;
   String? ballType;
+  String? slugData;
 
-  NoOfBalls({this.runsScored, this.wicket, this.ballType});
+  NoOfBalls({this.runsScored, this.wicket, this.ballType, this.slugData});
 
   NoOfBalls.fromJson(Map<String, dynamic> json) {
     runsScored = json['runs_scored'];
     wicket = json['wicket'];
     ballType = json['ball_type'];
+    slugData = json['slug_data'];
   }
 
   Map<String, dynamic> toJson() {
@@ -74,6 +76,7 @@ class NoOfBalls {
     data['runs_scored'] = this.runsScored;
     data['wicket'] = this.wicket;
     data['ball_type'] = this.ballType;
+    data['slug_data'] = this.slugData;
     return data;
   }
 }
