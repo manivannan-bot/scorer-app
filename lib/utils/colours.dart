@@ -21,7 +21,7 @@ class AppColor {
   static const Color bookedSlot = Color(0xffD6D6D6);
   static const Color inactiveBottomNavText = Color(0xffB2B2B2);
 
-  static const Color locationIconColor = Color(0xffD7E814);
+  static const Color locationIconColor = Color(0xff9CC530);
   static const Color offingCardBgColor = Color(0xffF2ECE6);
   static const Color oldNotificationBgColor = Color(0xffEBEBEB);
   static const Color unselectedTabColor = Color(0xff9D9DA0);
@@ -32,6 +32,9 @@ class AppColor {
   static const Color hintColour = Color(0xffA7A7A7);
   static const Color blackColour = Color(0xff333333);
   static const Color textGrey = Color(0xff777777);
+
+  static const Color gradient1 = Color(0xffFCF2AF);
+  static const Color gradient2 = Color(0xffF9D700);
 
 
 }

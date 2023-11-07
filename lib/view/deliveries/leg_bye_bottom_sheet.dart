@@ -177,13 +177,13 @@ class _LegByeBottomSheetState extends State<LegByeBottomSheet> {
                           scoreUpdateRequestModel.endInnings=false;
                           scoreUpdateRequestModel.bowlerPosition=bowlerPosition;
                           ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
-                            print("after score update - wide");
+                            print("after score update - lb");
                             score.setOverNumber(int.parse(value.data!.overNumber.toString()));
                             score.setBallNumber(int.parse(value.data!.ballNumber.toString()));
                             score.setBowlerChangeValue(int.parse(value.data!.bowlerChange.toString()));
 
                             player.setStrikerId(value.data!.strikerId.toString(), "");
-                            player.setStrikerId(value.data!.nonStrikerId.toString(), "");
+                            player.setNonStrikerId(value.data!.nonStrikerId.toString(), "");
                             print("score update print end - wide");
                             SharedPreferences prefs = await SharedPreferences.getInstance();
                             await prefs.setInt('over_number', value.data!.overNumber??0);

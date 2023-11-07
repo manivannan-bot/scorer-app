@@ -193,68 +193,64 @@ class MatchPreviewBottomSheet extends StatelessWidget {
                     spacing: 3.w,
                     runSpacing: 2.h,
                     children: [
-                      Expanded(
-                        child: Column(
-                          children: [
-                            Text("Umpire 2",style: fontRegular.copyWith(
-                              fontSize: 12.sp,
-                              color: AppColor.blackColour,
-                            ),),
-                            SizedBox(height: 1.h,),
-                            Container(
-                              width: 42.w,
-                              height: 16.h,
-                              padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 1.5.h),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                color: const Color(0xffF8F9FA),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  ClipOval(child: Image.asset(Images.umpireImage,width: 16.w,)),
-                                  SizedBox(height: 0.5.h,),
-                                  Text("ArunKumar",style: fontMedium.copyWith(
-                                    fontSize: 12.sp,
-                                    color: AppColor.blackColour,
-                                  ),),
-                                ],
-                              ),
+                      Column(
+                        children: [
+                          Text("Umpire 2",style: fontRegular.copyWith(
+                            fontSize: 12.sp,
+                            color: AppColor.blackColour,
+                          ),),
+                          SizedBox(height: 1.h,),
+                          Container(
+                            width: 42.w,
+                            height: 16.h,
+                            padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 1.5.h),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: const Color(0xffF8F9FA),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                ClipOval(child: Image.asset(Images.umpireImage,width: 16.w,)),
+                                SizedBox(height: 0.5.h,),
+                                Text("ArunKumar",style: fontMedium.copyWith(
+                                  fontSize: 12.sp,
+                                  color: AppColor.blackColour,
+                                ),),
+                              ],
+                            ),
 
-                            )
-                          ],
-                        ),
+                          )
+                        ],
                       ),
-                      Expanded(
-                        child: Column(
-                          children: [
-                            Text("Umpire 2",style: fontRegular.copyWith(
-                              fontSize: 12.sp,
-                              color: AppColor.blackColour,
-                            ),),
-                            SizedBox(height: 1.h,),
-                            Container(
-                              width: 42.w,
-                              height: 16.h,
-                              padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 1.5.h),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                color: const Color(0xffF8F9FA),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  ClipOval(child: Image.asset(Images.umpireImage,width: 16.w,)),
-                                  SizedBox(height: 0.5.h,),
-                                  Text("vinayagam\nMoorthy",style: fontMedium.copyWith(
-                                    fontSize: 12.sp,
-                                    color: AppColor.blackColour,
-                                  ),),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
+                      Column(
+                        children: [
+                          Text("Umpire 2",style: fontRegular.copyWith(
+                            fontSize: 12.sp,
+                            color: AppColor.blackColour,
+                          ),),
+                          SizedBox(height: 1.h,),
+                          Container(
+                            width: 42.w,
+                            height: 16.h,
+                            padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 1.5.h),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: const Color(0xffF8F9FA),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                ClipOval(child: Image.asset(Images.umpireImage,width: 16.w,)),
+                                SizedBox(height: 0.5.h,),
+                                Text("vinayagam\nMoorthy",style: fontMedium.copyWith(
+                                  fontSize: 12.sp,
+                                  color: AppColor.blackColour,
+                                ),),
+                              ],
+                            ),
+                          )
+                        ],
                       ),
                       Column(
                         children: [

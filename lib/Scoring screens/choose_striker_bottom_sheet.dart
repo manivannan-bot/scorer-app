@@ -207,12 +207,7 @@ class _ChooseStrikerBottomSheetState extends State<ChooseStrikerBottomSheet> {
           else if(!isResultEmpty && searching)...[
             Expanded(
             child: FadeIn(
-              child: ListView.separated(
-                separatorBuilder: (context, _) {
-                  return const Divider(
-                    thickness: 0.6,
-                  );
-                },
+              child: ListView.builder(
                 itemCount: searchedBatsman!.length,
                 itemBuilder: (context, index) {
                   final player = searchedBatsman![index];
@@ -235,81 +230,86 @@ class _ChooseStrikerBottomSheetState extends State<ChooseStrikerBottomSheet> {
                               // onItemSelected(localSelectedIndex);
                             });
                           },
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 2.5.w, vertical: 1.h),
-                            child: Row(
-                              children: [
-                                //circular button
-                                Container(
-                                  height:
-                                  20.0, // Adjust the height as needed
-                                  width: 20.0, // Adjust the width as needed
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: localSelectedIndex == index
-                                        ? Colors.blue
-                                        : Colors
-                                        .grey, // Change colors based on selected index
-                                  ),
-                                  child: const Center(
-                                    child: Icon(
-                                      Icons
-                                          .circle_outlined, // You can change the icon as needed
-                                      color: Colors.white, // Icon color
-                                      size: 20.0, // Icon size
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 3.w,
-                                ),
-                                Image.asset(
-                                  Images.playersImage,
-                                  width: 10.w,
-                                ),
-                                SizedBox(
-                                  width: 2.w,
-                                ),
-                                Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 2.5.w, vertical: 1.h),
+                                child: Row(
                                   children: [
-                                    Text(
-                                      searchedBatsman![index].playerName ?? '-',
-                                      style: fontMedium.copyWith(
-                                        fontSize: 12.sp,
-                                        color: AppColor.blackColour,
+                                    //circular button
+                                    Container(
+                                      height:
+                                      20.0, // Adjust the height as needed
+                                      width: 20.0, // Adjust the width as needed
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: localSelectedIndex == index
+                                            ? Colors.blue
+                                            : Colors
+                                            .grey, // Change colors based on selected index
+                                      ),
+                                      child: const Center(
+                                        child: Icon(
+                                          Icons
+                                              .circle_outlined, // You can change the icon as needed
+                                          color: Colors.white, // Icon color
+                                          size: 20.0, // Icon size
+                                        ),
                                       ),
                                     ),
-                                    Row(
+                                    SizedBox(
+                                      width: 3.w,
+                                    ),
+                                    Image.asset(
+                                      Images.playersImage,
+                                      width: 10.w,
+                                    ),
+                                    SizedBox(
+                                      width: 2.w,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
                                       children: [
-                                        Container(
-                                          height: 1.h,
-                                          width: 2.w,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                            BorderRadius.circular(50),
-                                            color: AppColor.pri,
+                                        Text(
+                                          searchedBatsman![index].playerName ?? '-',
+                                          style: fontMedium.copyWith(
+                                            fontSize: 12.sp,
+                                            color: AppColor.blackColour,
                                           ),
                                         ),
-                                        SizedBox(
-                                          width: 2.w,
-                                        ),
-                                        Text(
-                                          searchedBatsman![index].battingStyle ?? '-',
-                                          style: fontMedium.copyWith(
-                                              fontSize: 11.sp,
-                                              color:
-                                              const Color(0xff555555)),
+                                        Row(
+                                          children: [
+                                            Container(
+                                              height: 1.h,
+                                              width: 2.w,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                BorderRadius.circular(50),
+                                                color: AppColor.pri,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 2.w,
+                                            ),
+                                            Text(
+                                              searchedBatsman![index].battingStyle ?? '-',
+                                              style: fontMedium.copyWith(
+                                                  fontSize: 11.sp,
+                                                  color:
+                                                  const Color(0xff555555)),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
+                                    const Spacer(),
                                   ],
                                 ),
-                                const Spacer(),
-                              ],
-                            ),
+                              ),
+                              const Divider(),
+                            ],
                           ),
                         );
                       }
@@ -453,15 +453,7 @@ class _ChooseStrikerBottomSheetState extends State<ChooseStrikerBottomSheet> {
               color: AppColor.lightColor,
             ),
             child: Row(
-              // mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Visibility(visible:showError,
-                  child: Text('Choose a striker',
-                    style: fontMedium.copyWith(
-                        color: Colors.red,
-                      fontSize: 12.sp
-                    ),),
-                ),
                 const Spacer(),
                 GestureDetector(
                     onTap: () {
