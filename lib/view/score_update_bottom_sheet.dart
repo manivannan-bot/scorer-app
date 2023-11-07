@@ -799,10 +799,10 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                           print("non striker id ${player.selectedNonStrikerId}");
                           print("passing over number to score update api ${score.overNumberInnings}");
                           print("passing ball number to score update api ${score.ballNumberInnings}");
+                          print("passing overs bowled to score update api ${score.oversBowled}");
                           score.trackOvers(score.overNumberInnings, score.ballNumberInnings);
                           SharedPreferences prefs = await SharedPreferences.getInstance();
                           var bowlerPosition=prefs.getInt('bowlerPosition')??0;
-                          var oversBowled=prefs.getInt('overs_bowled')??0;
                           scoreUpdateRequestModel.ballTypeId=widget.run;
                           scoreUpdateRequestModel.matchId=widget.scoringData.data!.batting![0].matchId;
                           scoreUpdateRequestModel.scorerId=46;
@@ -821,7 +821,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                           scoreUpdateRequestModel.innings=1;
                           scoreUpdateRequestModel.battingTeamId=widget.scoringData.data!.batting![0].teamId??0;
                           scoreUpdateRequestModel.bowlingTeamId=widget.scoringData.data!.bowling!.teamId??0;
-                          scoreUpdateRequestModel.overBowled=oversBowled;
+                          scoreUpdateRequestModel.overBowled=score.oversBowled;
                           scoreUpdateRequestModel.totalOverBowled=0;
                           scoreUpdateRequestModel.outByPlayer=0;
                           scoreUpdateRequestModel.outPlayer=0;

@@ -6,6 +6,7 @@ class ScoreUpdateProvider extends ChangeNotifier {
   int overNumberInnings = 0;
   int ballNumberInnings = 0;
   int bowlerChange = 0;
+  int? oversBowled;
   List<String> overFollowup = [];
 
   trackOvers(int overNumber, int ballNumber){
@@ -42,10 +43,16 @@ class ScoreUpdateProvider extends ChangeNotifier {
     print("updated bowler change $bowlerChange");
   }
 
+  setOversBowledValue(int? value){
+    oversBowled = value;
+    notifyListeners();
+  }
+
   clearOverAndBallNumber(){
     overNumberInnings = 0;
     ballNumberInnings = 0;
     bowlerChange = 0;
+    oversBowled = 0;
     notifyListeners();
   }
 
@@ -54,6 +61,7 @@ class ScoreUpdateProvider extends ChangeNotifier {
     preferences.setInt("over_number_innings", overNumberInnings);
     preferences.setInt("ball_number_innings", ballNumberInnings);
     preferences.setInt("bowler_change", bowlerChange);
+    preferences.setInt("overs_bowled", oversBowled ?? 0);
   }
 
   getOverAndBallNumberFromPrefs() async{
@@ -61,6 +69,7 @@ class ScoreUpdateProvider extends ChangeNotifier {
     overNumberInnings = preferences.getInt("over_number_innings") ?? 0;
     ballNumberInnings = preferences.getInt("ball_number_innings") ?? 0;
     bowlerChange = preferences.getInt("bowler_change") ?? 0;
+    oversBowled = preferences.getInt("overs_bowled") ?? 0;
   }
 
 }

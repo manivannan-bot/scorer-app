@@ -38,16 +38,12 @@ class _ScoreCardTwoState extends State<ScoreCardTwo> {
 
   @override
   Widget build(BuildContext context) {
-    if(playersList==null){
-      return const SizedBox(
-          height: 100,
-          width: 100,
-          child: Center(child: CircularProgressIndicator(
-            backgroundColor: Colors.white,
-          )));
-    }
-    return Padding(
-      padding:  EdgeInsets.symmetric(horizontal: 4.w),
+    return playersList == null
+        ? const Center(child: CircularProgressIndicator(
+          backgroundColor: Colors.white,
+        ))
+    : Padding(
+      padding: EdgeInsets.symmetric(horizontal: 4.w),
       child: ListView(
         children: [
           Column(
@@ -109,10 +105,8 @@ class _ScoreCardTwoState extends State<ScoreCardTwo> {
                                   SizedBox(width: 1.w,),
                                   Text("${item.battingStyle}",style: fontRegular.copyWith(
                                       fontSize: 11.sp,
-                                      color: Color(0xff555555),
+                                      color: const Color(0xff555555),
                                   ),),
-
-
                                 ],
                               ):const Text(''),
                             ],
