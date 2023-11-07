@@ -24,6 +24,7 @@ import 'package:scorer/view/widgets/scorer_grid_item.dart';
 import 'package:scorer/view/widgets/scorer_grid_out.dart';
 
 import 'package:scorer/widgets/custom_vertical_dottedLine.dart';
+import 'package:scorer/widgets/snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:sizer/sizer.dart';
@@ -613,9 +614,8 @@ class _ScoringTabState extends State<ScoringTab> {
                                                 print("non striker id ${player.selectedNonStrikerId}");
                                                 print("passing over number to score update api ${score.overNumberInnings}");
                                                 print("passing ball number to score update api ${score.ballNumberInnings}");
+                                                print("passing overs bowled to score update api ${score.oversBowled}");
                                                 score.trackOvers(score.overNumberInnings, score.ballNumberInnings);
-                                                SharedPreferences prefs = await SharedPreferences.getInstance();
-                                                var oversBowled=prefs.getInt('overs_bowled')??0;
 
                                                 scoreUpdateRequestModel.ballTypeId=0;
                                                 scoreUpdateRequestModel.matchId=int.parse(widget.matchId);
@@ -635,7 +635,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                                 scoreUpdateRequestModel.innings=1;
                                                 scoreUpdateRequestModel.battingTeamId=scoringData!.data!.batting![index1].teamId??0;
                                                 scoreUpdateRequestModel.bowlingTeamId=scoringData!.data!.bowling!.teamId??0;
-                                                scoreUpdateRequestModel.overBowled=oversBowled;
+                                                scoreUpdateRequestModel.overBowled=score.oversBowled;
                                                 scoreUpdateRequestModel.totalOverBowled=0;
                                                 scoreUpdateRequestModel.outByPlayer=0;
                                                 scoreUpdateRequestModel.outPlayer=0;
@@ -887,7 +887,6 @@ class _ScoringTabState extends State<ScoringTab> {
   }
 
   void changeBowler() {
-
     ScoringProvider().getPlayerList(widget.matchId,widget.team2Id,'bowl').then((value) {
       setState(() {
         itemsBowler=[];
@@ -931,6 +930,7 @@ class _ScoringTabState extends State<ScoringTab> {
     int? localBowlerIndex ;
     isResultEmpty=true;
     String playerId = "";
+    int? oversBowled;
     showModalBottomSheet(context: context,
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
@@ -1064,6 +1064,7 @@ class _ScoringTabState extends State<ScoringTab> {
                             onTap: () {
                               setState(() {
                                 playerId = searchedList[index].playerId.toString();
+                                oversBowled = searchedList[index].oversBowled;
                                 if (localBowlerIndex  == index) {
                                   localBowlerIndex  = null; // Deselect the item if it's already selected
                                 } else {
@@ -1149,6 +1150,7 @@ class _ScoringTabState extends State<ScoringTab> {
                               onTap: () {
                                 setState(() {
                                   playerId = searchedList[index].playerId.toString();
+                                  oversBowled = searchedList[index].oversBowled;
                                   if (localBowlerIndex  == index) {
                                     localBowlerIndex  = null; // Deselect the item if it's already selected
                                   } else {
@@ -1227,10 +1229,6 @@ class _ScoringTabState extends State<ScoringTab> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Visibility(visible:showError,
-                          child: Text('Please Select one Player',style: fontMedium.copyWith(color: Colors.red),),
-
-                        ),
                         GestureDetector(onTap:(){
                           Navigator.pop(context);
                         },
@@ -1243,15 +1241,17 @@ class _ScoringTabState extends State<ScoringTab> {
                             final score = Provider.of<ScoreUpdateProvider>(context, listen: false);
                             players.setBowlerId(playerId, "");
                             score.setBowlerChangeValue(0);
+                            print("setting overs bowled value for the bowler $oversBowled");
+                            score.setOversBowledValue(oversBowled ?? 0);
                             SharedPreferences prefs = await SharedPreferences.getInstance();
                             await prefs.setInt('bowler_id', searchedList[localBowlerIndex!].playerId!);
                             await prefs.setInt('bowler_change', 0);
-                            Navigator.pop(context);
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              Navigator.pop(context);
+                            });
                           }else{
-                            setState(() {showError=true;});
-                            Timer(const Duration(seconds: 4), () {setState(() {showError = false;});});
+                           Dialogs.snackBar("Select a bowler", context, isError: true);
                           }
-
                         },child: const OkBtn("Ok")),
                       ],
                     ),

@@ -26,7 +26,7 @@ class NoBallBottomSheet extends StatefulWidget {
 
 class _NoBallBottomSheetState extends State<NoBallBottomSheet> {
 
-  int? isOffSideSelected=0 ;
+  int? noBallTypeId = 0 ;
   int? isNBSelected ;
   List<Map<String, dynamic>> chipData =[
     {
@@ -143,7 +143,7 @@ class _NoBallBottomSheetState extends State<NoBallBottomSheet> {
                 GestureDetector(
                   onTap: (){
                     setState(() {
-                      isOffSideSelected=0;
+                      noBallTypeId=0;
                     });
                   },
                   child: Container(
@@ -153,7 +153,7 @@ class _NoBallBottomSheetState extends State<NoBallBottomSheet> {
                       border: Border.all(
                         color: const Color(0xffDADADA),
                       ),
-                      color: isOffSideSelected==0 ? AppColor.primaryColor : const Color(0xffF8F9FA),
+                      color: noBallTypeId==0 ? AppColor.primaryColor : const Color(0xffF8F9FA),
                     ),
                     child: Text("Grease",style: fontMedium.copyWith(
                       fontSize: 12.sp,
@@ -165,13 +165,13 @@ class _NoBallBottomSheetState extends State<NoBallBottomSheet> {
                 GestureDetector(
                   onTap: (){
                     setState(() {
-                      isOffSideSelected=1;
+                      noBallTypeId=1;
                     });
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.5.h),
                     decoration: BoxDecoration(
-                        color: isOffSideSelected==1?AppColor.primaryColor:const Color(0xffF8F9FA),
+                        color: noBallTypeId==1?AppColor.primaryColor:const Color(0xffF8F9FA),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
                           color: const Color(0xffDADADA),
@@ -187,13 +187,13 @@ class _NoBallBottomSheetState extends State<NoBallBottomSheet> {
                 GestureDetector(
                   onTap: (){
                     setState(() {
-                      isOffSideSelected=2;
+                      noBallTypeId=2;
                     });
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.5.h),
                     decoration: BoxDecoration(
-                        color: isOffSideSelected==2?AppColor.primaryColor:const Color(0xffF8F9FA),
+                        color: noBallTypeId==2?AppColor.primaryColor:const Color(0xffF8F9FA),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
                           color: const Color(0xffDADADA),
@@ -267,7 +267,7 @@ class _NoBallBottomSheetState extends State<NoBallBottomSheet> {
                       scoreUpdateRequestModel.fieldingPositionsId = 0;
                       scoreUpdateRequestModel.endInnings = false;
                       scoreUpdateRequestModel.bowlerPosition=bowlerPosition;
-                      scoreUpdateRequestModel.noBallsType=isOffSideSelected;
+                      scoreUpdateRequestModel.noBallsType = noBallTypeId;
                       ScoringProvider()
                           .scoreUpdate(scoreUpdateRequestModel)
                           .then((value) async {
