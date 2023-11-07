@@ -59,11 +59,12 @@ class _CommentryOversState extends State<CommentryOvers> {
         itemCount: commentaryOversModel!.data!.length,
         itemBuilder: (BuildContext context, int index) {
           final option=commentaryOversModel!.data![index];
+          var overNo=option.overNumber??0+1;
           return  Column(
             children: [
               Row(
                 children: [
-                  Text('Over ${option.overNumber}',style: fontMedium.copyWith(
+                  Text('Over ${overNo}',style: fontMedium.copyWith(
                     fontSize: 13.sp,
                     color: Color(0xff666666),
                   ),),

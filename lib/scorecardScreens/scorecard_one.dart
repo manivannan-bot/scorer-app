@@ -418,7 +418,7 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
             children: [
               SizedBox(
                 width: 50.w,
-                child: Text("Bowling",style: fontRegular.copyWith(
+                child: Text("Batsman",style: fontRegular.copyWith(
                   fontSize: 12.sp,
                   color: AppColor.pri,
                 ),),
@@ -561,9 +561,9 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                       padding:  EdgeInsets.only(top: 0.5.h,bottom: 1.h),
                       child: Row(
                         children: [
-                          Text("1st",style: fontRegular.copyWith(
+                          Text("${index+1}st",style: fontRegular.copyWith(
                             fontSize: 12.sp,
-                            color: Color(0xff666666)
+                            color: const Color(0xff666666)
                           ),),
                           SizedBox(width: 1.w,),
                           Text("Wicket",style: fontRegular.copyWith(
