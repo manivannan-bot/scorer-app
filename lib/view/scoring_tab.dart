@@ -136,6 +136,18 @@ class _ScoringTabState extends State<ScoringTab> {
         scoringData = value;
         selectedBowlerName=scoringData!.data!.bowling!.playerName.toString();
       });
+      // final player = Provider.of<PlayerSelectionProvider>(context, listen: false);
+      // if(value.data?.batting?.first.striker == 1){
+      //   player.setStrikerId(value.data!.batting!.first.playerId, value.data!.batting!.first.playerName);
+      // } else {
+      //   player.setNonStrikerId(value.data!.batting!.first.playerId, value.data!.batting!.first.playerName);
+      // }
+      //
+      // if(value.data?.batting?.last.striker == 1){
+      //   player.setStrikerId(value.data!.batting!.first.playerId, value.data!.batting!.first.playerName);
+      // } else {
+      //   player.setNonStrikerId(value.data!.batting!.first.playerId, value.data!.batting!.first.playerName);
+      // }
       _refreshController.refreshCompleted();
     });
   }
@@ -169,21 +181,21 @@ class _ScoringTabState extends State<ScoringTab> {
             backgroundColor: Colors.white,
           )));
     }
-    if(scoringData!.data!.batting!.isEmpty || scoringData!.data!.bowling==null){
-      return scoringData!.data!.batting!.isEmpty? const SizedBox(
-          height: 100,
-          width: 100,
-          child: Center(child: Text('Please Select Batsman'))): const SizedBox(
-          height: 100,
-          width: 100,
-          child: Center(child: Text('Please Select Bowler')));
-    }
-    if(scoringData!.data!.batting!.length<2){
-      var player=scoringData!.data!.batting!.first.striker==1?'non_striker_id':'striker_id';
-      // changeBatsman(player);
-      return const SizedBox(height: 100, width: 100,
-          child: Center(child: Text('Please Select Batsman')));
-    }
+    // if(scoringData!.data!.batting!.isEmpty || scoringData!.data!.bowling==null){
+    //   return scoringData!.data!.batting!.isEmpty? const SizedBox(
+    //       height: 100,
+    //       width: 100,
+    //       child: Center(child: Text('Please Select Batsman'))): const SizedBox(
+    //       height: 100,
+    //       width: 100,
+    //       child: Center(child: Text('Please Select Bowler')));
+    // }
+    // if(scoringData!.data!.batting!.length<2){
+    //   var player=scoringData!.data!.batting!.first.striker==1?'non_striker_id':'striker_id';
+    //   // changeBatsman(player);
+    //   return const SizedBox(height: 100, width: 100,
+    //       child: Center(child: Text('Please Select Batsman')));
+    // }
     int totalBallId = 0;
     showError=false;
     for (int index = 0; index < scoringData!.data!.over!.length; index++) {
@@ -276,11 +288,11 @@ class _ScoringTabState extends State<ScoringTab> {
                                           ),
                                           RichText(
                                             text: TextSpan(
-                                                text: scoringData!.data!.batting![index1].runsScored.toString()??'0',
+                                                text: scoringData!.data!.batting![index1].runsScored.toString(),
                                                 style: fontMedium.copyWith(
                                                     color: AppColor.textColor, fontSize: 10.sp),
                                                 children: <TextSpan>[
-                                                  TextSpan(text: ' (${scoringData!.data!.batting![index1].ballsFaced.toString()??'0'})',
+                                                  TextSpan(text: ' (${scoringData!.data!.batting![index1].ballsFaced.toString()})',
                                                       style: fontRegular.copyWith(
                                                           color: AppColor.textColor, fontSize: 10.sp),
                                                   )
@@ -292,35 +304,76 @@ class _ScoringTabState extends State<ScoringTab> {
                                       SizedBox(
                                         height: 1.5.h,
                                       ),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text((scoringData!.data!.batting?[index2]!=null)?'${scoringData!.data!.batting![index2].playerName??'-'} ':'-',
+                                      if(scoringData!.data!.batting!.length < 2)...[
+                                        InkWell(
+                                          onTap: (){
+                                            if(scoringData!.data!.batting!.first.striker == 1){
+                                              changeBatsman("non_striker_id");
+                                            } else {
+                                              changeBatsman("striker_id");
+                                            }
+                                          },
+                                          child: Container(
+                                              width: double.maxFinite,
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 1.4.h
+                                              ),
+                                              margin: EdgeInsets.symmetric(
+                                                  horizontal: 5.w
+                                              ),
+                                              decoration: BoxDecoration(
+                                                  color: AppColor.availableSlot.withOpacity(0.6),
+                                                  borderRadius: BorderRadius.circular(10.0)
+                                              ),
+                                              child: Center(
+                                                child: Text("Choose Batsman",
                                                   style: fontMedium.copyWith(
-                                                      color: Colors.black, fontSize: 10.sp)),
-                                              SizedBox(width:1.w),
-                                              scoringData!.data!.batting![index2].striker == 1
-                                                  ? SvgPicture.asset(Images.batIcon,
-                                                  color: AppColor.locationIconColor) :  SizedBox(width:1.w),
-                                            ],
+                                                      color: AppColor.textColor,
+                                                      fontSize: 10.sp
+                                                  ),),
+                                              )
                                           ),
-                                          RichText(
-                                            text: TextSpan(
-                                                text: scoringData!.data!.batting![index2].runsScored.toString()??'0',
-                                                style: fontMedium.copyWith(
-                                                    color: AppColor.textColor, fontSize: 10.sp),
-                                                children: <TextSpan>[
-                                                  TextSpan(text: ' (${scoringData!.data!.batting![index2].ballsFaced.toString()??'0'})',
-                                                    style: fontRegular.copyWith(
-                                                        color: AppColor.textColor, fontSize: 10.sp),
-                                                  )
+                                        )
+                                      ] else ...[
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text((scoringData!.data!.batting?.length == 2) ?'${scoringData!.data!.batting![index2].playerName??'-'} ':'-',
+                                                    style: fontMedium.copyWith(
+                                                        color: Colors.black, fontSize: 10.sp)),
+                                                SizedBox(width:1.w),
+                                                if(scoringData!.data!.batting?.length == 2)...[
+                                                  scoringData!.data!.batting![index2].striker == 1
+                                                      ? SvgPicture.asset(Images.batIcon,
+                                                      color: AppColor.locationIconColor) :  SizedBox(width:1.w),
+                                                ] else ...[
+                                                  const SizedBox()
                                                 ]
+                                              ],
                                             ),
-                                          ),
-                                        ],
-                                      ),
+                                            if(scoringData!.data!.batting?.length == 2)...[
+                                              RichText(
+                                                text: TextSpan(
+                                                    text: scoringData!.data!.batting![index2].runsScored.toString(),
+                                                    style: fontMedium.copyWith(
+                                                        color: AppColor.textColor, fontSize: 10.sp),
+                                                    children: <TextSpan>[
+                                                      TextSpan(text: ' (${scoringData!.data!.batting![index2].ballsFaced.toString()})',
+                                                        style: fontRegular.copyWith(
+                                                            color: AppColor.textColor, fontSize: 10.sp),
+                                                      )
+                                                    ]
+                                                ),
+                                              ),
+                                            ] else ...[
+                                              const SizedBox()
+                                            ],
+
+                                          ],
+                                        ),
+                                      ],
                                     ],
                                   ),
                                 ),
@@ -499,13 +552,15 @@ class _ScoringTabState extends State<ScoringTab> {
                                                             width: 40,
                                                             height: 40,
                                                             margin: const EdgeInsets.symmetric(horizontal: 5),
-                                                            decoration: const BoxDecoration(
-                                                              color: Colors.black,
+                                                            decoration: BoxDecoration(
+                                                              color: scoringData!.data!.over![index].slug.toString() == "OUT"
+                                                              ? AppColor.redColor : Colors.black,
                                                               shape: BoxShape.circle,
                                                             ),
                                                             child: Center(
                                                               child: Text(
-                                                                scoringData!.data!.over![index].slug.toString(),
+                                                                scoringData!.data!.over![index].slug.toString() == "OUT"
+                                                                ? "W" : scoringData!.data!.over![index].slug.toString(),
                                                                 style:  fontRegular.copyWith(
                                                                   color: Colors.white,
                                                                   fontSize: 16,
@@ -645,31 +700,41 @@ class _ScoringTabState extends State<ScoringTab> {
                                                 scoreUpdateRequestModel.bowlerPosition=bowlerPosition;
                                                 ScoringProvider().scoreUpdate(scoreUpdateRequestModel)
                                                     .then((value)async {
-                                                  setState(() {
-                                                    scoreUpdateResponseModel=value;
-                                                  });
-                                                  print("striker and non striker id - ${value.data?.strikerId.toString()} ${value.data?.nonStrikerId.toString()}");
+                                                      if(value.data?.inningCompleted == true){
+                                                        Dialogs.snackBar(value.data!.inningsMessage.toString(), context);
+                                                        await Future.delayed(const Duration(seconds: 2));
+                                                        if(mounted){
+                                                          Navigator.pop(context);
+                                                          Navigator.pop(context);
+                                                        }
+                                                      } else {
+                                                        setState(() {
+                                                          scoreUpdateResponseModel=value;
+                                                        });
+                                                        print("striker and non striker id - ${value.data?.strikerId.toString()} ${value.data?.nonStrikerId.toString()}");
 
-                                                  print("after score update - 0");
-                                                  print(value.data?.overNumber);
-                                                  print(value.data?.ballNumber);
-                                                  print(value.data?.bowlerChange);
-                                                  print("score update print end - 0");
+                                                        print("after score update - 0");
+                                                        print(value.data?.overNumber);
+                                                        print(value.data?.ballNumber);
+                                                        print(value.data?.bowlerChange);
+                                                        print("score update print end - 0");
 
-                                                  print("0 - setting over number ${value.data?.overNumber} and ball number ${value.data?.ballNumber} and bowler change ${value.data?.bowlerChange} to provider after score update");
-                                                  score.setOverNumber(value.data?.overNumber??0);
-                                                  score.setBallNumber(value.data?.ballNumber??0);
-                                                  score.setBowlerChangeValue(value.data?.bowlerChange??0);
-                                                  player.setStrikerId(value.data!.strikerId.toString(), "");
-                                                  player.setNonStrikerId(value.data!.nonStrikerId.toString(), "");
-                                                  SharedPreferences prefs = await SharedPreferences.getInstance();
-                                                  await prefs.setInt('bowlerPosition', 0);
-                                                  await prefs.setInt('ball_number_check', value.data?.ballNumber ?? 0);
-                                                  if(value.data?.strikerId==0 || value.data?.nonStrikerId==0){
-                                                    String player = (value.data?.strikerId==0) ? 'striker_id':'non_striker_id';
-                                                    changeBatsman(player);
-                                                  }
-                                                  _refreshData();
+                                                        print("0 - setting over number ${value.data?.overNumber} and ball number ${value.data?.ballNumber} and bowler change ${value.data?.bowlerChange} to provider after score update");
+                                                        score.setOverNumber(value.data?.overNumber??0);
+                                                        score.setBallNumber(value.data?.ballNumber??0);
+                                                        score.setBowlerChangeValue(value.data?.bowlerChange??0);
+                                                        player.setStrikerId(value.data!.strikerId.toString(), "");
+                                                        player.setNonStrikerId(value.data!.nonStrikerId.toString(), "");
+                                                        SharedPreferences prefs = await SharedPreferences.getInstance();
+                                                        await prefs.setInt('bowlerPosition', 0);
+                                                        await prefs.setInt('ball_number_check', value.data?.ballNumber ?? 0);
+                                                        if(value.data?.strikerId==0 || value.data?.nonStrikerId==0){
+                                                          String player = (value.data?.strikerId==0) ? 'striker_id':'non_striker_id';
+                                                          changeBatsman(player);
+                                                        }
+                                                        _refreshData();
+                                                      }
+
                                                 });
                                               }
 
@@ -1027,7 +1092,7 @@ class _ScoringTabState extends State<ScoringTab> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 5.w),
-                    child: Text('${selectedBTeamName}',style: fontMedium.copyWith(
+                    child: Text('$selectedBTeamName',style: fontMedium.copyWith(
                         fontSize:14.sp,
                         color: AppColor.pri
                     ),),
@@ -1051,85 +1116,91 @@ class _ScoringTabState extends State<ScoringTab> {
                   ]
                   else if(!isResultEmpty&&searching)...[
                     Expanded(
-                      child:   ListView.separated(
-                        separatorBuilder:(context ,_) {
-                          return const Divider(
-                            thickness: 0.6,
-                          );
-                        },
+                      child: ListView.builder(
                         itemCount: searchedList.length,
                         itemBuilder: (context, index) {
                           final isActive=searchedList[index].active??0;
-                          return GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                playerId = searchedList[index].playerId.toString();
-                                oversBowled = searchedList[index].oversBowled;
-                                if (localBowlerIndex  == index) {
-                                  localBowlerIndex  = null; // Deselect the item if it's already selected
-                                } else {
-                                  localBowlerIndex  = index; // Select the item if it's not selected
-                                }
-                                onItemSelected(localBowlerIndex);
-                              });
-                            },
-                            child:Opacity(opacity: isActive==1?0.5:1,
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 2.5.w,vertical: 1.h),
-                                child: Row(
-                                  children: [
-                                    //circular button
-                                    Container(
-                                      height: 20.0, // Adjust the height as needed
-                                      width: 20.0,  // Adjust the width as needed
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: localBowlerIndex  == index ? Colors.blue : Colors.grey, // Change colors based on selected index
-                                      ),
-                                      child: const Center(
-                                        child: Icon(
-                                          Icons.circle_outlined, // You can change the icon as needed
-                                          color: Colors.white, // Icon color
-                                          size: 20.0, // Icon size
-                                        ),
-                                      ),
-                                    ), SizedBox(width: 3.w,),
-                                    Image.asset(Images.playersImage,width: 10.w,),
-                                    SizedBox(width: 2.w,),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text("${searchedList![index].playerName??'-'}",style: fontMedium.copyWith(
-                                          fontSize: 12.sp,
-                                          color: AppColor.blackColour,
-                                        ),),
-                                        Row(
+                          return Consumer<PlayerSelectionProvider>(
+                            builder: (context, player, child) {
+                              return player.selectedWicketKeeperId == searchedList[index].playerId.toString()
+                                ? const SizedBox()
+                              : Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        playerId = searchedList[index].playerId.toString();
+                                        oversBowled = searchedList[index].oversBowled;
+                                        if (localBowlerIndex  == index) {
+                                          localBowlerIndex  = null; // Deselect the item if it's already selected
+                                        } else {
+                                          localBowlerIndex  = index; // Select the item if it's not selected
+                                        }
+                                        onItemSelected(localBowlerIndex);
+                                      });
+                                    },
+                                    child:Opacity(opacity: isActive==1?0.5:1,
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 2.5.w,vertical: 1.h),
+                                        child: Row(
                                           children: [
+                                            //circular button
                                             Container(
-                                              height:1.h,
-                                              width: 2.w,
+                                              height: 20.0, // Adjust the height as needed
+                                              width: 20.0,  // Adjust the width as needed
                                               decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(50),
-                                                color: AppColor.pri,
+                                                shape: BoxShape.circle,
+                                                color: localBowlerIndex  == index ? Colors.blue : Colors.grey, // Change colors based on selected index
                                               ),
-                                            ),
+                                              child: const Center(
+                                                child: Icon(
+                                                  Icons.circle_outlined, // You can change the icon as needed
+                                                  color: Colors.white, // Icon color
+                                                  size: 20.0, // Icon size
+                                                ),
+                                              ),
+                                            ), SizedBox(width: 3.w,),
+                                            Image.asset(Images.playersImage,width: 10.w,),
                                             SizedBox(width: 2.w,),
-                                            Text(searchedList![index].bowlingStyle??'-',style: fontMedium.copyWith(
-                                                fontSize: 11.sp,
-                                                color: const Color(0xff555555)
-                                            ),),
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text("${searchedList[index].playerName??'-'}",style: fontMedium.copyWith(
+                                                  fontSize: 12.sp,
+                                                  color: AppColor.blackColour,
+                                                ),),
+                                                Row(
+                                                  children: [
+                                                    Container(
+                                                      height:1.h,
+                                                      width: 2.w,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.circular(50),
+                                                        color: AppColor.pri,
+                                                      ),
+                                                    ),
+                                                    SizedBox(width: 2.w,),
+                                                    Text(searchedList[index].bowlingStyle??'-',style: fontMedium.copyWith(
+                                                        fontSize: 11.sp,
+                                                        color: const Color(0xff555555)
+                                                    ),),
+                                                  ],
+                                                ),
+
+                                              ],
+                                            ),
+                                            const Spacer(),
+
                                           ],
                                         ),
-
-                                      ],
+                                      ),
                                     ),
-                                    const Spacer(),
 
-                                  ],
-                                ),
-                              ),
-                            ),
-
+                                  ),
+                                  const Divider(),
+                                ],
+                              );
+                            }
                           );
                         },
                       ),
@@ -1137,85 +1208,91 @@ class _ScoringTabState extends State<ScoringTab> {
                   ]
                   else...[
                       Expanded(
-                        child:   ListView.separated(
-                          separatorBuilder:(context ,_) {
-                            return const Divider(
-                              thickness: 0.6,
-                            );
-                          },
+                        child: ListView.builder(
                           itemCount: searchedList.length,
                           itemBuilder: (context, index) {
                             final isActive=searchedList[index].active??0;
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  playerId = searchedList[index].playerId.toString();
-                                  oversBowled = searchedList[index].oversBowled;
-                                  if (localBowlerIndex  == index) {
-                                    localBowlerIndex  = null; // Deselect the item if it's already selected
-                                  } else {
-                                    localBowlerIndex  = index; // Select the item if it's not selected
-                                  }
-                                  onItemSelected(localBowlerIndex);
-                                });
-                              },
-                              child:Opacity(opacity: isActive==1?0.5:1,
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 2.5.w,vertical: 1.h),
-                                  child: Row(
-                                    children: [
-                                      //circular button
-                                      Container(
-                                        height: 20.0, // Adjust the height as needed
-                                        width: 20.0,  // Adjust the width as needed
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: localBowlerIndex  == index ? Colors.blue : Colors.grey, // Change colors based on selected index
-                                        ),
-                                        child: const Center(
-                                          child: Icon(
-                                            Icons.circle_outlined, // You can change the icon as needed
-                                            color: Colors.white, // Icon color
-                                            size: 20.0, // Icon size
-                                          ),
-                                        ),
-                                      ), SizedBox(width: 3.w,),
-                                      Image.asset(Images.playersImage,width: 10.w,),
-                                      SizedBox(width: 2.w,),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(searchedList[index].playerName??'-',style: fontMedium.copyWith(
-                                            fontSize: 12.sp,
-                                            color: AppColor.blackColour,
-                                          ),),
-                                          Row(
+                            return Consumer<PlayerSelectionProvider>(
+                              builder: (context, player, child) {
+                                return player.selectedWicketKeeperId == searchedList[index].playerId.toString()
+                                    ? const SizedBox()
+                                    : Column(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                          playerId = searchedList[index].playerId.toString();
+                                          oversBowled = searchedList[index].oversBowled;
+                                          if (localBowlerIndex  == index) {
+                                            localBowlerIndex  = null; // Deselect the item if it's already selected
+                                          } else {
+                                            localBowlerIndex  = index; // Select the item if it's not selected
+                                          }
+                                          onItemSelected(localBowlerIndex);
+                                        });
+                                  },
+                                  child:Opacity(opacity: isActive==1?0.5:1,
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(horizontal: 2.5.w,vertical: 1.h),
+                                          child: Row(
                                             children: [
+                                              //circular button
                                               Container(
-                                                height:1.h,
-                                                width: 2.w,
+                                                height: 20.0, // Adjust the height as needed
+                                                width: 20.0,  // Adjust the width as needed
                                                 decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(50),
-                                                  color: AppColor.pri,
+                                                  shape: BoxShape.circle,
+                                                  color: localBowlerIndex  == index ? Colors.blue : Colors.grey, // Change colors based on selected index
                                                 ),
-                                              ),
+                                                child: const Center(
+                                                  child: Icon(
+                                                    Icons.circle_outlined, // You can change the icon as needed
+                                                    color: Colors.white, // Icon color
+                                                    size: 20.0, // Icon size
+                                                  ),
+                                                ),
+                                              ), SizedBox(width: 3.w,),
+                                              Image.asset(Images.playersImage,width: 10.w,),
                                               SizedBox(width: 2.w,),
-                                              Text(searchedList[index].bowlingStyle??'-',style: fontMedium.copyWith(
-                                                  fontSize: 11.sp,
-                                                  color: const Color(0xff555555)
-                                              ),),
+                                              Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(searchedList[index].playerName??'-',style: fontMedium.copyWith(
+                                                    fontSize: 12.sp,
+                                                    color: AppColor.blackColour,
+                                                  ),),
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                        height:1.h,
+                                                        width: 2.w,
+                                                        decoration: BoxDecoration(
+                                                          borderRadius: BorderRadius.circular(50),
+                                                          color: AppColor.pri,
+                                                        ),
+                                                      ),
+                                                      SizedBox(width: 2.w,),
+                                                      Text(searchedList[index].bowlingStyle??'-',style: fontMedium.copyWith(
+                                                          fontSize: 11.sp,
+                                                          color: const Color(0xff555555)
+                                                      ),),
+                                                    ],
+                                                  ),
+
+                                                ],
+                                              ),
+                                              const Spacer(),
+
                                             ],
                                           ),
-
-                                        ],
-                                      ),
-                                      const Spacer(),
-
-                                    ],
+                                        ),
                                   ),
-                                ),
-                              ),
 
+                                ),
+                                        const Divider(),
+                                      ],
+                                    );
+                              }
                             );
                           },
                         ),
@@ -1246,6 +1323,7 @@ class _ScoringTabState extends State<ScoringTab> {
                             SharedPreferences prefs = await SharedPreferences.getInstance();
                             await prefs.setInt('bowler_id', searchedList[localBowlerIndex!].playerId!);
                             await prefs.setInt('bowler_change', 0);
+                            _refreshData();
                             WidgetsBinding.instance.addPostFrameCallback((_) {
                               Navigator.pop(context);
                             });
@@ -1275,7 +1353,7 @@ class _ScoringTabState extends State<ScoringTab> {
         isScrollControlled: true,
         builder: (context)=> StatefulBuilder(
           builder: (context, setState) {
-            return BatsmanListBottomSheet(widget.matchId, widget.team1Id, player);
+            return BatsmanListBottomSheet(widget.matchId, widget.team1Id, player, _refreshData);
           },
         )
     );
@@ -1346,7 +1424,6 @@ class _ScoringTabState extends State<ScoringTab> {
         builder: (context)=> StatefulBuilder(builder: (context, setState){
           return Container(
             height: 60.h,
-            // padding: EdgeInsets.symmetric(horizontal: 2.w),
             decoration: const BoxDecoration(
                 color: AppColor.lightColor,
                 borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
@@ -1394,7 +1471,7 @@ class _ScoringTabState extends State<ScoringTab> {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return OutMethodDialog(label: 'Bowled', id: data['id'], scoringData: scoringData!);
+                                return OutMethodDialog(label: 'Bowled', id: data['id'], scoringData: scoringData!, refresh: _refreshData);
                               },
                             );
                           }
@@ -1402,7 +1479,7 @@ class _ScoringTabState extends State<ScoringTab> {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return OutMethodDialog(label: 'LBW',id: data['id'],scoringData: scoringData!);
+                                return OutMethodDialog(label: 'LBW',id: data['id'],scoringData: scoringData!, refresh: _refreshData);
                               },
                             );
                           }
@@ -1410,7 +1487,7 @@ class _ScoringTabState extends State<ScoringTab> {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return OutMethodDialog(label: 'Caught Behind',id: data['id'],scoringData: scoringData!);
+                                return OutMethodDialog(label: 'Caught Behind',id: data['id'],scoringData: scoringData!, refresh: _refreshData);
                               },
                             );
                           }
@@ -1418,7 +1495,7 @@ class _ScoringTabState extends State<ScoringTab> {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return OutMethodDialog(label: 'Caught & Bowled',id: data['id'],scoringData: scoringData!);
+                                return OutMethodDialog(label: 'Caught & Bowled',id: data['id'],scoringData: scoringData!, refresh: _refreshData);
                               },
                             );
                           }
@@ -1426,7 +1503,7 @@ class _ScoringTabState extends State<ScoringTab> {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return OutMethodDialog(label: 'Mankaded',id: data['id'],scoringData: scoringData!);
+                                return OutMethodDialog(label: 'Mankaded',id: data['id'],scoringData: scoringData!, refresh: _refreshData);
                               },
                             );
                           }
@@ -1434,7 +1511,7 @@ class _ScoringTabState extends State<ScoringTab> {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return OutMethodDialog(label: 'Hit Wicket',id: data['id'],scoringData: scoringData!);
+                                return OutMethodDialog(label: 'Hit Wicket',id: data['id'],scoringData: scoringData!, refresh: _refreshData);
                               },
                             );
                           }
@@ -1442,7 +1519,7 @@ class _ScoringTabState extends State<ScoringTab> {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return OutMethodDialog(label: 'Handling the Ball',id: data['id'],scoringData: scoringData!);
+                                return OutMethodDialog(label: 'Handling the Ball',id: data['id'],scoringData: scoringData!, refresh: _refreshData);
                               },
                             );
                           }
@@ -1450,7 +1527,7 @@ class _ScoringTabState extends State<ScoringTab> {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return OutMethodDialog(label: 'Hit the Ball Twice',id: data['id'],scoringData: scoringData!);
+                                return OutMethodDialog(label: 'Hit the Ball Twice',id: data['id'],scoringData: scoringData!, refresh: _refreshData);
                               },
                             );
                           }
@@ -1507,11 +1584,12 @@ class _ScoringTabState extends State<ScoringTab> {
           );
         })
     ).then((value)async {
+      final player = Provider.of<PlayerSelectionProvider>(context, listen: false);
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      var strikerId=prefs.getInt('striker_id')??0;
-      var nonStrikerId=prefs.getInt('non_striker_id')??0;
-      if(strikerId==0 || nonStrikerId==0 ) {
-        String player=(strikerId==0)?'striker_id':'non_striker_id';
+      var strikerId=player.selectedStrikerId;
+      var nonStrikerId=player.selectedNonStrikerId;
+      if(strikerId == "" || nonStrikerId == "" ) {
+        String player=(strikerId == "" || strikerId == "null")?'striker_id':'non_striker_id';
         changeBatsman(player);
       }
     });

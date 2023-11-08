@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 import 'package:scorer/widgets/snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 import '../models/player_list_model.dart';
 import '../models/save_batsman_request_model.dart';
+import '../provider/player_selection_provider.dart';
 import '../provider/scoring_provider.dart';
 import '../utils/colours.dart';
 import '../utils/images.dart';
@@ -15,7 +17,8 @@ import '../widgets/ok_btn.dart';
 
 class BatsmanListBottomSheet extends StatefulWidget {
   final String matchId, team1Id, player;
-  const BatsmanListBottomSheet(this.matchId, this.team1Id, this.player, {super.key});
+  final VoidCallback refresh;
+  const BatsmanListBottomSheet(this.matchId, this.team1Id, this.player, this.refresh, {super.key});
 
   @override
   State<BatsmanListBottomSheet> createState() => _BatsmanListBottomSheetState();
@@ -26,7 +29,7 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
   bool searching = false;
   bool isResultEmpty = false;
   String searchedText = "";
-  int? localBowlerIndex = 0;
+  int? localBatsmanIndex = 0;
   TextEditingController searchController = TextEditingController();
   List<BattingPlayers>? searchedBatsman = [];
   List<BattingPlayers>? itemsBatsman = [];
@@ -67,6 +70,7 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
     // TODO: implement initState
     super.initState();
     getData();
+    print("batsman type ${widget.player}");
   }
 
   @override
@@ -133,7 +137,7 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
                         decoration: InputDecoration(
                           isDense: true,
                           border: InputBorder.none,
-                          hintText: "Search for bowlers",
+                          hintText: "Search for batsman",
                           hintStyle: fontRegular.copyWith(
                               fontSize: 10.sp,
                               color: AppColor.textMildColor
@@ -206,10 +210,10 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
 
                         } else {
                           setState(() {
-                            if (localBowlerIndex == index) {
-                              localBowlerIndex = null;
+                            if (localBatsmanIndex == index) {
+                              localBatsmanIndex = null;
                             } else {
-                              localBowlerIndex = index;
+                              localBatsmanIndex = index;
                             }
                             // onItemSelected(localBowlerIndex);
                           });
@@ -228,9 +232,9 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
                                 width: 20.0, // Adjust the width as needed
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: localBowlerIndex == index ? Colors
-                                      .blue : Colors
-                                      .grey, // Change colors based on selected index
+                                  color: localBatsmanIndex == index
+                                      ? Colors.blue
+                                      : Colors.grey, // Change colors based on selected index
                                 ),
                                 child: const Center(
                                   child: Icon(
@@ -311,10 +315,10 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
 
                           } else {
                             setState(() {
-                              if (localBowlerIndex == index) {
-                                localBowlerIndex = null;
+                              if (localBatsmanIndex == index) {
+                                localBatsmanIndex = null;
                               } else {
-                                localBowlerIndex = index;
+                                localBatsmanIndex = index;
                               }
                               // onItemSelected(localBowlerIndex);
                             });
@@ -333,7 +337,7 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
                                   width: 20.0, // Adjust the width as needed
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: localBowlerIndex == index ? Colors
+                                    color: localBatsmanIndex == index ? Colors
                                         .blue : Colors
                                         .grey, // Change colors based on selected index
                                   ),
@@ -408,26 +412,41 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
                     },
                     child: const CancelBtn("Cancel")),
                 SizedBox(width: 2.w,),
-                GestureDetector(onTap:()async {
-                  if(localBowlerIndex!=null){
+                GestureDetector(
+                    onTap:()async {
+                  if(localBatsmanIndex!=null){
+                    final player = Provider.of<PlayerSelectionProvider>(context, listen: false);
                     bool striker=(widget.player=='striker_id')?true:false;
                     SaveBatsmanDetailRequestModel requestModel = SaveBatsmanDetailRequestModel(
                       batsman: [
                         Batsman(
                             matchId:int.parse(widget.matchId),
                             teamId: int.parse(widget.team1Id),
-                            playerId: searchedBatsman![localBowlerIndex!].playerId,
+                            playerId: searchedBatsman![localBatsmanIndex!].playerId,
                             striker: striker
                         ),
                       ],
                     );
-
-                    await ScoringProvider().saveBatsman(requestModel);
-                    SharedPreferences prefs = await SharedPreferences.getInstance();
-                    await prefs.setInt(widget.player, searchedBatsman![localBowlerIndex!].playerId!);
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      Navigator.pop(context);
+                    await ScoringProvider().saveBatsman(requestModel)
+                    .then((value) {
+                      if(value.status == true){
+                        if(striker == true){
+                          print("setting new striker after wicket");
+                          player.setStrikerId(batsmanId, batsmanName);
+                        } else {
+                          print("setting new non-striker after wicket");
+                          player.setNonStrikerId(batsmanId, batsmanName);
+                        }
+                        widget.refresh();
+                        Navigator.pop(context);
+                      }
                     });
+
+                    // SharedPreferences prefs = await SharedPreferences.getInstance();
+                    // await prefs.setInt(widget.player, searchedBatsman![localBatsmanIndex!].playerId!);
+                    // WidgetsBinding.instance.addPostFrameCallback((_) {
+                    //
+                    // });
                   }else{
                     Dialogs.snackBar("Select one player", context, isError: true);
                   }
