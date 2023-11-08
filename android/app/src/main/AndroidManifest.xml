@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.scorer">
+    package="com.eleven.scorer">
    <application
         android:label="scorer"
         android:name="${applicationName}"

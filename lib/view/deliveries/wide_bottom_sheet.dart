@@ -250,28 +250,31 @@ class _WideBottomSheetState extends State<WideBottomSheet> {
                               scoreUpdateRequestModel).then((value) async {
                             SharedPreferences prefs = await SharedPreferences
                                 .getInstance();
-                            print(value.data!.overNumber.toString());
-                            print("after score update - wide");
-                            score.setOverNumber(int.parse(value.data!.overNumber.toString()));
-                            score.setBallNumber(int.parse(value.data!.ballNumber.toString()));
-                            score.setBowlerChangeValue(int.parse(value.data!.bowlerChange.toString()));
+                            if(value.data != null){
+                              print(value.data?.overNumber.toString());
+                              print("after score update - wide");
+                              score.setOverNumber(int.parse(value.data!.overNumber.toString()));
+                              score.setBallNumber(int.parse(value.data!.ballNumber.toString()));
+                              score.setBowlerChangeValue(int.parse(value.data!.bowlerChange.toString()));
 
-                            player.setStrikerId(value.data!.strikerId.toString(), "");
-                            player.setNonStrikerId(value.data!.nonStrikerId.toString(), "");
-                            print("score update print end - wide");
-                            // await prefs.setInt(
-                            //     'over_number', value.data!.overNumber ?? 0);
-                            // await prefs.setInt(
-                            //     'ball_number', value.data!.ballNumber ?? 1);
-                            // await prefs.setInt(
-                            //     'striker_id', value.data!.strikerId ?? 0);
-                            // await prefs.setInt('non_striker_id', value.data!.nonStrikerId ?? 0);
-                            // await prefs.setInt('bowler_change', value.data!.bowlerChange ?? 0);
-                            await prefs.setInt('bowlerPosition',0);
-                            widget.refresh();
-                            WidgetsBinding.instance.addPostFrameCallback((_) {
-                              Navigator.pop(context);
-                            });
+                              player.setStrikerId(value.data!.strikerId.toString(), "");
+                              player.setNonStrikerId(value.data!.nonStrikerId.toString(), "");
+                              print("score update print end - wide");
+                              // await prefs.setInt(
+                              //     'over_number', value.data!.overNumber ?? 0);
+                              // await prefs.setInt(
+                              //     'ball_number', value.data!.ballNumber ?? 1);
+                              // await prefs.setInt(
+                              //     'striker_id', value.data!.strikerId ?? 0);
+                              // await prefs.setInt('non_striker_id', value.data!.nonStrikerId ?? 0);
+                              // await prefs.setInt('bowler_change', value.data!.bowlerChange ?? 0);
+                              await prefs.setInt('bowlerPosition',0);
+                              widget.refresh();
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                Navigator.pop(context);
+                              });
+                            }
+
                           });
                         }else{
                           WidgetsBinding.instance.addPostFrameCallback((_) {

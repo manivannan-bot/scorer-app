@@ -504,8 +504,6 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
             color: Color(0xffD3D3D3),
           ),
           SizedBox(height: 2.h,),
-
-
           //patrnership
           Row(
             children: [
