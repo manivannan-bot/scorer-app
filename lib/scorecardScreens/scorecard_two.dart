@@ -38,6 +38,11 @@ class _ScoreCardTwoState extends State<ScoreCardTwo> {
 
   @override
   Widget build(BuildContext context) {
+    if(playersList!.data!.isEmpty){
+      return const Center(child: CircularProgressIndicator(
+        backgroundColor: Colors.white,
+      ));
+    }
     return playersList == null
         ? const Center(child: CircularProgressIndicator(
           backgroundColor: Colors.white,
@@ -96,7 +101,7 @@ class _ScoreCardTwoState extends State<ScoreCardTwo> {
                                 ),),
                               ),
                               SizedBox(height: 0.5.h,),
-                              (item.battingStyle!=null || item.battingStyle!.isNotEmpty)?Row(
+                              (item.battingStyle!=null)?Row(
                                 children: [
                                   const CircleAvatar(
                                     backgroundColor: AppColor.pri,

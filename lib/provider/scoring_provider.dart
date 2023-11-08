@@ -430,7 +430,7 @@ class ScoringProvider extends ChangeNotifier{
     } on HttpException {
       print('Failed to load data');
     } on FormatException {
-      print('All Matches  - Invalid data format');
+      print('yet to bat players  - Invalid data format');
     } catch (e) {
       print(e);
     }
