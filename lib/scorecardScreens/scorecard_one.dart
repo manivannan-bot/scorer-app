@@ -105,7 +105,7 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                                 color: AppColor.blackColour,
                               ),),
                               SizedBox(width: 1.w,),
-                              (item.isOut!=1)?
+                              (item.isOut!=1 && item.stricker==1)?
                               SvgPicture.asset(Images.batIcon,width: 4.w,color: AppColor.blackColour,):Text(''),
                             ],
                           ),

@@ -113,7 +113,7 @@ class _TeamLiveScoreCardState extends State<TeamLiveScoreCard> {
           const Divider(
             color: Color(0xffD3D3D3),
           ),
-          ListView.separated(
+          (scoreCardData!.batting!.isNotEmpty)?ListView.separated(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               separatorBuilder: (context, _) {
@@ -125,11 +125,9 @@ class _TeamLiveScoreCardState extends State<TeamLiveScoreCard> {
                 );
               },
               itemCount: scoreCardData!.batting!.length,
-              itemBuilder: (BuildContext, int index) {
-                if(scoreCardData!.batting!.isEmpty){
-                  return Text('No data found');
-                }
+              itemBuilder: (context, int index) {
                 final item = scoreCardData!.batting![index];
+                if(item.isOut!=1){
                 return Row(
                   children: [
                     SizedBox(
@@ -197,8 +195,8 @@ class _TeamLiveScoreCardState extends State<TeamLiveScoreCard> {
                       ),
                     ),
                   ],
-                );
-              }),
+                );}
+              }):const Text('No data found'),
           const Divider(
             color: Color(0xffD3D3D3),
           ),
