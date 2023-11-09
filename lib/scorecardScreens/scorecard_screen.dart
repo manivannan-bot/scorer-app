@@ -33,6 +33,9 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
   int? batTeamId;
   int? bowlTeamId;
   int currentInning=1;
+  var CRR;
+  var RRR;
+  var TARGET;
 
   @override
   void initState() {
@@ -56,7 +59,7 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
                           bowlTeamId=data.matches!.team1Id;
                         }
                       }else if(matchlist!.currentInnings==2){
-                        if(matchlist!.tossWonBy==int.parse(widget.team1Id) && matchlist!.choseTo=='Bat' ) {
+                        if(matchlist!.tossWonBy==int.parse(widget.team2Id) && matchlist!.choseTo=='Bat' ) {
                           batTeamId=data.matches!.team2Id;
                           bowlTeamId=data.matches!.team1Id;
                         }else{
@@ -99,6 +102,19 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
     }
     if(scoreCardResponseModel!=null){
        teams= scoreCardResponseModel!.data!.teamsName;
+       if(scoreCardResponseModel!.data!.currRunRate!=null){
+         CRR=scoreCardResponseModel!.data!.currRunRate!.runRate;
+         RRR=scoreCardResponseModel!.data!.currRunRate!.reqRunRate;
+         TARGET=scoreCardResponseModel!.data!.currRunRate!.targetScore;
+         if(tabController.index==1){
+           setState(() {
+             CRR=scoreCardResponseModel1!.data!.currRunRate!.runRate;
+             RRR=scoreCardResponseModel1!.data!.currRunRate!.reqRunRate;
+           });
+
+         }
+
+       }
     }
 
     return Container(
@@ -116,18 +132,18 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
             ),
             child: (scoreCardResponseModel!.data!.currRunRate!=null)?Row(
               children:[
-                Text("CRR: ${scoreCardResponseModel!.data!.currRunRate!.runRate??'-'}",style: fontMedium.copyWith(
+                Text("CRR: ${CRR??'-'}",style: fontMedium.copyWith(
                 fontSize: 10.sp,
                 color: AppColor.lightColor,
               ),),
                 (teams!.first.currentInnings==2)?Row(children: [
                   SizedBox(width: 2.w,),
-                  Text("RRR: ${scoreCardResponseModel!.data!.currRunRate!.reqRunRate??'-'}",style: fontMedium.copyWith(
+                  Text("RRR: ${RRR??'-'}",style: fontMedium.copyWith(
                     fontSize: 10.sp,
                     color: AppColor.lightColor,
                   ),),
                   SizedBox(width: 40.w,),
-                  Text("Target: ${scoreCardResponseModel!.data!.currRunRate!.targetScore??'-'}",style: fontMedium.copyWith(
+                  Text("Target: ${TARGET??'-'}",style: fontMedium.copyWith(
                     fontSize: 10.sp,
                     color: AppColor.lightColor,
                   ),),],):const Text('')
