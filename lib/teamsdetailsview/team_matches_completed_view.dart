@@ -226,7 +226,7 @@ class _TeamMatchesCompletedViewState extends State<TeamMatchesCompletedView> wit
                   controller: tabController,
                   children:  [
                     //Container(),
-                    TeamLiveScoreCard(widget.matchId,widget.team1id,widget.team2id),
+                    LiveDetailViewScreen(widget.matchId),
                     ScorecardScreen(widget.matchId,batTeamId.toString(),fetchData),
                     CommentaryScreen(widget.matchId,batTeamId.toString(),bowlTeamId.toString(),fetchData),
                     InfoScreen(widget.matchId),
