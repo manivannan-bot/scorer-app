@@ -86,7 +86,7 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
 
   @override
   Widget build(BuildContext context) {
-    if(scoreCardResponseModel==null || scoreCardResponseModel1==null){
+    if(scoreCardResponseModel==null){
       return const SizedBox(
           height: 100,
           width: 100,
@@ -164,8 +164,12 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
                   ScoreCardOne(scoreCardResponseModel!.data!),
                   if(teams!.first.currentInnings==1)...[
                     ScoreCardTwo(widget.matchId,bowlTeamId.toString()),]
-                  else if(scoreCardResponseModel1!.data!=null)...[
-                    ScoreCardOne(scoreCardResponseModel1!.data!),
+                  else if(scoreCardResponseModel1!=null)...[
+                       if(scoreCardResponseModel1!.data!=null)...[
+                         ScoreCardOne(scoreCardResponseModel1!.data!),
+                       ]else...[
+                         ScoreCardTwo(widget.matchId,bowlTeamId.toString()),
+                       ]
                   ]else...[
                     ScoreCardTwo(widget.matchId,bowlTeamId.toString()),
                   ]
