@@ -32,7 +32,7 @@ class AppConstants {
   static const String userDetails = '$baseUrl/user-details';
    static const String umpireMatches = '$baseUrl/umpire-matches';
    static const String scorerMatches = '$baseUrl/scorer-matches';
-    static const String yetToStart = '$baseUrl/yet-to-start';
+    static const String yetToBat = '$baseUrl/yet-to-start';
     static const String userProfile = '$baseUrl/user-profile';
      static const String liveScoreCard = '$baseUrl/score-live';
 

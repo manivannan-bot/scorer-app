@@ -34,6 +34,7 @@ class _TeamMatchesLiveViewState extends State<TeamMatchesLiveView> with SingleTi
 
   int? batTeamId;
   int? bowlTeamId;
+  int currentInning=1;
   bool loading = false;
 
   setDelay() async{
@@ -227,7 +228,7 @@ class _TeamMatchesLiveViewState extends State<TeamMatchesLiveView> with SingleTi
                     children:  [
                       //Container(),
                       LiveDetailViewScreen(widget.matchId),
-                      ScorecardScreen(widget.matchId,batTeamId.toString(),fetchData),
+                      ScorecardScreen(widget.matchId,batTeamId.toString(),bowlTeamId.toString(),currentInning.toString(),fetchData),
                       CommentaryScreen(widget.matchId,batTeamId.toString(),bowlTeamId.toString(),fetchData),
                       InfoScreen(widget.matchId),
                     ]),

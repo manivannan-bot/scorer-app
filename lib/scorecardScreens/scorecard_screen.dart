@@ -15,8 +15,10 @@ import '../models/score_card_response_model.dart';
 class ScorecardScreen extends StatefulWidget {
   final String matchId;
   final String team1Id;
+  final String team2Id;
+  final String currentInning;
   final VoidCallback fetchData;
-  const ScorecardScreen(this.matchId,this.team1Id,this.fetchData,{super.key});
+  const ScorecardScreen(this.matchId,this.team1Id,this.team2Id,this.currentInning,this.fetchData,{super.key});
 
   @override
   State<ScorecardScreen> createState() => _ScorecardScreenState();
@@ -25,10 +27,12 @@ class ScorecardScreen extends StatefulWidget {
 class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProviderStateMixin{
   late TabController tabController;
    ScoreCardResponseModel? scoreCardResponseModel;
+  ScoreCardResponseModel? scoreCardResponseModel1;
   Matches? matchlist;
   List<TeamsName>?teams;
   int? batTeamId;
   int? bowlTeamId;
+  int currentInning=1;
 
   @override
   void initState() {
@@ -68,12 +72,21 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
           setState(() {
             scoreCardResponseModel=value;
           });
+
+             if(widget.currentInning=='2'){
+               ScoringProvider().getScoreCard(widget.matchId, widget.team2Id).then((value) {
+                 setState(() {
+                   scoreCardResponseModel1=value;
+                 });
+               });
+             }
+
         });
   }
 
   @override
   Widget build(BuildContext context) {
-    if(scoreCardResponseModel==null){
+    if(scoreCardResponseModel==null || scoreCardResponseModel1==null){
       return const SizedBox(
           height: 100,
           width: 100,
@@ -101,7 +114,7 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
               borderRadius: BorderRadius.only(topRight: Radius.circular(20),topLeft: Radius.circular(20)),
               color: AppColor.blackColour,
             ),
-            child: Row(
+            child: (scoreCardResponseModel!.data!.currRunRate!=null)?Row(
               children:[
                 Text("CRR: ${scoreCardResponseModel!.data!.currRunRate!.runRate??'-'}",style: fontMedium.copyWith(
                 fontSize: 10.sp,
@@ -119,28 +132,18 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
                     color: AppColor.lightColor,
                   ),),],):const Text('')
               ]
-            ),
+            ):Text(''),
           ),
           SizedBox(height: 1.h,),
           TabBar(
               labelPadding: EdgeInsets.symmetric(vertical: 0.1.h,horizontal: 5.w),
               labelColor: Colors.white,
-              // unselectedLabelColor: AppColor.textColor,
-              // unselectedLabelStyle: TextStyle(
-              //   backgroundColor: Colors.grey, // Background color of inactive tabs
-              // ),
               isScrollable: true,
               indicator: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: AppColor.primaryColor
               ),
-              // dividerColor: Colors.transparent,
-              // labelPadding: EdgeInsets.only
-              //   (bottom: 0.5.h) + EdgeInsets.symmetric(
-              //     horizontal: 4.w
-              // ),
               indicatorSize: TabBarIndicatorSize.tab,
-              // indicatorColor: AppColor.secondaryColor,
               controller: tabController,
               tabs: [
                 Padding(
@@ -149,7 +152,7 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
                 ),
                 Padding(
                   padding:  EdgeInsets.symmetric(horizontal: 4.w),
-                  child: Text('${teams!.first.team2Name} ${teams!.first.currentInnings==1?'Yet to bat':teams!.first.team2Name}',style: fontMedium.copyWith(fontSize: 13.sp,color: AppColor.blackColour),),
+                  child: Text('${teams!.first.team2Name} ${teams!.first.currentInnings==1?'Yet to bat':''}',style: fontMedium.copyWith(fontSize: 13.sp,color: AppColor.blackColour),),
                 ),
               ]
           ),
@@ -161,8 +164,10 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
                   ScoreCardOne(scoreCardResponseModel!.data!),
                   if(teams!.first.currentInnings==1)...[
                     ScoreCardTwo(widget.matchId,bowlTeamId.toString()),]
-                  else...[
-                    ScoreCardOne(scoreCardResponseModel!.data!),
+                  else if(scoreCardResponseModel1!.data!=null)...[
+                    ScoreCardOne(scoreCardResponseModel1!.data!),
+                  ]else...[
+                    ScoreCardTwo(widget.matchId,bowlTeamId.toString()),
                   ]
 
                 ]),
