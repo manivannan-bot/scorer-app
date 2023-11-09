@@ -47,11 +47,6 @@ class _OutMethodDialogState extends State<OutMethodDialog> {
          width: double.infinity,
         decoration: BoxDecoration(
           color: AppColor.lightColor,
-          // boxShadow: [
-          //   BoxShadow(
-          //     color: Colors.grey,
-          //   )
-          // ],
           borderRadius: BorderRadius.circular(30),
         ),
         child:  Padding(
@@ -115,13 +110,6 @@ class _OutMethodDialogState extends State<OutMethodDialog> {
                       print("passing overs bowled to score update api ${score.oversBowled}");
                       score.trackOvers(score.overNumberInnings, score.ballNumberInnings);
                       SharedPreferences prefs = await SharedPreferences.getInstance();
-//                       var overNumber= prefs.getInt('over_number');
-//                       var ballNumber= prefs.getInt('ball_number');
-//                       var strikerId=prefs.getInt('striker_id');
-//                       var nonStrikerId=prefs.getInt('non_striker_id');
-//                       var bowlerId=prefs.getInt('bowler_id')??0;
-// var oversBowled=prefs.getInt('overs_bowled')??0;
-//                       var keeperId=prefs.getInt('wicket_keeper_id')??0;
                       var bowlerPosition=prefs.getInt('bowlerPosition')??0;
 
 
