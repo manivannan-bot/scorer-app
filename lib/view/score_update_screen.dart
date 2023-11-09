@@ -285,7 +285,7 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
                     Text('Commentary',style: fontRegular.copyWith(fontSize: 12.sp,),),
                     Text('Info',style: fontRegular.copyWith(fontSize: 12.sp,),),
                   ]
-              ),
+              ),),
 
               Expanded(
                 child: TabBarView(
@@ -300,7 +300,6 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
             ],
           ),
         ),
-      ),
-    );
+      );
   }
 }
