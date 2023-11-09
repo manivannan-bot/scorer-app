@@ -129,182 +129,173 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async{
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const HomeScreen()));
-        return true;
-      },
-      child: Scaffold(
-        body: matchList == null
-            ? const Center(child: CircularProgressIndicator(
-            ))
-        : loading
-            ? const Center(child: CircularProgressIndicator(
-        )) : SmartRefresher(
-          enablePullDown: true,
-          onRefresh: fetchData,
-          controller: refreshController,
-          child: Column(
-            children: [
-              Stack(
-                children: [
-                  // Background image
-                  Image.asset(
-                    Images.bannerBg,
-                    fit: BoxFit.cover, // You can choose how the image should be scaled
-                    width: double.infinity,
-                     height: 30.h,
-                  ),
-                  Positioned(
-                    top: 5.h,
-                    left: 5.w,
-                    right: 5.w,
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            InkWell(
-                                onTap:(){
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => const HomeScreen()));
-                                },
-                                child: Icon(Icons.arrow_back,color: AppColor.lightColor, size: 7.w,)),
-                            Text(
-                              'Team',
-                              style: fontMedium.copyWith(
-                                fontSize: 18.sp,
-                                color: AppColor.lightColor
-                              )
-                            ),
-                            SizedBox(
-                              width: 7.w,
-                            ),
-                          ],
-                        ),
-                         SizedBox(height: 2.h,),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              children: [
-                               Image.asset(Images.teamaLogo,width: 20.w,),
-                                Text(
-                                  '${matchList!.team1Name}',
-                                  style: fontMedium.copyWith(
-                                      fontSize: 14.sp,
-                                      color: AppColor.lightColor
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Text(
-                                  '${matchList!.tossWinnerName} won the Toss\nand Choose to ${matchList!.choseTo} ',
-                                  textAlign: TextAlign.center,
-                                  style: fontRegular.copyWith(
-                                      fontSize: 11.sp,
-                                      color: AppColor.lightColor
-                                  )
-                                ),
-                                Row(
-                                  children: [
-                                    Text('${matchList!.teams!.totalRuns}',
-                                        style: fontMedium.copyWith(
-                                        fontSize: 25.sp,
-                                        color: AppColor.lightColor
-                                    )),
-                                    Text('/',
-                                        style: fontMedium.copyWith(
-                                            fontSize: 25.sp,
-                                            color: AppColor.lightColor
-                                        )),
-                                    Text('${matchList!.teams!.totalWickets}',
-                                        style: fontMedium.copyWith(
-                                            fontSize: 25.sp,
-                                            color: AppColor.lightColor
-                                        )),
-                                  ],
-                                ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.8.h),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: AppColor.primaryColor,
-                                  ),
-                                  child: Text(
-                                    'Overs: ${matchList!.teams!.currentOverDetails}/${matchList!.overs}',
-                                    style: fontMedium.copyWith(
-                                      fontSize: 11.sp,
-                                      color: AppColor.blackColour,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(height: 1.h,),
-                                Text("Innings ${matchList!.currentInnings??'0'}",
-                                  style: fontRegular.copyWith(
-                                  fontSize: 12.sp,
-                                  color: AppColor.lightColor,
-                                ),)
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Image.asset(Images.teamaLogo,width: 20.w,),
-                                 Text(
-                                     '${matchList!.team2Name}',
-                                  style:fontMedium.copyWith(
-                                      fontSize: 14.sp,
-                                      color: AppColor.lightColor)
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 1.h,),
-              Padding(
-                padding:  EdgeInsets.only(bottom: 2.h,),
-                child: TabBar(
-                    unselectedLabelColor: AppColor.unselectedTabColor,
-                    labelColor:  const Color(0xffD78108),
-                    indicatorColor: const Color(0xffD78108),
-                    isScrollable: true,
-                    indicatorWeight: 2.0,
-                     labelPadding: EdgeInsets.symmetric(vertical: 0.4.h, horizontal: 3.5.w),
-                    indicatorSize: TabBarIndicatorSize.tab,
-                    controller: tabController,
-                    tabs: [
-                      Text('Scoring',style: fontRegular.copyWith(fontSize: 12.sp,),),
-                      Text('Score Card',style: fontRegular.copyWith(fontSize: 12.sp,),),
-                      Text('Commentary',style: fontRegular.copyWith(fontSize: 12.sp,),),
-                      Text('Info',style: fontRegular.copyWith(fontSize: 12.sp,),),
-                    ]
+    return Scaffold(
+      body: matchList == null
+          ? const Center(child: CircularProgressIndicator(
+          ))
+      : loading
+          ? const Center(child: CircularProgressIndicator(
+      )) : SmartRefresher(
+        enablePullDown: true,
+        onRefresh: fetchData,
+        controller: refreshController,
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                // Background image
+                Image.asset(
+                  Images.bannerBg,
+                  fit: BoxFit.cover, // You can choose how the image should be scaled
+                  width: double.infinity,
+                   height: 30.h,
                 ),
+                Positioned(
+                  top: 5.h,
+                  left: 5.w,
+                  right: 5.w,
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          InkWell(
+                              onTap:(){
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const HomeScreen()));
+                              },
+                              child: Icon(Icons.arrow_back,color: AppColor.lightColor, size: 7.w,)),
+                          Text(
+                            'Team',
+                            style: fontMedium.copyWith(
+                              fontSize: 18.sp,
+                              color: AppColor.lightColor
+                            )
+                          ),
+                          SizedBox(
+                            width: 7.w,
+                          ),
+                        ],
+                      ),
+                       SizedBox(height: 2.h,),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            children: [
+                             Image.asset(Images.teamaLogo,width: 20.w,),
+                              Text(
+                                '${matchList!.team1Name}',
+                                style: fontMedium.copyWith(
+                                    fontSize: 14.sp,
+                                    color: AppColor.lightColor
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                '${matchList!.tossWinnerName} won the Toss\nand Choose to ${matchList!.choseTo} ',
+                                textAlign: TextAlign.center,
+                                style: fontRegular.copyWith(
+                                    fontSize: 11.sp,
+                                    color: AppColor.lightColor
+                                )
+                              ),
+                              Row(
+                                children: [
+                                  Text('${matchList!.teams!.totalRuns}',
+                                      style: fontMedium.copyWith(
+                                      fontSize: 25.sp,
+                                      color: AppColor.lightColor
+                                  )),
+                                  Text('/',
+                                      style: fontMedium.copyWith(
+                                          fontSize: 25.sp,
+                                          color: AppColor.lightColor
+                                      )),
+                                  Text('${matchList!.teams!.totalWickets}',
+                                      style: fontMedium.copyWith(
+                                          fontSize: 25.sp,
+                                          color: AppColor.lightColor
+                                      )),
+                                ],
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.8.h),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: AppColor.primaryColor,
+                                ),
+                                child: Text(
+                                  'Overs: ${matchList!.teams!.currentOverDetails}/${matchList!.overs}',
+                                  style: fontMedium.copyWith(
+                                    fontSize: 11.sp,
+                                    color: AppColor.blackColour,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 1.h,),
+                              Text("Innings ${matchList!.currentInnings??'0'}",
+                                style: fontRegular.copyWith(
+                                fontSize: 12.sp,
+                                color: AppColor.lightColor,
+                              ),)
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Image.asset(Images.teamaLogo,width: 20.w,),
+                               Text(
+                                   '${matchList!.team2Name}',
+                                style:fontMedium.copyWith(
+                                    fontSize: 14.sp,
+                                    color: AppColor.lightColor)
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 1.h,),
+            Padding(
+              padding:  EdgeInsets.only(bottom: 2.h,),
+              child: TabBar(
+                  unselectedLabelColor: AppColor.unselectedTabColor,
+                  labelColor:  const Color(0xffD78108),
+                  indicatorColor: const Color(0xffD78108),
+                  isScrollable: true,
+                  indicatorWeight: 2.0,
+                   labelPadding: EdgeInsets.symmetric(vertical: 0.4.h, horizontal: 3.5.w),
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  controller: tabController,
+                  tabs: [
+                    Text('Scoring',style: fontRegular.copyWith(fontSize: 12.sp,),),
+                    Text('Score Card',style: fontRegular.copyWith(fontSize: 12.sp,),),
+                    Text('Commentary',style: fontRegular.copyWith(fontSize: 12.sp,),),
+                    Text('Info',style: fontRegular.copyWith(fontSize: 12.sp,),),
+                  ]
               ),
-              Expanded(
-                child: TabBarView(
-                    controller: tabController,
-                    children:  [
-                      ScoringTab(widget.matchId,batTeamId.toString(),bowlTeamId.toString(), fetchData),
-                      ScorecardScreen(widget.matchId,batTeamId.toString(),fetchData),
-                      CommentaryScreen(widget.matchId,batTeamId.toString(),bowlTeamId.toString(),fetchData),
-                      InfoScreen(widget.matchId),
-                    ]),
-              )
-            ],
-          ),
+            ),
+            Expanded(
+              child: TabBarView(
+                  controller: tabController,
+                  children:  [
+                    ScoringTab(widget.matchId,batTeamId.toString(),bowlTeamId.toString(), fetchData),
+                    ScorecardScreen(widget.matchId,batTeamId.toString(),fetchData),
+                    CommentaryScreen(widget.matchId,batTeamId.toString(),bowlTeamId.toString(),fetchData),
+                    InfoScreen(widget.matchId),
+                  ]),
+            )
+          ],
         ),
       ),
     );

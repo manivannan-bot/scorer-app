@@ -830,27 +830,32 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                           scoreUpdateRequestModel.endInnings=false;
                           scoreUpdateRequestModel.bowlerPosition= bowlerPosition;
                           ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
-                            widget.onSave(value);
-                            print("striker and non striker id - ${value.data?.strikerId.toString()} ${value.data?.nonStrikerId.toString()}");
+                            if(value.data?.inningCompleted == true){
+                              print("end of innings");
+                              score.completeInnings();
+                            } else {
+                              widget.onSave(value);
+                              print("striker and non striker id - ${value.data?.strikerId.toString()} ${value.data?.nonStrikerId.toString()}");
 
-                            print("after score update - 0");
-                            print(value.data?.overNumber);
-                            print(value.data?.ballNumber);
-                            print(value.data?.bowlerChange);
-                            print("score update print end - 0");
+                              print("after score update - 0");
+                              print(value.data?.overNumber);
+                              print(value.data?.ballNumber);
+                              print(value.data?.bowlerChange);
+                              print("score update print end - 0");
 
-                            print("setting over number ${value.data?.overNumber} and ball number ${value.data?.ballNumber} and bowler change ${value.data?.bowlerChange} to provider after score update");
-                            score.setOverNumber(value.data?.overNumber??0);
-                            score.setBallNumber(value.data?.ballNumber??0);
-                            score.setBowlerChangeValue(value.data?.bowlerChange??0);
-                            player.setStrikerId(value.data!.strikerId.toString(), "");
-                            player.setNonStrikerId(value.data!.nonStrikerId.toString(), "");
-                            SharedPreferences prefs = await SharedPreferences.getInstance();
-                            await prefs.setInt('bowlerPosition', 0);
-                          });
-                          widget.refresh();
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                            Navigator.pop(context);
+                              print("setting over number ${value.data?.overNumber} and ball number ${value.data?.ballNumber} and bowler change ${value.data?.bowlerChange} to provider after score update");
+                              score.setOverNumber(value.data?.overNumber??0);
+                              score.setBallNumber(value.data?.ballNumber??0);
+                              score.setBowlerChangeValue(value.data?.bowlerChange??0);
+                              player.setStrikerId(value.data!.strikerId.toString(), "");
+                              player.setNonStrikerId(value.data!.nonStrikerId.toString(), "");
+                              SharedPreferences prefs = await SharedPreferences.getInstance();
+                              await prefs.setInt('bowlerPosition', 0);
+                            }
+                            widget.refresh();
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              Navigator.pop(context);
+                            });
                           });
                         },
                         style: ElevatedButton.styleFrom(
