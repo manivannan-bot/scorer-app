@@ -38,11 +38,6 @@ class _ScoreCardTwoState extends State<ScoreCardTwo> {
 
   @override
   Widget build(BuildContext context) {
-    if(playersList!.data!.isEmpty){
-      return const Center(child: CircularProgressIndicator(
-        backgroundColor: Colors.white,
-      ));
-    }
     return playersList == null
         ? const Center(child: CircularProgressIndicator(
           backgroundColor: Colors.white,
@@ -70,6 +65,7 @@ class _ScoreCardTwoState extends State<ScoreCardTwo> {
                 color: AppColor.blackColour,
               ),),
               SizedBox(height: 1.h,),
+              (playersList!.data!.isNotEmpty)?
               ListView.separated(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -120,7 +116,7 @@ class _ScoreCardTwoState extends State<ScoreCardTwo> {
                         ],
                       ),
                     );
-                  }),
+                  }):const Text('No players found'),
               const Divider(
                 color: Color(0xffD3D3D3),
               ),
