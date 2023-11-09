@@ -5,11 +5,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:scorer/models/live_score_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/all_matches_model.dart';
 import '../models/end_innings_response_model.dart';
 import '../models/get_ball_type_response_model.dart';
 import '../models/get_live_score_model.dart';
+import '../models/live_score_model.dart';
 import '../models/player_list_model.dart';
 import '../models/save_batsman_request_model.dart';
 import '../models/save_batsman_response_model.dart';
@@ -44,6 +46,7 @@ class ScoringProvider extends ChangeNotifier{
   ScoreCardYetTobat scoreCardYetTobat=ScoreCardYetTobat();
 
   ScoreUpdatedData scoreUpdatedData = ScoreUpdatedData();
+  LiveScoreCardModel liveScoreCardModel=LiveScoreCardModel();
 
   String overNumber = "";
 
@@ -376,6 +379,37 @@ class ScoringProvider extends ChangeNotifier{
     return endInningsResponseModel;
   }
 
+  Future<LiveScoreCardModel> getLiveScoreCard(String matchId) async {
+
+    try {
+      final response = await http.get(
+        Uri.parse('${AppConstants.liveScoreCard}/$matchId'),
+        // headers: {
+        //   // 'Content-Type': 'application/json; charset=UTF-8',
+        //   // 'Authorization': 'Bearer $accToken',
+        // },
+      );
+      var decodedJson = json.decode(response.body);
+      print(decodedJson);
+      if (response.statusCode == 200) {
+        liveScoreCardModel = LiveScoreCardModel.fromJson(decodedJson);
+
+        notifyListeners();
+      } else {
+        throw const HttpException('Failed to load data');
+      }
+    } on SocketException {
+      print('No internet connection');
+    } on HttpException {
+      print('Failed to load data');
+    } on FormatException {
+      print('All Matches  - Invalid data format');
+    } catch (e) {
+      print(e);
+    }
+    return liveScoreCardModel;
+  }
+
   Future<ScoreCardResponseModel> getScoreCard(String matchId,String teamId) async {
 
     try {
@@ -410,7 +444,7 @@ class ScoringProvider extends ChangeNotifier{
 
     try {
       final response = await http.get(
-        Uri.parse('${AppConstants.yetToStart}/$matchId/$teamId'),
+        Uri.parse('${AppConstants.yetToBat}/$matchId/$teamId'),
         // headers: {
         //   // 'Content-Type': 'application/json; charset=UTF-8',
         //   // 'Authorization': 'Bearer $accToken',

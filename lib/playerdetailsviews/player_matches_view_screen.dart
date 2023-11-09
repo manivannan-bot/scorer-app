@@ -81,7 +81,7 @@ class _PlayerMatchesViewScreenState extends State<PlayerMatchesViewScreen> {
                     return PlayerCompletedMatches(playerMatchesModel!.data![index].teams,playerMatchesModel!.data![index].teamInnings);
                     //return Container();
                   }
-                  return Container();
+
                 }),
           ),
         )

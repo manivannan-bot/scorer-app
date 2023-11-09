@@ -34,6 +34,7 @@ class _TeamMatchesCompletedViewState extends State<TeamMatchesCompletedView> wit
 
   int? batTeamId;
   int? bowlTeamId;
+  int currentInning=1;
   bool loading = false;
 
   setDelay() async{
@@ -73,6 +74,7 @@ class _TeamMatchesCompletedViewState extends State<TeamMatchesCompletedView> wit
 
       setState(() {
         matchList = data.matches;
+        currentInning=data.matches!.currentInnings!;
       });
 
 
@@ -226,8 +228,8 @@ class _TeamMatchesCompletedViewState extends State<TeamMatchesCompletedView> wit
                   controller: tabController,
                   children:  [
                     //Container(),
-                    TeamLiveScoreCard(widget.matchId,widget.team1id,widget.team2id),
-                    ScorecardScreen(widget.matchId,batTeamId.toString(),fetchData),
+                    LiveDetailViewScreen(widget.matchId),
+                    ScorecardScreen(widget.matchId,batTeamId.toString(),bowlTeamId.toString(),currentInning.toString(),fetchData),
                     CommentaryScreen(widget.matchId,batTeamId.toString(),bowlTeamId.toString(),fetchData),
                     InfoScreen(widget.matchId),
                   ]),
