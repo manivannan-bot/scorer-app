@@ -9,11 +9,20 @@ class ScoreUpdateProvider extends ChangeNotifier {
   int? oversBowled;
   List<String> overFollowup = [];
 
+  int innings = 1;
+
   bool inningsCompleted = false;
+  bool firstInningsOverDataCleared = false;
 
   completeInnings(){
     inningsCompleted = true;
     notifyListeners();
+  }
+
+  setInnings(int value){
+    innings = value;
+    notifyListeners();
+    print("setting innings value $value");
   }
 
   trackOvers(int overNumber, int ballNumber){
@@ -60,7 +69,15 @@ class ScoreUpdateProvider extends ChangeNotifier {
     ballNumberInnings = 0;
     bowlerChange = 0;
     oversBowled = 0;
-    inningsCompleted = false;
+    notifyListeners();
+  }
+
+  clearOverAndBallNumberAfterFirstInnings(){
+    overNumberInnings = 0;
+    ballNumberInnings = 0;
+    bowlerChange = 0;
+    oversBowled = 0;
+    firstInningsOverDataCleared = true;
     notifyListeners();
   }
 
@@ -71,6 +88,7 @@ class ScoreUpdateProvider extends ChangeNotifier {
     preferences.setInt("bowler_change", bowlerChange);
     preferences.setInt("overs_bowled", oversBowled ?? 0);
     preferences.setBool("innings_completed", inningsCompleted);
+    preferences.setBool("first_innings_cleared", firstInningsOverDataCleared);
   }
 
   getOverAndBallNumberFromPrefs() async{
@@ -80,6 +98,7 @@ class ScoreUpdateProvider extends ChangeNotifier {
     bowlerChange = preferences.getInt("bowler_change") ?? 0;
     oversBowled = preferences.getInt("overs_bowled") ?? 0;
     inningsCompleted = preferences.getBool("innings_completed") ?? false;
+    firstInningsOverDataCleared = preferences.getBool("first_innings_cleared") ?? false;
   }
 
 }

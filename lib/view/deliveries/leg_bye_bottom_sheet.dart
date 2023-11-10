@@ -165,7 +165,7 @@ class _LegByeBottomSheetState extends State<LegByeBottomSheet> {
                           scoreUpdateRequestModel.wicket=0;
                           scoreUpdateRequestModel.dismissalType=0;
                           scoreUpdateRequestModel.commentary=0;
-                          scoreUpdateRequestModel.innings=1;
+                          scoreUpdateRequestModel.innings=score.innings;
                           scoreUpdateRequestModel.battingTeamId=widget.scoringData!.data!.batting![0].teamId??0;
                           scoreUpdateRequestModel.bowlingTeamId=widget.scoringData!.data!.bowling!.teamId??0;
                           scoreUpdateRequestModel.overBowled=oversBowled;

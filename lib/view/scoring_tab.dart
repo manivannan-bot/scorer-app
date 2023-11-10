@@ -37,6 +37,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 
+import '../Scoring screens/home_screen.dart';
 import '../Scoring screens/wicket_options_bottom_sheet.dart';
 import '../models/player_list_model.dart';
 
@@ -220,9 +221,9 @@ class _ScoringTabState extends State<ScoringTab> {
 
     return Consumer<ScoreUpdateProvider>(
         builder: (context, innings, child) {
-          if(innings.inningsCompleted == true){
-            Navigator.pop(context);
-          }
+          // if(innings.inningsCompleted == true){
+          //   Navigator.pop(context);
+          // }
         return SmartRefresher(
           controller: _refreshController,
           enablePullDown: true,
@@ -580,7 +581,7 @@ class _ScoringTabState extends State<ScoringTab> {
                   SizedBox(height: 1.h,),
                   Consumer<ScoreUpdateProvider>(
                     builder: (context, change, child) {
-                      return change.bowlerChange == 1
+                      return change.bowlerChange == 1 || scoringData!.data!.batting!.length < 2
                           ? const SizedBox()
                           : FadeIn(
                         child: Container(
@@ -625,7 +626,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                                     scoreUpdateRequestModel.wicket=0;
                                                     scoreUpdateRequestModel.dismissalType=0;
                                                     scoreUpdateRequestModel.commentary=0;
-                                                    scoreUpdateRequestModel.innings=1;
+                                                    scoreUpdateRequestModel.innings=score.innings;
                                                     scoreUpdateRequestModel.battingTeamId=scoringData!.data!.batting![index1].teamId??0;
                                                     scoreUpdateRequestModel.bowlingTeamId=scoringData!.data!.bowling!.teamId??0;
                                                     scoreUpdateRequestModel.overBowled=score.oversBowled;
@@ -638,13 +639,18 @@ class _ScoringTabState extends State<ScoringTab> {
                                                     scoreUpdateRequestModel.bowlerPosition=bowlerPosition;
                                                     ScoringProvider().scoreUpdate(scoreUpdateRequestModel)
                                                         .then((value)async {
-                                                          if(value.data?.inningCompleted == true){
+                                                          if(value.data?.innings == 3){
+                                                            Dialogs.snackBar("Match Ended", context);
+                                                            Navigator.pushReplacement(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder: (context) => const HomeScreen()));
+                                                          } else if(value.data?.inningCompleted == true){
                                                             Dialogs.snackBar(value.data!.inningsMessage.toString(), context);
-                                                            await Future.delayed(const Duration(seconds: 2));
-                                                            if(mounted){
-                                                              Navigator.pop(context);
-                                                              Navigator.pop(context);
-                                                            }
+                                                            Navigator.pushReplacement(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder: (context) => const HomeScreen()));
                                                           } else {
                                                             setState(() {
                                                               scoreUpdateResponseModel=value;

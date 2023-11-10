@@ -385,11 +385,13 @@ class _BowlerListBottomSheetState extends State<BowlerListBottomSheet> {
                 },
                     child: const CancelBtn("Cancel")),
                 SizedBox(width: 2.w,),
-                GestureDetector(onTap:()async {
+                GestureDetector(
+                    onTap:() async {
 
                   if(localBowlerIndex!=null){
                     final players = Provider.of<PlayerSelectionProvider>(context, listen: false);
                     final score = Provider.of<ScoreUpdateProvider>(context, listen: false);
+                    await ScoringProvider().saveBowler(widget.matchId, widget.team2Id, playerId);
                     players.setBowlerId(playerId, "");
                     score.setBowlerChangeValue(0);
                     print("setting overs bowled value for the bowler $oversBowled");

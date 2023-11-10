@@ -10,7 +10,7 @@ import 'completed_screen.dart';
 import 'in_the_offing_list.dart';
 
 class HomeTab extends StatefulWidget {
-
+  const HomeTab({super.key});
 
   @override
   State<HomeTab> createState() => _HomeTabState();

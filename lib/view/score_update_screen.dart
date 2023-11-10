@@ -66,6 +66,7 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
          bowlTeamId = int.parse(widget.team2id);
        });
      });
+     print("team1 id ${widget.team1id} team 2 id ${widget.team2id}");
      //getting live score
      await ScoringProvider().getLiveScore(widget.matchId, widget.team1id).then((data) async{
        //setting match list

@@ -5,6 +5,7 @@ import 'package:scorer/models/scoring_detail_response_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
+import '../Scoring screens/home_screen.dart';
 import '../models/score_update_request_model.dart';
 import '../models/score_update_response_model.dart';
 import '../provider/player_selection_provider.dart';
@@ -13,6 +14,7 @@ import '../provider/scoring_provider.dart';
 import '../utils/colours.dart';
 import '../utils/images.dart';
 import '../utils/sizes.dart';
+import '../widgets/snackbar.dart';
 import '../widgets/undo_button.dart';
 import 'cricket_wagon_wheel.dart';
 
@@ -818,7 +820,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                           scoreUpdateRequestModel.wicket=0;
                           scoreUpdateRequestModel.dismissalType=0;
                           scoreUpdateRequestModel.commentary=0;
-                          scoreUpdateRequestModel.innings=1;
+                          scoreUpdateRequestModel.innings=score.innings;
                           scoreUpdateRequestModel.battingTeamId=widget.scoringData.data!.batting![0].teamId??0;
                           scoreUpdateRequestModel.bowlingTeamId=widget.scoringData.data!.bowling!.teamId??0;
                           scoreUpdateRequestModel.overBowled=score.oversBowled;
@@ -830,18 +832,29 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                           scoreUpdateRequestModel.endInnings=false;
                           scoreUpdateRequestModel.bowlerPosition= bowlerPosition;
                           ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
-                            if(value.data?.inningCompleted == true){
+                            if(value.data?.innings == 3){
+                              Dialogs.snackBar("Match Ended", context);
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const HomeScreen()));
+                            } else if(value.data?.inningCompleted == true){
                               print("end of innings");
-                              score.completeInnings();
+                              print("navigating to home screen");
+                              Dialogs.snackBar(value.data!.inningsMessage.toString(), context);
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const HomeScreen()));
                             } else {
                               widget.onSave(value);
                               print("striker and non striker id - ${value.data?.strikerId.toString()} ${value.data?.nonStrikerId.toString()}");
 
-                              print("after score update - 0");
+                              print("after score update - ${widget.run}");
                               print(value.data?.overNumber);
                               print(value.data?.ballNumber);
                               print(value.data?.bowlerChange);
-                              print("score update print end - 0");
+                              print("score update print end - ${widget.run}");
 
                               print("setting over number ${value.data?.overNumber} and ball number ${value.data?.ballNumber} and bowler change ${value.data?.bowlerChange} to provider after score update");
                               score.setOverNumber(value.data?.overNumber??0);
@@ -851,11 +864,11 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                               player.setNonStrikerId(value.data!.nonStrikerId.toString(), "");
                               SharedPreferences prefs = await SharedPreferences.getInstance();
                               await prefs.setInt('bowlerPosition', 0);
+                              widget.refresh();
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                Navigator.pop(context);
+                              });
                             }
-                            widget.refresh();
-                            WidgetsBinding.instance.addPostFrameCallback((_) {
-                              Navigator.pop(context);
-                            });
                           });
                         },
                         style: ElevatedButton.styleFrom(

@@ -12,9 +12,11 @@ class BowlerCurrentOverData extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(bowlerName,
-            style: fontMedium.copyWith(
-                color: AppColor.textColor, fontSize: 10.sp)),
+        Expanded(
+          child: Text(bowlerName.split(' ').first.toString(),
+              style: fontMedium.copyWith(
+                  color: AppColor.textColor, fontSize: 10.sp)),
+        ),
         SizedBox(width: 2.w),
         Text(overData,
             style: fontRegular.copyWith(

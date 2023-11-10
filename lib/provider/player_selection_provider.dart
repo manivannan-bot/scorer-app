@@ -15,6 +15,8 @@ class PlayerSelectionProvider extends ChangeNotifier {
   String selectedWicketKeeperId = "";
   String selectedWicketKeeperName = "";
 
+  bool firstInningsIdsCleared = false;
+
 
   setStrikerId(String id, String name){
     selectedStrikerId = id;
@@ -56,6 +58,19 @@ class PlayerSelectionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  clearAllSelectedIdsAfter1stInnings(){
+    selectedStrikerId = "";
+    selectedStrikerName = "";
+    selectedNonStrikerId = "";
+    selectedNonStrikerName = "";
+    selectedBowlerId = "";
+    selectedBowlerName = "";
+    selectedWicketKeeperId = "";
+    selectedWicketKeeperName = "";
+    firstInningsIdsCleared = true;
+    notifyListeners();
+  }
+
   setPlayerSelectionValueToPrefs() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString("current_striker_id", selectedStrikerId);
@@ -66,6 +81,7 @@ class PlayerSelectionProvider extends ChangeNotifier {
     preferences.setString("current_non_striker_name", selectedNonStrikerName);
     preferences.setString("current_bowler_name", selectedBowlerName);
     preferences.setString("current_wicket_keeper_name", selectedWicketKeeperName);
+    preferences.setBool("first_innings_id_cleared", firstInningsIdsCleared);
     print("setting striker id to prefs $selectedStrikerId");
   }
 
@@ -79,6 +95,7 @@ class PlayerSelectionProvider extends ChangeNotifier {
     selectedNonStrikerName = preferences.getString("current_non_striker_name") ?? "";
     selectedBowlerName = preferences.getString("current_bowler_name") ?? "";
     selectedWicketKeeperName = preferences.getString("current_wicket_keeper_name") ?? "";
+    firstInningsIdsCleared = preferences.getBool("first_innings_id_cleared") ?? false;
     print("getting striker id from prefs $selectedStrikerId");
     notifyListeners();
   }

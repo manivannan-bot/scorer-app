@@ -215,7 +215,7 @@ class _ChooseWicketKeeperBottomSheetState extends State<ChooseWicketKeeperBottom
                       if(id.selectedBowlerId == player.playerId.toString()){
                         return const SizedBox();
                       } else {
-                        return GestureDetector(
+                        return InkWell(
                           onTap: () {
                             setState(() {
                               playerId = player.playerId.toString();
@@ -337,7 +337,7 @@ class _ChooseWicketKeeperBottomSheetState extends State<ChooseWicketKeeperBottom
                               if(id.selectedBowlerId == player.playerId.toString()){
                                 return const SizedBox();
                               } else {
-                                return GestureDetector(
+                                return InkWell(
                                   onTap: () {
                                     setState(() {
                                       playerId = player.playerId.toString();

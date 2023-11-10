@@ -5,6 +5,7 @@ import 'package:flutter_dash/flutter_dash.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:scorer/models/all_matches_model.dart';
+import 'package:scorer/provider/score_update_provider.dart';
 import 'package:scorer/provider/scoring_provider.dart';
 import 'package:scorer/utils/colours.dart';
 import 'package:scorer/widgets/do_scoring_btn.dart';
@@ -44,6 +45,25 @@ class _LiveScreenState extends State<LiveScreen> {
   }
 
   void _refreshData() {
+    final players = Provider.of<PlayerSelectionProvider>(context, listen: false);
+    final score = Provider.of<ScoreUpdateProvider>(context, listen: false);
+    if(matchList?.first.currentInnings == 2){
+      score.setInnings(2);
+      if(players.firstInningsIdsCleared == true){
+        print("ids already cleared for 1st innings");
+      } else {
+        print("clearing ids for 1st innings");
+        players.clearAllSelectedIdsAfter1stInnings();
+        score.clearOverAndBallNumberAfterFirstInnings();
+      }
+    } else if(matchList?.first.currentInnings == 1){
+      score.setInnings(1);
+    } else if(matchList?.first.currentInnings == 3){
+      score.setInnings(3);
+      print("clearing all ids - match ended");
+      players.clearAllSelectedIdsAfter1stInnings();
+      score.clearOverAndBallNumberAfterFirstInnings();
+    }
     ScoringProvider().getScoringDetail(matchList!.first.matchId.toString()).then((value) async {
       setState(() {
         scoringData = value;
@@ -193,7 +213,7 @@ class _LiveScreenState extends State<LiveScreen> {
                                                 color:const Color(0xff555555),
                                               ),),
                                               SizedBox(width: 2.w,),
-                                              if(matchList![index].currentInnings==2) ...[
+                                              if(matchList![index].currentInnings==2 || matchList![index].currentInnings==3) ...[
                                                 Row(children: [
                                                   RichText(
                                                       text: TextSpan(children: [
@@ -298,7 +318,9 @@ class _LiveScreenState extends State<LiveScreen> {
                                         SizedBox(
                                           height: 1.h,
                                         ),
-                                        Padding(
+                                        matchList![index].currentInnings==3
+                                        ? const SizedBox()
+                                        : Padding(
                                           padding:  EdgeInsets.symmetric(horizontal: 1.w)+EdgeInsets.only(top: 2.h),
                                           child: GestureDetector(
                                               onTap: (){
@@ -307,9 +329,8 @@ class _LiveScreenState extends State<LiveScreen> {
                                                   // if either striker or non striker or bowler is missing - select player screen
                                                   if(((scoringData!.data!.batting!.length<2) || scoringData!.data!.bowling==null)){
                                                     //if team 1 won the toss & chose to bat
-                                                    if(matchList!.first.tossWonBy==matchList![index].team1Id && matchList!.first.choseTo=='Batting' ) {
+                                                    if(matchList!.first.tossWonBy==matchList![index].team1Id && matchList!.first.choseTo=='Bat' ) {
                                                       print("do scoring check 1");
-                                                      // Provider.of<PlayerSelectionProvider>(context, listen: false).clearAllSelectedIds();
                                                       Navigator.push(context, MaterialPageRoute(builder: (context) =>
                                                           DOScoring(matchList![index].matchId.toString(),
                                                               matchList![index].team1Id.toString(),
@@ -317,7 +338,6 @@ class _LiveScreenState extends State<LiveScreen> {
                                                           .then((value) {getData();});
                                                     }else{ //if team 2 won the toss & chose to bat
                                                       print("do scoring check 2");
-                                                      // Provider.of<PlayerSelectionProvider>(context, listen: false).clearAllSelectedIds();
                                                       Navigator.push(context, MaterialPageRoute(builder: (context) =>
                                                           DOScoring(matchList![index].matchId.toString(),
                                                               matchList![index].team2Id.toString(),
@@ -328,7 +348,7 @@ class _LiveScreenState extends State<LiveScreen> {
                                                   // if no striker or non striker or bowler is missing - all are there - directly score update screen
                                                   else{
                                                     //if team 1 won the toss & chose to bat
-                                                    if(matchList!.first.tossWonBy==matchList![index].team1Id && matchList!.first.choseTo=='Batting' ) {
+                                                    if(matchList!.first.tossWonBy==matchList![index].team1Id && matchList!.first.choseTo=='Bat' ) {
                                                       Navigator.push(context, MaterialPageRoute(builder: (context) =>
                                                           ScoreUpdateScreen(matchList!.first.matchId.toString(),
                                                               matchList!.first.team1Id.toString(),
@@ -351,37 +371,35 @@ class _LiveScreenState extends State<LiveScreen> {
                                                 //if innings 2 - same conditions as above
                                                 else if(matchList!.first.currentInnings==2){
                                                   if(((scoringData!.data!.batting!.length<2) || scoringData!.data!.bowling==null)){
-                                                    if(matchList!.first.tossWonBy==matchList![index].team1Id && matchList!.first.choseTo=='Batting' ) {
+                                                    if(matchList!.first.tossWonBy==matchList![index].team1Id && matchList!.first.choseTo=='Bat' ) {
                                                       print("do scoring check 3");
-                                                      // Provider.of<PlayerSelectionProvider>(context, listen: false).clearAllSelectedIds();
-                                                      Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                                                          DOScoring(matchList![index].matchId.toString(),
-                                                              matchList![index].team1Id.toString(),
-                                                              matchList![index].team2Id.toString())))
-                                                          .then((value) {getData();});
-                                                    }else{
-                                                      print("do scoring check 4");
-                                                      // Provider.of<PlayerSelectionProvider>(context, listen: false).clearAllSelectedIds();
                                                       Navigator.push(context, MaterialPageRoute(builder: (context) =>
                                                           DOScoring(matchList![index].matchId.toString(),
                                                               matchList![index].team2Id.toString(),
                                                               matchList![index].team1Id.toString())))
                                                           .then((value) {getData();});
+                                                    }else{
+                                                      print("do scoring check 4");
+                                                      Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                                                          DOScoring(matchList![index].matchId.toString(),
+                                                              matchList![index].team1Id.toString(),
+                                                              matchList![index].team2Id.toString())))
+                                                          .then((value) {getData();});
                                                     }
                                                   }else{
-                                                    if(matchList!.first.tossWonBy==matchList![index].team1Id && matchList!.first.choseTo=='Batting' ) {
+                                                    if(matchList!.first.tossWonBy==matchList![index].team1Id && matchList!.first.choseTo=='Bat' ) {
                                                       Navigator.push(context, MaterialPageRoute(builder: (context) =>
                                                           ScoreUpdateScreen(matchList!.first.matchId.toString(),
-                                                              matchList!.first.team1Id.toString(),
-                                                              matchList!.first.team2Id.toString()
+                                                              matchList!.first.team2Id.toString(),
+                                                              matchList!.first.team1Id.toString()
                                                           )
                                                       ))
                                                           .then((value) {getData();});
                                                     }else{
                                                       Navigator.push(context, MaterialPageRoute(builder: (context) =>
                                                           ScoreUpdateScreen(matchList!.first.matchId.toString(),
-                                                              matchList!.first.team2Id.toString(),
-                                                              matchList!.first.team1Id.toString()
+                                                              matchList!.first.team1Id.toString(),
+                                                              matchList!.first.team2Id.toString()
                                                           )
                                                       ))
                                                           .then((value) {getData();});

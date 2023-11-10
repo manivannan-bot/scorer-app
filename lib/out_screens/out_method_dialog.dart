@@ -5,6 +5,7 @@ import 'package:scorer/widgets/cancel_btn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
+import '../Scoring screens/home_screen.dart';
 import '../models/player_list_model.dart';
 import '../models/save_batsman_request_model.dart';
 import '../models/score_update_request_model.dart';
@@ -17,6 +18,7 @@ import '../utils/images.dart';
 import '../utils/sizes.dart';
 import '../widgets/ok_btn.dart';
 import '../widgets/out_button.dart';
+import '../widgets/snackbar.dart';
 
 class OutMethodDialog extends StatefulWidget {
   final String label;
@@ -129,7 +131,7 @@ class _OutMethodDialogState extends State<OutMethodDialog> {
                       scoreUpdateRequestModel.extrasSlug=0;
                       scoreUpdateRequestModel.dismissalType=widget.id;
                       scoreUpdateRequestModel.commentary=0;
-                      scoreUpdateRequestModel.innings=1;
+                      scoreUpdateRequestModel.innings=score.innings;
                       scoreUpdateRequestModel.battingTeamId=widget.scoringData.data!.batting![0].teamId??0;
                       scoreUpdateRequestModel.bowlingTeamId=widget.scoringData.data!.bowling!.teamId??0;
                       scoreUpdateRequestModel.overBowled=score.oversBowled;
@@ -141,33 +143,44 @@ class _OutMethodDialogState extends State<OutMethodDialog> {
                       scoreUpdateRequestModel.endInnings=false;
                       scoreUpdateRequestModel.bowlerPosition=bowlerPosition;
                       ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
-                        print("striker and non striker id - ${value.data?.strikerId.toString()} ${value.data?.nonStrikerId.toString()}");
+                        if(value.data?.innings == 3){
+                          Dialogs.snackBar("Match Ended", context);
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const HomeScreen()));
+                        } else if(value.data?.inningCompleted == true){
+                          print("end of innings");
+                          print("navigating to home screen");
+                          Dialogs.snackBar(value.data!.inningsMessage.toString(), context);
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const HomeScreen()));
+                        } else {
+                          print("striker and non striker id - ${value.data?.strikerId.toString()} ${value.data?.nonStrikerId.toString()}");
 
-                        print("after wicket update - ${widget.label}");
-                        print(value.data?.overNumber);
-                        print(value.data?.ballNumber);
-                        print(value.data?.bowlerChange);
-                        print("score wicket print end - ${widget.label}");
+                          print("after wicket update - ${widget.label}");
+                          print(value.data?.overNumber);
+                          print(value.data?.ballNumber);
+                          print(value.data?.bowlerChange);
+                          print("score wicket print end - ${widget.label}");
 
-                        print("setting over number ${value.data?.overNumber} and ball number ${value.data?.ballNumber} and bowler change ${value.data?.bowlerChange} to provider after wicket update");
-                        score.setOverNumber(value.data?.overNumber??0);
-                        score.setBallNumber(value.data?.ballNumber??0);
-                        score.setBowlerChangeValue(value.data?.bowlerChange??0);
-                        player.setStrikerId(value.data!.strikerId.toString(), "");
-                        player.setNonStrikerId(value.data!.nonStrikerId.toString(), "");
+                          print("setting over number ${value.data?.overNumber} and ball number ${value.data?.ballNumber} and bowler change ${value.data?.bowlerChange} to provider after wicket update");
+                          score.setOverNumber(value.data?.overNumber??0);
+                          score.setBallNumber(value.data?.ballNumber??0);
+                          score.setBowlerChangeValue(value.data?.bowlerChange??0);
+                          player.setStrikerId(value.data!.strikerId.toString(), "");
+                          player.setNonStrikerId(value.data!.nonStrikerId.toString(), "");
 
-                        SharedPreferences prefs = await SharedPreferences.getInstance();
-                        // await prefs.setInt('over_number', value.data!.overNumber??0);
-                        // await prefs.setInt('ball_number', value.data!.ballNumber??0);
-                        // await prefs.setInt('striker_id', value.data!.strikerId??0);
-                        // await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
-                        // await prefs.setInt('bowler_change', value.data!.bowlerChange??0);
-                        await prefs.setInt('bowlerPosition',0);
-                        widget.refresh();
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          Navigator.pop(context);
-                          Navigator.pop(context);
+                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                          await prefs.setInt('bowlerPosition',0);
+                          widget.refresh();
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            Navigator.pop(context);
+                            Navigator.pop(context);
                           });
+                        }
                       });
                     },
                         child: const OkBtn("Ok")),

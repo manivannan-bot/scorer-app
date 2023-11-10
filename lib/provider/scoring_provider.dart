@@ -454,7 +454,6 @@ class ScoringProvider extends ChangeNotifier{
       print(decodedJson);
       if (response.statusCode == 200) {
         scoreCardYetTobat = ScoreCardYetTobat.fromJson(decodedJson);
-
         notifyListeners();
       } else {
         throw const HttpException('Failed to load data');

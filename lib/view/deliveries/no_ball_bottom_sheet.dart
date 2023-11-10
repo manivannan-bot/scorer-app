@@ -254,7 +254,7 @@ class _NoBallBottomSheetState extends State<NoBallBottomSheet> {
                       scoreUpdateRequestModel.wicket = 0;
                       scoreUpdateRequestModel.dismissalType = 0;
                       scoreUpdateRequestModel.commentary = 0;
-                      scoreUpdateRequestModel.innings = 1;
+                      scoreUpdateRequestModel.innings = score.innings;
                       scoreUpdateRequestModel.battingTeamId =
                           widget.scoringData!.data!.batting![0].teamId ?? 0;
                       scoreUpdateRequestModel.bowlingTeamId =

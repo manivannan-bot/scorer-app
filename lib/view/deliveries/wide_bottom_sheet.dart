@@ -204,15 +204,8 @@ class _WideBottomSheetState extends State<WideBottomSheet> {
                         score.trackOvers(score.overNumberInnings, score.ballNumberInnings);
 
                         SharedPreferences prefs = await SharedPreferences.getInstance();
-                        var overNumber= prefs.getInt('over_number');
-                        var ballNumber= prefs.getInt('ball_number');
-                        var strikerId=prefs.getInt('striker_id')??0;
-                        var nonStrikerId=prefs.getInt('non_striker_id')??0;
-                        var bowlerId=prefs.getInt('bowler_id')??0;
                         var oversBowled=prefs.getInt('overs_bowled')??0;
-                        var keeperId=prefs.getInt('wicket_keeper_id')??0;
                         var bowlerPosition=prefs.getInt('bowlerPosition')??0;
-                        var wideRun=prefs.getInt('wideRun');
 
                         if(isWideSelected!=null) {
                           ScoreUpdateRequestModel scoreUpdateRequestModel = ScoreUpdateRequestModel();
@@ -232,7 +225,7 @@ class _WideBottomSheetState extends State<WideBottomSheet> {
                           scoreUpdateRequestModel.wicket = 0;
                           scoreUpdateRequestModel.dismissalType = 0;
                           scoreUpdateRequestModel.commentary = 0;
-                          scoreUpdateRequestModel.innings = 1;
+                          scoreUpdateRequestModel.innings = score.innings;
                           scoreUpdateRequestModel.battingTeamId =
                               widget.scoringData?.data!.batting![0].teamId ?? 0;
                           scoreUpdateRequestModel.bowlingTeamId =

@@ -70,21 +70,40 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
                     });
                   }
                 });
+                if(widget.currentInning == "2"){
+                  setState(() {
+                    bowlTeamId = int.parse(widget.team1Id);
+                  });
+                  ScoringProvider().getScoreCard(widget.matchId, widget.team2Id).then((value){
+                    setState(() {
+                      scoreCardResponseModel=value;
+                    });
+                    if(widget.currentInning=='2'){
+                      ScoringProvider().getScoreCard(widget.matchId, widget.team1Id).then((value) {
+                        setState(() {
+                          scoreCardResponseModel1=value;
+                        });
+                      });
+                    }
+                  });
+                } else {
+                  setState(() {
+                    bowlTeamId = int.parse(widget.team2Id);
+                  });
+                  ScoringProvider().getScoreCard(widget.matchId, widget.team1Id).then((value){
+                    setState(() {
+                      scoreCardResponseModel=value;
+                    });
+                    if(widget.currentInning=='2'){
+                      ScoringProvider().getScoreCard(widget.matchId, widget.team2Id).then((value) {
+                        setState(() {
+                          scoreCardResponseModel1=value;
+                        });
+                      });
+                    }
+                  });
+                }
 
-        ScoringProvider().getScoreCard(widget.matchId, widget.team1Id).then((value){
-          setState(() {
-            scoreCardResponseModel=value;
-          });
-
-             if(widget.currentInning=='2'){
-               ScoringProvider().getScoreCard(widget.matchId, widget.team2Id).then((value) {
-                 setState(() {
-                   scoreCardResponseModel1=value;
-                 });
-               });
-             }
-
-        });
   }
 
   @override
@@ -179,7 +198,8 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
                 children:  [
                   ScoreCardOne(scoreCardResponseModel!.data!),
                   if(teams!.first.currentInnings==1)...[
-                    ScoreCardTwo(widget.matchId,bowlTeamId.toString()),]
+                    ScoreCardTwo(widget.matchId,bowlTeamId.toString()),
+                  ]
                   else if(scoreCardResponseModel1!=null)...[
                        if(scoreCardResponseModel1!.data!=null)...[
                          ScoreCardOne(scoreCardResponseModel1!.data!),
