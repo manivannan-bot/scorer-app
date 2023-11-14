@@ -69,6 +69,7 @@ class PlayerSelectionProvider extends ChangeNotifier {
     selectedWicketKeeperName = "";
     firstInningsIdsCleared = true;
     notifyListeners();
+    debugPrint("clearing all selected ids from previous innings");
   }
 
   setPlayerSelectionValueToPrefs() async{

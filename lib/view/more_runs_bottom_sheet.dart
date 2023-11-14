@@ -1,11 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:scorer/widgets/snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
+import '../Scoring screens/home_screen.dart';
 import '../models/score_update_request_model.dart';
 import '../models/scoring_detail_response_model.dart';
+import '../provider/player_selection_provider.dart';
+import '../provider/score_update_provider.dart';
 import '../provider/scoring_provider.dart';
 import '../utils/colours.dart';
 import '../utils/sizes.dart';
@@ -14,7 +19,8 @@ import '../widgets/ok_btn.dart';
 class MoreRunsBottomSheet extends StatefulWidget {
   final int ballType;
   final ScoringDetailResponseModel? scoringData;
-  const MoreRunsBottomSheet(this.ballType, this.scoringData, {super.key});
+  final VoidCallback refresh;
+  const MoreRunsBottomSheet(this.ballType, this.scoringData, this.refresh, {super.key});
 
   @override
   State<MoreRunsBottomSheet> createState() => _MoreRunsBottomSheetState();
@@ -23,7 +29,7 @@ class MoreRunsBottomSheet extends StatefulWidget {
 class _MoreRunsBottomSheetState extends State<MoreRunsBottomSheet> {
 
   int? isOffSideSelected ;
-  int? isWideSelected ;
+  int? isRunsSelected ;
   bool showError =false;
 
   List<Map<String, dynamic>> chipData =[
@@ -55,7 +61,6 @@ class _MoreRunsBottomSheetState extends State<MoreRunsBottomSheet> {
   Widget build(BuildContext context) {
     return Container(
       height: 35.h,
-      // padding: EdgeInsets.symmetric(horizontal: 2.w),
       decoration: const BoxDecoration(
           color: AppColor.lightColor,
           borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
@@ -98,7 +103,7 @@ class _MoreRunsBottomSheetState extends State<MoreRunsBottomSheet> {
                   return GestureDetector(
                     onTap: (){
                       setState(() {
-                        isWideSelected=index;
+                        isRunsSelected=index;
                       });
                     },
                     child: Chip(
@@ -113,7 +118,7 @@ class _MoreRunsBottomSheetState extends State<MoreRunsBottomSheet> {
                           color: Color(0xffDADADA),
                         ),
                       ),
-                      backgroundColor: isWideSelected==index? AppColor.primaryColor : const Color(0xffF8F9FA),
+                      backgroundColor: isRunsSelected==index? AppColor.primaryColor : const Color(0xffF8F9FA),
                       // backgroundColor:AppColor.lightColor
                     ),
                   );
@@ -137,80 +142,95 @@ class _MoreRunsBottomSheetState extends State<MoreRunsBottomSheet> {
                     ),
                   ),
                   GestureDetector(onTap:()async{
-                    SharedPreferences prefs = await SharedPreferences.getInstance();
-                    var overNumber= prefs.getInt('over_number');
-                    var ballNumber= prefs.getInt('ball_number');
-                    var strikerId=prefs.getInt('striker_id')??0;
-                    var nonStrikerId=prefs.getInt('non_striker_id')??0;
-                    var bowlerId=prefs.getInt('bowler_id')??0;
-                    var oversBowled=prefs.getInt('overs_bowled')??0;
-                    var keeperId=prefs.getInt('wicket_keeper_id')??0;
-                    var bowlerPosition=prefs.getInt('bowlerPosition')??0;
+                    final player = Provider.of<PlayerSelectionProvider>(context, listen: false);
+                    final score = Provider.of<ScoreUpdateProvider>(context, listen: false);
+                    print("striker id ${player.selectedStrikerId}");
+                    print("non striker id ${player.selectedNonStrikerId}");
+                    print("passing over number to score update api ${score.overNumberInnings}");
+                    print("passing ball number to score update api ${score.ballNumberInnings}");
+                    print("passing overs bowled to score update api ${score.oversBowled}");
+                    score.trackOvers(score.overNumberInnings, score.ballNumberInnings);
 
-                    if(isWideSelected !=null) {
+                    if(isRunsSelected !=null) {
                       ScoreUpdateRequestModel scoreUpdateRequestModel = ScoreUpdateRequestModel();
                       scoreUpdateRequestModel.ballTypeId = widget.ballType;
                       scoreUpdateRequestModel.matchId =
                           widget.scoringData!.data!.batting![0].matchId;
-                      scoreUpdateRequestModel.scorerId = 1;
-                      scoreUpdateRequestModel.strikerId = strikerId;
-                      scoreUpdateRequestModel.nonStrikerId = nonStrikerId;
-                      scoreUpdateRequestModel.wicketKeeperId = keeperId;
-                      scoreUpdateRequestModel.bowlerId = bowlerId;
-                      scoreUpdateRequestModel.overNumber = overNumber;
-                      scoreUpdateRequestModel.ballNumber = ballNumber;
+                      scoreUpdateRequestModel.scorerId = 46;
+                      scoreUpdateRequestModel.strikerId = int.parse(player.selectedStrikerId.toString());
+                      scoreUpdateRequestModel.nonStrikerId = int.parse(player.selectedNonStrikerId.toString());
+                      scoreUpdateRequestModel.wicketKeeperId = int.parse(player.selectedWicketKeeperId.toString());
+                      scoreUpdateRequestModel.bowlerId = int.parse(player.selectedBowlerId.toString());
+                      scoreUpdateRequestModel.overNumber = score.overNumberInnings;
+                      scoreUpdateRequestModel.ballNumber = score.ballNumberInnings;
 
                       scoreUpdateRequestModel.runsScored =
-                      (isWideSelected == null) ? 0 : isWideSelected ??
+                      (isRunsSelected == null) ? 0 : isRunsSelected ??
                           0 + 1;
                       scoreUpdateRequestModel.extras =
-                      (isWideSelected == null) ? 0 : isWideSelected ??
+                      (isRunsSelected == null) ? 0 : isRunsSelected ??
                           0 + 1;
+                      scoreUpdateRequestModel.extrasSlug=0;
                       scoreUpdateRequestModel.wicket = 0;
                       scoreUpdateRequestModel.dismissalType = 0;
                       scoreUpdateRequestModel.commentary = 0;
-                      scoreUpdateRequestModel.innings = 1;
+                      scoreUpdateRequestModel.innings = score.innings;
                       scoreUpdateRequestModel.battingTeamId =
                           widget.scoringData!.data!.batting![0].teamId ?? 0;
                       scoreUpdateRequestModel.bowlingTeamId =
                           widget.scoringData!.data!.bowling!.teamId ?? 0;
-                      scoreUpdateRequestModel.overBowled=oversBowled ;
+                      scoreUpdateRequestModel.overBowled=score.oversBowled ;
                       scoreUpdateRequestModel.totalOverBowled = 0;
                       scoreUpdateRequestModel.outByPlayer = 0;
                       scoreUpdateRequestModel.outPlayer = 0;
                       scoreUpdateRequestModel.totalWicket = 0;
                       scoreUpdateRequestModel.fieldingPositionsId = 0;
                       scoreUpdateRequestModel.endInnings = false;
-                      scoreUpdateRequestModel.bowlerPosition=bowlerPosition;
+                      scoreUpdateRequestModel.bowlerPosition=score.bowlerPosition;
                       ScoringProvider()
                           .scoreUpdate(scoreUpdateRequestModel)
                           .then((value) async {
-                        SharedPreferences prefs = await SharedPreferences
-                            .getInstance();
-                        await prefs.setInt(
-                            'over_number', value.data!.overNumber ?? 0);
-                        await prefs.setInt(
-                            'ball_number', value.data!.ballNumber ?? 1);
-                        await prefs.setInt(
-                            'striker_id', value.data!.strikerId ?? 0);
-                        await prefs.setInt('non_striker_id', value.data!.nonStrikerId ?? 0);
-                        await prefs.setInt('bowler_change', value.data!.bowlerChange ?? 0);
-                        await prefs.setInt('bowlerPosition',0);
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          Navigator.pop(context);
-                        });
+                        if(value.data?.innings == 3){
+                          Dialogs.snackBar("Match Ended", context);
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const HomeScreen()));
+                        } else if(value.data?.inningCompleted == true){
+                          print("end of innings");
+                          print("navigating to home screen");
+                          Dialogs.snackBar(value.data!.inningsMessage.toString(), context);
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const HomeScreen()));
+                        } else {
+                          print("striker and non striker id - ${value.data?.strikerId.toString()} ${value.data?.nonStrikerId.toString()}");
+
+                          print("after score update - more runs");
+                          print(value.data?.overNumber);
+                          print(value.data?.ballNumber);
+                          print(value.data?.bowlerChange);
+                          print("score update print end - more runs");
+
+                          print("setting over number ${value.data?.overNumber} and ball number ${value.data?.ballNumber} and bowler change ${value.data?.bowlerChange} to provider after score update");
+                          score.setOverNumber(value.data?.overNumber??0);
+                          score.setBallNumber(value.data?.ballNumber??0);
+                          score.setBowlerChangeValue(value.data?.bowlerChange??0);
+                          player.setStrikerId(value.data!.strikerId.toString(), "");
+                          player.setNonStrikerId(value.data!.nonStrikerId.toString(), "");
+                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                          await prefs.setInt('bowlerPosition', 0);
+                          widget.refresh();
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            Navigator.pop(context);
+                          });
+                        }
                       });
                     }else{
-                      setState(() {
-                        showError = true;
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        Dialogs.snackBar("Select one option", context, isError: true);
                       });
-                      if (showError) {
-                        Timer(const Duration(seconds: 4), () {
-                          setState(() {
-                            showError = false;
-                          });
-                        });
-                      }
                     }
 
                   },child: const OkBtn("Save")),

@@ -830,7 +830,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                           scoreUpdateRequestModel.totalWicket=0;
                           scoreUpdateRequestModel.fieldingPositionsId=fieldPositionId;
                           scoreUpdateRequestModel.endInnings=false;
-                          scoreUpdateRequestModel.bowlerPosition= bowlerPosition;
+                          scoreUpdateRequestModel.bowlerPosition= score.bowlerPosition;
                           ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
                             if(value.data?.innings == 3){
                               Dialogs.snackBar("Match Ended", context);

@@ -462,7 +462,7 @@ class _ChangeKeeperState extends State<ChangeKeeper> {
         child:  Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Change  Keeper",style: fontMedium.copyWith(
+            Text("Change Keeper",style: fontMedium.copyWith(
               fontSize: 16.sp,
               color: AppColor.blackColour,
             ),),
@@ -517,9 +517,9 @@ class _ChangeKeeperState extends State<ChangeKeeper> {
                       onTap:(){
                         Navigator.pop(context);
                       },
-                      child: CancelBtn("cancel")),
+                      child: const CancelBtn("cancel")),
                   SizedBox(width: 4.w,),
-                  OkBtn("ok"),
+                  const OkBtn("ok"),
                 ],
               ),
             ),

@@ -33,6 +33,7 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
    int? bowlTeamId;
    int currentInning=1;
    bool loading = false;
+   String currentOverData = "";
 
    setDelay() async{
      if(mounted){
@@ -73,6 +74,7 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
      setState(() {
        matchList = data.matches;
        currentInning=data.matches!.currentInnings!;
+       currentOverData = data.matches!.teams!.currentOverDetails.toString();
      });
      int overNumber = 0;
      int ballNumber = 0;
@@ -292,7 +294,7 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
                 child: TabBarView(
                     controller: tabController,
                     children:  [
-                      ScoringTab(widget.matchId,batTeamId.toString(),bowlTeamId.toString(), fetchData),
+                      ScoringTab(widget.matchId,batTeamId.toString(),bowlTeamId.toString(), fetchData, currentOverData),
                       ScorecardScreen(widget.matchId,batTeamId.toString(),bowlTeamId.toString(),currentInning.toString(),fetchData),
                       CommentaryScreen(widget.matchId,batTeamId.toString(),bowlTeamId.toString(),fetchData),
                       InfoScreen(widget.matchId),

@@ -79,7 +79,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
     selectedBatsmanId=widget.scoringData!.data!.batting![0].playerId;
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0xffF8F9FA),
+        backgroundColor: const Color(0xffF8F9FA),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -133,7 +133,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
                                 child: Container(
                                   padding: EdgeInsets.symmetric(horizontal:4.w,vertical: 2.h),
                                   decoration: BoxDecoration(
-                                    border: Border.all(color: Color(0xffDFDFDF)),
+                                    border: Border.all(color: const Color(0xffDFDFDF)),
                                     borderRadius: BorderRadius.circular(20),
                                     color: ( isSelected ==0)?AppColor.primaryColor:AppColor.lightColor,
 
@@ -142,7 +142,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
                                     children: [
                                       Image.asset(Images.playerImg,width: 20.w,),
                                       SizedBox(height: 1.h,),
-                                      Text("${widget.scoringData!.data!.batting![0].playerName}",style: fontMedium.copyWith(
+                                      Text("${widget.scoringData!.data!.batting?.first.playerName}",style: fontMedium.copyWith(
                                         fontSize: 10.sp,
                                         color: AppColor.blackColour,
                                       ),),
@@ -154,7 +154,6 @@ class _RunOutScreenState extends State<RunOutScreen> {
                               GestureDetector(
                                 onTap: (){
                                   setState(() {
-
                                     isSelected =1;
                                     selectedBatsmanId=widget.scoringData!.data!.batting![1].playerId;
                                   });
@@ -162,7 +161,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
                                 child: Container(
                                   padding: EdgeInsets.symmetric(horizontal:4.w,vertical: 2.h),
                                   decoration: BoxDecoration(
-                                    border: Border.all(color: Color(0xffDFDFDF)),
+                                    border: Border.all(color: const Color(0xffDFDFDF)),
                                     borderRadius: BorderRadius.circular(20),
                                     color: ( isSelected ==1)?AppColor.primaryColor:AppColor.lightColor,
 
@@ -171,7 +170,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
                                     children: [
                                       Image.asset(Images.playerImg,width: 20.w,),
                                       SizedBox(height: 1.h,),
-                                      Text("${widget.scoringData!.data!.batting![1].playerName}",style: fontMedium.copyWith(
+                                      Text("${widget.scoringData!.data!.batting?.last.playerName}",style: fontMedium.copyWith(
                                         fontSize: 10.sp,
                                         color: AppColor.blackColour,
                                       ),),
@@ -233,10 +232,10 @@ class _RunOutScreenState extends State<RunOutScreen> {
                                 width: 14.w,
                                 decoration: BoxDecoration(
                                   border: RDottedLineBorder.all(
-                                    color: Color(0xffCCCCCC),
+                                    color: const Color(0xffCCCCCC),
                                     width: 1,
                                   ),
-                                  color: Color(0xffF8F9FA),
+                                  color: const Color(0xffF8F9FA),
                                   borderRadius: BorderRadius.circular(60),
                                 ),
                                 child: Column(
@@ -288,7 +287,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
                                   width: 35.w,
                                   padding: EdgeInsets.symmetric(horizontal:2.w,vertical: 2.h),
                                   decoration: BoxDecoration(
-                                    border: Border.all(color: Color(0xffDFDFDF)),
+                                    border: Border.all(color: const Color(0xffDFDFDF)),
                                     borderRadius: BorderRadius.circular(20),
                                     color: ( isStump ==1)?AppColor.primaryColor:AppColor.lightColor,
                                   ),
@@ -316,7 +315,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
                                   width: 35.w,
                                   padding: EdgeInsets.symmetric(horizontal:2.w,vertical: 2.h),
                                   decoration: BoxDecoration(
-                                    border: Border.all(color: Color(0xffDFDFDF)),
+                                    border: Border.all(color: const Color(0xffDFDFDF)),
                                     borderRadius: BorderRadius.circular(20),
                                     color: ( isStump ==2)?AppColor.primaryColor:AppColor.lightColor,
                                   ),
@@ -361,7 +360,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
                                     text: "(Optional)",
                                     style: fontRegular.copyWith(
                                         fontSize: 12.sp,
-                                        color: Color(0xff666666)
+                                        color: const Color(0xff666666)
                                     )),
                               ])),
                           SizedBox(height: 1.5.h,),
@@ -391,7 +390,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
                                         color: Color(0xffDADADA),
                                       ),
                                     ),
-                                    backgroundColor: isWideSelected==index? AppColor.primaryColor : Color(0xffF8F9FA),
+                                    backgroundColor: isWideSelected==index? AppColor.primaryColor : const Color(0xffF8F9FA),
                                     // backgroundColor:AppColor.lightColor
                                   ),
                                 );
@@ -426,7 +425,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
                                       text: "(Optional)",
                                       style: fontRegular.copyWith(
                                           fontSize: 12.sp,
-                                          color: Color(0xff666666)
+                                          color: const Color(0xff666666)
                                       )),
                                 ])),
                           ),
@@ -457,7 +456,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
                                         color: Color(0xffDADADA),
                                       ),
                                     ),
-                                    backgroundColor: isRunSelected==index? AppColor.primaryColor : Color(0xffF8F9FA),
+                                    backgroundColor: isRunSelected==index? AppColor.primaryColor : const Color(0xffF8F9FA),
                                     // backgroundColor:AppColor.lightColor
                                   ),
                                 );
@@ -473,7 +472,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
               ),
             ),
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppColor.lightColor
               ),
               child: Padding(
@@ -484,7 +483,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
                     GestureDetector(onTap:(){
                       Navigator.pop(context);
                     },
-                        child: CancelBtn("Cancel")),
+                        child: const CancelBtn("Cancel")),
                     SizedBox(width: 4.w,),
                     GestureDetector(onTap: ()async{
                       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -535,7 +534,7 @@ var oversBowled=prefs.getInt('overs_bowled')??0;
                       });
                       Navigator.pop(context);
                     },
-                        child: OkBtn("Ok")),
+                        child: const OkBtn("Ok")),
                   ],
                 ),
               ),
@@ -556,7 +555,7 @@ var oversBowled=prefs.getInt('overs_bowled')??0;
             return Container(
               height: 90.h,
               padding: EdgeInsets.symmetric(vertical: 2.h),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   color: AppColor.lightColor,
                   borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
               ),
@@ -582,7 +581,7 @@ var oversBowled=prefs.getInt('overs_bowled')??0;
                     ),
                   ),
                   SizedBox(height: 1.h,),
-                  Divider(
+                  const Divider(
                     thickness: 1,
                     color: Color(0xffD3D3D3),
                   ),
@@ -591,7 +590,7 @@ var oversBowled=prefs.getInt('overs_bowled')??0;
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        color: Color(0xffF8F9FA),
+                        color: const Color(0xffF8F9FA),
                       ),
                       child: Padding(
                         padding:  EdgeInsets.symmetric(horizontal: 5.w,vertical: 1.2.h),
@@ -599,9 +598,9 @@ var oversBowled=prefs.getInt('overs_bowled')??0;
                           children: [
                             Text("Search players",style: fontRegular.copyWith(
                               fontSize: 12.sp,
-                              color: Color(0xff707B81),
+                              color: const Color(0xff707B81),
                             ),),
-                            Spacer(),
+                            const Spacer(),
                             SvgPicture.asset(Images.searchIcon)
                           ],
                         ),
@@ -618,7 +617,7 @@ var oversBowled=prefs.getInt('overs_bowled')??0;
                   // Divider(
                   //   color: Color(0xffD3D3D3),
                   // ),
-                  Divider(
+                  const Divider(
                     thickness: 0.5,
                     color: Color(0xffD3D3D3),
                   ),
@@ -654,7 +653,7 @@ var oversBowled=prefs.getInt('overs_bowled')??0;
                                     shape: BoxShape.circle,
                                     color: localBowlerIndex  == index ? Colors.blue : Colors.grey, // Change colors based on selected index
                                   ),
-                                  child: Center(
+                                  child: const Center(
                                     child: Icon(
                                       Icons.circle_outlined, // You can change the icon as needed
                                       color: Colors.white, // Icon color
@@ -667,7 +666,7 @@ var oversBowled=prefs.getInt('overs_bowled')??0;
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("${itemsBowler![index].playerName??'-'}",style: fontMedium.copyWith(
+                                    Text(itemsBowler![index].playerName??'-',style: fontMedium.copyWith(
                                       fontSize: 12.sp,
                                       color: AppColor.blackColour,
                                     ),),
@@ -684,14 +683,14 @@ var oversBowled=prefs.getInt('overs_bowled')??0;
                                         SizedBox(width: 2.w,),
                                         Text(itemsBowler![index].bowlingStyle??'-',style: fontMedium.copyWith(
                                             fontSize: 11.sp,
-                                            color: Color(0xff555555)
+                                            color: const Color(0xff555555)
                                         ),),
                                       ],
                                     ),
 
                                   ],
                                 ),
-                                Spacer(),
+                                const Spacer(),
                                 // Row(
                                 //   children: [
                                 //     Text("25 ",style: fontRegular.copyWith(
@@ -714,18 +713,18 @@ var oversBowled=prefs.getInt('overs_bowled')??0;
                   ),
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 2.h,horizontal: 5.w),
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: AppColor.lightColor,
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        CancelBtn("Cancel"),
+                        const CancelBtn("Cancel"),
                         SizedBox(width: 2.w,),
                         GestureDetector(onTap:()async {
 
                           Navigator.pop(context);
-                        },child: OkBtn("Ok")),
+                        },child: const OkBtn("Ok")),
                       ],
                     ),
                   ),

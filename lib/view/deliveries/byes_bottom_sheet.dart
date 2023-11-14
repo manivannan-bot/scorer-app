@@ -175,7 +175,7 @@ class _ByesBottomSheetState extends State<ByesBottomSheet> {
                           scoreUpdateRequestModel.totalWicket=0;
                           scoreUpdateRequestModel.fieldingPositionsId=0;
                           scoreUpdateRequestModel.endInnings=false;
-                          scoreUpdateRequestModel.bowlerPosition=bowlerPosition;
+                          scoreUpdateRequestModel.bowlerPosition=score.bowlerPosition;
                           ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value)async{
                             print("after score update - b");
                             score.setOverNumber(int.parse(value.data!.overNumber.toString()));

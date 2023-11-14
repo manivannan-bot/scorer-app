@@ -25,7 +25,8 @@ class OutMethodDialog extends StatefulWidget {
   final int id;
   final ScoringDetailResponseModel scoringData;
   final VoidCallback refresh;
-  const OutMethodDialog({required this.label,required this.id,required this.scoringData, required this.refresh,super.key});
+  final String who;
+  const OutMethodDialog({required this.label,required this.id,required this.scoringData, required this.refresh, required this.who,super.key});
 
   @override
   State<OutMethodDialog> createState() => _OutMethodDialogState();
@@ -57,10 +58,19 @@ class _OutMethodDialogState extends State<OutMethodDialog> {
             children: [
               ClipOval(child: Image.asset(Images.outProfileimage,width: 20.w,)),
               SizedBox(height: 1.h,),
-              Text("Prasanth",style: fontMedium.copyWith(
-                  fontSize: 15.sp,
-                  color: AppColor.blackColour
-              ),),
+              if(widget.who == "striker")...[
+                Text(widget.scoringData.data!.batting!.first.playerName.toString(),
+                  style: fontMedium.copyWith(
+                      fontSize: 15.sp,
+                      color: AppColor.blackColour
+                  ),),
+              ] else if(widget.who == "non-striker")...[
+                Text(widget.scoringData.data!.batting!.last.playerName.toString(),
+                  style: fontMedium.copyWith(
+                      fontSize: 15.sp,
+                      color: AppColor.blackColour
+                  ),),
+              ],
               SizedBox(height: 1.h,),
               Stack(
                 alignment: Alignment.center,
@@ -137,7 +147,9 @@ class _OutMethodDialogState extends State<OutMethodDialog> {
                       scoreUpdateRequestModel.overBowled=score.oversBowled;
                       scoreUpdateRequestModel.totalOverBowled=0;
                       scoreUpdateRequestModel.outByPlayer=int.parse(player.selectedBowlerId.toString());
-                      scoreUpdateRequestModel.outPlayer=int.parse(player.selectedStrikerId.toString());
+                      scoreUpdateRequestModel.outPlayer= widget.label == "Mankaded"
+                          ? int.parse(player.selectedNonStrikerId.toString())
+                      : int.parse(player.selectedStrikerId.toString());
                       scoreUpdateRequestModel.totalWicket=0;
                       scoreUpdateRequestModel.fieldingPositionsId=0;
                       scoreUpdateRequestModel.endInnings=false;

@@ -266,7 +266,7 @@ class _NoBallBottomSheetState extends State<NoBallBottomSheet> {
                       scoreUpdateRequestModel.totalWicket = 0;
                       scoreUpdateRequestModel.fieldingPositionsId = 0;
                       scoreUpdateRequestModel.endInnings = false;
-                      scoreUpdateRequestModel.bowlerPosition=bowlerPosition;
+                      scoreUpdateRequestModel.bowlerPosition=score.bowlerPosition;
                       scoreUpdateRequestModel.noBallsType = noBallTypeId;
                       ScoringProvider()
                           .scoreUpdate(scoreUpdateRequestModel)

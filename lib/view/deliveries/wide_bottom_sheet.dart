@@ -237,7 +237,7 @@ class _WideBottomSheetState extends State<WideBottomSheet> {
                           scoreUpdateRequestModel.totalWicket = 0;
                           scoreUpdateRequestModel.fieldingPositionsId = 0;
                           scoreUpdateRequestModel.endInnings = false;
-                          scoreUpdateRequestModel.bowlerPosition = bowlerPosition;
+                          scoreUpdateRequestModel.bowlerPosition = score.bowlerPosition;
                           scoreUpdateRequestModel.wideType = isOffSideSelected;
                           ScoringProvider().scoreUpdate(
                               scoreUpdateRequestModel).then((value) async {
