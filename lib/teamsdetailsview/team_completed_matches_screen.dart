@@ -20,6 +20,9 @@ class _TeamCompletedMatchesScreenState extends State<TeamCompletedMatchesScreen>
 
   @override
   Widget build(BuildContext context) {
+    if(widget.completedMatches!.isEmpty){
+      return Center(child: Text('No Completed matches found'));
+    }
     return  MediaQuery.removePadding(
       context: context,
       removeTop: true, // Remove top system padding (status bar)
@@ -34,6 +37,9 @@ class _TeamCompletedMatchesScreenState extends State<TeamCompletedMatchesScreen>
           itemCount:widget.completedMatches!.length ,
           itemBuilder: (context, int index) {
             final item = widget.completedMatches![index];
+            if(item.teamInnings!.isEmpty|| item.teams==null){
+              return Center(child: Text('No completed matches found'));
+            }
             return GestureDetector(onTap: (){
               Navigator.push(context, MaterialPageRoute(builder:
                   (context)=>TeamMatchesCompletedView(item.teams!.matchId.toString(), item.teams!.team1Id.toString(), item.teams!.team2Id.toString())));

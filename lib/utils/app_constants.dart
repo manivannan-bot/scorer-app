@@ -1,8 +1,8 @@
 class AppConstants {
 
-     // static const String baseUrl = 'https://11storm.stagin.xyz/api';
+      static const String baseUrl = 'https://11storm.stagin.xyz/api';
 
-  static const String baseUrl = 'https://app.strange-noyce.139-59-13-7.plesk.page/api';
+  //static const String baseUrl = 'https://app.strange-noyce.139-59-13-7.plesk.page/api';
   static const String Allmatches = '$baseUrl/matches';
   static const String getPlayerList = '$baseUrl/get-players';
   static const String saveBatsman = '$baseUrl/batsman-save';
@@ -35,6 +35,7 @@ class AppConstants {
     static const String yetToBat = '$baseUrl/yet-to-start';
     static const String userProfile = '$baseUrl/user-profile';
      static const String liveScoreCard = '$baseUrl/score-live';
+      static const String completedMatches = '$baseUrl/completed-matches';
 
 
 }

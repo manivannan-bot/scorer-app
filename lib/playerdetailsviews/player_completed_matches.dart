@@ -20,6 +20,9 @@ class PlayerCompletedMatches extends StatefulWidget {
 class _PlayerCompletedMatchesState extends State<PlayerCompletedMatches> {
   @override
   Widget build(BuildContext context) {
+    if(widget.teams==null || widget.teamInnings!.isEmpty){
+      return const Text('');
+    }
     return GestureDetector(onTap: (){
       Navigator.push(context, MaterialPageRoute(builder:
           (context)=>TeamMatchesCompletedView(widget.teams!.matchId.toString(), widget.teams!.team1Id.toString(), widget.teams!.team2Id.toString())));
