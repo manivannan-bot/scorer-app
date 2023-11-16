@@ -28,7 +28,7 @@ class Images{
 
   // //homescreen
   static const String searchIcon = 'assets/images/search_icon.svg';
-   static const String playersImage = 'assets/images/players_images.png';
+   static const String playersImage = 'https://cdn-icons-png.flaticon.com/256/4389/4389644.png';
    static const String stumpIcon1 = 'assets/images/stump_icon1.svg';
    static const String stumpIcon2 = 'assets/images/stump_icon2.svg';
 

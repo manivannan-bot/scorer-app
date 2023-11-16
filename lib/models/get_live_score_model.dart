@@ -2,23 +2,26 @@ class GetLiveScoreResponseModel {
   bool? status;
   String? message;
   Matches? matches;
+  dynamic target;
 
-  GetLiveScoreResponseModel({this.status, this.message, this.matches});
+  GetLiveScoreResponseModel({this.status, this.message, this.matches, this.target});
 
   GetLiveScoreResponseModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     matches =
     json['matches'] != null ? new Matches.fromJson(json['matches']) : null;
+    target = json['target'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['status'] = this.status;
     data['message'] = this.message;
     if (this.matches != null) {
       data['matches'] = this.matches!.toJson();
     }
+    data['target'] = this.target;
     return data;
   }
 }

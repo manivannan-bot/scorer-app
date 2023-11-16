@@ -97,12 +97,14 @@ class _SettingsBottomSheetState extends State<SettingsBottomSheet> {
             SizedBox(height: 1.h,),
             Row(
               children: [
-                Text("Scoring area",style: fontMedium.copyWith(
-                  fontSize: 14.sp,
+                Text("Scoring area",style: fontRegular.copyWith(
+                  fontSize: 12.sp,
                   color: AppColor.blackColour,
                 ),),
                 const Spacer(),
-                Switch(value: value1,
+                Switch(
+                  activeColor: AppColor.primaryColor,
+                    value: value1,
                     onChanged:(bool newValue) async{
                       SharedPreferences pref=await SharedPreferences.getInstance();
                       var isFourOrSix=pref.getInt('fourOrSix');
@@ -124,12 +126,13 @@ class _SettingsBottomSheetState extends State<SettingsBottomSheet> {
             ),
             Row(
               children: [
-                Text("Bowling area",style: fontMedium.copyWith(
-                  fontSize: 14.sp,
+                Text("Bowling area",style: fontRegular.copyWith(
+                  fontSize: 12.sp,
                   color: AppColor.blackColour,
                 ),),
                 const Spacer(),
                 Switch(value: value2,
+                    activeColor: AppColor.primaryColor,
                     onChanged:(bool newValue) async{
                       SharedPreferences pref=await SharedPreferences.getInstance();
                       var bowlingArea=pref.getInt('bowlingArea');
@@ -150,12 +153,13 @@ class _SettingsBottomSheetState extends State<SettingsBottomSheet> {
             ),
             Row(
               children: [
-                Text("Extras wide",style: fontMedium.copyWith(
-                  fontSize: 14.sp,
+                Text("Extras wide",style: fontRegular.copyWith(
+                  fontSize: 12.sp,
                   color: AppColor.blackColour,
                 ),),
                 const Spacer(),
                 Switch(value: value3,
+                    activeColor: AppColor.primaryColor,
                     onChanged:(bool newValue) async{
                       SharedPreferences pref=await SharedPreferences.getInstance();
                       var extraWide=pref.getInt('wideRun');
@@ -176,12 +180,13 @@ class _SettingsBottomSheetState extends State<SettingsBottomSheet> {
             ),
             Row(
               children: [
-                Text("No ball run",style: fontMedium.copyWith(
-                  fontSize: 14.sp,
+                Text("No ball run",style: fontRegular.copyWith(
+                  fontSize: 12.sp,
                   color: AppColor.blackColour,
                 ),),
                 const Spacer(),
                 Switch(value: value4,
+                    activeColor: AppColor.primaryColor,
                     onChanged:(bool newValue) async{
                       SharedPreferences pref=await SharedPreferences.getInstance();
                       var noballRun=pref.getInt('noBallRun');

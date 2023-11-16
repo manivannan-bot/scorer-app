@@ -36,7 +36,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         child: Icon(Icons.arrow_back,size: 7.w,color: AppColor.lightColor,)),
                     Column(
                       children: [
-                        Image.asset(Images.playersImage,width: 30.w,),
+                        Image.network(Images.playersImage,width: 30.w,),
                         Text('Murugaprasanth',
                           style: fontMedium.copyWith(fontSize: 15.sp,color: AppColor.lightColor),),
                       ],

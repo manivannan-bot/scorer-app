@@ -3,6 +3,7 @@ import 'package:flutter_animator/flutter_animator.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:scorer/provider/player_selection_provider.dart';
+import 'package:scorer/view/widgets/batsman_list_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
@@ -35,7 +36,6 @@ class _ChooseStrikerBottomSheetState extends State<ChooseStrikerBottomSheet> {
   String searchedText = "";
   TextEditingController searchController = TextEditingController();
   List<BattingPlayers>? searchedBatsman = [];
-  bool showError = false;
 
   int localSelectedIndex = -1;
   String playerId = "", playerName = "";
@@ -107,7 +107,7 @@ class _ChooseStrikerBottomSheetState extends State<ChooseStrikerBottomSheet> {
                 Text(
                   "Select Striker",
                   style: fontMedium.copyWith(
-                    fontSize: 18.sp,
+                    fontSize: 16.sp,
                     color: AppColor.blackColour,
                   ),
                 ),
@@ -190,10 +190,6 @@ class _ChooseStrikerBottomSheetState extends State<ChooseStrikerBottomSheet> {
                   fontSize: 14.sp, color: AppColor.pri),
             ),
           ),
-          // const Divider(
-          //   thickness: 0.5,
-          //   color: Color(0xffD3D3D3),
-          // ),
           if(isResultEmpty && searching)...[
             Padding(
               padding: EdgeInsets.only(top: 5.h),
@@ -224,93 +220,16 @@ class _ChooseStrikerBottomSheetState extends State<ChooseStrikerBottomSheet> {
                               if (localSelectedIndex == index) {
                                 localSelectedIndex = 0; // Deselect the item if it's already selected
                               } else {
-                                localSelectedIndex =
-                                    index; // Select the item if it's not selected
+                                localSelectedIndex = index; // Select the item if it's not selected
                               }
-                              // onItemSelected(localSelectedIndex);
                             });
                           },
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 2.5.w, vertical: 1.h),
-                                child: Row(
-                                  children: [
-                                    //circular button
-                                    Container(
-                                      height:
-                                      20.0, // Adjust the height as needed
-                                      width: 20.0, // Adjust the width as needed
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: localSelectedIndex == index
-                                            ? Colors.blue
-                                            : Colors
-                                            .grey, // Change colors based on selected index
-                                      ),
-                                      child: const Center(
-                                        child: Icon(
-                                          Icons
-                                              .circle_outlined, // You can change the icon as needed
-                                          color: Colors.white, // Icon color
-                                          size: 20.0, // Icon size
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 3.w,
-                                    ),
-                                    Image.asset(
-                                      Images.playersImage,
-                                      width: 10.w,
-                                    ),
-                                    SizedBox(
-                                      width: 2.w,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          searchedBatsman![index].playerName ?? '-',
-                                          style: fontMedium.copyWith(
-                                            fontSize: 12.sp,
-                                            color: AppColor.blackColour,
-                                          ),
-                                        ),
-                                        Row(
-                                          children: [
-                                            Container(
-                                              height: 1.h,
-                                              width: 2.w,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                BorderRadius.circular(50),
-                                                color: AppColor.pri,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 2.w,
-                                            ),
-                                            Text(
-                                              searchedBatsman![index].battingStyle ?? '-',
-                                              style: fontMedium.copyWith(
-                                                  fontSize: 11.sp,
-                                                  color:
-                                                  const Color(0xff555555)),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    const Spacer(),
-                                  ],
-                                ),
-                              ),
-                              const Divider(),
-                            ],
-                          ),
+                          child: PlayerListItem(
+                              index,
+                              localSelectedIndex,
+                              searchedBatsman![index].playerName,
+                              searchedBatsman![index].battingStyle
+                          )
                         );
                       }
                     }
@@ -348,90 +267,14 @@ class _ChooseStrikerBottomSheetState extends State<ChooseStrikerBottomSheet> {
                                       } else {
                                         localSelectedIndex = index;
                                       }
-                                      // onItemSelected(localSelectedIndex);
                                     });
                                   },
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 2.5.w, vertical: 1.h),
-                                        child: Row(
-                                          children: [
-                                            //circular button
-                                            Container(
-                                              height:
-                                              20.0, // Adjust the height as needed
-                                              width: 20.0, // Adjust the width as needed
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: localSelectedIndex == index
-                                                    ? Colors.blue
-                                                    : Colors
-                                                    .grey, // Change colors based on selected index
-                                              ),
-                                              child: const Center(
-                                                child: Icon(
-                                                  Icons
-                                                      .circle_outlined, // You can change the icon as needed
-                                                  color: Colors.white, // Icon color
-                                                  size: 20.0, // Icon size
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 3.w,
-                                            ),
-                                            Image.asset(
-                                              Images.playersImage,
-                                              width: 10.w,
-                                            ),
-                                            SizedBox(
-                                              width: 2.w,
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  battingPlayers[index].playerName ?? '-',
-                                                  style: fontMedium.copyWith(
-                                                    fontSize: 12.sp,
-                                                    color: AppColor.blackColour,
-                                                  ),
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Container(
-                                                      height: 1.h,
-                                                      width: 2.w,
-                                                      decoration: BoxDecoration(
-                                                        borderRadius:
-                                                        BorderRadius.circular(50),
-                                                        color: AppColor.pri,
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 2.w,
-                                                    ),
-                                                    Text(
-                                                      battingPlayers[index].battingStyle ?? '-',
-                                                      style: fontMedium.copyWith(
-                                                          fontSize: 11.sp,
-                                                          color:
-                                                          const Color(0xff555555)),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                            const Spacer(),
-                                          ],
-                                        ),
-                                      ),
-                                      const Divider(),
-                                    ],
-                                  ),
+                                  child: PlayerListItem(
+                                    index,
+                                    localSelectedIndex,
+                                    battingPlayers[index].playerName,
+                                    battingPlayers[index].battingStyle
+                                  )
                                 );
                               }
                             }
@@ -453,8 +296,8 @@ class _ChooseStrikerBottomSheetState extends State<ChooseStrikerBottomSheet> {
               color: AppColor.lightColor,
             ),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                const Spacer(),
                 GestureDetector(
                     onTap: () {
                       Navigator.pop(context);
@@ -471,7 +314,6 @@ class _ChooseStrikerBottomSheetState extends State<ChooseStrikerBottomSheet> {
                         Navigator.pop(context);
                       } else {
                         Dialogs.snackBar("Choose a striker", context, isError: true);
-                        // displayError();
                       }
                     },
                     child: const OkBtn("Ok")),
@@ -481,19 +323,5 @@ class _ChooseStrikerBottomSheetState extends State<ChooseStrikerBottomSheet> {
         ],
       ),
     );
-  }
-
-  displayError() async {
-    if(mounted){
-      setState(() {
-        showError = true;
-      });
-    }
-    await Future.delayed(const Duration(seconds: 3));
-    if(mounted){
-      setState(() {
-        showError = false;
-      });
-    }
   }
 }

@@ -7,7 +7,6 @@ import 'package:scorer/utils/colours.dart';
 import 'package:scorer/utils/styles.dart';
 import 'package:scorer/widgets/cancel_btn.dart';
 import 'package:scorer/widgets/ok_btn.dart';
-import 'package:scorer/widgets/stricker%20container.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
@@ -15,6 +14,7 @@ import '../models/player_list_model.dart';
 import '../models/save_batsman_request_model.dart';
 import '../provider/scoring_provider.dart';
 import '../view/score_update_screen.dart';
+import '../widgets/selection_player_container.dart';
 import '../widgets/snackbar.dart';
 import 'choose_bowler_bottom_sheet.dart';
 import 'choose_non_striker_bottom_sheet.dart';
@@ -68,6 +68,7 @@ class _DOScoringState extends State<DOScoring> {
   bool striker = false;
   bool nonStriker = false;
   bool bowler = false;
+  bool loading = false;
 
   @override
   void initState() {
@@ -356,7 +357,9 @@ class _DOScoringState extends State<DOScoring> {
                           player.selectedWicketKeeperId == "") {
                         return const SizedBox();
                       } else {
-                        return GestureDetector(
+                        return loading
+                        ? const CircularProgressIndicator()
+                        : GestureDetector(
                             child: const OkBtn("Ok"),
                             onTap: () async {
                               final players = Provider.of<PlayerSelectionProvider>(context, listen: false);
@@ -366,6 +369,9 @@ class _DOScoringState extends State<DOScoring> {
                                   players.selectedWicketKeeperId == "") {
                                 Dialogs.snackBar("Select all players", context, isError: true);
                               } else {
+                                setState(() {
+                                  loading = true;
+                                });
                                 SaveBatsmanDetailRequestModel requestModel = SaveBatsmanDetailRequestModel(
                                   batsman: [
                                     Batsman(
@@ -414,6 +420,9 @@ class _DOScoringState extends State<DOScoring> {
                                 });
                                 WidgetsBinding.instance.addPostFrameCallback((_) {
                                   if(striker && nonStriker && bowler){
+                                    setState(() {
+                                      loading = false;
+                                    });
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(

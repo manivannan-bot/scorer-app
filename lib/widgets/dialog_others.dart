@@ -46,13 +46,15 @@ class _DialogsOthersState extends State<DialogsOthers> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      insetPadding: EdgeInsets.symmetric(
+        horizontal: 5.w
+      ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(25),
       ),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h),
         height: 28.h,
-        width: 80.w,
         decoration: BoxDecoration(
           color: AppColor.lightColor,
           // boxShadow: [
@@ -68,38 +70,41 @@ class _DialogsOthersState extends State<DialogsOthers> {
             SizedBox(height: 1.h,),
             Padding(
               padding:  EdgeInsets.only(left: 0.w,right: 0.w),
-              child: Wrap(
-                spacing: 3.w, // Horizontal spacing between items
-                runSpacing: 1.h, // Vertical spacing between lines
-                alignment: WrapAlignment.center, // Alignment of items
-                children:chipData.map((data) {
-                  final index = chipData.indexOf(data);
-                  return GestureDetector(
-                    onTap: (){
-                      setState(() {
-                        isWideSelected=index;
-                      });
-                    },
-                    child: Chip(
-                      padding: EdgeInsets.symmetric(horizontal: 2.w,vertical: 0.8.h),
-                      label: Text(data['label'],style: fontSemiBold.copyWith(
-                          fontSize: 12.sp,
-                          color: AppColor.blackColour
-                      ),),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25.0),
-                        side: const BorderSide(
-                          color: Color(0xffDADADA),
+              child: Center(
+                child: Wrap(
+                  spacing: 3.w, // Horizontal spacing between items
+                  runSpacing: 1.h, // Vertical spacing between lines
+                  alignment: WrapAlignment.center, // Alignment of items
+                  children:chipData.map((data) {
+                    final index = chipData.indexOf(data);
+                    return GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          isWideSelected=index;
+                        });
+                      },
+                      child: Chip(
+                        padding: EdgeInsets.symmetric(horizontal: 2.w,vertical: 0.8.h),
+                        label: Text(data['label'],style: fontMedium.copyWith(
+                            fontSize: 11.sp,
+                            color: AppColor.blackColour
+                        ),),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                          side: const BorderSide(
+                            color: Color(0xffDADADA),
+                          ),
                         ),
+                        backgroundColor: isWideSelected==index? AppColor.primaryColor : const Color(0xffF8F9FA),
+                        // backgroundColor:AppColor.lightColor
                       ),
-                      backgroundColor: isWideSelected==index? AppColor.primaryColor : Color(0xffF8F9FA),
-                      // backgroundColor:AppColor.lightColor
-                    ),
-                  );
-                }).toList(),
+                    );
+                  }).toList(),
+                ),
               ),
             ),
-            SizedBox(height: 1.5.h,),
+            const Spacer(),
+            SizedBox(height: 1.h,),
             Expanded(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -109,14 +114,14 @@ class _DialogsOthersState extends State<DialogsOthers> {
                       onTap:(){
                         Navigator.pop(context);
                       },
-                      child: CancelBtn("cancel")),
+                      child: const CancelBtn("cancel")),
                   SizedBox(width: 4.w,),
                   GestureDetector(
                       onTap:(){
                         ScoringProvider().matchBreak(int.parse(widget.matchId), int.parse(widget.team1Id), isWideSelected).then((value) {
                           Navigator.pop(context);
                         });
-                      },child: OkBtn("ok")),
+                      },child: const OkBtn("Ok")),
                 ],
               ),
             ),
@@ -168,9 +173,9 @@ class _ChangeTargetDialogState extends State<ChangeTargetDialog> {
             SizedBox(height: 2.h,),
             Text("Target can be changed only after the first innings",style: fontRegular.copyWith(
               fontSize: 11.sp,
-              color: Color(0xff808080)
+              color: const Color(0xff808080)
             ),),
-            Expanded(
+            const Expanded(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -203,20 +208,17 @@ class _DlMethodDialog extends State<DlMethodDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      insetPadding: EdgeInsets.symmetric(
+        horizontal: 5.w
+      ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(25),
       ),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
         height: 40.h,
-        width: 80.w,
         decoration: BoxDecoration(
           color: AppColor.lightColor,
-          // boxShadow: [
-          //   BoxShadow(
-          //     color: Colors.grey,
-          //   )
-          // ],
           borderRadius: BorderRadius.circular(30),
         ),
         child:  Column(
@@ -231,7 +233,7 @@ class _DlMethodDialog extends State<DlMethodDialog> {
             SizedBox(height: 2.h,),
             Text("Enter over and target runs",style: fontRegular.copyWith(
                 fontSize: 11.sp,
-                color: Color(0xff808080)
+                color: const Color(0xff808080)
             ),),
             SizedBox(height: 2.h,),
             Text(" Overs",style: fontMedium.copyWith(
@@ -244,13 +246,13 @@ class _DlMethodDialog extends State<DlMethodDialog> {
               width: double.infinity,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: Color(0xffF8F9FA),
+                color: const Color(0xffF8F9FA),
               ),
               child: Padding(
                 padding:  EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.0.h),
                 child: TextFormField(
                   keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: InputBorder.none,// Label text
                   // Hint text
                   ),
@@ -276,13 +278,13 @@ class _DlMethodDialog extends State<DlMethodDialog> {
               width: double.infinity,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: Color(0xffF8F9FA),
+                color: const Color(0xffF8F9FA),
               ),
               child: Padding(
                 padding:  EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.0.h),
                 child: TextFormField(
                   keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: InputBorder.none,// Label text
                     // Hint text
                   ),
@@ -314,7 +316,7 @@ class _DlMethodDialog extends State<DlMethodDialog> {
                       onTap:(){
                         Navigator.pop(context);
                       },
-                      child: CancelBtn("cancel")),
+                      child: const CancelBtn("cancel")),
                   SizedBox(width: 4.w,),
                   GestureDetector(
                       onTap:()async{
@@ -328,7 +330,7 @@ class _DlMethodDialog extends State<DlMethodDialog> {
                         }else{
                          //displayError();
                         }
-                      },child: OkBtn("ok")),
+                      },child: const OkBtn("ok")),
                 ],
               ),
             ),
@@ -358,19 +360,21 @@ class _EndInningsState extends State<EndInnings> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      insetPadding: EdgeInsets.symmetric(
+        horizontal: 5.w
+      ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(25),
       ),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
         height: 20.h,
-        width: 40.w,
         decoration: BoxDecoration(
           color: AppColor.lightColor,
           borderRadius: BorderRadius.circular(30),
         ),
         child:  Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Center(
               child: Text("End Innings",style: fontMedium.copyWith(
@@ -378,13 +382,13 @@ class _EndInningsState extends State<EndInnings> {
                 color: AppColor.blackColour,
               ),),
             ),
-            SizedBox(height: 2.h,),
+            SizedBox(height: 1.h,),
             Text("Are you sure want to End Innings?",style: fontRegular.copyWith(
                 fontSize: 11.sp,
-                color: Color(0xff808080)
+                color: const Color(0xff808080)
             ),),
+            const Spacer(),
             SizedBox(height: 1.h,),
-
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.end,
@@ -393,7 +397,7 @@ class _EndInningsState extends State<EndInnings> {
                     onTap:(){
                       Navigator.pop(context);
                     },
-                    child: CancelBtn("cancel")),
+                    child: const CancelBtn("cancel")),
                 SizedBox(width: 4.w,),
                 GestureDetector(
                     onTap:()async{
@@ -409,7 +413,7 @@ class _EndInningsState extends State<EndInnings> {
                       });
                       Navigator.pop(context);
                     },
-                    child:  OkBtn("ok")),
+                    child:  const OkBtn("ok")),
               ],
             ),
           ],
@@ -443,30 +447,27 @@ class _ChangeKeeperState extends State<ChangeKeeper> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      insetPadding: EdgeInsets.symmetric(
+        horizontal: 5.w
+      ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(25),
       ),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.5.h),
         height: 25.h,
-        width: 80.w,
         decoration: BoxDecoration(
           color: AppColor.lightColor,
-          // boxShadow: [
-          //   BoxShadow(
-          //     color: Colors.grey,
-          //   )
-          // ],
           borderRadius: BorderRadius.circular(30),
         ),
         child:  Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text("Change Keeper",style: fontMedium.copyWith(
-              fontSize: 16.sp,
+              fontSize: 14.sp,
               color: AppColor.blackColour,
             ),),
-            SizedBox(height: 1.h,),
+            SizedBox(height: 2.h,),
             Padding(
               padding:  EdgeInsets.only(left: 0.w,right: 0.w),
               child: Wrap(
@@ -491,8 +492,8 @@ class _ChangeKeeperState extends State<ChangeKeeper> {
                     },
                     child: Chip(
                       padding: EdgeInsets.symmetric(horizontal: 2.w,vertical: 0.8.h),
-                      label: Text(data['label'],style: fontSemiBold.copyWith(
-                          fontSize: 12.sp,
+                      label: Text(data['label'],style: fontMedium.copyWith(
+                          fontSize: 11.sp,
                           color: AppColor.blackColour
                       ),),
                       shape: RoundedRectangleBorder(
@@ -501,7 +502,7 @@ class _ChangeKeeperState extends State<ChangeKeeper> {
                           color: Color(0xffDADADA),
                         ),
                       ),
-                      backgroundColor: keeperSelected==index? AppColor.primaryColor : Color(0xffF8F9FA),
+                      backgroundColor: keeperSelected==index? AppColor.primaryColor : const Color(0xffF8F9FA),
                       // backgroundColor:AppColor.lightColor
                     ),
                   );

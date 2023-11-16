@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:scorer/view/widgets/batsman_list_item.dart';
 import 'package:scorer/widgets/snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
@@ -29,7 +30,7 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
   bool searching = false;
   bool isResultEmpty = false;
   String searchedText = "";
-  int? localBatsmanIndex = 0;
+  int? localBatsmanIndex = -1;
   TextEditingController searchController = TextEditingController();
   List<BattingPlayers>? searchedBatsman = [];
   List<BattingPlayers>? itemsBatsman = [];
@@ -171,13 +172,6 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
                 color: AppColor.pri
             ),),
           ),
-          // Divider(
-          //   color: Color(0xffD3D3D3),
-          // ),
-          const Divider(
-            thickness: 0.5,
-            color: Color(0xffD3D3D3),
-          ),
           if(isResultEmpty && searching)...[
             Padding(
               padding: EdgeInsets.only(top: 5.h),
@@ -190,102 +184,34 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
           ]
           else if(!isResultEmpty && searching)...[
             Expanded(
-              child:   ListView.separated(
-                  separatorBuilder:(context ,_) {
-                    return const Divider(
-                      thickness: 0.6,
-                    );
-                  },
+              child: ListView.builder(
                   itemCount: searchedBatsman!.length,
                   itemBuilder: (context, index) {
                     final isPlayerOut = searchedBatsman![index].isOut == 1 || searchedBatsman![index].isOut == 0;
-
                     return GestureDetector(
                       onTap: () {
-                        setState(() {
-                          batsmanId = searchedBatsman![index].playerId.toString();
-                          batsmanName = searchedBatsman![index].playerName.toString();
-                        });
                         if (isPlayerOut) {
-
+                          debugPrint("batsman who can't be chosen");
                         } else {
+                          setState(() {
+                            batsmanId = searchedBatsman![index].playerId.toString();
+                            batsmanName = searchedBatsman![index].playerName.toString();
+                          });
                           setState(() {
                             if (localBatsmanIndex == index) {
                               localBatsmanIndex = null;
                             } else {
                               localBatsmanIndex = index;
                             }
-                            // onItemSelected(localBowlerIndex);
                           });
                         }
                       },
-                      child: Opacity(
-                        opacity: isPlayerOut?0.5:1.0,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 2.5.w, vertical: 1.h),
-                          child: Row(
-                            children: [
-                              //circular button
-                              Container(
-                                height: 20.0, // Adjust the height as needed
-                                width: 20.0, // Adjust the width as needed
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: localBatsmanIndex == index
-                                      ? Colors.blue
-                                      : Colors.grey, // Change colors based on selected index
-                                ),
-                                child: const Center(
-                                  child: Icon(
-                                    Icons.circle_outlined,
-                                    color: Colors.white, // Icon color
-                                    size: 20.0, // Icon size
-                                  ),
-                                ),
-                              ), SizedBox(width: 3.w,),
-                              Image.asset(
-                                Images.playersImage, width: 10.w,),
-                              SizedBox(width: 2.w,),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment
-                                    .start,
-                                children: [
-                                  Text(
-                                    searchedBatsman![index].playerName ?? '-',
-                                    style: fontMedium.copyWith(
-                                      fontSize: 12.sp,
-                                      color: AppColor.blackColour,
-                                    ),),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        height: 1.h,
-                                        width: 2.w,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius
-                                              .circular(50),
-                                          color: AppColor.pri,
-                                        ),
-                                      ),
-                                      SizedBox(width: 2.w,),
-                                      Text(
-                                        searchedBatsman![index].battingStyle ??
-                                            '-', style: fontMedium.copyWith(
-                                          fontSize: 11.sp,
-                                          color: const Color(0xff555555)
-                                      ),),
-                                    ],
-                                  ),
-
-                                ],
-                              ),
-                              const Spacer(),
-
-                            ],
-                          ),
-                        ),
-                      ),
+                      child: isPlayerOut ? const SizedBox()
+                      : PlayerListItem(
+                          index,
+                          localBatsmanIndex,
+                          searchedBatsman![index].playerName,
+                          searchedBatsman![index].battingStyle)
 
                     );
                   }
@@ -295,103 +221,34 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
           ]
           else if(isResultEmpty || !searching)...[
               Expanded(
-                child: ListView.separated(
-                    separatorBuilder:(context ,_) {
-                      return const Divider(
-                        thickness: 0.6,
-                      );
-                    },
+                child: ListView.builder(
                     itemCount: itemsBatsman!.length,
                     itemBuilder: (context, index) {
                       final isPlayerOut = itemsBatsman![index].isOut == 1 || itemsBatsman![index].isOut == 0;
-
                       return GestureDetector(
                         onTap: () {
-                          setState(() {
-                            batsmanId = itemsBatsman![index].playerId.toString();
-                            batsmanName = itemsBatsman![index].playerName.toString();
-                          });
                           if (isPlayerOut) {
-
+                            debugPrint("batsman who we cannot choose");
                           } else {
+                            setState(() {
+                              batsmanId = itemsBatsman![index].playerId.toString();
+                              batsmanName = itemsBatsman![index].playerName.toString();
+                            });
                             setState(() {
                               if (localBatsmanIndex == index) {
                                 localBatsmanIndex = null;
                               } else {
                                 localBatsmanIndex = index;
                               }
-                              // onItemSelected(localBowlerIndex);
                             });
                           }
                         },
-                        child: Opacity(
-                          opacity: isPlayerOut?0.5:1.0,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 2.5.w, vertical: 1.h),
-                            child: Row(
-                              children: [
-                                //circular button
-                                Container(
-                                  height: 20.0, // Adjust the height as needed
-                                  width: 20.0, // Adjust the width as needed
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: localBatsmanIndex == index ? Colors
-                                        .blue : Colors
-                                        .grey, // Change colors based on selected index
-                                  ),
-                                  child: const Center(
-                                    child: Icon(
-                                      Icons.circle_outlined,
-                                      color: Colors.white, // Icon color
-                                      size: 20.0, // Icon size
-                                    ),
-                                  ),
-                                ), SizedBox(width: 3.w,),
-                                Image.asset(
-                                  Images.playersImage, width: 10.w,),
-                                SizedBox(width: 2.w,),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment
-                                      .start,
-                                  children: [
-                                    Text(
-                                      itemsBatsman![index].playerName ?? '-',
-                                      style: fontMedium.copyWith(
-                                        fontSize: 12.sp,
-                                        color: AppColor.blackColour,
-                                      ),),
-                                    Row(
-                                      children: [
-                                        Container(
-                                          height: 1.h,
-                                          width: 2.w,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius
-                                                .circular(50),
-                                            color: AppColor.pri,
-                                          ),
-                                        ),
-                                        SizedBox(width: 2.w,),
-                                        Text(
-                                          itemsBatsman![index].battingStyle ??
-                                              '-', style: fontMedium.copyWith(
-                                            fontSize: 11.sp,
-                                            color: const Color(0xff555555)
-                                        ),),
-                                      ],
-                                    ),
-
-                                  ],
-                                ),
-                                const Spacer(),
-
-                              ],
-                            ),
-                          ),
-                        ),
-
+                        child: isPlayerOut ? const SizedBox()
+                            : PlayerListItem(
+                            index,
+                            localBatsmanIndex,
+                            itemsBatsman![index].playerName,
+                            itemsBatsman![index].battingStyle)
                       );
                     }
 
@@ -441,12 +298,6 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
                         Navigator.pop(context);
                       }
                     });
-
-                    // SharedPreferences prefs = await SharedPreferences.getInstance();
-                    // await prefs.setInt(widget.player, searchedBatsman![localBatsmanIndex!].playerId!);
-                    // WidgetsBinding.instance.addPostFrameCallback((_) {
-                    //
-                    // });
                   }else{
                     Dialogs.snackBar("Select one player", context, isError: true);
                   }

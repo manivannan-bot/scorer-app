@@ -12,7 +12,6 @@ import '../provider/player_selection_provider.dart';
 import '../provider/score_update_provider.dart';
 import '../provider/scoring_provider.dart';
 import '../utils/colours.dart';
-import '../utils/images.dart';
 import '../utils/sizes.dart';
 import '../widgets/snackbar.dart';
 import '../widgets/undo_button.dart';
@@ -47,6 +46,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
    int? isFourOrSix;
    int? isBowlingArea=1;
    bool _isSwitch=false ;
+   bool loading = false;
 
 
   List<String> partNumbers = List.generate(8, (index) => 'Part ${index + 1}');
@@ -56,14 +56,14 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
     setState(() {
       tappedPart = partNumbers[partNumberIndex];
     });
-    print('Tapped on $tappedPart');
+    debugPrint('Tapped on $tappedPart');
   }
 
   void callbackFunction(int value) {
     setState(() {
       fieldPositionId=value;
     });
-    print("Received value from ThreeCircles: $value");
+    debugPrint("Received value from ThreeCircles: $value");
 
   }
   @override
@@ -89,9 +89,6 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-
-    double screenHeight = MediaQuery.of(context).size.height;
-    double sheetHeight = screenHeight * 0.9;
     if(widget.scoringData.data!.batting!.isEmpty){
       return const Center(child: Text('Please Select Batsman'));
     }
@@ -99,7 +96,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
       return const Center(child: Text('Please Select Bowler'));
     }
     return Container(
-      height: sheetHeight,
+      height: 85.h,
       decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -791,102 +788,138 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                     SizedBox(height: 3.h),
                     const UndoButton(),
                     SizedBox(height: 2.h,),
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: ElevatedButton(
-                        onPressed: () async{
-                          final player = Provider.of<PlayerSelectionProvider>(context, listen: false);
-                          final score = Provider.of<ScoreUpdateProvider>(context, listen: false);
-                          print("striker id ${player.selectedStrikerId}");
-                          print("non striker id ${player.selectedNonStrikerId}");
-                          print("passing over number to score update api ${score.overNumberInnings}");
-                          print("passing ball number to score update api ${score.ballNumberInnings}");
-                          print("passing overs bowled to score update api ${score.oversBowled}");
-                          score.trackOvers(score.overNumberInnings, score.ballNumberInnings);
-                          SharedPreferences prefs = await SharedPreferences.getInstance();
-                          var bowlerPosition=prefs.getInt('bowlerPosition')??0;
-                          scoreUpdateRequestModel.ballTypeId=widget.run;
-                          scoreUpdateRequestModel.matchId=widget.scoringData.data!.batting![0].matchId;
-                          scoreUpdateRequestModel.scorerId=46;
-                          scoreUpdateRequestModel.strikerId=int.parse(player.selectedStrikerId.toString());
-                          scoreUpdateRequestModel.nonStrikerId=int.parse(player.selectedNonStrikerId.toString());
-                          scoreUpdateRequestModel.wicketKeeperId=int.parse(player.selectedWicketKeeperId.toString());
-                          scoreUpdateRequestModel.bowlerId=int.parse(player.selectedBowlerId.toString());
-                          scoreUpdateRequestModel.overNumber=score.overNumberInnings;
-                          scoreUpdateRequestModel.ballNumber=score.ballNumberInnings;
-                          scoreUpdateRequestModel.runsScored=widget.run;
-                          scoreUpdateRequestModel.extras=0;
-                          scoreUpdateRequestModel.extrasSlug=0;
-                          scoreUpdateRequestModel.wicket=0;
-                          scoreUpdateRequestModel.dismissalType=0;
-                          scoreUpdateRequestModel.commentary=0;
-                          scoreUpdateRequestModel.innings=score.innings;
-                          scoreUpdateRequestModel.battingTeamId=widget.scoringData.data!.batting![0].teamId??0;
-                          scoreUpdateRequestModel.bowlingTeamId=widget.scoringData.data!.bowling!.teamId??0;
-                          scoreUpdateRequestModel.overBowled=score.oversBowled;
-                          scoreUpdateRequestModel.totalOverBowled=0;
-                          scoreUpdateRequestModel.outByPlayer=0;
-                          scoreUpdateRequestModel.outPlayer=0;
-                          scoreUpdateRequestModel.totalWicket=0;
-                          scoreUpdateRequestModel.fieldingPositionsId=fieldPositionId;
-                          scoreUpdateRequestModel.endInnings=false;
-                          scoreUpdateRequestModel.bowlerPosition= score.bowlerPosition;
-                          ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
-                            if(value.data?.innings == 3){
-                              Dialogs.snackBar("Match Ended", context);
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const HomeScreen()));
-                            } else if(value.data?.inningCompleted == true){
-                              print("end of innings");
-                              print("navigating to home screen");
-                              Dialogs.snackBar(value.data!.inningsMessage.toString(), context);
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const HomeScreen()));
-                            } else {
-                              widget.onSave(value);
-                              print("striker and non striker id - ${value.data?.strikerId.toString()} ${value.data?.nonStrikerId.toString()}");
-
-                              print("after score update - ${widget.run}");
-                              print(value.data?.overNumber);
-                              print(value.data?.ballNumber);
-                              print(value.data?.bowlerChange);
-                              print("score update print end - ${widget.run}");
-
-                              print("setting over number ${value.data?.overNumber} and ball number ${value.data?.ballNumber} and bowler change ${value.data?.bowlerChange} to provider after score update");
-                              score.setOverNumber(value.data?.overNumber??0);
-                              score.setBallNumber(value.data?.ballNumber??0);
-                              score.setBowlerChangeValue(value.data?.bowlerChange??0);
-                              player.setStrikerId(value.data!.strikerId.toString(), "");
-                              player.setNonStrikerId(value.data!.nonStrikerId.toString(), "");
-                              SharedPreferences prefs = await SharedPreferences.getInstance();
-                              await prefs.setInt('bowlerPosition', 0);
-                              widget.refresh();
-                              WidgetsBinding.instance.addPostFrameCallback((_) {
-                                Navigator.pop(context);
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        loading
+                            ? Padding(
+                              padding: EdgeInsets.only(right: 4.w),
+                              child: const SizedBox(
+                              width: 30.0,
+                              height: 30.0,
+                              child: CircularProgressIndicator()),
+                            )
+                            : ElevatedButton(
+                          onPressed: () async{
+                            if(mounted){
+                              setState(() {
+                                loading = true;
                               });
                             }
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25),
+                            final player = Provider.of<PlayerSelectionProvider>(context, listen: false);
+                            final score = Provider.of<ScoreUpdateProvider>(context, listen: false);
+                            debugPrint("striker id ${player.selectedStrikerId}");
+                            debugPrint("non striker id ${player.selectedNonStrikerId}");
+                            debugPrint("passing over number to score update api ${score.overNumberInnings}");
+                            debugPrint("passing ball number to score update api ${score.ballNumberInnings}");
+                            debugPrint("passing overs bowled to score update api ${score.oversBowled}");
+                            score.trackOvers(score.overNumberInnings, score.ballNumberInnings);
+
+                            scoreUpdateRequestModel.ballTypeId=widget.run;
+                            scoreUpdateRequestModel.matchId=widget.scoringData.data!.batting![0].matchId;
+                            scoreUpdateRequestModel.scorerId=46;
+                            scoreUpdateRequestModel.strikerId=int.parse(player.selectedStrikerId.toString());
+                            scoreUpdateRequestModel.nonStrikerId=int.parse(player.selectedNonStrikerId.toString());
+                            scoreUpdateRequestModel.wicketKeeperId=int.parse(player.selectedWicketKeeperId.toString());
+                            scoreUpdateRequestModel.bowlerId=int.parse(player.selectedBowlerId.toString());
+                            scoreUpdateRequestModel.overNumber=score.overNumberInnings;
+                            scoreUpdateRequestModel.ballNumber=score.ballNumberInnings;
+                            scoreUpdateRequestModel.runsScored=widget.run;
+                            scoreUpdateRequestModel.extras=0;
+                            scoreUpdateRequestModel.extrasSlug=0;
+                            scoreUpdateRequestModel.wicket=0;
+                            scoreUpdateRequestModel.dismissalType=0;
+                            scoreUpdateRequestModel.commentary=0;
+                            scoreUpdateRequestModel.innings=score.innings;
+                            scoreUpdateRequestModel.battingTeamId=widget.scoringData.data!.batting![0].teamId??0;
+                            scoreUpdateRequestModel.bowlingTeamId=widget.scoringData.data!.bowling!.teamId??0;
+                            scoreUpdateRequestModel.overBowled=score.oversBowled;
+                            scoreUpdateRequestModel.totalOverBowled=0;
+                            scoreUpdateRequestModel.outByPlayer=0;
+                            scoreUpdateRequestModel.outPlayer=0;
+                            scoreUpdateRequestModel.totalWicket=0;
+                            scoreUpdateRequestModel.fieldingPositionsId=fieldPositionId;
+                            scoreUpdateRequestModel.endInnings=false;
+                            scoreUpdateRequestModel.bowlerPosition= score.bowlerPosition;
+                            ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
+                              if(value.data == null){
+                                if(mounted){
+                                  setState(() {
+                                    loading = false;
+                                  });
+                                }
+                              }
+                              else if(value.data?.innings == 3){
+                                if(mounted){
+                                  setState(() {
+                                    loading = false;
+                                  });
+                                }
+                                Dialogs.snackBar("Match Ended", context);
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const HomeScreen()));
+                              } else if(value.data?.inningCompleted == true){
+                                if(mounted){
+                                  setState(() {
+                                    loading = false;
+                                  });
+                                }
+                                debugPrint("end of innings");
+                                debugPrint("navigating to home screen");
+                                Dialogs.snackBar(value.data!.inningsMessage.toString(), context);
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const HomeScreen()));
+                              } else {
+                                widget.onSave(value);
+                                debugPrint("striker and non striker id - ${value.data?.strikerId.toString()} ${value.data?.nonStrikerId.toString()}");
+
+                                debugPrint("after score update - ${widget.run}");
+                                debugPrint(value.data?.overNumber.toString());
+                                debugPrint(value.data?.ballNumber.toString());
+                                debugPrint(value.data?.bowlerChange.toString());
+                                debugPrint("score update print end - ${widget.run}");
+
+                                debugPrint("setting over number ${value.data?.overNumber} and ball number ${value.data?.ballNumber} and bowler change ${value.data?.bowlerChange} to provider after score update");
+                                score.setOverNumber(value.data?.overNumber??0);
+                                score.setBallNumber(value.data?.ballNumber??0);
+                                score.setBowlerChangeValue(value.data?.bowlerChange??0);
+                                player.setStrikerId(value.data!.strikerId.toString(), "");
+                                player.setNonStrikerId(value.data!.nonStrikerId.toString(), "");
+                                SharedPreferences prefs = await SharedPreferences.getInstance();
+                                await prefs.setInt('bowlerPosition', 0);
+                                widget.refresh();
+                                if(mounted){
+                                  setState(() {
+                                    loading = false;
+                                  });
+                                }
+                                WidgetsBinding.instance.addPostFrameCallback((_) {
+                                  Navigator.pop(context);
+                                });
+                              }
+                            });
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+                            child: Text(
+                              'Save',
+                              style: fontMedium.copyWith(
+                                  color: AppColor.lightColor,
+                                  fontSize: 12.sp),
+                            ),
                           ),
                         ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
-                          child: Text(
-                            'Save',
-                            style: fontMedium.copyWith(
-                                color: AppColor.lightColor,
-                                fontSize: 12.sp),
-                          ),
-                        ),
-                      ),
+                      ],
                     ),
                     SizedBox(height: 2.h,),
                   ],

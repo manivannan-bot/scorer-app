@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../utils/colours.dart';
 import '../../utils/sizes.dart';
 
 class ScorerGridOut extends StatelessWidget {
@@ -15,11 +16,11 @@ class ScorerGridOut extends StatelessWidget {
       decoration: const BoxDecoration(shape: BoxShape.rectangle,color: Colors.black,),
       child: Center(
         child: CircleAvatar(
-          radius: 6.w, // Adjust the radius as needed for the circle size
+          radius: 5.w, // Adjust the radius as needed for the circle size
           backgroundColor: Colors.red,
           child: Text(
             index,
-            style:  fontRegular.copyWith(color: Colors.white, fontSize: 2.h),
+            style:  fontMedium.copyWith(color: AppColor.lightColor, fontSize: 10.sp),
           ),
         ),
       ),

@@ -17,11 +17,11 @@ class ScorerGridFour extends StatelessWidget {
         children: [
           SizedBox(height: 2.h,),
           CircleAvatar(
-              radius: 6.w, // Adjust the radius as needed for the circle size
+              radius: 5.w, // Adjust the radius as needed for the circle size
               backgroundColor: Colors.white,
               child: Image.asset(index)
           ),
-          SizedBox(height: 0.5.h,),
+          SizedBox(height: 1.h,),
           Text(text, style:  fontRegular.copyWith(color: Colors.white)),
         ],
       ),

@@ -59,17 +59,33 @@ class _OutMethodDialogState extends State<OutMethodDialog> {
               ClipOval(child: Image.asset(Images.outProfileimage,width: 20.w,)),
               SizedBox(height: 1.h,),
               if(widget.who == "striker")...[
-                Text(widget.scoringData.data!.batting!.first.playerName.toString(),
-                  style: fontMedium.copyWith(
-                      fontSize: 15.sp,
-                      color: AppColor.blackColour
-                  ),),
+                if(widget.scoringData.data!.batting!.first.striker == 1)...[
+                  Text(widget.scoringData.data!.batting!.first.playerName.toString(),
+                    style: fontMedium.copyWith(
+                        fontSize: 15.sp,
+                        color: AppColor.blackColour
+                    ),),
+                ] else...[
+                  Text(widget.scoringData.data!.batting!.last.playerName.toString(),
+                    style: fontMedium.copyWith(
+                        fontSize: 15.sp,
+                        color: AppColor.blackColour
+                    ),),
+                ]
               ] else if(widget.who == "non-striker")...[
-                Text(widget.scoringData.data!.batting!.last.playerName.toString(),
-                  style: fontMedium.copyWith(
-                      fontSize: 15.sp,
-                      color: AppColor.blackColour
-                  ),),
+                if(widget.scoringData.data!.batting!.last.striker == 0)...[
+                  Text(widget.scoringData.data!.batting!.last.playerName.toString(),
+                    style: fontMedium.copyWith(
+                        fontSize: 15.sp,
+                        color: AppColor.blackColour
+                    ),),
+                ] else...[
+                  Text(widget.scoringData.data!.batting!.first.playerName.toString(),
+                    style: fontMedium.copyWith(
+                        fontSize: 15.sp,
+                        color: AppColor.blackColour
+                    ),),
+                ],
               ],
               SizedBox(height: 1.h,),
               Stack(
@@ -121,9 +137,6 @@ class _OutMethodDialogState extends State<OutMethodDialog> {
                       print("passing ball number to score update api ${score.ballNumberInnings}");
                       print("passing overs bowled to score update api ${score.oversBowled}");
                       score.trackOvers(score.overNumberInnings, score.ballNumberInnings);
-                      SharedPreferences prefs = await SharedPreferences.getInstance();
-                      var bowlerPosition=prefs.getInt('bowlerPosition')??0;
-
 
                       ScoreUpdateRequestModel scoreUpdateRequestModel=ScoreUpdateRequestModel();
                       scoreUpdateRequestModel.ballTypeId=14;
@@ -153,7 +166,7 @@ class _OutMethodDialogState extends State<OutMethodDialog> {
                       scoreUpdateRequestModel.totalWicket=0;
                       scoreUpdateRequestModel.fieldingPositionsId=0;
                       scoreUpdateRequestModel.endInnings=false;
-                      scoreUpdateRequestModel.bowlerPosition=bowlerPosition;
+                      scoreUpdateRequestModel.bowlerPosition=score.bowlerPosition;
                       ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
                         if(value.data?.innings == 3){
                           Dialogs.snackBar("Match Ended", context);

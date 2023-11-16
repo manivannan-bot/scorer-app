@@ -81,90 +81,92 @@ class _OtherBottomSheetState extends State<OtherBottomSheet> {
             color: Color(0xffD3D3D3),
           ),
           SizedBox(height: 1.h,),
-          Padding(
-            padding:  EdgeInsets.only(left: 2.w,right: 2.w),
-            child: Wrap(
-              spacing: 2.w,
-              runSpacing: 1.h,
-              alignment: WrapAlignment.center,
-              children:chipData.map((data) {
-                final index = chipData.indexOf(data);
-                return GestureDetector(
-                  onTap: (){
-                    setState(() {
-                      isWideSelected=index;
-                    });
-                    if (data['label'] == 'End Innings'){
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return EndInnings(widget.matchId);
-                        },
-                      ).whenComplete(() {
-                        Navigator.pop(context);
+          Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5.w),
+              child: Wrap(
+                spacing: 2.w,
+                runSpacing: 1.h,
+                alignment: WrapAlignment.center,
+                children:chipData.map((data) {
+                  final index = chipData.indexOf(data);
+                  return GestureDetector(
+                    onTap: (){
+                      setState(() {
+                        isWideSelected=index;
                       });
-                    }
-                    if (data['label'] == 'Match break'){
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return DialogsOthers(widget.matchId,widget.team1Id,widget.team2Id);
-                        },
-                      ).whenComplete(() {
-                        Navigator.pop(context);
-                      });
-                    }
-                    if (data['label'] == 'Change keeper'){
+                      if (data['label'] == 'End Innings'){
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return EndInnings(widget.matchId);
+                          },
+                        ).whenComplete(() {
+                          Navigator.pop(context);
+                        });
+                      }
+                      if (data['label'] == 'Match break'){
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return DialogsOthers(widget.matchId,widget.team1Id,widget.team2Id);
+                          },
+                        ).whenComplete(() {
+                          Navigator.pop(context);
+                        });
+                      }
+                      if (data['label'] == 'Change keeper'){
 
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return ChangeKeeper(widget.matchId,widget.team2Id);
-                        },
-                      );
-                    }
-                    // if (data['label'] == 'Change target'){
-                    //   showDialog(
-                    //     context: context,
-                    //     builder: (BuildContext context) {
-                    //       return ChangeTargetDialog();
-                    //     },
-                    //   );
-                    // }
-                    if (data['label'] == 'D/L Method'){
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return DlMethodDialog(widget.matchId);
-                        },
-                      );
-                    }
-                    if (data['label'] == 'Settings'){
-                      _displayBottomSheetSettings();
-                    }
-                    if (data['label'] == 'Change Batsman'){
-                      // String player=(value.data!.strikerId==0)?'striker_id':'non_striker_id';
-                      // changeBatsman(player);
-                    }
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return ChangeKeeper(widget.matchId,widget.team2Id);
+                          },
+                        );
+                      }
+                      // if (data['label'] == 'Change target'){
+                      //   showDialog(
+                      //     context: context,
+                      //     builder: (BuildContext context) {
+                      //       return ChangeTargetDialog();
+                      //     },
+                      //   );
+                      // }
+                      if (data['label'] == 'D/L Method'){
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return DlMethodDialog(widget.matchId);
+                          },
+                        );
+                      }
+                      if (data['label'] == 'Settings'){
+                        _displayBottomSheetSettings();
+                      }
+                      if (data['label'] == 'Change Batsman'){
+                        // String player=(value.data!.strikerId==0)?'striker_id':'non_striker_id';
+                        // changeBatsman(player);
+                      }
 
-                  },
-                  child: Chip(
-                    padding: EdgeInsets.symmetric(horizontal: 2.w,vertical: 0.8.h),
-                    label: Text(data['label'],style: fontSemiBold.copyWith(
-                        fontSize: 12.sp,
-                        color: AppColor.blackColour
-                    ),),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25.0),
-                      side: const BorderSide(
-                        color: Color(0xffDADADA),
+                    },
+                    child: Chip(
+                      padding: EdgeInsets.symmetric(horizontal: 2.w,vertical: 0.8.h),
+                      label: Text(data['label'],style: fontRegular.copyWith(
+                          fontSize: 11.sp,
+                          color: AppColor.blackColour
+                      ),),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                        side: const BorderSide(
+                          color: Color(0xffDADADA),
+                        ),
                       ),
+                      backgroundColor: isWideSelected==index? AppColor.primaryColor : const Color(0xffF8F9FA),
+                      // backgroundColor:AppColor.lightColor
                     ),
-                    backgroundColor: isWideSelected==index? AppColor.primaryColor : const Color(0xffF8F9FA),
-                    // backgroundColor:AppColor.lightColor
-                  ),
-                );
-              }).toList(),
+                  );
+                }).toList(),
+              ),
             ),
           ),
         ],

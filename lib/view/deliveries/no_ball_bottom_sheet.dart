@@ -6,6 +6,7 @@ import 'package:scorer/widgets/snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../Scoring screens/home_screen.dart';
 import '../../models/score_update_request_model.dart';
 import '../../provider/player_selection_provider.dart';
 import '../../provider/score_update_provider.dart';
@@ -28,6 +29,7 @@ class _NoBallBottomSheetState extends State<NoBallBottomSheet> {
 
   int? noBallTypeId = 0 ;
   int? isNBSelected ;
+  bool loading = false;
   List<Map<String, dynamic>> chipData =[
     {
       'label': 'NB',
@@ -89,40 +91,42 @@ class _NoBallBottomSheetState extends State<NoBallBottomSheet> {
             color: Color(0xffD3D3D3),
           ),
           SizedBox(height: 1.h,),
-          Padding(
-            padding:  EdgeInsets.only(left: 5.w,right: 5.w),
-            child: Wrap(
-              spacing: 2.5.w, // Horizontal spacing between items
-              runSpacing: 0.5.h, // Vertical spacing between lines
-              alignment: WrapAlignment.center, // Alignment of items
-              children:chipData.map((data) {
-                final index = chipData.indexOf(data);
-                return GestureDetector(
-                  onTap: (){
-                    setState(() {
-                      isNBSelected=index;
-                    });
-                  },
-                  child: Chip(
-                    padding: EdgeInsets.symmetric(horizontal: 1.5.w,vertical: 0.5.h),
-                    label: Text(data['label'],style: fontSemiBold.copyWith(
-                        fontSize: 12.sp,
-                        color: AppColor.blackColour
-                    ),),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25.0),
-                      side: const BorderSide(
-                        color: Color(0xffDADADA),
+          Center(
+            child: Padding(
+              padding:  EdgeInsets.symmetric(horizontal: 5.w),
+              child: Wrap(
+                spacing: 2.5.w, // Horizontal spacing between items
+                runSpacing: 0.5.h, // Vertical spacing between lines
+                alignment: WrapAlignment.center, // Alignment of items
+                children:chipData.map((data) {
+                  final index = chipData.indexOf(data);
+                  return GestureDetector(
+                    onTap: (){
+                      setState(() {
+                        isNBSelected=index;
+                      });
+                    },
+                    child: Chip(
+                      padding: EdgeInsets.symmetric(horizontal: 1.5.w,vertical: 0.5.h),
+                      label: Text(data['label'],style: fontMedium.copyWith(
+                          fontSize: 11.sp,
+                          color: AppColor.blackColour
+                      ),),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                        side: const BorderSide(
+                          color: Color(0xffDADADA),
+                        ),
                       ),
+                      backgroundColor: isNBSelected==index? AppColor.primaryColor : const Color(0xffF8F9FA),
+                      // backgroundColor:AppColor.lightColor
                     ),
-                    backgroundColor: isNBSelected==index? AppColor.primaryColor : const Color(0xffF8F9FA),
-                    // backgroundColor:AppColor.lightColor
-                  ),
-                );
-              }).toList(),
+                  );
+                }).toList(),
+              ),
             ),
           ),
-          SizedBox(height: 1.h,),
+          SizedBox(height: 1.5.h,),
           const DottedLine(
             dashColor: Color(0xffD2D2D2),
           ),
@@ -130,11 +134,11 @@ class _NoBallBottomSheetState extends State<NoBallBottomSheet> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 5.w),
             child: Text("Type of No ball?",style: fontMedium.copyWith(
-              fontSize: 16.sp,
+              fontSize: 14.sp,
               color: AppColor.blackColour,
             ),),
           ),
-          SizedBox(height: 1.5.h,),
+          SizedBox(height: 2.h,),
           //offside leg side
           Padding(
             padding:  EdgeInsets.symmetric(horizontal: 5.w),
@@ -155,13 +159,15 @@ class _NoBallBottomSheetState extends State<NoBallBottomSheet> {
                       ),
                       color: noBallTypeId==0 ? AppColor.primaryColor : const Color(0xffF8F9FA),
                     ),
-                    child: Text("Grease",style: fontMedium.copyWith(
-                      fontSize: 12.sp,
-                      color: AppColor.blackColour,
-                    ),),
+                    child: Center(
+                      child: Text("Crease",style: fontMedium.copyWith(
+                        fontSize: 11.sp,
+                        color: AppColor.blackColour,
+                      ),),
+                    ),
                   ),
                 ),
-                SizedBox(width: 8.w,),
+                SizedBox(width: 4.w,),
                 GestureDetector(
                   onTap: (){
                     setState(() {
@@ -178,12 +184,12 @@ class _NoBallBottomSheetState extends State<NoBallBottomSheet> {
                         )
                     ),
                     child: Text("Waist",style: fontMedium.copyWith(
-                      fontSize: 12.sp,
+                      fontSize: 11.sp,
                       color: AppColor.blackColour,
                     ),),
                   ),
                 ),
-                SizedBox(width: 8.w,),
+                SizedBox(width: 4.w,),
                 GestureDetector(
                   onTap: (){
                     setState(() {
@@ -200,7 +206,7 @@ class _NoBallBottomSheetState extends State<NoBallBottomSheet> {
                         )
                     ),
                     child: Text("Shoulder",style: fontMedium.copyWith(
-                      fontSize: 12.sp,
+                      fontSize: 11.sp,
                       color: AppColor.blackColour,
                     ),),
                   ),
@@ -215,7 +221,9 @@ class _NoBallBottomSheetState extends State<NoBallBottomSheet> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  GestureDetector(onTap:()async{
+                  loading
+                  ? const Center(child: CircularProgressIndicator(),)
+                  : GestureDetector(onTap:()async{
                     final player = Provider.of<PlayerSelectionProvider>(context, listen: false);
                     final score = Provider.of<ScoreUpdateProvider>(context, listen: false);
                     print("striker id ${player.selectedStrikerId}");
@@ -223,17 +231,6 @@ class _NoBallBottomSheetState extends State<NoBallBottomSheet> {
                     print("passing over number to score update api ${score.overNumberInnings}");
                     print("passing ball number to score update api ${score.ballNumberInnings}");
                     score.trackOvers(score.overNumberInnings, score.ballNumberInnings);
-
-                    SharedPreferences prefs = await SharedPreferences.getInstance();
-                    // var overNumber= prefs.getInt('over_number');
-                    // var ballNumber= prefs.getInt('ball_number');
-                    // var strikerId=prefs.getInt('striker_id')??0;
-                    // var nonStrikerId=prefs.getInt('non_striker_id')??0;
-                    // var bowlerId=prefs.getInt('bowler_id')??0;
-                    var oversBowled=prefs.getInt('overs_bowled')??0;
-                    // var keeperId=prefs.getInt('wicket_keeper_id')??0;
-                    var bowlerPosition=prefs.getInt('bowlerPosition')??0;
-                    var noBallRun=prefs.getInt('noBallRun');
 
                     if(isNBSelected!=null) {
                       ScoreUpdateRequestModel scoreUpdateRequestModel = ScoreUpdateRequestModel();
@@ -259,7 +256,7 @@ class _NoBallBottomSheetState extends State<NoBallBottomSheet> {
                           widget.scoringData!.data!.batting![0].teamId ?? 0;
                       scoreUpdateRequestModel.bowlingTeamId =
                           widget.scoringData!.data!.bowling!.teamId ?? 0;
-                      scoreUpdateRequestModel.overBowled=oversBowled ;
+                      scoreUpdateRequestModel.overBowled=score.oversBowled ;
                       scoreUpdateRequestModel.totalOverBowled = 0;
                       scoreUpdateRequestModel.outByPlayer = 0;
                       scoreUpdateRequestModel.outPlayer = 0;
@@ -271,29 +268,51 @@ class _NoBallBottomSheetState extends State<NoBallBottomSheet> {
                       ScoringProvider()
                           .scoreUpdate(scoreUpdateRequestModel)
                           .then((value) async {
-                        print("after score update - no ball");
-                        score.setOverNumber(int.parse(value.data!.overNumber.toString()));
-                        score.setBallNumber(int.parse(value.data!.ballNumber.toString()));
-                        score.setBowlerChangeValue(int.parse(value.data!.bowlerChange.toString()));
+                        if(value.data == null){
+                          if(mounted){
+                            setState(() {
+                              loading = false;
+                            });
+                          }
+                        }
+                        else if(value.data?.innings == 3){
+                          if(mounted){
+                            setState(() {
+                              loading = false;
+                            });
+                          }
+                          Dialogs.snackBar("Match Ended", context);
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const HomeScreen()));
+                        } else if(value.data?.inningCompleted == true){
+                          if(mounted){
+                            setState(() {
+                              loading = false;
+                            });
+                          }
+                          debugPrint("end of innings");
+                          debugPrint("navigating to home screen");
+                          Dialogs.snackBar(value.data!.inningsMessage.toString(), context);
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const HomeScreen()));
+                        } else {
+                          print("after score update - no ball");
+                          score.setOverNumber(int.parse(value.data!.overNumber.toString()));
+                          score.setBallNumber(int.parse(value.data!.ballNumber.toString()));
+                          score.setBowlerChangeValue(int.parse(value.data!.bowlerChange.toString()));
 
-                        player.setStrikerId(value.data!.strikerId.toString(), "");
-                        player.setNonStrikerId(value.data!.nonStrikerId.toString(), "");
-                        print("score update print end - wide");
-                        SharedPreferences prefs = await SharedPreferences
-                            .getInstance();
-                        // await prefs.setInt(
-                        //     'over_number', value.data!.overNumber ?? 0);
-                        // await prefs.setInt(
-                        //     'ball_number', value.data!.ballNumber ?? 1);
-                        // await prefs.setInt(
-                        //     'striker_id', value.data!.strikerId ?? 0);
-                        // await prefs.setInt('non_striker_id', value.data!.nonStrikerId ?? 0);
-                        await prefs.setInt('bowler_change', value.data!.bowlerChange ?? 0);
-                        await prefs.setInt('bowlerPosition',0);
-                        widget.refresh();
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          Navigator.pop(context);
-                        });
+                          player.setStrikerId(value.data!.strikerId.toString(), "");
+                          player.setNonStrikerId(value.data!.nonStrikerId.toString(), "");
+                          print("score update print end - wide");
+                          widget.refresh();
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            Navigator.pop(context);
+                          });
+                        }
                       });
                     }
                     else{

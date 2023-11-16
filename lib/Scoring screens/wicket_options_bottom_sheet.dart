@@ -191,14 +191,14 @@ class _WicketOptionsBottomSheetState extends State<WicketOptionsBottomSheet> {
                         },
                       );
                     }
-                    if (data['label'] == 'Handling the Ball'){
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return OutMethodDialog(label: 'Handling the Ball',id: data['id'],scoringData: widget.scoringData!, refresh: widget.refresh, who: data['who']);
-                        },
-                      );
-                    }
+                    // if (data['label'] == 'Handling the Ball'){
+                    //   showDialog(
+                    //     context: context,
+                    //     builder: (BuildContext context) {
+                    //       return OutMethodDialog(label: 'Handling the Ball',id: data['id'],scoringData: widget.scoringData!, refresh: widget.refresh, who: data['who']);
+                    //     },
+                    //   );
+                    // }
                     if (data['label'] == 'Hit the Ball Twice'){
                       showDialog(
                         context: context,
@@ -216,28 +216,28 @@ class _WicketOptionsBottomSheetState extends State<WicketOptionsBottomSheet> {
                       );
                     }
                     if (data['label'] == ' Run Out'){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => RunOutScreen(ballType:data['id'],scoringData: widget.scoringData!)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => RunOutScreen(ballType:data['id'],scoringData: widget.scoringData!, refresh: widget.refresh)));
                     }
                     if (data['label'] == 'Caught'){
                       Navigator.push(context, MaterialPageRoute(builder: (context) => CaughtOutScreen(ballType:data['id'],scoringData: widget.scoringData!, refresh: widget.refresh)));
                     }
                     if (data['label'] == 'Retired Hurt'){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: 'Retired Hurt', checkcount: "Don't count the ball",ballType:data['id'],scoringData: widget.scoringData!,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: 'Retired Hurt', checkcount: "Don't count the ball",ballType:data['id'],scoringData: widget.scoringData!, refresh: widget.refresh)));
                     }
                     if (data['label'] == 'Retired Out'){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: 'Retired Out', checkcount: "Don't count the ball",ballType:data['id'],scoringData: widget.scoringData!,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: 'Retired Out', checkcount: "Don't count the ball",ballType:data['id'],scoringData: widget.scoringData!, refresh: widget.refresh)));
                     }
                     if (data['label'] == 'Timed Out'){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => TimeOutAbsence(label: 'Timed out',ballType:data['id'],scoringData: widget.scoringData!, )));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => TimeOutAbsence(label: 'Timed out',ballType:data['id'],scoringData: widget.scoringData!, refresh: widget.refresh)));
                     }
                     if (data['label'] == 'Absence Hurt'){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => TimeOutAbsence(label: 'Absence hurt',ballType:data['id'],scoringData: widget.scoringData!,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => TimeOutAbsence(label: 'Absence hurt',ballType:data['id'],scoringData: widget.scoringData!, refresh: widget.refresh)));
                     }
                     if (data['label'] == 'Retired'){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredScreens(ballType:data['id'],scoringData: widget.scoringData!,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredScreens(ballType:data['id'],scoringData: widget.scoringData!, refresh: widget.refresh)));
                     }
                     if (data['label'] == 'Obstruct the field' ){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ObstructTheField(ballType:data['id'],scoringData: widget.scoringData!,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ObstructTheField(ballType:data['id'],scoringData: widget.scoringData!, refresh: widget.refresh)));
                     }
 
                   },
