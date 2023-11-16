@@ -50,9 +50,9 @@ class _LiveScreenState extends State<LiveScreen> {
     if(matchList?.first.currentInnings == 2){
       score.setInnings(2);
       if(players.firstInningsIdsCleared){
-        print("ids already cleared for 1st innings");
+        debugPrint("ids already cleared for 1st innings");
       } else {
-        print("clearing ids for 1st innings");
+        debugPrint("clearing ids for 1st innings");
         players.clearAllSelectedIdsAfter1stInnings();
         score.clearOverAndBallNumberAfterFirstInnings();
       }
@@ -60,7 +60,7 @@ class _LiveScreenState extends State<LiveScreen> {
       score.setInnings(1);
     } else if(matchList?.first.currentInnings == 3){
       score.setInnings(3);
-      print("clearing all ids - match ended");
+      debugPrint("clearing all ids - match ended");
       players.clearAllSelectedIdsAfter1stInnings();
       score.clearOverAndBallNumberAfterFirstInnings();
     }
@@ -113,7 +113,6 @@ class _LiveScreenState extends State<LiveScreen> {
                 },
                 itemCount:matchList!.length ,
                 itemBuilder: (context, int index) {
-                  final item = matchList![index];
                   return InkWell(
                     onTap: (){
                       _displayMatchPreviewBottomSheet(context);
@@ -152,7 +151,8 @@ class _LiveScreenState extends State<LiveScreen> {
                                               ),
                                               SizedBox(width: 2.w,),
                                               RichText(
-                                                  text: TextSpan(children: [
+                                                text: TextSpan(
+                                                  children: [
                                                     TextSpan(
                                                         text: ('${matchList![index].teams!.first.totalRuns??''}'),
                                                         style: fontMedium.copyWith(
@@ -171,7 +171,9 @@ class _LiveScreenState extends State<LiveScreen> {
                                                             fontSize: 13.sp,
                                                             color: AppColor.pri
                                                         )),
-                                                  ])),
+                                                  ],
+                                                ),
+                                              ),
                                               SizedBox(width: 2.w,),
                                               RichText(text: TextSpan(children: [
                                                 TextSpan(
@@ -330,14 +332,14 @@ class _LiveScreenState extends State<LiveScreen> {
                                                   if(((scoringData!.data!.batting!.length<2) || scoringData!.data!.bowling==null)){
                                                     //if team 1 won the toss & chose to bat
                                                     if(matchList!.first.tossWonBy==matchList![index].team1Id && matchList!.first.choseTo=='Bat' ) {
-                                                      print("do scoring check 1");
+                                                      debugPrint("do scoring check 1");
                                                       Navigator.push(context, MaterialPageRoute(builder: (context) =>
                                                           DOScoring(matchList![index].matchId.toString(),
                                                               matchList![index].team1Id.toString(),
                                                               matchList![index].team2Id.toString())))
                                                           .then((value) {getData();});
                                                     }else{ //if team 2 won the toss & chose to bat
-                                                      print("do scoring check 2");
+                                                      debugPrint("do scoring check 2");
                                                       Navigator.push(context, MaterialPageRoute(builder: (context) =>
                                                           DOScoring(matchList![index].matchId.toString(),
                                                               matchList![index].team2Id.toString(),
@@ -372,14 +374,14 @@ class _LiveScreenState extends State<LiveScreen> {
                                                 else if(matchList!.first.currentInnings==2){
                                                   if(((scoringData!.data!.batting!.length<2) || scoringData!.data!.bowling==null)){
                                                     if(matchList!.first.tossWonBy==matchList![index].team1Id && matchList!.first.choseTo=='Bat' ) {
-                                                      print("do scoring check 3");
+                                                      debugPrint("do scoring check 3");
                                                       Navigator.push(context, MaterialPageRoute(builder: (context) =>
                                                           DOScoring(matchList![index].matchId.toString(),
                                                               matchList![index].team2Id.toString(),
                                                               matchList![index].team1Id.toString())))
                                                           .then((value) {getData();});
                                                     }else{
-                                                      print("do scoring check 4");
+                                                      debugPrint("do scoring check 4");
                                                       Navigator.push(context, MaterialPageRoute(builder: (context) =>
                                                           DOScoring(matchList![index].matchId.toString(),
                                                               matchList![index].team1Id.toString(),

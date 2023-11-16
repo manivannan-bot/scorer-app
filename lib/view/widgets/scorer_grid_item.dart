@@ -13,6 +13,7 @@ class ScorerGridItem extends StatelessWidget {
     return Container(
       height: 12.h,
       width: 19.w,
+      padding: EdgeInsets.symmetric(vertical: 1.5.h),
       decoration: const BoxDecoration(shape: BoxShape.rectangle,color: Colors.black,),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -22,15 +23,15 @@ class ScorerGridItem extends StatelessWidget {
             const SizedBox()
           ] else ...[
             CircleAvatar(
-              radius: 6.w, // Adjust the radius as needed for the circle size
+              radius: 5.w, // Adjust the radius as needed for the circle size
               backgroundColor: Colors.white,
               child: Text(
                 index,
                 style: fontMedium.copyWith(
-                    color: Colors.black, fontSize: 2.h),
+                    color: AppColor.textColor, fontSize: 12.sp),
               ),
             ),
-            text == "" ? const SizedBox() : SizedBox(height: 1.h,),
+            SizedBox(height: 1.h,),
           ],
           text == "" ? const SizedBox() : Text(text == "UNDO" ? "Undo" : text == "OTHER" ? "Other" : text,
               style: fontMedium.copyWith(

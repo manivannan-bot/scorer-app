@@ -17,7 +17,7 @@ class CancelBtn extends StatelessWidget {
           border: Border.all(color: AppColor.blackColour)
       ),
       child: Text("Cancel",style: fontRegular.copyWith(
-        fontSize: 14.sp,
+        fontSize: 12.sp,
         color: AppColor.blackColour,
       ),),
     );

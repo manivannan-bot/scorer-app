@@ -87,9 +87,11 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
                     }
                   });
                 } else {
-                  setState(() {
-                    bowlTeamId = int.parse(widget.team2Id);
-                  });
+                  if(mounted){
+                    setState(() {
+                      bowlTeamId = int.parse(widget.team2Id);
+                    });
+                  }
                   ScoringProvider().getScoreCard(widget.matchId, widget.team1Id).then((value){
                     setState(() {
                       scoreCardResponseModel=value;

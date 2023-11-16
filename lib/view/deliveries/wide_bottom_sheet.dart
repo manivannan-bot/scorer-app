@@ -6,6 +6,7 @@ import 'package:scorer/widgets/snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../Scoring screens/home_screen.dart';
 import '../../models/score_update_request_model.dart';
 import '../../provider/player_selection_provider.dart';
 import '../../provider/score_update_provider.dart';
@@ -28,6 +29,7 @@ class _WideBottomSheetState extends State<WideBottomSheet> {
 
   int? isOffSideSelected =0;
   int? isWideSelected ;
+  bool loading = false;
 
   List<Map<String, dynamic>> chipData =[
     {
@@ -104,8 +106,8 @@ class _WideBottomSheetState extends State<WideBottomSheet> {
                     },
                     child: Chip(
                       padding: EdgeInsets.symmetric(horizontal: 1.w,vertical: 0.5.h),
-                      label: Text(data['label'],style: fontSemiBold.copyWith(
-                          fontSize: 12.sp,
+                      label: Text(data['label'],style: fontMedium.copyWith(
+                          fontSize: 11.sp,
                           color: AppColor.blackColour
                       ),),
                       shape: RoundedRectangleBorder(
@@ -122,7 +124,7 @@ class _WideBottomSheetState extends State<WideBottomSheet> {
               ),
             ),
           ),
-          SizedBox(height: 1.h,),
+          SizedBox(height: 1.5.h,),
           const DottedLine(
             dashColor: Color(0xffD2D2D2),
           ),
@@ -130,7 +132,7 @@ class _WideBottomSheetState extends State<WideBottomSheet> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 5.w),
             child: Text("Which side?",style: fontMedium.copyWith(
-              fontSize: 16.sp,
+              fontSize: 14.sp,
               color: AppColor.blackColour,
             ),),
           ),
@@ -156,12 +158,12 @@ class _WideBottomSheetState extends State<WideBottomSheet> {
                       color: isOffSideSelected==0 ? AppColor.primaryColor : null,
                     ),
                     child: Text("Off side",style: fontMedium.copyWith(
-                      fontSize: 12.sp,
+                      fontSize: 11.sp,
                       color: AppColor.blackColour,
                     ),),
                   ),
                 ),
-                SizedBox(width: 8.w,),
+                SizedBox(width: 4.w,),
                 GestureDetector(
                   onTap: (){
                     setState(() {
@@ -178,7 +180,7 @@ class _WideBottomSheetState extends State<WideBottomSheet> {
                         )
                     ),
                     child: Text("Leg side",style: fontMedium.copyWith(
-                      fontSize: 12.sp,
+                      fontSize: 11.sp,
                       color: AppColor.blackColour,
                     ),),
                   ),
@@ -193,7 +195,9 @@ class _WideBottomSheetState extends State<WideBottomSheet> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  GestureDetector(
+                  loading
+                  ? const Center(child: CircularProgressIndicator(),)
+                  : GestureDetector(
                       onTap:()async{
                         final player = Provider.of<PlayerSelectionProvider>(context, listen: false);
                         final score = Provider.of<ScoreUpdateProvider>(context, listen: false);
@@ -202,10 +206,6 @@ class _WideBottomSheetState extends State<WideBottomSheet> {
                         print("passing over number to score update api ${score.overNumberInnings}");
                         print("passing ball number to score update api ${score.ballNumberInnings}");
                         score.trackOvers(score.overNumberInnings, score.ballNumberInnings);
-
-                        SharedPreferences prefs = await SharedPreferences.getInstance();
-                        var oversBowled=prefs.getInt('overs_bowled')??0;
-                        var bowlerPosition=prefs.getInt('bowlerPosition')??0;
 
                         if(isWideSelected!=null) {
                           ScoreUpdateRequestModel scoreUpdateRequestModel = ScoreUpdateRequestModel();
@@ -230,7 +230,7 @@ class _WideBottomSheetState extends State<WideBottomSheet> {
                               widget.scoringData?.data!.batting![0].teamId ?? 0;
                           scoreUpdateRequestModel.bowlingTeamId =
                               widget.scoringData?.data!.bowling!.teamId ?? 0;
-                          scoreUpdateRequestModel.overBowled=oversBowled ;
+                          scoreUpdateRequestModel.overBowled=score.oversBowled ;
                           scoreUpdateRequestModel.totalOverBowled = 0;
                           scoreUpdateRequestModel.outByPlayer = 0;
                           scoreUpdateRequestModel.outPlayer = 0;
@@ -241,9 +241,38 @@ class _WideBottomSheetState extends State<WideBottomSheet> {
                           scoreUpdateRequestModel.wideType = isOffSideSelected;
                           ScoringProvider().scoreUpdate(
                               scoreUpdateRequestModel).then((value) async {
-                            SharedPreferences prefs = await SharedPreferences
-                                .getInstance();
-                            if(value.data != null){
+                            if(value.data == null){
+                              if(mounted){
+                                setState(() {
+                                  loading = false;
+                                });
+                              }
+                            }
+                            else if(value.data?.innings == 3){
+                              if(mounted){
+                                setState(() {
+                                  loading = false;
+                                });
+                              }
+                              Dialogs.snackBar("Match Ended", context);
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const HomeScreen()));
+                            } else if(value.data?.inningCompleted == true){
+                              if(mounted){
+                                setState(() {
+                                  loading = false;
+                                });
+                              }
+                              debugPrint("end of innings");
+                              debugPrint("navigating to home screen");
+                              Dialogs.snackBar(value.data!.inningsMessage.toString(), context);
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const HomeScreen()));
+                            } else {
                               print(value.data?.overNumber.toString());
                               print("after score update - wide");
                               score.setOverNumber(int.parse(value.data!.overNumber.toString()));
@@ -253,21 +282,11 @@ class _WideBottomSheetState extends State<WideBottomSheet> {
                               player.setStrikerId(value.data!.strikerId.toString(), "");
                               player.setNonStrikerId(value.data!.nonStrikerId.toString(), "");
                               print("score update print end - wide");
-                              // await prefs.setInt(
-                              //     'over_number', value.data!.overNumber ?? 0);
-                              // await prefs.setInt(
-                              //     'ball_number', value.data!.ballNumber ?? 1);
-                              // await prefs.setInt(
-                              //     'striker_id', value.data!.strikerId ?? 0);
-                              // await prefs.setInt('non_striker_id', value.data!.nonStrikerId ?? 0);
-                              // await prefs.setInt('bowler_change', value.data!.bowlerChange ?? 0);
-                              await prefs.setInt('bowlerPosition',0);
                               widget.refresh();
                               WidgetsBinding.instance.addPostFrameCallback((_) {
                                 Navigator.pop(context);
                               });
                             }
-
                           });
                         }else{
                           WidgetsBinding.instance.addPostFrameCallback((_) {

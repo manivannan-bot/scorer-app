@@ -4,15 +4,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:scorer/provider/player_selection_provider.dart';
 import 'package:scorer/widgets/snackbar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 import '../models/player_list_model.dart';
-import '../models/save_batsman_request_model.dart';
 import '../provider/scoring_provider.dart';
 import '../utils/colours.dart';
 import '../utils/images.dart';
 import '../utils/sizes.dart';
+import '../view/widgets/batsman_list_item.dart';
 import '../widgets/cancel_btn.dart';
 import '../widgets/ok_btn.dart';
 
@@ -223,93 +222,16 @@ class _ChooseWicketKeeperBottomSheetState extends State<ChooseWicketKeeperBottom
                               if (localSelectedIndex == index) {
                                 localSelectedIndex = 0; // Deselect the item if it's already selected
                               } else {
-                                localSelectedIndex =
-                                    index; // Select the item if it's not selected
+                                localSelectedIndex = index; // Select the item if it's not selected
                               }
-                              // onItemSelected(localSelectedIndex);
                             });
                           },
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 2.5.w, vertical: 1.h),
-                                child: Row(
-                                  children: [
-                                    //circular button
-                                    Container(
-                                      height:
-                                      20.0, // Adjust the height as needed
-                                      width: 20.0, // Adjust the width as needed
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: localSelectedIndex == index
-                                            ? Colors.blue
-                                            : Colors
-                                            .grey, // Change colors based on selected index
-                                      ),
-                                      child: const Center(
-                                        child: Icon(
-                                          Icons
-                                              .circle_outlined, // You can change the icon as needed
-                                          color: Colors.white, // Icon color
-                                          size: 20.0, // Icon size
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 3.w,
-                                    ),
-                                    Image.asset(
-                                      Images.playersImage,
-                                      width: 10.w,
-                                    ),
-                                    SizedBox(
-                                      width: 2.w,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          searchedWicketKeeper![index].playerName ?? '-',
-                                          style: fontMedium.copyWith(
-                                            fontSize: 12.sp,
-                                            color: AppColor.blackColour,
-                                          ),
-                                        ),
-                                        Row(
-                                          children: [
-                                            Container(
-                                              height: 1.h,
-                                              width: 2.w,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                BorderRadius.circular(50),
-                                                color: AppColor.pri,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 2.w,
-                                            ),
-                                            Text(
-                                              searchedWicketKeeper![index].battingStyle ?? '-',
-                                              style: fontMedium.copyWith(
-                                                  fontSize: 11.sp,
-                                                  color:
-                                                  const Color(0xff555555)),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    const Spacer(),
-                                  ],
-                                ),
-                              ),
-                              const Divider(),
-                            ],
-                          ),
+                          child: PlayerListItem(
+                              index,
+                              localSelectedIndex,
+                              searchedWicketKeeper![index].playerName,
+                              searchedWicketKeeper![index].battingStyle
+                          )
                         );
                       }
                     }
@@ -345,93 +267,16 @@ class _ChooseWicketKeeperBottomSheetState extends State<ChooseWicketKeeperBottom
                                       if (localSelectedIndex == index) {
                                         localSelectedIndex = 0; // Deselect the item if it's already selected
                                       } else {
-                                        localSelectedIndex =
-                                            index; // Select the item if it's not selected
+                                        localSelectedIndex = index; // Select the item if it's not selected
                                       }
-                                      // onItemSelected(localSelectedIndex);
                                     });
                                   },
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 2.5.w, vertical: 1.h),
-                                        child: Row(
-                                          children: [
-                                            //circular button
-                                            Container(
-                                              height:
-                                              20.0, // Adjust the height as needed
-                                              width: 20.0, // Adjust the width as needed
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: localSelectedIndex == index
-                                                    ? Colors.blue
-                                                    : Colors
-                                                    .grey, // Change colors based on selected index
-                                              ),
-                                              child: const Center(
-                                                child: Icon(
-                                                  Icons
-                                                      .circle_outlined, // You can change the icon as needed
-                                                  color: Colors.white, // Icon color
-                                                  size: 20.0, // Icon size
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 3.w,
-                                            ),
-                                            Image.asset(
-                                              Images.playersImage,
-                                              width: 10.w,
-                                            ),
-                                            SizedBox(
-                                              width: 2.w,
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  wkPlayers[index].playerName ?? '-',
-                                                  style: fontMedium.copyWith(
-                                                    fontSize: 12.sp,
-                                                    color: AppColor.blackColour,
-                                                  ),
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Container(
-                                                      height: 1.h,
-                                                      width: 2.w,
-                                                      decoration: BoxDecoration(
-                                                        borderRadius:
-                                                        BorderRadius.circular(50),
-                                                        color: AppColor.pri,
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 2.w,
-                                                    ),
-                                                    Text(
-                                                      wkPlayers[index].battingStyle ?? '-',
-                                                      style: fontMedium.copyWith(
-                                                          fontSize: 11.sp,
-                                                          color:
-                                                          const Color(0xff555555)),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                            const Spacer(),
-                                          ],
-                                        ),
-                                      ),
-                                      const Divider(),
-                                    ],
-                                  ),
+                                  child: PlayerListItem(
+                                      index,
+                                      localSelectedIndex,
+                                      wkPlayers[index].playerName,
+                                      wkPlayers[index].battingStyle
+                                  )
                                 );
                               }
                             }

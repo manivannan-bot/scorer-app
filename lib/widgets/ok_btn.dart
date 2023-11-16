@@ -17,7 +17,7 @@ class OkBtn extends StatelessWidget {
           color: AppColor.blackColour
       ),
       child: Text(label,style: fontRegular.copyWith(
-        fontSize: 14.sp,
+        fontSize: 12.sp,
         color: AppColor.lightColor,
       ),),
     );

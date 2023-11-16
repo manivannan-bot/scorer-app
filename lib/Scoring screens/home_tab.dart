@@ -40,19 +40,29 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
               indicatorColor: const Color(0xffD78108),
               isScrollable: true,
               controller: tabController,
-              indicatorWeight: 4.0, // Set the indicator weight
+              indicatorWeight: 3.5, // Set the indicator weight
               tabs: [
                 Text('Live',style: fontRegular.copyWith(fontSize: 12.sp,),),
-                Text('Upcoming',style: fontRegular.copyWith(fontSize: 12.sp,),),
-                Text('Completed',style: fontRegular.copyWith(fontSize: 12.sp,),),
-                Text('In the offing',style: fontRegular.copyWith(fontSize: 12.sp,),),
+                Text('Upcoming',style: fontRegular.copyWith(fontSize: 11.sp,),),
+                Text('Completed',style: fontRegular.copyWith(fontSize: 11.sp,),),
+                Text('In the offing',style: fontRegular.copyWith(fontSize: 11.sp,),),
               ],
             ),
-            const Divider(),
+            Theme(
+                data: ThemeData(
+                  dividerTheme: const DividerThemeData(
+                    space: 0,
+                    thickness: 0.5,
+                    indent: 0,
+                    endIndent: 0,
+                  ),
+                ),
+                child: const Divider()),
+            SizedBox(height: 2.h,),
             Expanded(
               child: TabBarView(
                 controller: tabController,
-                  children: [
+                  children: const [
                    LiveScreen(),
                     UpcomingScreen(),
                     CompletedScreen(),

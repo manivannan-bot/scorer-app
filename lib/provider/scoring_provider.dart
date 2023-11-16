@@ -1,8 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:scorer/models/live_score_model.dart';
@@ -11,7 +8,6 @@ import '../models/all_matches_model.dart';
 import '../models/end_innings_response_model.dart';
 import '../models/get_ball_type_response_model.dart';
 import '../models/get_live_score_model.dart';
-import '../models/live_score_model.dart';
 import '../models/player_list_model.dart';
 import '../models/save_batsman_request_model.dart';
 import '../models/save_batsman_response_model.dart';
@@ -28,6 +24,7 @@ class ScoringProvider extends ChangeNotifier{
   AllMatchesModel allMatchesModel =AllMatchesModel();
 
   PlayerListModel playerListModel = PlayerListModel();
+
   SaveBatsmanResponseModel saveBatsmanResponseModel =SaveBatsmanResponseModel();
 
   SaveBowlerResponseModel saveBowlerResponseModel = SaveBowlerResponseModel();
@@ -43,9 +40,11 @@ class ScoringProvider extends ChangeNotifier{
   EndInningsResponseModel endInningsResponseModel=EndInningsResponseModel();
 
   ScoreCardResponseModel scoreCardResponseModel=ScoreCardResponseModel();
+
   ScoreCardYetTobat scoreCardYetTobat=ScoreCardYetTobat();
 
   ScoreUpdatedData scoreUpdatedData = ScoreUpdatedData();
+
   LiveScoreCardModel liveScoreCardModel=LiveScoreCardModel();
 
   String overNumber = "";
@@ -68,29 +67,28 @@ class ScoringProvider extends ChangeNotifier{
         // },
       );
       var decodedJson = json.decode(response.body);
-      print(decodedJson);
+      debugPrint(decodedJson.toString());
       if (response.statusCode == 200) {
         allMatchesModel = AllMatchesModel.fromJson(decodedJson);
-
         notifyListeners();
       } else {
         throw const HttpException('Failed to load data');
       }
     } on SocketException {
-      print('No internet connection');
+      debugPrint('No internet connection');
     } on HttpException {
-      print('Failed to load data');
+      debugPrint('Failed to load data');
     } on FormatException {
-      print('All Matches  - Invalid data format');
+      debugPrint('All Matches - Invalid data format');
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
     return allMatchesModel;
   }
 
 
   Future<GetLiveScoreResponseModel> getLiveScore(String matchId,String teamId) async {
-    print("matchid $matchId teamid $teamId");
+    debugPrint("matchid $matchId teamid $teamId");
     // SharedPreferences preferences = await SharedPreferences.getInstance();
     // String? accToken = preferences.getString("access_token");
     try {
@@ -102,7 +100,7 @@ class ScoringProvider extends ChangeNotifier{
         // },
       );
       var decodedJson = json.decode(response.body);
-      print("get live score $decodedJson");
+      debugPrint("get live score $decodedJson");
       if (response.statusCode == 200) {
         getLiveScoreResponseModel = GetLiveScoreResponseModel.fromJson(decodedJson);
         notifyListeners();
@@ -110,13 +108,13 @@ class ScoringProvider extends ChangeNotifier{
         throw const HttpException('Failed to load data');
       }
     } on SocketException {
-      print('No internet connection');
+      debugPrint('No internet connection');
     } on HttpException {
-      print('Failed to load data');
+      debugPrint('Failed to load data');
     } on FormatException {
-      print('All Matches  - Invalid data format');
+      debugPrint('get live score - Invalid data format');
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
     return getLiveScoreResponseModel;
   }
@@ -143,22 +141,21 @@ class ScoringProvider extends ChangeNotifier{
       //   },
       // );
       var decodedJson = json.decode(response.body);
-      print(decodedJson);
+      debugPrint(decodedJson.toString());
       if (response.statusCode == 200) {
         playerListModel = PlayerListModel.fromJson(decodedJson);
-
         notifyListeners();
       } else {
         throw const HttpException('Failed to load data');
       }
     } on SocketException {
-      print('No internet connection');
+      debugPrint('No internet connection');
     } on HttpException {
-      print('Failed to load data');
+      debugPrint('Failed to load data');
     } on FormatException {
-      print('Acceptorders - Invalid data format');
+      debugPrint('get player list - Invalid data format');
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
     return playerListModel ;
   }
@@ -167,7 +164,7 @@ class ScoringProvider extends ChangeNotifier{
 
   Future<SaveBatsmanResponseModel> saveBatsman( SaveBatsmanDetailRequestModel batsman) async {
     var body = json.encode(batsman);
-    print('${batsman.batsman},${batsman.batsman!.first.matchId},${batsman.batsman!.first.teamId}');
+    debugPrint('${batsman.batsman},${batsman.batsman!.first.matchId},${batsman.batsman!.first.teamId}');
     try {
       final response = await http.post(
         Uri.parse(AppConstants.saveBatsman),
@@ -177,7 +174,7 @@ class ScoringProvider extends ChangeNotifier{
         body: body,
       );
       var decodedJson = json.decode(response.body);
-      print(decodedJson);
+      debugPrint(decodedJson.toString());
       if (response.statusCode == 200) {
         saveBatsmanResponseModel = SaveBatsmanResponseModel.fromJson(decodedJson);
         // token = loginModel.token.toString();
@@ -187,13 +184,13 @@ class ScoringProvider extends ChangeNotifier{
         throw const HttpException('Failed to load data');
       }
     } on SocketException {
-      print('No internet connection');
+      debugPrint('No internet connection');
     } on HttpException {
-      print('Failed to load data');
+      debugPrint('Failed to load data');
     } on FormatException {
-      print('Batsman save- Invalid data format');
+      debugPrint('Batsman save- Invalid data format');
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
     return saveBatsmanResponseModel;
   }
@@ -216,7 +213,7 @@ class ScoringProvider extends ChangeNotifier{
         body: body,
       );
       var decodedJson = json.decode(response.body);
-      print(decodedJson);
+      debugPrint(decodedJson.toString());
       if (response.statusCode == 200) {
         saveBowlerResponseModel = SaveBowlerResponseModel.fromJson(decodedJson);
         // token = loginModel.token.toString();
@@ -226,13 +223,13 @@ class ScoringProvider extends ChangeNotifier{
         throw const HttpException('Failed to load data');
       }
     } on SocketException {
-      print('No internet connection');
+      debugPrint('No internet connection');
     } on HttpException {
-      print('Failed to load data');
+      debugPrint('Failed to load data');
     } on FormatException {
-      print('organizer login- Invalid data format');
+      debugPrint('save bowler- Invalid data format');
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
     return saveBowlerResponseModel;
   }
@@ -250,7 +247,7 @@ class ScoringProvider extends ChangeNotifier{
         // },
       );
       var decodedJson = json.decode(response.body);
-      print("scoring detail $decodedJson");
+      debugPrint("scoring detail $decodedJson");
       if (response.statusCode == 200) {
         scoringDetailResponseModel = ScoringDetailResponseModel.fromJson(decodedJson);
 
@@ -259,13 +256,13 @@ class ScoringProvider extends ChangeNotifier{
         throw const HttpException('Failed to load data');
       }
     } on SocketException {
-      print('No internet connection');
+      debugPrint('No internet connection');
     } on HttpException {
-      print('Failed to load data');
+      debugPrint('Failed to load data');
     } on FormatException {
-      print('All Matches  - Invalid data format');
+      debugPrint('scoring detail - Invalid data format');
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
     return scoringDetailResponseModel;
   }
@@ -281,7 +278,7 @@ class ScoringProvider extends ChangeNotifier{
     }
     prefs.setString('scoreUpdate', scoreUpdateJson);
 
-    print("API score update ${json.decode(body)}");
+    debugPrint("API score update ${json.decode(body)}");
     try {
       final response = await http.post(
         Uri.parse(AppConstants.scoreUpdate),
@@ -291,23 +288,23 @@ class ScoringProvider extends ChangeNotifier{
         body: body,
       );
       var decodedJson = json.decode(response.body);
-      print("score update response $decodedJson");
+      debugPrint("score update response $decodedJson");
       if (response.statusCode == 200) {
         scoreUpdateResponseModel = ScoreUpdateResponseModel.fromJson(decodedJson);
         scoreUpdatedData = ScoreUpdatedData.fromJson(decodedJson['data']);
-        print("score updated data $scoreUpdatedData");
+        debugPrint("score updated data $scoreUpdatedData");
         notifyListeners();
       } else {
         throw const HttpException('Failed to load data');
       }
     } on SocketException {
-      print('No internet connection');
+      debugPrint('No internet connection');
     } on HttpException {
-      print('Failed to load data');
+      debugPrint('Failed to load data');
     } on FormatException {
-      print('score update - Invalid data format');
+      debugPrint('score update - Invalid data format');
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
     return scoreUpdateResponseModel;
   }
@@ -323,7 +320,7 @@ class ScoringProvider extends ChangeNotifier{
         // },
       );
       var decodedJson = json.decode(response.body);
-      print(decodedJson);
+      debugPrint(decodedJson.toString());
       if (response.statusCode == 200) {
         getBallTypeResponseModel = GetBallTypeResponseModel.fromJson(decodedJson);
 
@@ -332,13 +329,13 @@ class ScoringProvider extends ChangeNotifier{
         throw const HttpException('Failed to load data');
       }
     } on SocketException {
-      print('No internet connection');
+      debugPrint('No internet connection');
     } on HttpException {
-      print('Failed to load data');
+      debugPrint('Failed to load data');
     } on FormatException {
-      print('All Matches  - Invalid data format');
+      debugPrint('get ball type - Invalid data format');
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
     return getBallTypeResponseModel;
   }
@@ -348,7 +345,7 @@ class ScoringProvider extends ChangeNotifier{
       'match_id':matchId,
       'innings':innings
     });
-    print(body);
+    debugPrint(body);
     try {
       final response = await http.post(
         Uri.parse(AppConstants.endInnings),
@@ -358,7 +355,7 @@ class ScoringProvider extends ChangeNotifier{
         body: body,
       );
       var decodedJson = json.decode(response.body);
-      print(decodedJson);
+      debugPrint(decodedJson.toString());
       if (response.statusCode == 200) {
         endInningsResponseModel = EndInningsResponseModel.fromJson(decodedJson);
         // token = loginModel.token.toString();
@@ -368,13 +365,13 @@ class ScoringProvider extends ChangeNotifier{
         throw const HttpException('Failed to load data');
       }
     } on SocketException {
-      print('No internet connection');
+      debugPrint('No internet connection');
     } on HttpException {
-      print('Failed to load data');
+      debugPrint('Failed to load data');
     } on FormatException {
-      print('Batsman save- Invalid data format');
+      debugPrint('end innings - Invalid data format');
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
     return endInningsResponseModel;
   }
@@ -390,7 +387,7 @@ class ScoringProvider extends ChangeNotifier{
         // },
       );
       var decodedJson = json.decode(response.body);
-      print(decodedJson);
+      debugPrint(decodedJson.toString());
       if (response.statusCode == 200) {
         liveScoreCardModel = LiveScoreCardModel.fromJson(decodedJson);
 
@@ -399,13 +396,13 @@ class ScoringProvider extends ChangeNotifier{
         throw const HttpException('Failed to load data');
       }
     } on SocketException {
-      print('No internet connection');
+      debugPrint('No internet connection');
     } on HttpException {
-      print('Failed to load data');
+      debugPrint('Failed to load data');
     } on FormatException {
-      print('All Matches  - Invalid data format');
+      debugPrint('get live scorecard - Invalid data format');
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
     return liveScoreCardModel;
   }
@@ -421,7 +418,7 @@ class ScoringProvider extends ChangeNotifier{
         // },
       );
       var decodedJson = json.decode(response.body);
-      print(decodedJson);
+      debugPrint(decodedJson.toString());
       if (response.statusCode == 200) {
         scoreCardResponseModel = ScoreCardResponseModel.fromJson(decodedJson);
 
@@ -430,13 +427,13 @@ class ScoringProvider extends ChangeNotifier{
         throw const HttpException('Failed to load data');
       }
     } on SocketException {
-      print('No internet connection');
+      debugPrint('No internet connection');
     } on HttpException {
-      print('Failed to load data');
+      debugPrint('Failed to load data');
     } on FormatException {
-      print('All Matches  - Invalid data format');
+      debugPrint('get scorecard - Invalid data format');
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
     return scoreCardResponseModel;
   }
@@ -451,7 +448,7 @@ class ScoringProvider extends ChangeNotifier{
         // },
       );
       var decodedJson = json.decode(response.body);
-      print(decodedJson);
+      debugPrint(decodedJson.toString());
       if (response.statusCode == 200) {
         scoreCardYetTobat = ScoreCardYetTobat.fromJson(decodedJson);
         notifyListeners();
@@ -459,13 +456,13 @@ class ScoringProvider extends ChangeNotifier{
         throw const HttpException('Failed to load data');
       }
     } on SocketException {
-      print('No internet connection');
+      debugPrint('No internet connection');
     } on HttpException {
-      print('Failed to load data');
+      debugPrint('Failed to load data');
     } on FormatException {
-      print('yet to bat players  - Invalid data format');
+      debugPrint('yet to bat players  - Invalid data format');
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
     return scoreCardYetTobat;
   }
@@ -477,7 +474,7 @@ class ScoringProvider extends ChangeNotifier{
       'break_type_id':breakTypeId,
       'commentry_type_id':9
     });
-    print(body);
+    debugPrint(body);
     try {
       final response = await http.post(
         Uri.parse(AppConstants.matchBreak),
@@ -487,7 +484,7 @@ class ScoringProvider extends ChangeNotifier{
         body: body,
       );
       var decodedJson = json.decode(response.body);
-      print(decodedJson);
+      debugPrint(decodedJson.toString());
       if (response.statusCode == 200) {
         endInningsResponseModel = EndInningsResponseModel.fromJson(decodedJson);
         // token = loginModel.token.toString();
@@ -497,13 +494,13 @@ class ScoringProvider extends ChangeNotifier{
         throw const HttpException('Failed to load data');
       }
     } on SocketException {
-      print('No internet connection');
+      debugPrint('No internet connection');
     } on HttpException {
-      print('Failed to load data');
+      debugPrint('Failed to load data');
     } on FormatException {
-      print('Batsman save- Invalid data format');
+      debugPrint('match break - Invalid data format');
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
     return endInningsResponseModel;
   }
@@ -515,7 +512,7 @@ class ScoringProvider extends ChangeNotifier{
       'total_overs':totalOvers,
       'target_score':targetScore
     });
-    print(body);
+    debugPrint(body);
     try {
       final response = await http.post(
         Uri.parse(AppConstants.dlMethod),
@@ -525,7 +522,7 @@ class ScoringProvider extends ChangeNotifier{
         body: body,
       );
       var decodedJson = json.decode(response.body);
-      print(decodedJson);
+      debugPrint(decodedJson.toString());
       if (response.statusCode == 200) {
         endInningsResponseModel = EndInningsResponseModel.fromJson(decodedJson);
         // token = loginModel.token.toString();
@@ -535,13 +532,13 @@ class ScoringProvider extends ChangeNotifier{
         throw const HttpException('Failed to load data');
       }
     } on SocketException {
-      print('No internet connection');
+      debugPrint('No internet connection');
     } on HttpException {
-      print('Failed to load data');
+      debugPrint('Failed to load data');
     } on FormatException {
-      print('Batsman save- Invalid data format');
+      debugPrint('dl method- Invalid data format');
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
     return endInningsResponseModel;
   }

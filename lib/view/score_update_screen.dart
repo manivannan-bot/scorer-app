@@ -34,6 +34,7 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
    int currentInning=1;
    bool loading = false;
    String currentOverData = "";
+   String? target;
 
    setDelay() async{
      if(mounted){
@@ -67,26 +68,27 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
          bowlTeamId = int.parse(widget.team2id);
        });
      });
-     print("team1 id ${widget.team1id} team 2 id ${widget.team2id}");
+     debugPrint("team1 id ${widget.team1id} team 2 id ${widget.team2id}");
      //getting live score
      await ScoringProvider().getLiveScore(widget.matchId, widget.team1id).then((data) async{
        //setting match list
      setState(() {
        matchList = data.matches;
        currentInning=data.matches!.currentInnings!;
+       target = data.target.toString();
        currentOverData = data.matches!.teams!.currentOverDetails.toString();
      });
      int overNumber = 0;
      int ballNumber = 0;
 
      if(score.overNumberInnings != 0 || score.ballNumberInnings != 0){
-       print("crossed 0th over - ON ${score.overNumberInnings} BN ${score.ballNumberInnings}");
-       print("getting the over number and ball number from previous score update response for next ball");
+       debugPrint("crossed 0th over - ON ${score.overNumberInnings} BN ${score.ballNumberInnings}");
+       debugPrint("getting the over number and ball number from previous score update response for next ball");
        overNumber = score.overNumberInnings;
        ballNumber = score.ballNumberInnings;
      } else {
-       print("0th over of the innings - over number and ball number are 0");
-       print("getting the over number and ball number from getlive score api - ON $overNumber BN $ballNumber");
+       debugPrint("0th over of the innings - over number and ball number are 0");
+       debugPrint("getting the over number and ball number from getlive score api - ON $overNumber BN $ballNumber");
        overNumber = data.matches!.teams!.overNumber ?? 0;
        ballNumber = data.matches!.teams!.ballNumber ?? 0;
      }
@@ -94,42 +96,21 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
          if (overNumber == 0 && ballNumber == 0) {
            overNumber = 0;
            ballNumber = 1;
-           print("over number and ball number are 0");
+           debugPrint("over number and ball number are 0");
          }
-
-         // else if (ballNumber >= 6) {
-         //   overNumber += 1;
-         //   ballNumber = 0;
-         //   print("ball number >= 6");
-         // }
-
-         // else if(ballNumber == 1){
-         //   print("ball number is 1");
-         //   ballNumber = 1;
-         // }
-         // else if(overNumber != 0 && ballNumber == 2){
-         //   print("ball number is 2");
-         //   ballNumber = 2;
-         // } else if(ballNumber == 3){
-         //   print("ball number is 3");
-         //   ballNumber = 3;
-         // } else if(ballNumber == 4){
-         //   print("ball number is 4");
-         //   ballNumber = 4;
-         // } else if(ballNumber == 5){
-         //   print("ball number is 5");
-         //   ballNumber = 5;
-         // } else if (ballNumber == 6) {
-         //   ballNumber = 6;
-         //   print("next ball is 6");
-         // }
-       print("while setting value to provider");
+     debugPrint("while setting value to provider");
        score.setOverNumber(overNumber);
        score.setBallNumber(ballNumber);
      await prefs.setInt('current_innings',data.matches!.currentInnings??1);
 
      refreshController.refreshCompleted();
      });
+   }
+
+   String calculateRequiredRuns(String target, String currentRuns){
+     int requiredRuns = int.parse(target) - int.parse(currentRuns);
+     String result = requiredRuns.toString();
+     return result;
    }
 
   @override
@@ -172,7 +153,22 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
                                         builder: (context) => const HomeScreen()));
                               },
                               child: Icon(Icons.arrow_back,color: AppColor.lightColor, size: 7.w,)),
-                          Text(
+                          currentInning == 2
+                              ? Container(
+                            padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.8.h),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: AppColor.lightColor,
+                            ),
+                            child: Text(
+                              'Target: $target',
+                              style: fontSemiBold.copyWith(
+                                fontSize: 10.sp,
+                                color: AppColor.blackColour,
+                              ),
+                            ),
+                          )
+                          : Text(
                             'Team',
                             style: fontMedium.copyWith(
                               fontSize: 18.sp,
@@ -201,56 +197,76 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
                               ),
                             ],
                           ),
-                          Column(
-                            children: [
-                              Text(
-                                '${matchList!.tossWinnerName} won the Toss\nand Choose to ${matchList!.choseTo} ',
-                                textAlign: TextAlign.center,
-                                style: fontRegular.copyWith(
-                                    fontSize: 11.sp,
-                                    color: AppColor.lightColor
-                                )
-                              ),
-                              Row(
-                                children: [
-                                  Text('${matchList!.teams!.totalRuns}',
-                                      style: fontMedium.copyWith(
-                                      fontSize: 25.sp,
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                currentInning == 2 ? const SizedBox() : Text(
+                                  '${matchList!.tossWinnerName} won the Toss\nand Choose to ${matchList!.choseTo} ',
+                                  textAlign: TextAlign.center,
+                                  style: fontRegular.copyWith(
+                                      fontSize: 11.sp,
                                       color: AppColor.lightColor
-                                  )),
-                                  Text('/',
-                                      style: fontMedium.copyWith(
-                                          fontSize: 25.sp,
-                                          color: AppColor.lightColor
-                                      )),
-                                  Text('${matchList!.teams!.totalWickets}',
-                                      style: fontMedium.copyWith(
-                                          fontSize: 25.sp,
-                                          color: AppColor.lightColor
-                                      )),
-                                ],
-                              ),
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.8.h),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: AppColor.primaryColor,
+                                  )
                                 ),
-                                child: Text(
-                                  'Overs: ${matchList!.teams!.currentOverDetails}/${matchList!.overs}',
-                                  style: fontMedium.copyWith(
-                                    fontSize: 11.sp,
-                                    color: AppColor.blackColour,
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text('${matchList!.teams!.totalRuns}',
+                                        style: fontMedium.copyWith(
+                                            fontSize: 22.sp,
+                                            color: AppColor.lightColor
+                                        )),
+                                    Text('/',
+                                        style: fontMedium.copyWith(
+                                            fontSize: 23.sp,
+                                            color: AppColor.lightColor
+                                        )),
+                                    Text('${matchList!.teams!.totalWickets}',
+                                        style: fontMedium.copyWith(
+                                            fontSize: 22.sp,
+                                            color: AppColor.lightColor
+                                        )),
+                                  ],
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.8.h),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: AppColor.primaryColor,
+                                  ),
+                                  child: Text(
+                                    'Overs: ${matchList!.teams!.currentOverDetails}/${matchList!.overs}',
+                                    style: fontMedium.copyWith(
+                                      fontSize: 10.sp,
+                                      color: AppColor.blackColour,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              SizedBox(height: 1.h,),
-                              Text("Innings ${matchList!.currentInnings??'0'}",
-                                style: fontRegular.copyWith(
-                                fontSize: 12.sp,
-                                color: AppColor.lightColor,
-                              ),)
-                            ],
+                                SizedBox(height: 1.h,),
+                                Text("Innings ${matchList!.currentInnings??'0'}",
+                                  style: fontRegular.copyWith(
+                                  fontSize: 11.sp,
+                                  color: AppColor.lightColor,
+                                ),),
+                                currentInning == 2
+                                    ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(height: 1.h,),
+                                    Text("${matchList!.teams!.teamName.toString()} "
+                                        "need ${calculateRequiredRuns(target.toString(), matchList!.teams!.totalRuns.toString())} more"
+                                        " ${int.parse(calculateRequiredRuns(target.toString(), matchList!.teams!.totalRuns.toString())) > 1 ? "runs" : "run"} to win",
+                                      textAlign: TextAlign.center,
+                                      style: fontRegular.copyWith(
+                                        fontSize: 11.sp,
+                                        color: AppColor.lightColor,
+                                      ),),
+                                  ],
+                                ) : const SizedBox(),
+
+                              ],
+                            ),
                           ),
                           Column(
                             children: [
@@ -271,25 +287,33 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
               ],
             ),
             SizedBox(height: 1.h,),
-            Padding(
-              padding:  EdgeInsets.only(bottom: 2.h,),
-              child: TabBar(
-                  unselectedLabelColor: AppColor.unselectedTabColor,
-                  labelColor:  const Color(0xffD78108),
-                  indicatorColor: const Color(0xffD78108),
-                  isScrollable: true,
-                  indicatorWeight: 2.0,
-                   labelPadding: EdgeInsets.symmetric(vertical: 0.4.h, horizontal: 3.5.w),
-                  indicatorSize: TabBarIndicatorSize.tab,
-                  controller: tabController,
-                  tabs: [
-                    Text('Scoring',style: fontRegular.copyWith(fontSize: 12.sp,),),
-                    Text('Score Card',style: fontRegular.copyWith(fontSize: 12.sp,),),
-                    Text('Commentary',style: fontRegular.copyWith(fontSize: 12.sp,),),
-                    Text('Info',style: fontRegular.copyWith(fontSize: 12.sp,),),
-                  ]
-              ),),
-
+            TabBar(
+                unselectedLabelColor: AppColor.unselectedTabColor,
+                labelColor:  const Color(0xffD78108),
+                indicatorColor: const Color(0xffD78108),
+                isScrollable: true,
+                indicatorWeight: 2.0,
+                 labelPadding: EdgeInsets.symmetric(vertical: 0.4.h, horizontal: 3.5.w),
+                indicatorSize: TabBarIndicatorSize.tab,
+                controller: tabController,
+                tabs: [
+                  Text('Scoring',style: fontRegular.copyWith(fontSize: 12.sp,),),
+                  Text('Score Card',style: fontRegular.copyWith(fontSize: 12.sp,),),
+                  Text('Commentary',style: fontRegular.copyWith(fontSize: 12.sp,),),
+                  Text('Info',style: fontRegular.copyWith(fontSize: 12.sp,),),
+                ]
+            ),
+            Theme(
+                data: ThemeData(
+                  dividerTheme: const DividerThemeData(
+                    space: 0,
+                    thickness: 0.5,
+                    indent: 0,
+                    endIndent: 0,
+                  ),
+                ),
+                child: const Divider()),
+              SizedBox(height: 2.h,),
               Expanded(
                 child: TabBarView(
                     controller: tabController,

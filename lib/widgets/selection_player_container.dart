@@ -31,16 +31,16 @@ class ChooseContainer extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           if(label == "Striker" || label == "Non-Striker" || label == "Bowler" || label == "Wicket Keeper")...[
-            SvgPicture.asset(Images.plusIcon, width: 10.w,),
+            Icon(Icons.person_add_alt_1_outlined, color: AppColor.textMildColor, size: 14.w,),
           ] else ...[
-            Icon(Icons.person, color: AppColor.primaryColor, size: 10.w,),
+            Image.network(Images.playersImage, width: 14.w,),
           ],
           SizedBox(height: 2.h,),
           FittedBox(
             child: Text(label,
               textAlign: TextAlign.center,
               style: fontMedium.copyWith(
-              fontSize: 14.sp,
+              fontSize: 12.sp,
               color: const Color(0xff444444),
             ),),
           ),

@@ -9,8 +9,8 @@ class Boundary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 40,
-      height: 40,
+      width: 8.w,
+      height: 4.h,
       margin: const EdgeInsets.symmetric(horizontal: 5),
       decoration: const BoxDecoration(
         color: Colors.black,

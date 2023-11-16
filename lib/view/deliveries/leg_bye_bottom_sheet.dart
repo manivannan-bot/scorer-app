@@ -5,6 +5,7 @@ import 'package:scorer/widgets/snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../Scoring screens/home_screen.dart';
 import '../../models/score_update_request_model.dart';
 import '../../provider/player_selection_provider.dart';
 import '../../provider/score_update_provider.dart';
@@ -29,6 +30,7 @@ class _LegByeBottomSheetState extends State<LegByeBottomSheet> {
 
   int? isOffSideSelected ;
   int isLBSelected = -1;
+  bool loading = false;
   List<Map<String, dynamic>> chipData =[
     {
       'label': '1LB',
@@ -104,8 +106,8 @@ class _LegByeBottomSheetState extends State<LegByeBottomSheet> {
                     },
                     child: Chip(
                       padding: EdgeInsets.symmetric(horizontal: 1.w,vertical: 0.5.h),
-                      label: Text(data['label'],style: fontSemiBold.copyWith(
-                          fontSize: 12.sp,
+                      label: Text(data['label'],style: fontMedium.copyWith(
+                          fontSize: 11.sp,
                           color: AppColor.blackColour
                       ),),
                       shape: RoundedRectangleBorder(
@@ -129,9 +131,11 @@ class _LegByeBottomSheetState extends State<LegByeBottomSheet> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  GestureDetector(
+                  loading
+                      ? const Center(child: CircularProgressIndicator(),)
+                      : GestureDetector(
                       onTap:()async {
-                        if(isLBSelected != null){
+                        if(isLBSelected != -1){
                           final player = Provider.of<PlayerSelectionProvider>(context, listen: false);
                           final score = Provider.of<ScoreUpdateProvider>(context, listen: false);
                           print("striker id ${player.selectedStrikerId}");
@@ -139,15 +143,6 @@ class _LegByeBottomSheetState extends State<LegByeBottomSheet> {
                           print("passing over number to score update api ${score.overNumberInnings}");
                           print("passing ball number to score update api ${score.ballNumberInnings}");
                           score.trackOvers(score.overNumberInnings, score.ballNumberInnings);
-                          SharedPreferences prefs = await SharedPreferences.getInstance();
-                          var overNumber= prefs.getInt('over_number');
-                          var ballNumber= prefs.getInt('ball_number');
-                          var strikerId=prefs.getInt('striker_id')??0;
-                          var nonStrikerId=prefs.getInt('non_striker_id')??0;
-                          var bowlerId=prefs.getInt('bowler_id')??0;
-                          var oversBowled=prefs.getInt('overs_bowled')??0;
-                          var keeperId=prefs.getInt('wicket_keeper_id')??0;
-                          var bowlerPosition=prefs.getInt('bowlerPosition')??0;
 
                           ScoreUpdateRequestModel scoreUpdateRequestModel=ScoreUpdateRequestModel();
                           scoreUpdateRequestModel.ballTypeId=widget.ballType??0;
@@ -168,7 +163,7 @@ class _LegByeBottomSheetState extends State<LegByeBottomSheet> {
                           scoreUpdateRequestModel.innings=score.innings;
                           scoreUpdateRequestModel.battingTeamId=widget.scoringData!.data!.batting![0].teamId??0;
                           scoreUpdateRequestModel.bowlingTeamId=widget.scoringData!.data!.bowling!.teamId??0;
-                          scoreUpdateRequestModel.overBowled=oversBowled;
+                          scoreUpdateRequestModel.overBowled=score.oversBowled;
                           scoreUpdateRequestModel.totalOverBowled=0;
                           scoreUpdateRequestModel.outByPlayer=0;
                           scoreUpdateRequestModel.outPlayer=0;
@@ -177,29 +172,62 @@ class _LegByeBottomSheetState extends State<LegByeBottomSheet> {
                           scoreUpdateRequestModel.endInnings=false;
                           scoreUpdateRequestModel.bowlerPosition=score.bowlerPosition;
                           ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
-                            print("after score update - lb");
-                            score.setOverNumber(int.parse(value.data!.overNumber.toString()));
-                            score.setBallNumber(int.parse(value.data!.ballNumber.toString()));
-                            score.setBowlerChangeValue(int.parse(value.data!.bowlerChange.toString()));
-
-                            player.setStrikerId(value.data!.strikerId.toString(), "");
-                            player.setNonStrikerId(value.data!.nonStrikerId.toString(), "");
-                            print("score update print end - wide");
-                            SharedPreferences prefs = await SharedPreferences.getInstance();
-                            await prefs.setInt('over_number', value.data!.overNumber??0);
-                            await prefs.setInt('ball_number', value.data!.ballNumber??0);
-                            await prefs.setInt('striker_id', value.data!.strikerId??0);
-                            await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
-                            await prefs.setInt('bowler_change', value.data!.bowlerChange ?? 0);
-                            await prefs.setInt('bowlerPosition', 0);
-                            if(value.data!.strikerId==0 || value.data!.nonStrikerId==0){
-                              String player=(value.data!.strikerId==0)?'striker_id':'non_striker_id';
-                              changeBatsman(player);
+                            if(value.data == null){
+                              if(mounted){
+                                setState(() {
+                                  loading = false;
+                                });
+                              }
                             }
-                            widget.refresh();
-                            WidgetsBinding.instance.addPostFrameCallback((_) {
-                              Navigator.pop(context);
-                            });
+                            else if(value.data?.innings == 3){
+                              if(mounted){
+                                setState(() {
+                                  loading = false;
+                                });
+                              }
+                              Dialogs.snackBar("Match Ended", context);
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const HomeScreen()));
+                            } else if(value.data?.inningCompleted == true){
+                              if(mounted){
+                                setState(() {
+                                  loading = false;
+                                });
+                              }
+                              debugPrint("end of innings");
+                              debugPrint("navigating to home screen");
+                              Dialogs.snackBar(value.data!.inningsMessage.toString(), context);
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const HomeScreen()));
+                            } else {
+                              print("after score update - lb");
+                              score.setOverNumber(int.parse(value.data!.overNumber.toString()));
+                              score.setBallNumber(int.parse(value.data!.ballNumber.toString()));
+                              score.setBowlerChangeValue(int.parse(value.data!.bowlerChange.toString()));
+
+                              player.setStrikerId(value.data!.strikerId.toString(), "");
+                              player.setNonStrikerId(value.data!.nonStrikerId.toString(), "");
+                              print("score update print end - wide");
+                              SharedPreferences prefs = await SharedPreferences.getInstance();
+                              await prefs.setInt('over_number', value.data!.overNumber??0);
+                              await prefs.setInt('ball_number', value.data!.ballNumber??0);
+                              await prefs.setInt('striker_id', value.data!.strikerId??0);
+                              await prefs.setInt('non_striker_id', value.data!.nonStrikerId??0);
+                              await prefs.setInt('bowler_change', value.data!.bowlerChange ?? 0);
+                              await prefs.setInt('bowlerPosition', 0);
+                              if(value.data!.strikerId==0 || value.data!.nonStrikerId==0){
+                                String player=(value.data!.strikerId==0)?'striker_id':'non_striker_id';
+                                changeBatsman(player);
+                              }
+                              widget.refresh();
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                Navigator.pop(context);
+                              });
+                            }
                           });
                         } else {
                           Dialogs.snackBar("Select one option", context, isError: true);
