@@ -674,7 +674,7 @@ class MyProgressIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double progress = currentValue / totalValue;
+    double progress = currentValue / ((totalValue==0)?1:totalValue);
 
     return SizedBox(
       width: 10.w,
