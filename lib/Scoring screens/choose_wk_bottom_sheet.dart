@@ -11,7 +11,7 @@ import '../provider/scoring_provider.dart';
 import '../utils/colours.dart';
 import '../utils/images.dart';
 import '../utils/sizes.dart';
-import '../view/widgets/batsman_list_item.dart';
+import '../view/widgets/player_list_item.dart';
 import '../widgets/cancel_btn.dart';
 import '../widgets/ok_btn.dart';
 

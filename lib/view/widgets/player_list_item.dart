@@ -45,10 +45,10 @@ class PlayerListItem extends StatelessWidget {
                     .start,
                 children: [
                   Text(
-                    name ?? '-',
+                    name?.toUpperCase() ?? '-',
                     style: fontMedium.copyWith(
-                      fontSize: 12.sp,
-                      color: AppColor.blackColour,
+                      fontSize: 10.sp,
+                      color: AppColor.textColor
                     ),),
                   style.toString() == "" ? const SizedBox() : Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -59,10 +59,10 @@ class PlayerListItem extends StatelessWidget {
                       ),
                       SizedBox(width: 2.w,),
                       Text(
-                        style ?? '-',
+                        style?.toUpperCase() ?? '-',
                         style: fontMedium.copyWith(
-                          fontSize: 10.sp,
-                          color: const Color(0xff555555)
+                          fontSize: 8.sp,
+                          color: AppColor.textMildColor
                       ),),
                     ],
                   ),

@@ -146,7 +146,7 @@ class _LiveScreenState extends State<LiveScreen> {
                                                   matchList![index].team1Name??'',
                                                   style: fontMedium.copyWith(
                                                     fontSize: 13.sp,
-                                                    color: AppColor.pri,
+                                                    color: AppColor.textColor,
                                                   )
                                               ),
                                               SizedBox(width: 2.w,),
@@ -421,12 +421,12 @@ class _LiveScreenState extends State<LiveScreen> {
                                 const DottedLine(
                                   dashColor: Color(0xffD2D2D2),
                                 ),
-                                SizedBox(height: 1.h,),
+                                SizedBox(height: 1.5.h,),
                                 //toss line
                                 Padding(
-                                  padding:  EdgeInsets.only(left: 2.w,bottom: 1.h),
+                                  padding: EdgeInsets.only(left: 3.w,bottom: 1.5.h),
                                   child: Text('${matchList![index].tossWinnerName} won the toss choose to ${matchList![index].choseTo}',style: fontRegular.copyWith(
-                                      fontSize: 12.sp,
+                                      fontSize: 10.sp,
                                       color: AppColor.pri
                                   ),),
                                 ),

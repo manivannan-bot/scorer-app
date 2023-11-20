@@ -17,7 +17,7 @@ import '../provider/scoring_provider.dart';
 import '../utils/colours.dart';
 import '../utils/images.dart';
 import '../utils/sizes.dart';
-import '../view/widgets/batsman_list_item.dart';
+import '../view/widgets/player_list_item.dart';
 import '../widgets/snackbar.dart';
 
 class RunOutScreen extends StatefulWidget {
@@ -674,7 +674,6 @@ class _RunOutScreenState extends State<RunOutScreen> {
                         const CancelBtn("Cancel"),
                         SizedBox(width: 2.w,),
                         GestureDetector(onTap:()async {
-
                           Navigator.pop(context);
                         },child: const OkBtn("Ok")),
                       ],

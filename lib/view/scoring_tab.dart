@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:scorer/models/scoring_detail_response_model.dart';
 import 'package:scorer/provider/score_update_provider.dart';
+import 'package:scorer/sample_screen.dart';
 import 'package:scorer/view/batsman_list_bottom_sheet.dart';
 import 'package:scorer/view/bonus_bottom_sheet.dart';
 import 'package:scorer/view/bowler_list_bottom_sheet.dart';
@@ -215,207 +216,220 @@ class _ScoringTabState extends State<ScoringTab> {
       controller: refreshController,
       enablePullDown: true,
       onRefresh: _refreshData,
-      child: MediaQuery.removePadding(
-        removeTop: true,
-        context: context,
-        child: SingleChildScrollView(
-          child: Consumer<ScoreUpdateProvider>(
-              builder: (context, change, child) {
-                return Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 5.w),
-                      child: SizedBox(
-                          width: 100.w,
-                          child: Column(
-                            children: [
-                              FadeIn(
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: Padding(
-                                        padding:  EdgeInsets.only(right:4.w),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Padding(
-                                              padding:EdgeInsets.only(bottom: 1.5.h),
-                                              child: Row(
-                                                  children: [
-                                                    Text(
+      child: Container(
+        width: double.maxFinite,
+        margin: EdgeInsets.only(top: 2.h),
+        decoration: const BoxDecoration(
+          color: AppColor.lightColor,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20.0),
+            topRight: Radius.circular(20.0),
+          )
+        ),
+        child: Consumer<ScoreUpdateProvider>(
+            builder: (context, change, child) {
+              return Column(
+                children: [
+                  SizedBox(height: 2.h,),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 5.w),
+                    child: SizedBox(
+                        width: 100.w,
+                        child: Column(
+                          children: [
+                            FadeIn(
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    child: Padding(
+                                      padding:  EdgeInsets.only(right:4.w),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding:EdgeInsets.only(bottom: 1.5.h),
+                                            child: Row(
+                                                children: [
+                                                  InkWell(
+                                                    onTap:(){
+                                                      Navigator.push(context,
+                                                          MaterialPageRoute(builder: (context) => SampleScreen()));
+                                                    },
+                                                    child: Text(
                                                       'Batsman',
                                                       style: fontMedium.copyWith(
                                                           color: const Color(0xffD78108),
-                                                          fontSize: 14.sp),
+                                                          fontSize: 12.sp),
                                                     ),
-                                                    // const Spacer(),
-                                                    // GestureDetector(
-                                                    //   onTap:()async{
-                                                    //     SharedPreferences prefs = await SharedPreferences.getInstance();
-                                                    //     var strikerId=prefs.getInt('striker_id')??0;
-                                                    //     var nonStrikerId=prefs.getInt('non_striker_id')??0;
-                                                    //     await prefs.setInt('non_striker_id',strikerId);
-                                                    //     await prefs.setInt('striker_id',nonStrikerId);
-                                                    //     setState(() {
-                                                    //       if(index1==1){
-                                                    //         index2=1;
-                                                    //         index1=0;
-                                                    //       }else{
-                                                    //         index2=0;
-                                                    //         index1=1;
-                                                    //       }
-                                                    //     });
-                                                    //   },
-                                                    //   child: SwapButton(),
-                                                    // ),
-                                                  ]),
-                                            ),
+                                                  ),
+                                                  // const Spacer(),
+                                                  // GestureDetector(
+                                                  //   onTap:()async{
+                                                  //     SharedPreferences prefs = await SharedPreferences.getInstance();
+                                                  //     var strikerId=prefs.getInt('striker_id')??0;
+                                                  //     var nonStrikerId=prefs.getInt('non_striker_id')??0;
+                                                  //     await prefs.setInt('non_striker_id',strikerId);
+                                                  //     await prefs.setInt('striker_id',nonStrikerId);
+                                                  //     setState(() {
+                                                  //       if(index1==1){
+                                                  //         index2=1;
+                                                  //         index1=0;
+                                                  //       }else{
+                                                  //         index2=0;
+                                                  //         index1=1;
+                                                  //       }
+                                                  //     });
+                                                  //   },
+                                                  //   child: SwapButton(),
+                                                  // ),
+                                                ]),
+                                          ),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Text(scoringData!.data!.batting![index1].playerName.split(' ').first.toString().toUpperCase(),
+                                                      style: fontSemiBold.copyWith(
+                                                          color: AppColor.textColor, fontSize: 9.sp)),
+                                                  SizedBox(width:1.w),
+                                                  scoringData!.data!.batting![index1].striker == 1
+                                                      ? SvgPicture.asset(Images.batIcon,
+                                                      color: AppColor.locationIconColor) :  SizedBox(width:1.w),
+                                                ],
+                                              ),
+                                              RunsScoredAndBallsFacedText(scoringData!.data!.batting![index1].runsScored.toString(), scoringData!.data!.batting![index1].ballsFaced.toString()),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 1.h,
+                                          ),
+                                          if(scoringData!.data!.batting!.length < 2)...[
+                                            InkWell(
+                                              onTap: (){
+                                                if(scoringData!.data!.batting!.first.striker == 1){
+                                                  changeBatsman("non_striker_id");
+                                                } else {
+                                                  changeBatsman("striker_id");
+                                                }
+                                              },
+                                              child: const ChooseBatsmanButton(),
+                                            )
+                                          ] else ...[
                                             Row(
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
                                                 Row(
                                                   children: [
-                                                    Text(scoringData!.data!.batting![index1].playerName.split(' ').first.toString(),
-                                                        style:  fontMedium.copyWith(
-                                                            color: Colors.black, fontSize: 10.sp)),
+                                                    Text((scoringData!.data!.batting?.length == 2) ?'${scoringData!.data!.batting![index2].playerName.split(' ').first.toString().toUpperCase()} ':'-',
+                                                        style: fontSemiBold.copyWith(
+                                                            color: AppColor.textColor, fontSize: 9.sp)),
                                                     SizedBox(width:1.w),
-                                                    scoringData!.data!.batting![index1].striker == 1
-                                                        ? SvgPicture.asset(Images.batIcon,
-                                                        color: AppColor.locationIconColor) :  SizedBox(width:1.w),
+                                                    if(scoringData!.data!.batting?.length == 2)...[
+                                                      scoringData!.data!.batting![index2].striker == 1
+                                                          ? SvgPicture.asset(Images.batIcon,
+                                                          color: AppColor.locationIconColor) :  SizedBox(width:1.w),
+                                                    ] else ...[
+                                                      const SizedBox()
+                                                    ]
                                                   ],
                                                 ),
-                                                RunsScoredAndBallsFacedText(scoringData!.data!.batting![index1].runsScored.toString(), scoringData!.data!.batting![index1].ballsFaced.toString()),
+                                                if(scoringData!.data!.batting?.length == 2)...[
+                                                  RunsScoredAndBallsFacedText(
+                                                      scoringData!.data!.batting![index2].runsScored.toString(),
+                                                      scoringData!.data!.batting![index2].ballsFaced.toString()),
+                                                ] else ...[
+                                                  const SizedBox()
+                                                ],
+
                                               ],
                                             ),
-                                            SizedBox(
-                                              height: 1.5.h,
-                                            ),
-                                            if(scoringData!.data!.batting!.length < 2)...[
-                                              InkWell(
-                                                onTap: (){
-                                                  if(scoringData!.data!.batting!.first.striker == 1){
-                                                    changeBatsman("non_striker_id");
-                                                  } else {
-                                                    changeBatsman("striker_id");
-                                                  }
-                                                },
-                                                child: const ChooseBatsmanButton(),
-                                              )
-                                            ] else ...[
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      Text((scoringData!.data!.batting?.length == 2) ?'${scoringData!.data!.batting![index2].playerName.split(' ').first.toString()} ':'-',
-                                                          style: fontMedium.copyWith(
-                                                              color: Colors.black, fontSize: 10.sp)),
-                                                      SizedBox(width:1.w),
-                                                      if(scoringData!.data!.batting?.length == 2)...[
-                                                        scoringData!.data!.batting![index2].striker == 1
-                                                            ? SvgPicture.asset(Images.batIcon,
-                                                            color: AppColor.locationIconColor) :  SizedBox(width:1.w),
-                                                      ] else ...[
-                                                        const SizedBox()
-                                                      ]
-                                                    ],
-                                                  ),
-                                                  if(scoringData!.data!.batting?.length == 2)...[
-                                                    RunsScoredAndBallsFacedText(
-                                                        scoringData!.data!.batting![index2].runsScored.toString(),
-                                                        scoringData!.data!.batting![index2].ballsFaced.toString()),
-                                                  ] else ...[
-                                                    const SizedBox()
-                                                  ],
-
-                                                ],
-                                              ),
-                                            ],
                                           ],
-                                        ),
+                                        ],
                                       ),
                                     ),
-                                    const CustomVerticalDottedLine(),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: EdgeInsets.only(left:4.w),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          children: [
-                                            Padding(
-                                              padding:EdgeInsets.only(bottom: 1.5.h),
-                                              child: Row(children: [
-                                                Text('Bowler',
-                                                    style: fontMedium.copyWith(
-                                                        color: const Color(0xffD78108),
-                                                        fontSize: 14.sp)),
-                                                const Spacer(),
-                                                GestureDetector(onTap:()async{
-                                                  changeBowler();
-                                                },
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius.circular(15),
-                                                        shape: BoxShape.rectangle,
-                                                        color: Colors.black
+                                  ),
+                                  const CustomVerticalDottedLine(true),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(left:4.w),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding:EdgeInsets.only(bottom: 1.5.h),
+                                            child: Row(children: [
+                                              Text('Bowler',
+                                                  style: fontMedium.copyWith(
+                                                      color: const Color(0xffD78108),
+                                                      fontSize: 12.sp)),
+                                              const Spacer(),
+                                              GestureDetector(onTap:()async{
+                                                changeBowler();
+                                              },
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(15),
+                                                      shape: BoxShape.rectangle,
+                                                      color: Colors.black
 
-                                                    ),
-                                                    padding: EdgeInsets.symmetric(horizontal: 3.w,vertical: 0.5.h),
-                                                    child: Text('Change',
-                                                      style: fontMedium.copyWith(
-                                                          color: Colors.white,fontSize: 9.sp),),),
-                                                )
-                                              ]),
-                                            ),
-                                            Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                BowlerCurrentOverData('${selectedBowlerName.isEmpty?scoringData!.data!.bowling!.playerName??'-':selectedBowlerName}  ',
-                                                    '${scoringData!.data!.bowling!.overBall??'0'}-'
-                                                        '${scoringData!.data!.bowling!.maiden??'0'}-'
-                                                        '${scoringData!.data!.bowling!.runsConceded??'0'}-'
-                                                        '${scoringData!.data!.bowling!.wickets??'0'}'
-                                                ),
-                                                SizedBox(height: 1.5.h),
-                                                const SetBowlerPosition(),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
+                                                  ),
+                                                  padding: EdgeInsets.symmetric(horizontal: 2.w,vertical: 0.5.h),
+                                                  child: Text('Change',
+                                                    style: fontMedium.copyWith(
+                                                        color: Colors.white,fontSize: 8.sp),),),
+                                              )
+                                            ]),
+                                          ),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              BowlerCurrentOverData('${selectedBowlerName.isEmpty?scoringData!.data!.bowling!.playerName.toUpperCase()??'-':selectedBowlerName.toUpperCase()}  ',
+                                                  '${scoringData!.data!.bowling!.wickets??'0'} - '
+                                                      '${scoringData!.data!.bowling!.runsConceded??'0'}',
+                                                  ' ${scoringData!.data!.bowling!.overBall??'0'}'
+                                              ),
+                                              SizedBox(height: 1.h),
+                                              const SetBowlerPosition(),
+                                            ],
+                                          ),
+                                        ],
                                       ),
-                                    )
-                                  ],
-                                ),
+                                    ),
+                                  )
+                                ],
                               ),
-                              SizedBox(
-                                height: 1.h,
-                              ),
-                              CurrentOverData(scoringData, widget.currentOverData, totalBallId.toString()),
-                            ],
-                          )),
-                    ),
-                    SizedBox(height: 1.h,),
-                    change.bowlerChange == 0
-                        ? const SizedBox()
-                        : InkWell(
-                      onTap: (){
-                        changeBowler();
-                      },
-                      child: const ChangeBowlerButton(),
-                    ),
-                    SizedBox(height: 1.h,),
-                    change.bowlerChange == 1 || scoringData!.data!.batting!.length < 2
-                        ? const SizedBox()
-                        : FadeIn(
-                      child: Container(
+                            ),
+                            SizedBox(height: 1.5.h,),
+                            CurrentOverData(scoringData, widget.currentOverData, totalBallId.toString()),
+                          ],
+                        )),
+                  ),
+                  SizedBox(height: 1.h,),
+                  change.bowlerChange == 0
+                      ? const SizedBox()
+                      : InkWell(
+                    onTap: (){
+                      changeBowler();
+                    },
+                    child: const ChangeBowlerButton(),
+                  ),
+                  SizedBox(height: 1.h,),
+                  change.bowlerChange == 1 || scoringData!.data!.batting!.length < 2
+                      ? const SizedBox()
+                      : Expanded(
+                        child: FadeIn(
+                    child: Container(
                         width: 100.w,
-                        color: Colors.black,
+                        color: AppColor.scoreUpdateBg,
                         child: Consumer<ScoringProvider>(
                             builder: (context, updatedScore, child) {
                               return Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -508,8 +522,8 @@ class _ScoringTabState extends State<ScoringTab> {
                                                 },
                                                 child: const ScorerGridItem('0','DOT')),
 
-                                            const CustomHorizantalDottedLine(),]),
-                                      const CustomVerticalDottedLine(),
+                                            ]),
+                                      const CustomVerticalDottedLine(false),
                                       Column(
                                           children:[
                                             GestureDetector(onTap:()async {
@@ -520,8 +534,8 @@ class _ScoringTabState extends State<ScoringTab> {
                                               _displayScoreUpdateBottomSheet(1,scoringData);
                                             }, child: const ScorerGridItem('1','')),
 
-                                            const CustomHorizantalDottedLine(),]),
-                                      const CustomVerticalDottedLine(),
+                                            ]),
+                                      const CustomVerticalDottedLine(false),
                                       Column(
                                           children:[
                                             GestureDetector(onTap:()async{
@@ -531,8 +545,8 @@ class _ScoringTabState extends State<ScoringTab> {
                                               }
                                               _displayScoreUpdateBottomSheet(2,scoringData);
                                             }, child:const ScorerGridItem('2','')),
-                                            const CustomHorizantalDottedLine(),]),
-                                      const CustomVerticalDottedLine(),
+                                            ]),
+                                      const CustomVerticalDottedLine(false),
                                       Column(
                                           children:[
                                             GestureDetector(onTap:()async{
@@ -542,8 +556,8 @@ class _ScoringTabState extends State<ScoringTab> {
                                               }
                                               _displayScoreUpdateBottomSheet(3,scoringData);
                                             }, child:const ScorerGridItem('3','')),
-                                            const CustomHorizantalDottedLine(),]),
-                                      const CustomVerticalDottedLine(),
+                                            ]),
+                                      const CustomVerticalDottedLine(false),
                                       Column(
                                           children:[
                                             GestureDetector(onTap:()async{
@@ -553,9 +567,10 @@ class _ScoringTabState extends State<ScoringTab> {
                                               }
                                               _displayScoreUpdateBottomSheet(4,scoringData);
                                             }, child:const ScorerGridFour(Images.four,'FOUR')),
-                                            const CustomHorizantalDottedLine(),]),
+                                            ]),
                                     ],
                                   ),
+                                  const CustomHorizontalDottedLine(),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -567,8 +582,8 @@ class _ScoringTabState extends State<ScoringTab> {
                                             }
                                             _displayScoreUpdateBottomSheet(6,scoringData);
                                           }, child:const ScorerGridFour(Images.six,'SIX')),
-                                            const CustomHorizantalDottedLine(),]),
-                                      const CustomVerticalDottedLine(),
+                                            ]),
+                                      const CustomVerticalDottedLine(false),
                                       Column(
                                           children:[ GestureDetector(
                                               onTap: ()async{
@@ -579,8 +594,8 @@ class _ScoringTabState extends State<ScoringTab> {
                                                 _displayBottomSheetWide(7,scoringData);
                                               },
                                               child: const ScorerGridItem('WD','WIDE')),
-                                            const CustomHorizantalDottedLine(),]),
-                                      const CustomVerticalDottedLine(),
+                                            ]),
+                                      const CustomVerticalDottedLine(false),
                                       Column(
                                           children:[ GestureDetector(
                                               onTap: ()async{
@@ -591,8 +606,8 @@ class _ScoringTabState extends State<ScoringTab> {
                                                 _displayBottomSheetNoBall(8,scoringData);
                                               },
                                               child: const ScorerGridItem('NB','NO BALL')),
-                                            const CustomHorizantalDottedLine(),]),
-                                      const CustomVerticalDottedLine(),
+                                            ]),
+                                      const CustomVerticalDottedLine(false),
                                       Column(
                                           children:[ GestureDetector(
                                               onTap:()async{
@@ -603,8 +618,8 @@ class _ScoringTabState extends State<ScoringTab> {
                                                 _displayBottomSheetLegBye(9,scoringData);
                                               },
                                               child: const ScorerGridItem('LB','LEG-BYE')),
-                                            const CustomHorizantalDottedLine(),]),
-                                      const CustomVerticalDottedLine(),
+                                            ]),
+                                      const CustomVerticalDottedLine(false),
                                       Column(
                                           children:[ GestureDetector(
                                               onTap: ()async{
@@ -615,9 +630,10 @@ class _ScoringTabState extends State<ScoringTab> {
                                                 _displayBottomSheetByes(10,scoringData);
                                               },
                                               child: const ScorerGridItem('BYE','BYE')),
-                                            const CustomHorizantalDottedLine(),]),
+                                            ]),
                                     ],
                                   ),
+                                  const CustomHorizontalDottedLine(),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -629,7 +645,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                         _displayBottomSheetBonus(11,scoringData);
                                       },
                                           child: const ScorerGridItem('B/P','B/P')),
-                                      const CustomVerticalDottedLine(),
+                                      const CustomVerticalDottedLine(false),
                                       GestureDetector(onTap: ()async{
                                         bool continueOperations =  await isBatsman();
                                         if (!continueOperations) {
@@ -638,7 +654,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                         _displayBottomSheetMoreRuns(5,scoringData);
                                       },
                                           child: const ScorerGridItem('5,7..','RUNS')),
-                                      const CustomVerticalDottedLine(),
+                                      const CustomVerticalDottedLine(false),
                                       GestureDetector(
                                           onTap: ()async {
                                             bool continueOperations =  await isBatsman();
@@ -656,7 +672,7 @@ class _ScoringTabState extends State<ScoringTab> {
 
                                           },
                                           child: const ScorerGridItem('','UNDO')),
-                                      const CustomVerticalDottedLine(),
+                                      const CustomVerticalDottedLine(false),
                                       GestureDetector(
                                           onTap: ()async{
                                             bool continueOperations = await isBatsman();
@@ -665,7 +681,7 @@ class _ScoringTabState extends State<ScoringTab> {
                                             }
                                             _displayBottomSheetOther();},
                                           child: const ScorerGridItem('','OTHER')),
-                                      const CustomVerticalDottedLine(),
+                                      const CustomVerticalDottedLine(false),
                                       GestureDetector(
                                           onTap: ()async{
                                             bool continueOperations = await isBatsman();
@@ -681,12 +697,12 @@ class _ScoringTabState extends State<ScoringTab> {
                               );
                             }
                         ),
-                      ),
-                    )
-                  ],
-                );
-              }
-          ),
+                    ),
+                  ),
+                      )
+                ],
+              );
+            }
         ),
       ),
     );
@@ -729,6 +745,8 @@ class _ScoringTabState extends State<ScoringTab> {
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      enableDrag: false,
+      isDismissible: false,
       backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
         return ScoreBottomSheet(run,scoringData!,onSave: (value){

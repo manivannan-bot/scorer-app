@@ -4,12 +4,15 @@ class AppColor {
   static const Color primaryColor = Color(0xffF6CB03);
   static const Color secondaryColor = Color(0xffD66E1A);
   static const Color pri = Color(0xffD78108);
+  static const Color selectedTabColor = Color(0xffFFD929);
 
   static const Color textColor = Color(0xff221f1f);
   static const Color textMildColor = Color(0xff707B81);
 
   static const Color lightColor = Color(0xffFFFFFF);
   static const Color semiLightColor = Color(0xffD7DBDD);
+  static const Color scoreUpdateBg = Color(0xff222222);
+  static const Color verticalDividerColor = Color(0xffA8A5A5);
 
   static const Color bgColor = Color(0xffF8F8F9);
   static const Color imageBorderColor = Color(0xffFFFBE0);

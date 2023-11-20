@@ -3,19 +3,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-class CustomHorizantalDottedLine extends StatelessWidget {
-  const CustomHorizantalDottedLine({super.key});
+import '../utils/colours.dart';
+
+class CustomHorizontalDottedLine extends StatelessWidget {
+  const CustomHorizontalDottedLine({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return  DottedLine(
+    return DottedLine(
       dashGapColor: Colors.grey,
       direction: Axis.horizontal,
-      lineLength: 19.w,
-      lineThickness:
-      1,
+      lineLength: 100.w,
+      lineThickness: 1,
       dashColor:
-      Colors.black,
+      AppColor.scoreUpdateBg,
       dashLength: 5,
       dashGapLength: 2,
     );

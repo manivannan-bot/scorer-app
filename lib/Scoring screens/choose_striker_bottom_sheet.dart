@@ -3,7 +3,7 @@ import 'package:flutter_animator/flutter_animator.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:scorer/provider/player_selection_provider.dart';
-import 'package:scorer/view/widgets/batsman_list_item.dart';
+import 'package:scorer/view/widgets/player_list_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 

@@ -3,6 +3,7 @@ import 'package:flutter_animator/flutter_animator.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:r_dotted_line_border/r_dotted_line_border.dart';
+import 'package:scorer/view/widgets/player_list_item.dart';
 import 'package:scorer/widgets/cancel_btn.dart';
 import 'package:scorer/widgets/ok_btn.dart';
 import 'package:scorer/widgets/snackbar.dart';
@@ -70,7 +71,7 @@ class _CaughtOutScreenState extends State<CaughtOutScreen> {
                     },
                     child: Icon(Icons.arrow_back,size: 7.w,)),
                 Text("Caught",style: fontMedium.copyWith(
-                  fontSize: 18.sp,
+                  fontSize: 16.sp,
                   color: AppColor.blackColour,
                 ),),
                 SizedBox(width: 7.w,),
@@ -100,7 +101,7 @@ class _CaughtOutScreenState extends State<CaughtOutScreen> {
           //     ),
           //   ),
           // ),
-          SizedBox(height: 4.h,),
+          SizedBox(height: 2.h,),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 5.w),
             child: Text('$selectedBTeamName',style: fontMedium.copyWith(
@@ -110,15 +111,10 @@ class _CaughtOutScreenState extends State<CaughtOutScreen> {
           ),
           Expanded(
             child: FadeIn(
-              child: ListView.separated(
-                separatorBuilder:(context ,_) {
-                  return const Divider(
-                    thickness: 0.6,
-                  );
-                },
+              child: ListView.builder(
                 itemCount: itemsBowler!.length,
                 itemBuilder: (context, index) {
-                  return GestureDetector(
+                  return InkWell(
                     onTap: () {
                       setState(() {
                         if (localBowlerIndex  == index) {
@@ -131,69 +127,8 @@ class _CaughtOutScreenState extends State<CaughtOutScreen> {
                       });
                     },
                     child:Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 2.5.w,vertical: 1.h),
-                      child: Row(
-                        children: [
-                          //circular button
-                          Container(
-                            height: 20.0, // Adjust the height as needed
-                            width: 20.0,  // Adjust the width as needed
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: localBowlerIndex == index ? Colors.blue : Colors.grey, // Change colors based on selected index
-                            ),
-                            child: const Center(
-                              child: Icon(
-                                Icons.circle_outlined, // You can change the icon as needed
-                                color: Colors.white, // Icon color
-                                size: 20.0, // Icon size
-                              ),
-                            ),
-                          ), SizedBox(width: 3.w,),
-                          Image.network(Images.playersImage,width: 10.w,),
-                          SizedBox(width: 2.w,),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(itemsBowler![index].playerName??'-',style: fontMedium.copyWith(
-                                fontSize: 12.sp,
-                                color: AppColor.blackColour,
-                              ),),
-                              Row(
-                                children: [
-                                  Container(
-                                    height:1.h,
-                                    width: 2.w,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(50),
-                                      color: AppColor.pri,
-                                    ),
-                                  ),
-                                  SizedBox(width: 2.w,),
-                                  Text(itemsBowler![index].bowlingStyle??'-',style: fontMedium.copyWith(
-                                      fontSize: 11.sp,
-                                      color: const Color(0xff555555)
-                                  ),),
-                                ],
-                              ),
-
-                            ],
-                          ),
-                          const Spacer(),
-                          // Row(
-                          //   children: [
-                          //     Text("25 ",style: fontRegular.copyWith(
-                          //       fontSize: 11.sp,
-                          //       color: AppColor.blackColour,
-                          //     ),),
-                          //     Text("(10) ",style: fontRegular.copyWith(
-                          //       fontSize: 11.sp,
-                          //       color: AppColor.blackColour,
-                          //     ),)
-                          //   ],
-                          // )
-                        ],
-                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 2.5.w),
+                      child: PlayerListItem(index, localBowlerIndex, itemsBowler![index].playerName, itemsBowler![index].bowlingStyle)
                     ),
 
                   );

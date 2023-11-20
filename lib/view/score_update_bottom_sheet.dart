@@ -16,6 +16,8 @@ import '../utils/sizes.dart';
 import '../widgets/snackbar.dart';
 import '../widgets/undo_button.dart';
 import 'cricket_wagon_wheel.dart';
+import 'end_innings_confirmation_bottom_sheet.dart';
+import 'end_match_confirmation_bottom_sheet.dart';
 
 class ScoreBottomSheet extends StatefulWidget {
   final int run;
@@ -64,8 +66,8 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
       fieldPositionId=value;
     });
     debugPrint("Received value from ThreeCircles: $value");
-
   }
+
   @override
   void initState() {
     super.initState();
@@ -151,7 +153,6 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                           style: fontMedium.copyWith(color: AppColor.iconColour),
                         ),
                         Switch(value: _isSwitch, onChanged: (bool value) async{
-
                           SharedPreferences pref=await SharedPreferences.getInstance();
                           isFourOrSix=pref.getInt('fourOrSix');
                           if(isFourOrSix==1){
@@ -838,7 +839,7 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                             scoreUpdateRequestModel.outByPlayer=0;
                             scoreUpdateRequestModel.outPlayer=0;
                             scoreUpdateRequestModel.totalWicket=0;
-                            scoreUpdateRequestModel.fieldingPositionsId=fieldPositionId;
+                            scoreUpdateRequestModel.fieldingPositionsId = fieldPositionId;
                             scoreUpdateRequestModel.endInnings=false;
                             scoreUpdateRequestModel.bowlerPosition= score.bowlerPosition;
                             ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
@@ -855,24 +856,16 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
                                     loading = false;
                                   });
                                 }
-                                Dialogs.snackBar("Match Ended", context);
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => const HomeScreen()));
+                                showEndMatchConfirmationBottomSheet();
                               } else if(value.data?.inningCompleted == true){
                                 if(mounted){
                                   setState(() {
                                     loading = false;
                                   });
                                 }
+                                showEndInningsConfirmationBottomSheet();
                                 debugPrint("end of innings");
                                 debugPrint("navigating to home screen");
-                                Dialogs.snackBar(value.data!.inningsMessage.toString(), context);
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => const HomeScreen()));
                               } else {
                                 widget.onSave(value);
                                 debugPrint("striker and non striker id - ${value.data?.strikerId.toString()} ${value.data?.nonStrikerId.toString()}");
@@ -927,6 +920,26 @@ class _ScoreBottomSheetState extends State<ScoreBottomSheet> {
               ),
             ),
           ]),
+    );
+  }
+
+  showEndMatchConfirmationBottomSheet(){
+    showModalBottomSheet(context: context,
+        isScrollControlled: true,
+        isDismissible: false,
+        enableDrag: false,
+        backgroundColor: Colors.transparent,
+        builder: (context)=> const EndMatchConfirmationBottomSheet()
+    );
+  }
+
+  showEndInningsConfirmationBottomSheet(){
+    showModalBottomSheet(context: context,
+        isScrollControlled: true,
+        isDismissible: false,
+        enableDrag: false,
+        backgroundColor: Colors.transparent,
+        builder: (context)=> const EndInningsConfirmationBottomSheet()
     );
   }
 }

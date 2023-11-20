@@ -238,8 +238,8 @@ class _BowlerListBottomSheetState extends State<BowlerListBottomSheet> {
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Text(searchedList[index].playerName??'-',style: fontMedium.copyWith(
-                                              fontSize: 12.sp,
+                                            Text(searchedList[index].playerName?.toUpperCase()??'-',style: fontMedium.copyWith(
+                                              fontSize: 11.sp,
                                               color: AppColor.blackColour,
                                             ),),
                                             searchedList[index].bowlingStyle == null
@@ -336,8 +336,8 @@ class _BowlerListBottomSheetState extends State<BowlerListBottomSheet> {
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Text(searchedList[index].playerName??'-',style: fontMedium.copyWith(
-                                              fontSize: 12.sp,
+                                            Text(searchedList[index].playerName?.toUpperCase()??'-',style: fontMedium.copyWith(
+                                              fontSize: 11.sp,
                                               color: AppColor.blackColour,
                                             ),),
                                             searchedList[index].bowlingStyle == null

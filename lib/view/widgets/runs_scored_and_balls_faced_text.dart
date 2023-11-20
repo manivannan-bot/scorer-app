@@ -14,11 +14,11 @@ class RunsScoredAndBallsFacedText extends StatelessWidget {
       text: TextSpan(
           text: runsScored,
           style: fontMedium.copyWith(
-              color: AppColor.textColor, fontSize: 10.sp),
+              color: AppColor.textColor, fontSize: 11.sp),
           children: <TextSpan>[
-            TextSpan(text: ' ($ballsFaced)',
+            TextSpan(text: '  $ballsFaced',
               style: fontRegular.copyWith(
-                  color: AppColor.textColor, fontSize: 10.sp),
+                  color: AppColor.textColor, fontSize: 9.sp),
             )
           ]
       ),

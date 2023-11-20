@@ -34,7 +34,7 @@ class MatchPreviewBottomSheet extends StatelessWidget {
                     },
                     child: Icon(Icons.arrow_back,size: 7.w,)),
                 Text("Match Preview",style: fontMedium.copyWith(
-                  fontSize: 17.sp,
+                  fontSize: 15.sp,
                   color: AppColor.blackColour,
                 ),),
                 SizedBox(width: 7.w,),
@@ -52,7 +52,7 @@ class MatchPreviewBottomSheet extends StatelessWidget {
                 physics: const BouncingScrollPhysics(),
                 children: [
                   Text("Teams",style: fontMedium.copyWith(
-                    fontSize: 14.sp,
+                    fontSize: 12.sp,
                     color: AppColor.blackColour,
                   ),),
                   SizedBox(height: 1.h,),
@@ -66,7 +66,7 @@ class MatchPreviewBottomSheet extends StatelessWidget {
                             ClipOval(child: Image.asset(Images.teamPreviewlogoA,width: 20.w,)),
                             SizedBox(height: 1.h,),
                             Text("Toss & Tails",style: fontMedium.copyWith(
-                              fontSize: 14.sp,
+                              fontSize: 12.sp,
                               color: AppColor.blackColour,
                             ),),
                           ],
@@ -75,8 +75,8 @@ class MatchPreviewBottomSheet extends StatelessWidget {
                           children: [
                             ClipOval(child: Image.asset(Images.teamPreviewlogoA,width: 20.w,)),
                             SizedBox(height: 1.h,),
-                            Text("Toss & Tails",style: fontMedium.copyWith(
-                              fontSize: 14.sp,
+                            Text("Dhoni CC",style: fontMedium.copyWith(
+                              fontSize: 12.sp,
                               color: AppColor.blackColour,
                             ),),
                           ],
@@ -84,9 +84,9 @@ class MatchPreviewBottomSheet extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(height: 4.h,),
+                  SizedBox(height: 2.h,),
                   Text("Match Information",style: fontMedium.copyWith(
-                    fontSize: 14.sp,
+                    fontSize: 12.sp,
                     color: AppColor.blackColour,
                   ),),
                   SizedBox(height: 2.h,),
@@ -101,15 +101,15 @@ class MatchPreviewBottomSheet extends StatelessWidget {
                           padding:  EdgeInsets.symmetric(horizontal: 4.w,vertical: 1.5.h),
                           child: Row(
                             children: [
-                              SvgPicture.asset(Images.dateIcon,width: 6.w,),
+                              SvgPicture.asset(Images.dateIcon,width: 5.w,),
                               SizedBox(width: 2.w,),
-                              Text("Date",style: fontMedium.copyWith(
-                                fontSize: 12.sp,
+                              Text("Date",style: fontRegular.copyWith(
+                                fontSize: 10.sp,
                                 color: const Color(0xff666666),
                               ),),
                               const Spacer(),
                               Text("Aug 21, 2023 ",style: fontMedium.copyWith(
-                                fontSize: 12.sp,
+                                fontSize: 10.sp,
                                 color: AppColor.blackColour,
                               ),),
                             ],
@@ -122,15 +122,15 @@ class MatchPreviewBottomSheet extends StatelessWidget {
                           padding:  EdgeInsets.symmetric(horizontal: 4.w,vertical: 1.5.h),
                           child: Row(
                             children: [
-                              SvgPicture.asset(Images.clockIcon,width: 6.w,),
+                              SvgPicture.asset(Images.clockIcon,width: 5.w,),
                               SizedBox(width: 2.w,),
-                              Text("Slot",style: fontMedium.copyWith(
-                                fontSize: 12.sp,
+                              Text("Slot",style: fontRegular.copyWith(
+                                fontSize: 10.sp,
                                 color: const Color(0xff666666),
                               ),),
                               const Spacer(),
                               Text("6:00 AM",style: fontMedium.copyWith(
-                                fontSize: 12.sp,
+                                fontSize: 10.sp,
                                 color: AppColor.blackColour,
                               ),),
                             ],
@@ -142,17 +142,19 @@ class MatchPreviewBottomSheet extends StatelessWidget {
                         Padding(
                           padding:  EdgeInsets.symmetric(horizontal: 4.w,vertical: 1.5.h),
                           child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SvgPicture.asset(Images.groundIcon,width: 6.w,),
+                              SvgPicture.asset(Images.groundIcon,width: 5.w,),
                               SizedBox(width: 2.w,),
-                              Text("Organizer & \nGround",style: fontMedium.copyWith(
-                                fontSize: 12.sp,
+                              Text("Organizer & \nGround",style: fontRegular.copyWith(
+                                fontSize: 10.sp,
                                 color: const Color(0xff666666),
                               ),),
                               const Spacer(),
-                              Text("JK Organizer \n Square out fighters"
-                                ,style: fontMedium.copyWith(
-                                  fontSize: 12.sp,
+                              Text("JK Organizer \n Square out fighters",
+                                textAlign: TextAlign.end,
+                                style: fontMedium.copyWith(
+                                  fontSize: 10.sp,
                                   color: AppColor.blackColour,
                                 ),),
                             ],
@@ -165,16 +167,16 @@ class MatchPreviewBottomSheet extends StatelessWidget {
                           padding:  EdgeInsets.symmetric(horizontal: 4.w,vertical: 1.5.h),
                           child: Row(
                             children: [
-                              SvgPicture.asset(Images.locationsIcon,width: 6.w,),
+                              SvgPicture.asset(Images.locationsIcon,width: 5.w,),
                               SizedBox(width: 2.w,),
-                              Text("Location",style: fontMedium.copyWith(
-                                fontSize: 12.sp,
+                              Text("Location",style: fontRegular.copyWith(
+                                fontSize: 10.sp,
                                 color: const Color(0xff666666),
                               ),),
                               const Spacer(),
                               Text("Chrompet"
                                 ,style: fontMedium.copyWith(
-                                  fontSize: 12.sp,
+                                  fontSize: 10.sp,
                                   color: AppColor.blackColour,
                                 ),),
                             ],
@@ -185,10 +187,10 @@ class MatchPreviewBottomSheet extends StatelessWidget {
                   ),
                   SizedBox(height: 2.h,),
                   Text("Professionals",style: fontMedium.copyWith(
-                    fontSize: 14.sp,
+                    fontSize: 12.sp,
                     color: AppColor.blackColour,
                   ),),
-                  SizedBox(height: 1.h,),
+                  SizedBox(height: 2.h,),
                   Wrap(
                     spacing: 3.w,
                     runSpacing: 2.h,
@@ -196,13 +198,12 @@ class MatchPreviewBottomSheet extends StatelessWidget {
                       Column(
                         children: [
                           Text("Umpire 2",style: fontRegular.copyWith(
-                            fontSize: 12.sp,
+                            fontSize: 10.sp,
                             color: AppColor.blackColour,
                           ),),
                           SizedBox(height: 1.h,),
                           Container(
                             width: 42.w,
-                            height: 16.h,
                             padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 1.5.h),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
@@ -211,10 +212,10 @@ class MatchPreviewBottomSheet extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                ClipOval(child: Image.asset(Images.umpireImage,width: 16.w,)),
+                                ClipOval(child: Image.asset(Images.umpireImage,width: 13.w,)),
                                 SizedBox(height: 0.5.h,),
                                 Text("ArunKumar",style: fontMedium.copyWith(
-                                  fontSize: 12.sp,
+                                  fontSize: 10.sp,
                                   color: AppColor.blackColour,
                                 ),),
                               ],
@@ -226,13 +227,12 @@ class MatchPreviewBottomSheet extends StatelessWidget {
                       Column(
                         children: [
                           Text("Umpire 2",style: fontRegular.copyWith(
-                            fontSize: 12.sp,
+                            fontSize: 10.sp,
                             color: AppColor.blackColour,
                           ),),
                           SizedBox(height: 1.h,),
                           Container(
                             width: 42.w,
-                            height: 16.h,
                             padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 1.5.h),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
@@ -241,10 +241,10 @@ class MatchPreviewBottomSheet extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                ClipOval(child: Image.asset(Images.umpireImage,width: 16.w,)),
+                                ClipOval(child: Image.asset(Images.umpireImage,width: 13.w,)),
                                 SizedBox(height: 0.5.h,),
-                                Text("vinayagam\nMoorthy",style: fontMedium.copyWith(
-                                  fontSize: 12.sp,
+                                Text("vinayagam",style: fontMedium.copyWith(
+                                  fontSize: 10.sp,
                                   color: AppColor.blackColour,
                                 ),),
                               ],
@@ -255,13 +255,12 @@ class MatchPreviewBottomSheet extends StatelessWidget {
                       Column(
                         children: [
                           Text("Scorer",style: fontRegular.copyWith(
-                            fontSize: 12.sp,
+                            fontSize: 10.sp,
                             color: AppColor.blackColour,
                           ),),
                           SizedBox(height: 1.h,),
                           Container(
                             width: 42.w,
-                            height: 16.h,
                             padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 1.5.h),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
@@ -270,10 +269,10 @@ class MatchPreviewBottomSheet extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                ClipOval(child: Image.asset(Images.umpireImage,width: 16.w,)),
+                                ClipOval(child: Image.asset(Images.umpireImage,width: 13.w,)),
                                 SizedBox(height: 0.5.h,),
                                 Text("ArunKumar",style: fontMedium.copyWith(
-                                  fontSize: 12.sp,
+                                  fontSize: 10.sp,
                                   color: AppColor.blackColour,
                                 ),),
                               ],
@@ -295,7 +294,7 @@ class MatchPreviewBottomSheet extends StatelessWidget {
               child: Row(
                 children: [
                   Text('Match Details',style: fontRegular.copyWith(
-                      fontSize: 14.sp,
+                      fontSize: 12.sp,
                       color: const Color(0xffD3810C)
                   ),),
                   const Spacer(),

@@ -13,6 +13,6 @@ class StumpImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SvgPicture.asset(Images.stumpIcon1,width:5.w, color: bowlerPosition == 1 ? AppColor.pri : AppColor.textMildColor,);
+    return SvgPicture.asset(Images.stumpIcon1,width:4.w, color: bowlerPosition == 1 ? AppColor.pri : AppColor.textMildColor,);
   }
 }

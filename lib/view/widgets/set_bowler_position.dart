@@ -28,7 +28,7 @@ class SetBowlerPosition extends StatelessWidget {
                     Padding(padding: EdgeInsets.only(left: 2.w,),
                         child:  Text('OW',
                           style: fontRegular.copyWith(
-                              fontSize: 10.sp,
+                              fontSize: 9.sp,
                               color: position.ow == 1 ? AppColor.pri : AppColor.textMildColor),)),
                   ]),
                 ),
@@ -42,7 +42,7 @@ class SetBowlerPosition extends StatelessWidget {
                     Padding(padding: EdgeInsets.only(right: 2.w,),
                         child:  Text('RW',
                           style: fontRegular.copyWith(
-                              fontSize: 10.sp,
+                              fontSize: 9.sp,
                               color: position.rw == 1 ? AppColor.pri : AppColor.textMildColor),)),
                     StumpImage(position.rw),
                   ]),

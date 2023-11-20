@@ -13,14 +13,14 @@ class ScorerGridOut extends StatelessWidget {
     return Container(
       height: 12.h,
       width: 19.w,
-      decoration: const BoxDecoration(shape: BoxShape.rectangle,color: Colors.black,),
+      decoration: const BoxDecoration(shape: BoxShape.rectangle,color: AppColor.scoreUpdateBg,),
       child: Center(
         child: CircleAvatar(
-          radius: 5.w, // Adjust the radius as needed for the circle size
+          radius: 6.w, // Adjust the radius as needed for the circle size
           backgroundColor: Colors.red,
           child: Text(
             index,
-            style:  fontMedium.copyWith(color: AppColor.lightColor, fontSize: 10.sp),
+            style:  fontSemiBold.copyWith(color: AppColor.lightColor, fontSize: 12.sp),
           ),
         ),
       ),

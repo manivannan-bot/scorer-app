@@ -6,18 +6,20 @@ import 'package:sizer/sizer.dart';
 import '../utils/colours.dart';
 
 class CustomVerticalDottedLine extends StatelessWidget {
-  const CustomVerticalDottedLine({super.key});
+  final bool top;
+  const CustomVerticalDottedLine(this.top, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return  DottedLine(
-      dashGapColor: AppColor.lightColor,
+      dashGapColor: Colors.transparent,
       direction: Axis.vertical,
-      lineLength: 10.h,
+      lineLength: top ? 9.h : 12.h,
       lineThickness: 0.5,
-      dashColor: const Color(0xffA8A5A5),
+      dashColor:
+      AppColor.verticalDividerColor,
       dashLength: 5,
-      dashGapLength: 2,
+      dashGapLength: 3,
     );
   }
 }

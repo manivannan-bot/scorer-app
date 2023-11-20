@@ -36,75 +36,80 @@ class CurrentOverData extends StatelessWidget {
           alignment: Alignment.center,
           children: [
             SvgPicture.asset(Images.overCardBg, fit: BoxFit.cover, width: 90.w,),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: 3.w, vertical: 1.h),
+            Positioned(
+              top: 1.h,
+              left: 3.w,
+              right: 3.w,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    'Over $currentOverData',
+                    '$currentOverData OVERS',
                     style: fontMedium.copyWith(
                       color: Colors.black,
-                      fontSize: 12.sp,
+                      fontSize: 10.sp,
                     ),
                   ),
-                  (scoringData!.data!.over!.isNotEmpty)
-                      ? SizedBox(
-                    height: 10.h,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 2.h),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              physics: const BouncingScrollPhysics(),
-                              children: <Widget>[
-                                for (int index = 0; index < scoringData!.data!.over!.length; index++)
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      (scoringData!.data!.over![index].extras.toString() == "0" && scoringData!.data!.over![index].runsScored==4
-                                          || scoringData!.data!.over![index].extras.toString() == "0" && scoringData!.data!.over![index].runsScored==6)?
-                                      (scoringData!.data!.over![index].runsScored==4)
-                                          ? const Boundary()
-                                          :const Sixer()
-                                          : Wicket(
-                                          scoringData!.data!.over![index].slug.toString() == "OUT",
-                                          scoringData!.data!.over![index].slug.toString(),
-                                          scoringData!.data!.over![index].dismissalType.toString()
-                                      )
-                                    ],
-                                  ),
+
+                ],
+              ),
+            ),
+            Positioned(
+              bottom: 1.h,
+              left: 3.w,
+              right: 3.w,
+              child: (scoringData!.data!.over!.isNotEmpty)
+                  ? Row(
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      height: 5.h,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        physics: const BouncingScrollPhysics(),
+                        children: <Widget>[
+                          for (int index = 0; index < scoringData!.data!.over!.length; index++)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                (scoringData!.data!.over![index].extras.toString() == "0" && scoringData!.data!.over![index].runsScored==4
+                                    || scoringData!.data!.over![index].extras.toString() == "0" && scoringData!.data!.over![index].runsScored==6)?
+                                (scoringData!.data!.over![index].runsScored==4)
+                                    ? const Boundary()
+                                    :const Sixer()
+                                    : Wicket(
+                                    scoringData!.data!.over![index].slug.toString() == "OUT",
+                                    scoringData!.data!.over![index].slug.toString(),
+                                    scoringData!.data!.over![index].dismissalType.toString(),
+                                    scoringData!.data!.over![index].runsScored.toString()
+                                )
                               ],
                             ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(' = ',
-                                style: fontMedium.copyWith(
-                                  color: AppColor.textColor,
-                                  fontSize: 16.sp,
-                                ),
-                              ),
-                              Text(currentOverTotal,
-                                style: fontMedium.copyWith(
-                                  color: AppColor.textColor,
-                                  fontSize: 18.sp,
-                                ),
-                              ),
-                            ],
-                          ),
                         ],
                       ),
                     ),
-                  )
-                      : SizedBox(
-                    height: 10.h,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(' = ',
+                        style: fontMedium.copyWith(
+                          color: AppColor.textColor,
+                          fontSize: 16.sp,
+                        ),
+                      ),
+                      Text(currentOverTotal,
+                        style: fontMedium.copyWith(
+                          color: AppColor.textColor,
+                          fontSize: 18.sp,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
+              )
+                  : SizedBox(
+                height: 10.h,
               ),
             ),
           ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../utils/colours.dart';
 import '../../utils/sizes.dart';
 
 class ScorerGridFour extends StatelessWidget {
@@ -12,12 +13,12 @@ class ScorerGridFour extends StatelessWidget {
     return Container(
       height: 12.h,
       width: 19.w,
-      decoration: const BoxDecoration(shape: BoxShape.rectangle,color: Colors.black,),
+      decoration: const BoxDecoration(shape: BoxShape.rectangle,color: AppColor.scoreUpdateBg,),
       child: Column(
         children: [
           SizedBox(height: 2.h,),
           CircleAvatar(
-              radius: 5.w, // Adjust the radius as needed for the circle size
+              radius: 6.w, // Adjust the radius as needed for the circle size
               backgroundColor: Colors.white,
               child: Image.asset(index)
           ),

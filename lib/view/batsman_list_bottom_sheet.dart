@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-import 'package:scorer/view/widgets/batsman_list_item.dart';
+import 'package:scorer/view/widgets/player_list_item.dart';
 import 'package:scorer/widgets/snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
@@ -97,7 +97,7 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
                     },
                     child: Icon(Icons.arrow_back,size: 7.w,)),
                 Text("Select Batsman",style: fontMedium.copyWith(
-                  fontSize: 18.sp,
+                  fontSize: 16.sp,
                   color: AppColor.blackColour,
                 ),),
                 SizedBox(width: 7.w,),
@@ -271,7 +271,7 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
                 SizedBox(width: 2.w,),
                 GestureDetector(
                     onTap:()async {
-                  if(localBatsmanIndex!=null){
+                  if(localBatsmanIndex!=-1){
                     final player = Provider.of<PlayerSelectionProvider>(context, listen: false);
                     bool striker=(widget.player=='striker_id')?true:false;
                     SaveBatsmanDetailRequestModel requestModel = SaveBatsmanDetailRequestModel(

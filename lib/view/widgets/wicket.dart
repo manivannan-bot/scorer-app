@@ -7,8 +7,8 @@ import '../../utils/sizes.dart';
 
 class Wicket extends StatefulWidget {
   final bool isOut;
-  final String slug, dismissalType;
-  const Wicket(this.isOut, this.slug, this.dismissalType, {super.key});
+  final String slug, dismissalType, runsScored;
+  const Wicket(this.isOut, this.slug, this.dismissalType, this.runsScored, {super.key});
 
   @override
   State<Wicket> createState() => _WicketState();
@@ -50,11 +50,16 @@ class _WicketState extends State<Wicket> {
 
         } else {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            width: 50.w,
+            width: 80.w,
             backgroundColor: AppColor.primaryColor,
             elevation: 5,
             content: Center(
-              child: Text(
+              child: widget.dismissalType == "20"
+                ? Text(
+                "Dismissal Type - ${getDismissalType()} - Runs scored - ${widget.runsScored}",
+                style: fontMedium.copyWith(color: AppColor.textColor),
+              )
+              : Text(
                 "Dismissal Type - ${getDismissalType()}",
                 style: fontMedium.copyWith(color: AppColor.textColor),
               ),
@@ -66,8 +71,8 @@ class _WicketState extends State<Wicket> {
 
       },
       child: Container(
-        width: 9.w,
-        height: 4.5.h,
+        width: 8.w,
+        height: 4.h,
         padding: EdgeInsets.symmetric(
           horizontal: 1.w
         ),

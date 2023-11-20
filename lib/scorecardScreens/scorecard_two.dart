@@ -8,6 +8,7 @@ import 'package:sizer/sizer.dart';
 import '../models/score_card_yet_to_bat.dart';
 import '../provider/scoring_provider.dart';
 import '../utils/images.dart';
+import '../view/widgets/player_list_item.dart';
 
 
 class ScoreCardTwo extends StatefulWidget {
@@ -54,68 +55,25 @@ class _ScoreCardTwoState extends State<ScoreCardTwo> {
                   Center(child: Image.asset(Images.logoAll,width: 50.w,)),
                   SizedBox(height: 0.5.h,),
                   Text('Innings has not started yet.',style: fontMedium.copyWith(
-                    fontSize: 12.sp,
+                    fontSize: 11.sp,
                     color: AppColor.pri,
                   ),),
                 ],
               ),
               SizedBox(height: 1.h,),
               Text('Playing XI',style: fontMedium.copyWith(
-                fontSize: 14.sp,
+                fontSize: 12.sp,
                 color: AppColor.blackColour,
               ),),
-              SizedBox(height: 1.h,),
+              SizedBox(height: 2.h,),
               (playersList!.data!.isNotEmpty)?
-              ListView.separated(
+              ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  separatorBuilder: (context, _) {
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: 1.h),
-                      child: const DottedLine(
-                        dashColor: Color(0xffD2D2D2),
-                      ),
-                    );
-                  },
                   itemCount: playersList!.data!.length,
                   itemBuilder: (context, int index) {
                     final item = playersList!.data![index];
-                    return Padding(
-                      padding:  EdgeInsets.symmetric(vertical: 1.h),
-                      child: Row(
-                        children: [
-                          ClipOval(child: Image.asset(Images.profileImage,width: 14.w,)),
-                          SizedBox(width: 4.w,),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                width: 70.w,
-                                child: Text("${item.playerName}",style: fontMedium.copyWith(
-                                  fontSize: 12.sp,
-                                  color: AppColor.blackColour,
-                                ),),
-                              ),
-                              SizedBox(height: 0.5.h,),
-                              (item.battingStyle!=null)?Row(
-                                children: [
-                                  const CircleAvatar(
-                                    backgroundColor: AppColor.pri,
-                                    radius: 4,
-                                  ),
-                                  SizedBox(width: 1.w,),
-                                  Text("${item.battingStyle}",style: fontRegular.copyWith(
-                                      fontSize: 11.sp,
-                                      color: const Color(0xff555555),
-                                  ),),
-                                ],
-                              ):const Text(''),
-                            ],
-                          ),
-
-                        ],
-                      ),
-                    );
+                    return Playing11List(item.playerName, item.battingStyle);
                   }):const Text('No players found'),
               const Divider(
                 color: Color(0xffD3D3D3),
@@ -127,3 +85,58 @@ class _ScoreCardTwoState extends State<ScoreCardTwo> {
     );
   }
 }
+
+class Playing11List extends StatelessWidget {
+  final String? name, style;
+  const Playing11List(this.name, this.style, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(
+              vertical: 1.h),
+          child: Row(
+            children: [
+              Image.network(
+                Images.playersImage, width: 10.w,),
+              SizedBox(width: 2.w,),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment
+                    .start,
+                children: [
+                  Text(
+                    name?.toUpperCase() ?? '-',
+                    style: fontMedium.copyWith(
+                        fontSize: 10.sp,
+                        color: AppColor.textColor
+                    ),),
+                  style.toString() == "" ? const SizedBox() : Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const CircleAvatar(
+                        radius: 3.5,
+                        backgroundColor: AppColor.pri,
+                      ),
+                      SizedBox(width: 2.w,),
+                      Text(
+                        style?.toUpperCase() ?? '-',
+                        style: fontMedium.copyWith(
+                            fontSize: 8.sp,
+                            color: AppColor.textMildColor
+                        ),),
+                    ],
+                  ),
+
+                ],
+              ),
+            ],
+          ),
+        ),
+        const Divider(),
+      ],
+    );
+  }
+}
+

@@ -9,16 +9,16 @@ import 'package:sizer/sizer.dart';
 import '../utils/images.dart';
 import '../utils/sizes.dart';
 
-class CommentryOvers extends StatefulWidget {
+class CommentaryOvers extends StatefulWidget {
   final String matchId;
   final String teamId;
-  const CommentryOvers(this.matchId,this.teamId, {super.key});
+  const CommentaryOvers(this.matchId,this.teamId, {super.key});
 
   @override
-  State<CommentryOvers> createState() => _CommentryOversState();
+  State<CommentaryOvers> createState() => _CommentaryOversState();
 }
 
-class _CommentryOversState extends State<CommentryOvers> {
+class _CommentaryOversState extends State<CommentaryOvers> {
      CommentaryOversModel? commentaryOversModel;
 
 
