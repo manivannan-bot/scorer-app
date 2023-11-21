@@ -74,10 +74,14 @@ class Images{
   //
   // static const String currentLocationImage = 'assets/images/current_location_img.svg';
   //
-  // static const String forgotPasswordImage = 'assets/images/forgot_password_img.svg';
-  // static const String verifyMobileImage = 'assets/images/phone_verification_img.svg';
-  // static const String otpImage = 'assets/images/otp_image.svg';
-  //
+  static const String forgotPasswordImage = 'assets/images/forgot_password_img.svg';
+  static const String verifyMobileImage = 'assets/images/phone_verification_img.svg';
+  static const String otpImage = 'assets/images/otp_image.svg';
+  static const String logo = 'assets/images/elevens_logo.png';
+  static const String authCurveImg = 'assets/images/auth_curve_img.svg';
+  static const String loginTopImg = 'assets/images/login_top_img.svg';
+  static const String splashTop = 'assets/images/splash_top_art.svg';
+//
   // //playerscorner
   //
   // static const String batting = 'assets/images/batting_logo.svg';
