@@ -14,6 +14,8 @@ import 'package:sizer/sizer.dart';
 
 import '../../utils/colours.dart';
 
+import '../Scoring screens/home_screen.dart';
+import '../provider/auth_provider.dart';
 import '../utils/images.dart';
 import '../utils/sizes.dart';
 import '../widgets/flutter_otp_field.dart';
@@ -173,10 +175,10 @@ class _EnterOtpScreenState extends State<EnterOtpScreen> {
                     incomplete = false;
                   });
                   SharedPreferences preferences = await SharedPreferences.getInstance();
-                  String? userId = preferences.getString("user_temp_id");
+                  String? userId = preferences.getString("user_id");
                   print(widget.login);
                   if(widget.login){
-                    //verifyLogin(userId);
+                    verifyLogin(userId);
                   } else if(widget.register){
                    // verifyRegister(userId, otp);
                   }
@@ -315,39 +317,40 @@ class _EnterOtpScreenState extends State<EnterOtpScreen> {
   // }
 
 
-  // verifyLogin(String? userId) async {
-  //   print(otp);
-  //   if(otp == ""){
-  //     Dialogs.snackbar("Enter the OTP", context, isError: true);
-  //   } else{
-  //     setState(() {
-  //       loading = true;
-  //     });
-  //     AuthProvider().loginOtpCheck(otp, userId.toString())
-  //         .then((value) async {
-  //       if(value.status == true){
-  //         Dialogs.snackbar(value.message.toString(), context, isError: false);
-  //         Navigator.pushNamed(context, 'menu_screen');
-  //         SharedPreferences preferences = await SharedPreferences.getInstance();
-  //         preferences.setBool("in_address" , false);
-  //         setState(() {
-  //           loading = false;
-  //         });
-  //       } else if(value.status == false){
-  //         print("login false");
-  //         Dialogs.snackbar(value.message.toString(), context, isError: true);
-  //         setState(() {
-  //           loading = false;
-  //         });
-  //       } else{
-  //         Dialogs.snackbar("Something went wrong. Please try again.", context, isError: true);
-  //         setState(() {
-  //           loading = false;
-  //         });
-  //       }
-  //     });
-  //   }
-  // }
+  verifyLogin(String? userId) async {
+    print(otp);
+    if(otp == ""){
+      Dialogs.snackBar("Enter the OTP", context, isError: true);
+    } else{
+      setState(() {
+        loading = true;
+      });
+      AuthProvider().loginOtpCheck(otp, userId.toString())
+          .then((value) async {
+        if(value.status == true){
+          Dialogs.snackBar(value.message.toString(), context, isError: false);
+          //Navigator.pushNamed(context, 'menu_screen');
+          Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+          SharedPreferences preferences = await SharedPreferences.getInstance();
+          preferences.setBool("in_address" , false);
+          setState(() {
+            loading = false;
+          });
+        } else if(value.status == false){
+          print("login false");
+          Dialogs.snackBar(value.message.toString(), context, isError: true);
+          setState(() {
+            loading = false;
+          });
+        } else{
+          Dialogs.snackBar("Something went wrong. Please try again.", context, isError: true);
+          setState(() {
+            loading = false;
+          });
+        }
+      });
+    }
+  }
 
   // verifyRegister(String? userId, String otp) async {
   //   if(otp == ""){

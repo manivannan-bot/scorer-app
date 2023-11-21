@@ -44,81 +44,162 @@ class _CommentaryOversState extends State<CommentaryOvers> {
             backgroundColor: Colors.white,
           )));
     }
-    if(commentaryOversModel!.data!.isEmpty){
+    if(commentaryOversModel!.data!.innings1!.isEmpty){
       return const Center(child: Text('No data found'));
     }
     return Padding(
       padding:  EdgeInsets.symmetric(horizontal: 2.w,vertical: 1.h),
-      child: ListView.separated(
-        physics: const BouncingScrollPhysics(),
-        separatorBuilder: (context, _) {
-          return Padding(
-            padding: EdgeInsets.only(right: 2.w,bottom: 1.h),
-          );
-        },
-        itemCount: commentaryOversModel!.data!.length,
-        itemBuilder: (BuildContext context, int index) {
-          final option=commentaryOversModel!.data![index];
-          var overNo=(option.overNumber??0)+1;
-          return  Column(
-            children: [
-              Row(
+      child: Column(
+        children:[
+          Expanded(
+          child: ListView.separated(
+            physics: const BouncingScrollPhysics(),
+            separatorBuilder: (context, _) {
+              return Padding(
+                padding: EdgeInsets.only(right: 2.w,bottom: 1.h),
+              );
+            },
+            itemCount: commentaryOversModel!.data!.innings2!.length,
+            itemBuilder: (BuildContext context, int index) {
+              final option=commentaryOversModel!.data!.innings2![index];
+              var overNo=(option.overNumber??0)+1;
+              return  Column(
                 children: [
-                  Text('Over ${overNo}',style: fontMedium.copyWith(
-                    fontSize: 13.sp,
-                    color: Color(0xff666666),
-                  ),),
-                  SizedBox(width: 3.w,),
-                  Expanded(
-                    child: SizedBox(
-                      height: 4.h,
-                      child: ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          physics: const BouncingScrollPhysics(),
-                          separatorBuilder: (context, _) {
-                            return Padding(
-                              padding: EdgeInsets.only(right: 2.w,bottom: 0.h),
-                            );
-                          },
-                          itemCount:option.noOfBalls!.length ,
-                          itemBuilder: (context, int index) {
-                            final item = option.noOfBalls![index];
-                            if(item.wicket==1){
-                              return ScoreContainer( runsScored: 'w');
-                            }
-                            return ScoreContainer( runsScored: item.slugData??'0');
-                          }),
-                    ),
-                  ),
-                  SizedBox(width: 3.w,),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text('=',
-                        style: fontRegular.copyWith(
-                          color: Colors.black,
-                          fontSize: 24,
+                      Text('Over ${overNo}',style: fontMedium.copyWith(
+                        fontSize: 13.sp,
+                        color: Color(0xff666666),
+                      ),),
+                      SizedBox(width: 3.w,),
+                      Expanded(
+                        child: SizedBox(
+                          height: 4.h,
+                          child: ListView.separated(
+                              scrollDirection: Axis.horizontal,
+                              physics: const BouncingScrollPhysics(),
+                              separatorBuilder: (context, _) {
+                                return Padding(
+                                  padding: EdgeInsets.only(right: 2.w,bottom: 0.h),
+                                );
+                              },
+                              itemCount:option.noOfBalls!.length ,
+                              itemBuilder: (context, int index) {
+                                final item = option.noOfBalls![index];
+                                if(item.wicket==1){
+                                  return ScoreContainer( runsScored: 'w');
+                                }
+                                return ScoreContainer( runsScored: item.slugData??'0');
+                              }),
                         ),
                       ),
-                      Text('${option.overRun}' ?? 'N/A',
-                        style: fontRegular.copyWith(
-                          color: Colors.black,
-                          fontSize: 24,
-                        ),
+                      SizedBox(width: 3.w,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text('=',
+                            style: fontRegular.copyWith(
+                              color: Colors.black,
+                              fontSize: 24,
+                            ),
+                          ),
+                          Text('${option.overRun}' ?? 'N/A',
+                            style: fontRegular.copyWith(
+                              color: Colors.black,
+                              fontSize: 24,
+                            ),
+                          ),
+                        ],
                       ),
+
                     ],
                   ),
-
+                  SizedBox(height: 1.h,),
+                  const DottedLine(
+                    dashColor: Color(0xffD2D2D2),
+                  ),
                 ],
-              ),
-              SizedBox(height: 1.h,),
-              const DottedLine(
-                dashColor: Color(0xffD2D2D2),
-              ),
-            ],
-          );
-        },
+              );
+            },
 
+          ),
+        ),
+          const Divider(
+            color: Color(0xffD3D3D3),
+          ),
+          Expanded(
+            child: ListView.separated(
+              physics: const BouncingScrollPhysics(),
+              separatorBuilder: (context, _) {
+                return Padding(
+                  padding: EdgeInsets.only(right: 2.w,bottom: 1.h),
+                );
+              },
+              itemCount: commentaryOversModel!.data!.innings1!.length,
+              itemBuilder: (BuildContext context, int index) {
+                final option=commentaryOversModel!.data!.innings1![index];
+                var overNo=(option.overNumber??0)+1;
+                return  Column(
+                  children: [
+                    Row(
+                      children: [
+                        Text('Over ${overNo}',style: fontMedium.copyWith(
+                          fontSize: 13.sp,
+                          color: Color(0xff666666),
+                        ),),
+                        SizedBox(width: 3.w,),
+                        Expanded(
+                          child: SizedBox(
+                            height: 4.h,
+                            child: ListView.separated(
+                                scrollDirection: Axis.horizontal,
+                                physics: const BouncingScrollPhysics(),
+                                separatorBuilder: (context, _) {
+                                  return Padding(
+                                    padding: EdgeInsets.only(right: 2.w,bottom: 0.h),
+                                  );
+                                },
+                                itemCount:option.noOfBalls!.length ,
+                                itemBuilder: (context, int index) {
+                                  final item = option.noOfBalls![index];
+                                  if(item.wicket==1){
+                                    return ScoreContainer( runsScored: 'w');
+                                  }
+                                  return ScoreContainer( runsScored: item.slugData??'0');
+                                }),
+                          ),
+                        ),
+                        SizedBox(width: 3.w,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text('=',
+                              style: fontRegular.copyWith(
+                                color: Colors.black,
+                                fontSize: 24,
+                              ),
+                            ),
+                            Text('${option.overRun}' ?? 'N/A',
+                              style: fontRegular.copyWith(
+                                color: Colors.black,
+                                fontSize: 24,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                      ],
+                    ),
+                    SizedBox(height: 1.h,),
+                    const DottedLine(
+                      dashColor: Color(0xffD2D2D2),
+                    ),
+                  ],
+                );
+              },
+
+            ),
+          )],
       ),
     );
   }

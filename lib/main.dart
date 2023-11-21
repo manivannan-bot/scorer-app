@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:scorer/auth/splash_screen.dart';
 import 'package:scorer/provider/player_selection_provider.dart';
 import 'package:scorer/provider/score_update_provider.dart';
 import 'package:scorer/provider/scoring_provider.dart';
@@ -79,7 +80,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         builder: (context, orientation, deviceType)  {
           return const MaterialApp(
             debugShowCheckedModeBanner: false,
-            home: HomeScreen(),
+            home: SplashScreen(),
           );
         }
     );

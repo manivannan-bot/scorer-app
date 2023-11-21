@@ -14,6 +14,7 @@ import '../utils/colours.dart';
 import '../utils/images.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/snackbar.dart';
+import 'enter_otp.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -182,7 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ...[
                         Bounceable(
                             onTap: () {
-                              // validate();
+                               validate();
                             },
                             child: Padding(
                               padding: EdgeInsets.symmetric(horizontal: 5.w),
@@ -224,44 +225,46 @@ class _LoginScreenState extends State<LoginScreen> {
 
   }
 
-  // void validate() {
-  //   if (_formKey.currentState!.validate()) {
-  //
-  //     setState(() {
-  //       loading = true;
-  //     });
-  //     AuthProvider().loginSubmit(mobileController.text, context)
-  //         .then((value) async {
-  //       if (value.status == true) {
-  //         print(value.message.toString());
-  //         SharedPreferences preferences = await SharedPreferences.getInstance();
-  //         preferences.setString("user_temp_id", value.loginData!.userId.toString());
-  //         preferences.setString("mobile", mobileController.text);
-  //         preferences.setString("otp", value.loginData!.otp.toString());
-  //         preferences.setBool("isLoginScreen", true);
-  //         if (mounted) {
-  //           Navigator.push(context, ScaleRoute(page: EnterOtpScreen(
-  //               true, false, value.loginData!.otp.toString(),
-  //               value.loginData!.userId.toString(), mobileController.text, false)));
-  //         }
-  //         setState(() {
-  //           loading = false;
-  //         });
-  //       } else if (value.status == false) {
-  //         print(value.message.toString());
-  //         Dialogs.snackbar(value.message.toString(), context, isError: true);
-  //         setState(() {
-  //           loading = false;
-  //         });
-  //       } else {
-  //         setState(() {
-  //           loading = false;
-  //         });
-  //       }
-  //     });
-  //   }
-  // }
-  //
+  void validate() {
+    if (_formKey.currentState!.validate()) {
+
+      setState(() {
+        loading = true;
+      });
+      AuthProvider().loginSubmit(mobileController.text, context)
+          .then((value) async {
+        if (value.status == true) {
+          print(value.message.toString());
+          SharedPreferences preferences = await SharedPreferences.getInstance();
+          preferences.setString("user_id", value.data!.userId.toString());
+          preferences.setString("mobile", mobileController.text);
+          preferences.setString("otp", value.data!.otp.toString());
+          preferences.setBool("isLoginScreen", true);
+          if (mounted) {
+            // Navigator.push(context, ScaleRoute(page: EnterOtpScreen(
+            //     true, false, value.loginData!.otp.toString(),
+            //     value.loginData!.userId.toString(), mobileController.text, false)));
+            Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                EnterOtpScreen(true,false , value.data!.otp.toString(), value.data!.userId.toString(), mobileController.text, false)));
+          }
+          setState(() {
+            loading = false;
+          });
+        } else if (value.status == false) {
+          print(value.message.toString());
+          Dialogs.snackBar(value.message.toString(), context, isError: true);
+          setState(() {
+            loading = false;
+          });
+        } else {
+          setState(() {
+            loading = false;
+          });
+        }
+      });
+    }
+  }
+
   openExitSheet() {
     return showModalBottomSheet<void>(
         context: context,

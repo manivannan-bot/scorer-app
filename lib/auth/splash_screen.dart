@@ -4,9 +4,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:scorer/auth/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
+import '../Scoring screens/home_screen.dart';
 import '../utils/colours.dart';
 import '../utils/images.dart';
 
@@ -21,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   getPrefs() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    bool? login = preferences.getBool("isLoggedIn");
+    bool? login = preferences.getBool("isLoginScreen");
 
     if(login == true){
       //String? token = await FirebaseMessaging.instance.getToken();
@@ -31,13 +33,14 @@ class _SplashScreenState extends State<SplashScreen> {
       preferences.setString("device_token" , token.toString());
       Timer(
           const Duration(seconds: 2), () async {
-        Navigator.pushNamed(context, 'menu_screen');
+        //Navigator.pushNamed(context, 'menu_screen');
+        Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
       }
       );
     } else{
       Timer(
           const Duration(seconds: 2), () async {
-        Navigator.pushNamed(context, 'login_screen');
+        Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
       }
       );
     }
