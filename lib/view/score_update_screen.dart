@@ -63,7 +63,7 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
     super.initState();
     tabController = TabController(length: 4, vsync: this);
     fetchData();
-    checkForUpdate();
+    // checkForUpdate();
   }
 
   checkForUpdate() async {

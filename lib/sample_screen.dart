@@ -33,7 +33,7 @@ class _SampleScreenState extends State<SampleScreen> {
                 // 'https://dsqqu7oxq6o1v.cloudfront.net/preview-9650dW8x3YLoZ8.webm',
                 // "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4",
                 // "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
-                url:  "https://dsqqu7oxq6o1v.cloudfront.net/preview-9650dW8x3YLoZ8.webm",
+                url:  "https://player.mslivestream.net/mslive/5de51b96f0ce068d74abece2cd57527b.sdp/playlist.m3u8",
                 videoStyle: const VideoStyle(
                   qualityStyle: TextStyle(
                     fontSize: 16.0,

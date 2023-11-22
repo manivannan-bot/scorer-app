@@ -41,6 +41,8 @@ import '../utils/images.dart';
 import '../utils/sizes.dart';
 import '../widgets/custom_horizondal_dottedLine.dart';
 import 'deliveries/leg_bye_bottom_sheet.dart';
+import 'end_innings_confirmation_bottom_sheet.dart';
+import 'end_match_confirmation_bottom_sheet.dart';
 import 'other_bottom_sheet.dart';
 
 class ScoringTab extends StatefulWidget {
@@ -480,17 +482,19 @@ class _ScoringTabState extends State<ScoringTab> {
                                                     ScoringProvider().scoreUpdate(scoreUpdateRequestModel)
                                                         .then((value)async {
                                                       if(value.data?.innings == 3){
-                                                        Dialogs.snackBar("Match Ended", context);
-                                                        Navigator.pushReplacement(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder: (context) => const HomeScreen()));
+                                                        // Dialogs.snackBar("Match Ended", context);
+                                                        showEndMatchConfirmationBottomSheet();
+                                                        // Navigator.pushReplacement(
+                                                        //     context,
+                                                        //     MaterialPageRoute(
+                                                        //         builder: (context) => const HomeScreen()));
                                                       } else if(value.data?.inningCompleted == true){
-                                                        Dialogs.snackBar(value.data!.inningsMessage.toString(), context);
-                                                        Navigator.pushReplacement(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder: (context) => const HomeScreen()));
+                                                        showEndInningsConfirmationBottomSheet();
+                                                        // Dialogs.snackBar(value.data!.inningsMessage.toString(), context);
+                                                        // Navigator.pushReplacement(
+                                                        //     context,
+                                                        //     MaterialPageRoute(
+                                                        //         builder: (context) => const HomeScreen()));
                                                       } else {
                                                         setState(() {
                                                           scoreUpdateResponseModel=value;
@@ -854,6 +858,26 @@ class _ScoringTabState extends State<ScoringTab> {
     ).then((value) {
       _refreshData();
     });
+  }
+
+  showEndMatchConfirmationBottomSheet(){
+    showModalBottomSheet(context: context,
+        isScrollControlled: true,
+        isDismissible: false,
+        enableDrag: false,
+        backgroundColor: Colors.transparent,
+        builder: (context)=> const EndMatchConfirmationBottomSheet()
+    );
+  }
+
+  showEndInningsConfirmationBottomSheet(){
+    showModalBottomSheet(context: context,
+        isScrollControlled: true,
+        isDismissible: false,
+        enableDrag: false,
+        backgroundColor: Colors.transparent,
+        builder: (context)=> const EndInningsConfirmationBottomSheet()
+    );
   }
 
 }

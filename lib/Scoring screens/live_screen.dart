@@ -114,8 +114,9 @@ class _LiveScreenState extends State<LiveScreen> {
                 itemCount:matchList!.length ,
                 itemBuilder: (context, int index) {
                   return InkWell(
+
                     onTap: (){
-                      _displayMatchPreviewBottomSheet(context);
+                      // _displayMatchPreviewBottomSheet(context);
                     },
                     child: Padding(
                       padding:  EdgeInsets.symmetric(horizontal: 3.w),

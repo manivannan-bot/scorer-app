@@ -74,7 +74,7 @@ class _ScoreCardTwoState extends State<ScoreCardTwo> {
                   itemBuilder: (context, int index) {
                     final item = playersList!.data![index];
                     return Playing11List(item.playerName, item.battingStyle);
-                  }):const Text('No players found'),
+                  }) : const Text('No players found'),
               const Divider(
                 color: Color(0xffD3D3D3),
               ),

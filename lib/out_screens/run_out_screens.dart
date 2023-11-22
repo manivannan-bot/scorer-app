@@ -17,6 +17,8 @@ import '../provider/scoring_provider.dart';
 import '../utils/colours.dart';
 import '../utils/images.dart';
 import '../utils/sizes.dart';
+import '../view/end_innings_confirmation_bottom_sheet.dart';
+import '../view/end_match_confirmation_bottom_sheet.dart';
 import '../view/widgets/player_list_item.dart';
 import '../widgets/snackbar.dart';
 
@@ -525,19 +527,11 @@ class _RunOutScreenState extends State<RunOutScreen> {
                     scoreUpdateRequestModel.bowlerPosition=score.bowlerPosition;
                     ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
                       if(value.data?.innings == 3){
-                        Dialogs.snackBar("Match Ended", context);
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const HomeScreen()));
+                        showEndMatchConfirmationBottomSheet();
                       } else if(value.data?.inningCompleted == true){
                         print("end of innings");
                         print("navigating to home screen");
-                        Dialogs.snackBar(value.data!.inningsMessage.toString(), context);
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const HomeScreen()));
+                        showEndInningsConfirmationBottomSheet();
                       } else {
                         print("striker and non striker id - ${value.data?.strikerId.toString()} ${value.data?.nonStrikerId.toString()}");
 
@@ -569,6 +563,26 @@ class _RunOutScreenState extends State<RunOutScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  showEndMatchConfirmationBottomSheet(){
+    showModalBottomSheet(context: context,
+        isScrollControlled: true,
+        isDismissible: false,
+        enableDrag: false,
+        backgroundColor: Colors.transparent,
+        builder: (context)=> const EndMatchConfirmationBottomSheet()
+    );
+  }
+
+  showEndInningsConfirmationBottomSheet(){
+    showModalBottomSheet(context: context,
+        isScrollControlled: true,
+        isDismissible: false,
+        enableDrag: false,
+        backgroundColor: Colors.transparent,
+        builder: (context)=> const EndInningsConfirmationBottomSheet()
     );
   }
 

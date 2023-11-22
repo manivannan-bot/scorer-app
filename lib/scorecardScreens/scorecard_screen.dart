@@ -117,17 +117,9 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
 
   @override
   Widget build(BuildContext context) {
-    if(scoreCardResponseModel==null){
-      return const SizedBox(
-          height: 100,
-          width: 100,
-          child: Center(child: CircularProgressIndicator(
-            backgroundColor: Colors.white,
-          )));
-    }
-    if(scoreCardResponseModel!.data==null){
-      return const Center(child: Text('No data found'),);
-    }
+    // if(scoreCardResponseModel!.data==null){
+    //   return const Center(child: Text('No data found'),);
+    // }
     if(scoreCardResponseModel!=null){
        teams= scoreCardResponseModel!.data!.teamsName;
        if(scoreCardResponseModel!.data!.currRunRate!=null){
@@ -144,7 +136,11 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
          }
        }
     }
-    return Container(
+    return scoreCardResponseModel==null
+    ? const Center(child: CircularProgressIndicator(
+      backgroundColor: Colors.white,
+    ))
+    : Container(
       margin: EdgeInsets.only(
         top: 1.5.h
       ),
