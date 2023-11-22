@@ -176,6 +176,7 @@ class _BonusBottomSheetState extends State<BonusBottomSheet> {
                     setState(() {
                       isOptionSelected=index;
                     });
+                    print(isOptionSelected);
                   },
                   child: Chip(
                     padding: EdgeInsets.symmetric(horizontal: 2.w,vertical: 0.8.h),

@@ -31,17 +31,18 @@ class _MoreRunsBottomSheetState extends State<MoreRunsBottomSheet> {
   int? isOffSideSelected ;
   int? isRunsSelected ;
   bool showError =false;
+  String run = "";
 
   List<Map<String, dynamic>> chipData =[
-    {
-      'label': "1",
-    },
-    {
-      'label': '2',
-    },
-    {
-      'label': '3',
-    },
+    // {
+    //   'label': "1",
+    // },
+    // {
+    //   'label': '2',
+    // },
+    // {
+    //   'label': '3',
+    // },
     {
       'label': '4',
     },
@@ -60,7 +61,7 @@ class _MoreRunsBottomSheetState extends State<MoreRunsBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 35.h,
+      height: 30.h,
       decoration: const BoxDecoration(
           color: AppColor.lightColor,
           borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
@@ -104,13 +105,16 @@ class _MoreRunsBottomSheetState extends State<MoreRunsBottomSheet> {
                     onTap: (){
                       setState(() {
                         isRunsSelected=index;
+                        run = chipData[index]['label'];
                       });
+                      print(run);
                     },
                     child: Chip(
                       padding: EdgeInsets.symmetric(horizontal: 1.6.w,vertical: 0.8.h),
-                      label: Text(data['label'],style: fontSemiBold.copyWith(
+                      label: Text(data['label'],
+                        style: fontMedium.copyWith(
                           fontSize: 12.sp,
-                          color: AppColor.blackColour
+                          color: AppColor.textColor
                       ),),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0),
@@ -134,14 +138,8 @@ class _MoreRunsBottomSheetState extends State<MoreRunsBottomSheet> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Visibility(
-                    visible: showError,
-                    child: Text(
-                      'Please Select One Option',
-                      style: fontMedium.copyWith(color: AppColor.redColor),
-                    ),
-                  ),
-                  GestureDetector(onTap:()async{
+                  GestureDetector(
+                      onTap:() async{
                     final player = Provider.of<PlayerSelectionProvider>(context, listen: false);
                     final score = Provider.of<ScoreUpdateProvider>(context, listen: false);
                     print("striker id ${player.selectedStrikerId}");
@@ -164,9 +162,7 @@ class _MoreRunsBottomSheetState extends State<MoreRunsBottomSheet> {
                       scoreUpdateRequestModel.overNumber = score.overNumberInnings;
                       scoreUpdateRequestModel.ballNumber = score.ballNumberInnings;
 
-                      scoreUpdateRequestModel.runsScored =
-                      (isRunsSelected == null) ? 0 : isRunsSelected ??
-                          0 + 1;
+                      scoreUpdateRequestModel.runsScored = int.parse(run);
                       scoreUpdateRequestModel.extras =
                       (isRunsSelected == null) ? 0 : isRunsSelected ??
                           0 + 1;
@@ -219,20 +215,17 @@ class _MoreRunsBottomSheetState extends State<MoreRunsBottomSheet> {
                           score.setBowlerChangeValue(value.data?.bowlerChange??0);
                           player.setStrikerId(value.data!.strikerId.toString(), "");
                           player.setNonStrikerId(value.data!.nonStrikerId.toString(), "");
-                          SharedPreferences prefs = await SharedPreferences.getInstance();
-                          await prefs.setInt('bowlerPosition', 0);
                           widget.refresh();
                           WidgetsBinding.instance.addPostFrameCallback((_) {
                             Navigator.pop(context);
                           });
                         }
                       });
-                    }else{
+                    } else{
                       WidgetsBinding.instance.addPostFrameCallback((_) {
                         Dialogs.snackBar("Select one option", context, isError: true);
                       });
                     }
-
                   },child: const OkBtn("Save")),
                 ],
               ),

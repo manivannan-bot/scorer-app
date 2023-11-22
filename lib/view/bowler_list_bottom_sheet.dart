@@ -239,7 +239,7 @@ class _BowlerListBottomSheetState extends State<BowlerListBottomSheet> {
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(searchedList[index].playerName?.toUpperCase()??'-',style: fontMedium.copyWith(
-                                              fontSize: 11.sp,
+                                              fontSize: 10.sp,
                                               color: AppColor.blackColour,
                                             ),),
                                             searchedList[index].bowlingStyle == null
@@ -250,8 +250,8 @@ class _BowlerListBottomSheetState extends State<BowlerListBottomSheet> {
                                                   backgroundColor: AppColor.pri,
                                                 ),
                                                 SizedBox(width: 2.w,),
-                                                Text(searchedList[index].bowlingStyle??'-',style: fontRegular.copyWith(
-                                                    fontSize: 10.sp,
+                                                Text(searchedList[index].bowlingStyle?.toUpperCase()??'-',style: fontRegular.copyWith(
+                                                    fontSize: 9.sp,
                                                     color: const Color(0xff555555)
                                                 ),),
                                               ],
@@ -337,7 +337,7 @@ class _BowlerListBottomSheetState extends State<BowlerListBottomSheet> {
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(searchedList[index].playerName?.toUpperCase()??'-',style: fontMedium.copyWith(
-                                              fontSize: 11.sp,
+                                              fontSize: 10.sp,
                                               color: AppColor.blackColour,
                                             ),),
                                             searchedList[index].bowlingStyle == null
@@ -348,8 +348,8 @@ class _BowlerListBottomSheetState extends State<BowlerListBottomSheet> {
                                                   backgroundColor: AppColor.pri,
                                                 ),
                                                 SizedBox(width: 2.w,),
-                                                Text(searchedList[index].bowlingStyle??'-',style: fontRegular.copyWith(
-                                                    fontSize: 10.sp,
+                                                Text(searchedList[index].bowlingStyle?.toUpperCase()??'-',style: fontRegular.copyWith(
+                                                    fontSize: 9.sp,
                                                     color: const Color(0xff555555)
                                                 ),),
                                               ],
@@ -400,9 +400,6 @@ class _BowlerListBottomSheetState extends State<BowlerListBottomSheet> {
                     score.setBowlerChangeValue(0);
                     print("setting overs bowled value for the bowler $oversBowled");
                     score.setOversBowledValue(oversBowled ?? 0);
-                    SharedPreferences prefs = await SharedPreferences.getInstance();
-                    await prefs.setInt('bowler_id', searchedList[localBowlerIndex!].playerId!);
-                    await prefs.setInt('bowler_change', 0);
                     widget.refresh();
                     WidgetsBinding.instance.addPostFrameCallback((_) {
                       Navigator.pop(context);

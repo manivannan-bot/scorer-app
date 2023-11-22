@@ -501,7 +501,7 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
               color: Color(0xffD3D3D3),
             ),
             SizedBox(height: 1.h,),
-            //patrnership
+            //partnership
             Row(
               children: [
                 Text("Partnerships",style: fontMedium.copyWith(
@@ -524,8 +524,6 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                   fontSize: 10.sp,
                   color: AppColor.pri,
                 ),),
-
-
               ],
             ),
             const Divider(

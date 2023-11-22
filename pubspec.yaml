@@ -65,6 +65,7 @@ dependencies:
   webview_flutter: ^4.4.2
   lottie: ^2.7.0
   lecle_yoyo_player: ^0.0.8
+  share_plus: ^7.2.1
 
 
 dev_dependencies:
