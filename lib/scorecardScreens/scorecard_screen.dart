@@ -132,6 +132,7 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
              if(scoreCardResponseModel1!=null && scoreCardResponseModel1?.data != null){
              CRR=scoreCardResponseModel1!.data!.currRunRate!.runRate;
              RRR=scoreCardResponseModel1!.data!.currRunRate!.reqRunRate;
+             TARGET=scoreCardResponseModel1!.data!.currRunRate!.targetScore;
            }
          }
        }
