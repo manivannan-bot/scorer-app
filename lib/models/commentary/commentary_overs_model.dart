@@ -1,6 +1,6 @@
 class CommentaryOversModel {
   bool? status;
-  String? message;
+  dynamic message;
   Data? data;
 
   CommentaryOversModel({this.status, this.message, this.data});
@@ -56,9 +56,9 @@ class Data {
 }
 
 class Innings1 {
-  int? overNumber;
+  dynamic overNumber;
   List<NoOfBalls>? noOfBalls;
-  String? overRun;
+  dynamic overRun;
 
   Innings1({this.overNumber, this.noOfBalls, this.overRun});
 
@@ -85,9 +85,9 @@ class Innings1 {
 }
 
 class Innings2 {
-  int? overNumber;
+  dynamic overNumber;
   List<NoOfBalls>? noOfBalls;
-  String? overRun;
+  dynamic overRun;
 
   Innings2({this.overNumber, this.noOfBalls, this.overRun});
 
@@ -114,12 +114,12 @@ class Innings2 {
 }
 
 class NoOfBalls {
-  int? innings;
-  int? ballNumber;
-  int? runsScored;
-  int? wicket;
-  String? ballType;
-  String? slugData;
+  dynamic innings;
+  dynamic ballNumber;
+  dynamic runsScored;
+  dynamic wicket;
+  dynamic ballType;
+  dynamic slugData;
 
   NoOfBalls(
       {this.innings,

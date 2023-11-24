@@ -80,7 +80,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         builder: (context, orientation, deviceType)  {
           return const MaterialApp(
             debugShowCheckedModeBanner: false,
-            home: SplashScreen(),
+            home: HomeScreen(
+            ),
           );
         }
     );

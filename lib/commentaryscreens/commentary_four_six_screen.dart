@@ -81,7 +81,7 @@ class _CommentaryFourSixState extends State<CommentaryFourSix> {
                                     color: AppColor.blackColour,
                                   )),
                               TextSpan(
-                                  text: " ${item.overNumber}",
+                                  text: " ${(item.overNumber??0)+1}",
                                   style: fontMedium.copyWith(
                                     fontSize: 14.sp,
                                     color: AppColor.blackColour,
@@ -200,7 +200,7 @@ class _CommentaryFourSixState extends State<CommentaryFourSix> {
                                     color: AppColor.blackColour,
                                   )),
                               TextSpan(
-                                  text: " ${item.overNumber}",
+                                  text: " ${(item.overNumber??0)+1}",
                                   style: fontMedium.copyWith(
                                     fontSize: 14.sp,
                                     color: AppColor.blackColour,

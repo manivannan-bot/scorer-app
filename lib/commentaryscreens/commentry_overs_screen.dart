@@ -52,82 +52,12 @@ class _CommentaryOversState extends State<CommentaryOvers> {
       child: Column(
         children:[
           Expanded(
-          child: ListView.separated(
-            physics: const BouncingScrollPhysics(),
-            separatorBuilder: (context, _) {
-              return Padding(
-                padding: EdgeInsets.only(right: 2.w,bottom: 1.h),
-              );
-            },
-            itemCount: commentaryOversModel!.data!.innings2!.length,
-            itemBuilder: (BuildContext context, int index) {
-              final option=commentaryOversModel!.data!.innings2![index];
-              var overNo=(option.overNumber??0)+1;
-              return  Column(
-                children: [
-                  Row(
-                    children: [
-                      Text('Over ${overNo}',style: fontMedium.copyWith(
-                        fontSize: 13.sp,
-                        color: Color(0xff666666),
-                      ),),
-                      SizedBox(width: 3.w,),
-                      Expanded(
-                        child: SizedBox(
-                          height: 4.h,
-                          child: ListView.separated(
-                              scrollDirection: Axis.horizontal,
-                              physics: const BouncingScrollPhysics(),
-                              separatorBuilder: (context, _) {
-                                return Padding(
-                                  padding: EdgeInsets.only(right: 2.w,bottom: 0.h),
-                                );
-                              },
-                              itemCount:option.noOfBalls!.length ,
-                              itemBuilder: (context, int index) {
-                                final item = option.noOfBalls![index];
-                                if(item.wicket==1){
-                                  return ScoreContainer( runsScored: 'w');
-                                }
-                                return ScoreContainer( runsScored: item.slugData??'0');
-                              }),
-                        ),
-                      ),
-                      SizedBox(width: 3.w,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text('=',
-                            style: fontRegular.copyWith(
-                              color: Colors.black,
-                              fontSize: 24,
-                            ),
-                          ),
-                          Text('${option.overRun}' ?? 'N/A',
-                            style: fontRegular.copyWith(
-                              color: Colors.black,
-                              fontSize: 24,
-                            ),
-                          ),
-                        ],
-                      ),
-
-                    ],
-                  ),
-                  SizedBox(height: 1.h,),
-                  const DottedLine(
-                    dashColor: Color(0xffD2D2D2),
-                  ),
-                ],
-              );
-            },
-
-          ),
-        ),
-          const Divider(
-            color: Color(0xffD3D3D3),
-          ),
-          Expanded(
+          child: MediaQuery.removePadding(
+            context: context,
+            removeTop: true, // Set to true to remove top padding
+            removeBottom: true, // Set to true to remove bottom padding
+            removeLeft: true, // Set to true to remove left padding
+            removeRight: true,
             child: ListView.separated(
               physics: const BouncingScrollPhysics(),
               separatorBuilder: (context, _) {
@@ -135,9 +65,9 @@ class _CommentaryOversState extends State<CommentaryOvers> {
                   padding: EdgeInsets.only(right: 2.w,bottom: 1.h),
                 );
               },
-              itemCount: commentaryOversModel!.data!.innings1!.length,
+              itemCount: commentaryOversModel!.data!.innings2!.length,
               itemBuilder: (BuildContext context, int index) {
-                final option=commentaryOversModel!.data!.innings1![index];
+                final option=commentaryOversModel!.data!.innings2![index];
                 var overNo=(option.overNumber??0)+1;
                 return  Column(
                   children: [
@@ -198,6 +128,90 @@ class _CommentaryOversState extends State<CommentaryOvers> {
                 );
               },
 
+            ),
+          ),
+        ),
+          const Divider(
+            color: Color(0xffD3D3D3),
+          ),
+          Expanded(
+            child: MediaQuery.removePadding(
+              context: context,
+              removeTop: true,
+              removeBottom: true,
+              removeLeft: true,
+              removeRight: true,
+              child: ListView.separated(
+                physics: const BouncingScrollPhysics(),
+                separatorBuilder: (context, _) {
+                  return Padding(
+                    padding: EdgeInsets.only(right: 2.w,bottom: 1.h),
+                  );
+                },
+                itemCount: commentaryOversModel!.data!.innings1!.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final option=commentaryOversModel!.data!.innings1![index];
+                  var overNo=(option.overNumber??0)+1;
+                  return  Column(
+                    children: [
+                      Row(
+                        children: [
+                          Text('Over ${overNo}',style: fontMedium.copyWith(
+                            fontSize: 13.sp,
+                            color: Color(0xff666666),
+                          ),),
+                          SizedBox(width: 3.w,),
+                          Expanded(
+                            child: SizedBox(
+                              height: 4.h,
+                              child: ListView.separated(
+                                  scrollDirection: Axis.horizontal,
+                                  physics: const BouncingScrollPhysics(),
+                                  separatorBuilder: (context, _) {
+                                    return Padding(
+                                      padding: EdgeInsets.only(right: 2.w,bottom: 0.h),
+                                    );
+                                  },
+                                  itemCount:option.noOfBalls!.length ,
+                                  itemBuilder: (context, int index) {
+                                    final item = option.noOfBalls![index];
+                                    if(item.wicket==1){
+                                      return ScoreContainer( runsScored: 'w');
+                                    }
+                                    return ScoreContainer( runsScored: item.slugData??'0');
+                                  }),
+                            ),
+                          ),
+                          SizedBox(width: 3.w,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text('=',
+                                style: fontRegular.copyWith(
+                                  color: Colors.black,
+                                  fontSize: 24,
+                                ),
+                              ),
+                              Text('${option.overRun}' ?? 'N/A',
+                                style: fontRegular.copyWith(
+                                  color: Colors.black,
+                                  fontSize: 24,
+                                ),
+                              ),
+                            ],
+                          ),
+
+                        ],
+                      ),
+                      SizedBox(height: 1.h,),
+                      const DottedLine(
+                        dashColor: Color(0xffD2D2D2),
+                      ),
+                    ],
+                  );
+                },
+
+              ),
             ),
           )],
       ),
