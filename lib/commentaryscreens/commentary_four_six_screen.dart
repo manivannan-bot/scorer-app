@@ -47,6 +47,7 @@ class _CommentaryFourSixState extends State<CommentaryFourSix> {
     if(commentaryFourSixModel!.data!.innings1!.isEmpty){
       return const Center(child: Text('No data found'));
     }
+
     return Column(
       children: [
         MediaQuery.removePadding(
@@ -220,6 +221,7 @@ class _CommentaryFourSixState extends State<CommentaryFourSix> {
                                 color: AppColor.blackColour,
                               ),
                             ),
+
                             SizedBox(
                               width: 5.w,
                             ),
@@ -263,6 +265,7 @@ class _CommentaryFourSixState extends State<CommentaryFourSix> {
                                   fontSize: 12.sp,
                                   color: AppColor.blackColour,
                                 ),),
+
                               ),
                             ),
                             SizedBox(
@@ -275,6 +278,7 @@ class _CommentaryFourSixState extends State<CommentaryFourSix> {
                                 color: AppColor.blackColour,
                               ),
                             ),
+
                           ],
                         ),
                         const Divider(

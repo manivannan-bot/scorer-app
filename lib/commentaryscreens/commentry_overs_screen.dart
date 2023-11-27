@@ -52,6 +52,7 @@ class _CommentaryOversState extends State<CommentaryOvers> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children:[
+
           commentaryOversModel!.data!.innings2!.isEmpty ? const SizedBox() : Text('Innings 2',
               style: fontMedium.copyWith(
                 color: Colors.black,
@@ -188,6 +189,7 @@ class _CommentaryOversState extends State<CommentaryOvers> {
                         style: fontMedium.copyWith(
                           color: Colors.black,
                           fontSize: 11.sp,
+
                         ),
                       ),
                       Text('${option.overRun}',
