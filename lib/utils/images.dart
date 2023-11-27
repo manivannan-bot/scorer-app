@@ -28,7 +28,7 @@ class Images{
 
   // //homescreen
   static const String searchIcon = 'assets/images/search_icon.svg';
-   static const String playersImage = 'assets/images/players_images.png';
+   static const String playersImage = 'https://cdn-icons-png.flaticon.com/256/4389/4389644.png';
    static const String stumpIcon1 = 'assets/images/stump_icon1.svg';
    static const String stumpIcon2 = 'assets/images/stump_icon2.svg';
 
@@ -65,6 +65,7 @@ class Images{
   static const String newBatsmanImage = 'assets/images/new_batsman_img.svg';
    static const String moreBgImage = 'assets/images/more_image_bg.png';
    static const String editSymbolIcon = 'assets/images/edit_symbol_icon.svg';
+  static const String overCardBg = 'assets/images/over_card_bg.svg';
   // static const String copyIcon = 'assets/images/copy_icon.svg';
   // static const String totalAmountBgImg = 'assets/images/total_amount_bg_img.svg';
   //
@@ -73,10 +74,15 @@ class Images{
   //
   // static const String currentLocationImage = 'assets/images/current_location_img.svg';
   //
-  // static const String forgotPasswordImage = 'assets/images/forgot_password_img.svg';
-  // static const String verifyMobileImage = 'assets/images/phone_verification_img.svg';
-  // static const String otpImage = 'assets/images/otp_image.svg';
-  //
+  static const String forgotPasswordImage = 'assets/images/forgot_password_img.svg';
+  static const String verifyMobileImage = 'assets/images/phone_verification_img.svg';
+  static const String otpImage = 'assets/images/otp_image.svg';
+  static const String logo = 'assets/images/elevens_logo.png';
+  static const String authCurveImg = 'assets/images/auth_curve_img.svg';
+  static const String loginTopImg = 'assets/images/login_top_img.svg';
+  static const String splashTop = 'assets/images/splash_top_art.svg';
+  static const String stumpImage = 'assets/images/stump_image.svg';
+//
   // //playerscorner
   //
   // static const String batting = 'assets/images/batting_logo.svg';

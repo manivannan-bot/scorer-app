@@ -14,7 +14,8 @@ import '../utils/sizes.dart';
 
 class WicketOptionsBottomSheet extends StatefulWidget {
   final ScoringDetailResponseModel? scoringData;
-  const WicketOptionsBottomSheet(this.scoringData, {super.key});
+  final VoidCallback refresh;
+  const WicketOptionsBottomSheet(this.scoringData, this.refresh, {super.key});
 
   @override
   State<WicketOptionsBottomSheet> createState() => _WicketOptionsBottomSheetState();
@@ -24,56 +25,73 @@ class _WicketOptionsBottomSheetState extends State<WicketOptionsBottomSheet> {
 
   int? isWideSelected ;
   List<Map<String, dynamic>> chipData =[
-    { 'id':18,
+    { 'id':15,
       'label': "Bowled",
+      'who' : "striker"
     },
-    { 'id':17,
+    { 'id':32,
       'label': 'Caught',
-    },
-    { 'id':20,
-      'label': 'Stumped',
+      'who' : "striker"
     },
     { 'id':16,
-      'label': 'LBW',
-    },
-    {  'id':17,
-      'label': 'Caught Behind',
+      'label': 'Stumped',
+      'who' : "striker"
     },
     { 'id':17,
-      'label': 'Caught & Bowled',
+      'label': 'LBW',
+      'who' : "striker"
     },
-    { 'id':15,
+    {  'id':18,
+      'label': 'Caught Behind',
+      'who' : "striker"
+    },
+    { 'id':19,
+      'label': 'Caught & Bowled',
+      'who' : "striker"
+    },
+    { 'id':20,
       'label': ' Run Out',
+      'who' : "both"
     },
     {  'id':21,
       'label': 'Run out (Mankaded)',
+      'who' : "non-striker"
     },
-    { 'id':14,
+    { 'id':22,
       'label': 'Retired Hurt',
+      'who' : "both"
     },
-    { 'id':19,
+    { 'id':23,
       'label': 'Hit Wicket',
+      'who' : "striker"
     },
-    { 'id':14,
+    { 'id':24,
       'label': 'Retired',
+      'who' : "both"
     },
-    { 'id':14,
+    { 'id':25,
       'label': 'Retired Out',
+      'who' : "both"
     },
-    { 'id':14,
+    { 'id':26,
       'label': 'Handling the Ball',
+      'who' : "both"
     },
-    { 'id':14,
+    { 'id':27,
       'label': 'Hit the Ball Twice',
+      'who' : "striker"
     },
-    { 'id':14,
+    { 'id':28,
       'label': 'Obstruct the field',
+      'who' : "both"
     },
-    { 'id':14,
+    { 'id':30,
       'label': 'Timed Out',
+      'who' : "both"
     },
-    { 'id':14,
+    { 'id':29,
       'label': 'Absence Hurt',
+      'who' : "both"
     },
 
   ];
@@ -82,7 +100,6 @@ class _WicketOptionsBottomSheetState extends State<WicketOptionsBottomSheet> {
   Widget build(BuildContext context) {
     return Container(
       height: 60.h,
-      // padding: EdgeInsets.symmetric(horizontal: 2.w),
       decoration: const BoxDecoration(
           color: AppColor.lightColor,
           borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))
@@ -114,9 +131,9 @@ class _WicketOptionsBottomSheetState extends State<WicketOptionsBottomSheet> {
           ),
           SizedBox(height: 1.h,),
           Padding(
-            padding:  EdgeInsets.only(left: 2.w,right: .2.w),
+            padding: EdgeInsets.symmetric(horizontal: 3.w),
             child: Wrap(
-              spacing: 2.w,
+              spacing: 3.w,
               runSpacing: 1.h,
               alignment: WrapAlignment.center,
               children:chipData.map((data) {
@@ -130,7 +147,7 @@ class _WicketOptionsBottomSheetState extends State<WicketOptionsBottomSheet> {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return OutMethodDialog(label: 'Bowled', id: data['id'], scoringData: widget.scoringData!);
+                          return OutMethodDialog(label: 'Bowled', id: data['id'], scoringData: widget.scoringData!, refresh: widget.refresh, who: data['who']);
                         },
                       );
                     }
@@ -138,7 +155,7 @@ class _WicketOptionsBottomSheetState extends State<WicketOptionsBottomSheet> {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return OutMethodDialog(label: 'LBW',id: data['id'],scoringData: widget.scoringData!);
+                          return OutMethodDialog(label: 'LBW',id: data['id'],scoringData: widget.scoringData!, refresh: widget.refresh, who: data['who']);
                         },
                       );
                     }
@@ -146,7 +163,7 @@ class _WicketOptionsBottomSheetState extends State<WicketOptionsBottomSheet> {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return OutMethodDialog(label: 'Caught Behind',id: data['id'],scoringData: widget.scoringData!);
+                          return OutMethodDialog(label: 'Caught Behind',id: data['id'],scoringData: widget.scoringData!, refresh: widget.refresh, who: data['who']);
                         },
                       );
                     }
@@ -154,7 +171,7 @@ class _WicketOptionsBottomSheetState extends State<WicketOptionsBottomSheet> {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return OutMethodDialog(label: 'Caught & Bowled',id: data['id'],scoringData: widget.scoringData!);
+                          return OutMethodDialog(label: 'Caught & Bowled',id: data['id'],scoringData: widget.scoringData!, refresh: widget.refresh, who: data['who']);
                         },
                       );
                     }
@@ -162,7 +179,7 @@ class _WicketOptionsBottomSheetState extends State<WicketOptionsBottomSheet> {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return OutMethodDialog(label: 'Mankaded',id: data['id'],scoringData: widget.scoringData!);
+                          return OutMethodDialog(label: 'Mankaded',id: data['id'],scoringData: widget.scoringData!, refresh: widget.refresh, who: data['who']);
                         },
                       );
                     }
@@ -170,73 +187,70 @@ class _WicketOptionsBottomSheetState extends State<WicketOptionsBottomSheet> {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return OutMethodDialog(label: 'Hit Wicket',id: data['id'],scoringData: widget.scoringData!);
+                          return OutMethodDialog(label: 'Hit Wicket',id: data['id'],scoringData: widget.scoringData!, refresh: widget.refresh, who: data['who']);
                         },
                       );
                     }
-                    if (data['label'] == 'Handling the Ball'){
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return OutMethodDialog(label: 'Handling the Ball',id: data['id'],scoringData: widget.scoringData!);
-                        },
-                      );
-                    }
+                    // if (data['label'] == 'Handling the Ball'){
+                    //   showDialog(
+                    //     context: context,
+                    //     builder: (BuildContext context) {
+                    //       return OutMethodDialog(label: 'Handling the Ball',id: data['id'],scoringData: widget.scoringData!, refresh: widget.refresh, who: data['who']);
+                    //     },
+                    //   );
+                    // }
                     if (data['label'] == 'Hit the Ball Twice'){
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return OutMethodDialog(label: 'Hit the Ball Twice',id: data['id'],scoringData: widget.scoringData!);
+                          return OutMethodDialog(label: 'Hit the Ball Twice',id: data['id'],scoringData: widget.scoringData!, refresh: widget.refresh, who: data['who']);
+                        },
+                      );
+                    }
+                    if (data['label'] == 'Stumped'){
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return OutMethodDialog(label: 'Stumped',id: data['id'],scoringData: widget.scoringData!, refresh: widget.refresh, who: data['who']);
                         },
                       );
                     }
                     if (data['label'] == ' Run Out'){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                          RunOutScreen(ballType:data['id'],scoringData: widget.scoringData!)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => RunOutScreen(ballType:data['id'],scoringData: widget.scoringData!, refresh: widget.refresh)));
                     }
                     if (data['label'] == 'Caught'){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                          CaughtOutScreen(ballType:data['id'],scoringData: widget.scoringData!)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => CaughtOutScreen(ballType:data['id'],scoringData: widget.scoringData!, refresh: widget.refresh)));
                     }
                     if (data['label'] == 'Retired Hurt'){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                          RetiredHurtScreen(label: 'Retired Hurt', checkcount: "Don't count the ball",ballType:data['id'],scoringData: widget.scoringData!,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: 'Retired Hurt', checkcount: "Don't count the ball",ballType:data['id'],scoringData: widget.scoringData!, refresh: widget.refresh)));
                     }
                     if (data['label'] == 'Retired Out'){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                          RetiredHurtScreen(label: 'Retired Out', checkcount: "Don't count the ball",ballType:data['id'],scoringData: widget.scoringData!,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredHurtScreen(label: 'Retired Out', checkcount: "Don't count the ball",ballType:data['id'],scoringData: widget.scoringData!, refresh: widget.refresh)));
                     }
                     if (data['label'] == 'Timed Out'){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                          TimeOutAbsence(label: 'Timed out',ballType:data['id'],scoringData: widget.scoringData!, )));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => TimeOutAbsence(label: 'Timed out',ballType:data['id'],scoringData: widget.scoringData!, refresh: widget.refresh)));
                     }
                     if (data['label'] == 'Absence Hurt'){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                          TimeOutAbsence(label: 'Absence hurt',ballType:data['id'],scoringData: widget.scoringData!,)));
-                    }
-                    if (data['label'] == 'Stumped'){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                          RetiredHurtScreen(label: 'Stumped', checkcount: "Wide Ball?",ballType:data['id'],scoringData: widget.scoringData!,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => TimeOutAbsence(label: 'Absence hurt',ballType:data['id'],scoringData: widget.scoringData!, refresh: widget.refresh)));
                     }
                     if (data['label'] == 'Retired'){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                          RetiredScreens(ballType:data['id'],scoringData: widget.scoringData!,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => RetiredScreens(ballType:data['id'],scoringData: widget.scoringData!, refresh: widget.refresh)));
                     }
                     if (data['label'] == 'Obstruct the field' ){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                          ObstructTheField(ballType:data['id'],scoringData: widget.scoringData!,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ObstructTheField(ballType:data['id'],scoringData: widget.scoringData!, refresh: widget.refresh)));
                     }
 
                   },
                   child: Chip(
                     padding: EdgeInsets.symmetric(horizontal: 2.w,vertical: 0.8.h),
-                    label: Text(data['label'],style: fontSemiBold.copyWith(
-                        fontSize: 12.sp,
-                        color: AppColor.blackColour
+                    label: Text(data['label'],style: fontMedium.copyWith(
+                        fontSize: 11.sp,
+                        color: AppColor.textColor
                     ),),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(25.0),
                       side: const BorderSide(
+                        width: 0.5,
                         color: Color(0xffDADADA),
                       ),
                     ),

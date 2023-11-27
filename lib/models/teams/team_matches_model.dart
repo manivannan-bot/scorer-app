@@ -121,6 +121,7 @@ class Teams {
   String? resultDescription;
   String? wonTeam;
   int? matchStatus;
+  int? currentInnings;
 
   Teams(
       {this.team1Name,
@@ -130,7 +131,8 @@ class Teams {
         this.team2Id,
         this.resultDescription,
         this.wonTeam,
-        this.matchStatus});
+        this.matchStatus,
+        this.currentInnings});
 
   Teams.fromJson(Map<String, dynamic> json) {
     team1Name = json['team1_name'];
@@ -141,6 +143,7 @@ class Teams {
     resultDescription = json['result_description'];
     wonTeam = json['won_team'];
     matchStatus = json['match_status'];
+    currentInnings = json['current_innings'];
   }
 
   Map<String, dynamic> toJson() {
@@ -153,6 +156,7 @@ class Teams {
     data['result_description'] = this.resultDescription;
     data['won_team'] = this.wonTeam;
     data['match_status'] = this.matchStatus;
+    data['current_innings'] = this.currentInnings;
     return data;
   }
 }

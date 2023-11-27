@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
+import 'package:scorer/view/widgets/batsman_list_item.dart';
+import 'package:scorer/view/widgets/player_list_item.dart';
 import 'package:scorer/widgets/snackbar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 import '../models/player_list_model.dart';
 import '../models/save_batsman_request_model.dart';
+import '../provider/player_selection_provider.dart';
 import '../provider/scoring_provider.dart';
 import '../utils/colours.dart';
 import '../utils/images.dart';
@@ -15,7 +18,9 @@ import '../widgets/ok_btn.dart';
 
 class BatsmanListBottomSheet extends StatefulWidget {
   final String matchId, team1Id, player;
-  const BatsmanListBottomSheet(this.matchId, this.team1Id, this.player, {super.key});
+  final VoidCallback refresh;
+  final VoidCallback revertForceCancel;
+  const BatsmanListBottomSheet(this.matchId, this.team1Id, this.player, this.refresh, this.revertForceCancel, {super.key});
 
   @override
   State<BatsmanListBottomSheet> createState() => _BatsmanListBottomSheetState();
@@ -26,10 +31,11 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
   bool searching = false;
   bool isResultEmpty = false;
   String searchedText = "";
-  int? localBowlerIndex = 0;
+  int? localBatsmanIndex = -1;
   TextEditingController searchController = TextEditingController();
   List<BattingPlayers>? searchedBatsman = [];
   List<BattingPlayers>? itemsBatsman = [];
+  String batsmanId = "", batsmanName = "";
 
 
   onSearchBatsman(String search) {
@@ -66,6 +72,7 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
     // TODO: implement initState
     super.initState();
     getData();
+    print("batsman type ${widget.player}");
   }
 
   @override
@@ -91,7 +98,7 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
                     },
                     child: Icon(Icons.arrow_back,size: 7.w,)),
                 Text("Select Batsman",style: fontMedium.copyWith(
-                  fontSize: 18.sp,
+                  fontSize: 16.sp,
                   color: AppColor.blackColour,
                 ),),
                 SizedBox(width: 7.w,),
@@ -132,7 +139,7 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
                         decoration: InputDecoration(
                           isDense: true,
                           border: InputBorder.none,
-                          hintText: "Search for bowlers",
+                          hintText: "Search for batsman",
                           hintStyle: fontRegular.copyWith(
                               fontSize: 10.sp,
                               color: AppColor.textMildColor
@@ -166,13 +173,6 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
                 color: AppColor.pri
             ),),
           ),
-          // Divider(
-          //   color: Color(0xffD3D3D3),
-          // ),
-          const Divider(
-            thickness: 0.5,
-            color: Color(0xffD3D3D3),
-          ),
           if(isResultEmpty && searching)...[
             Padding(
               padding: EdgeInsets.only(top: 5.h),
@@ -185,200 +185,90 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
           ]
           else if(!isResultEmpty && searching)...[
             Expanded(
-              child:   ListView.separated(
-                  separatorBuilder:(context ,_) {
-                    return const Divider(
-                      thickness: 0.6,
-                    );
-                  },
+              child: ListView.builder(
                   itemCount: searchedBatsman!.length,
                   itemBuilder: (context, index) {
                     final isPlayerOut = searchedBatsman![index].isOut == 1 || searchedBatsman![index].isOut == 0;
-
                     return GestureDetector(
                       onTap: () {
                         if (isPlayerOut) {
-
+                          debugPrint("batsman who can't be chosen");
                         } else {
                           setState(() {
-                            if (localBowlerIndex == index) {
-                              localBowlerIndex = null;
+                            batsmanId = searchedBatsman![index].playerId.toString();
+                            batsmanName = searchedBatsman![index].playerName.toString();
+                          });
+                          setState(() {
+                            if (localBatsmanIndex == index) {
+                              localBatsmanIndex = null;
                             } else {
-                              localBowlerIndex = index;
+                              localBatsmanIndex = index;
                             }
-                            // onItemSelected(localBowlerIndex);
                           });
                         }
                       },
-                      child: Opacity(
-                        opacity: isPlayerOut?0.5:1.0,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 2.5.w, vertical: 1.h),
-                          child: Row(
-                            children: [
-                              //circular button
-                              Container(
-                                height: 20.0, // Adjust the height as needed
-                                width: 20.0, // Adjust the width as needed
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: localBowlerIndex == index ? Colors
-                                      .blue : Colors
-                                      .grey, // Change colors based on selected index
-                                ),
-                                child: const Center(
-                                  child: Icon(
-                                    Icons.circle_outlined,
-                                    color: Colors.white, // Icon color
-                                    size: 20.0, // Icon size
-                                  ),
-                                ),
-                              ), SizedBox(width: 3.w,),
-                              Image.asset(
-                                Images.playersImage, width: 10.w,),
-                              SizedBox(width: 2.w,),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment
-                                    .start,
-                                children: [
-                                  Text(
-                                    searchedBatsman![index].playerName ?? '-',
-                                    style: fontMedium.copyWith(
-                                      fontSize: 12.sp,
-                                      color: AppColor.blackColour,
-                                    ),),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        height: 1.h,
-                                        width: 2.w,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius
-                                              .circular(50),
-                                          color: AppColor.pri,
-                                        ),
-                                      ),
-                                      SizedBox(width: 2.w,),
-                                      Text(
-                                        searchedBatsman![index].battingStyle ??
-                                            '-', style: fontMedium.copyWith(
-                                          fontSize: 11.sp,
-                                          color: const Color(0xff555555)
-                                      ),),
-                                    ],
-                                  ),
-
-                                ],
-                              ),
-                              const Spacer(),
-
-                            ],
-                          ),
-                        ),
-                      ),
-
+                      child: isPlayerOut ?
+                      Opacity(
+                        opacity: 0.4,
+                        child: BatsmanListItem(
+                            index,
+                            localBatsmanIndex,
+                            searchedBatsman![index].playerName,
+                            searchedBatsman![index].battingStyle,
+                            searchedBatsman![index].runsScored,
+                            searchedBatsman![index].ballsFaced,
+                            searchedBatsman![index].isOut == 0),
+                      ) : PlayerListItem(
+                          index,
+                          localBatsmanIndex,
+                          searchedBatsman![index].playerName,
+                          searchedBatsman![index].battingStyle),
                     );
                   }
 
               ),
             ),
           ]
-          else...[
+          else if(isResultEmpty || !searching)...[
               Expanded(
-                child: ListView.separated(
-                    separatorBuilder:(context ,_) {
-                      return const Divider(
-                        thickness: 0.6,
-                      );
-                    },
-                    itemCount: searchedBatsman!.length,
+                child: ListView.builder(
+                    itemCount: itemsBatsman!.length,
                     itemBuilder: (context, index) {
-                      final isPlayerOut = searchedBatsman![index].isOut == 1 || searchedBatsman![index].isOut == 0;
-
+                      final isPlayerOut = itemsBatsman![index].isOut == 1 || itemsBatsman![index].isOut == 0;
                       return GestureDetector(
                         onTap: () {
                           if (isPlayerOut) {
-
+                            debugPrint("batsman who we cannot choose");
                           } else {
                             setState(() {
-                              if (localBowlerIndex == index) {
-                                localBowlerIndex = null;
+                              batsmanId = itemsBatsman![index].playerId.toString();
+                              batsmanName = itemsBatsman![index].playerName.toString();
+                            });
+                            setState(() {
+                              if (localBatsmanIndex == index) {
+                                localBatsmanIndex = null;
                               } else {
-                                localBowlerIndex = index;
+                                localBatsmanIndex = index;
                               }
-                              // onItemSelected(localBowlerIndex);
                             });
                           }
                         },
-                        child: Opacity(
-                          opacity: isPlayerOut?0.5:1.0,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 2.5.w, vertical: 1.h),
-                            child: Row(
-                              children: [
-                                //circular button
-                                Container(
-                                  height: 20.0, // Adjust the height as needed
-                                  width: 20.0, // Adjust the width as needed
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: localBowlerIndex == index ? Colors
-                                        .blue : Colors
-                                        .grey, // Change colors based on selected index
-                                  ),
-                                  child: const Center(
-                                    child: Icon(
-                                      Icons.circle_outlined,
-                                      color: Colors.white, // Icon color
-                                      size: 20.0, // Icon size
-                                    ),
-                                  ),
-                                ), SizedBox(width: 3.w,),
-                                Image.asset(
-                                  Images.playersImage, width: 10.w,),
-                                SizedBox(width: 2.w,),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment
-                                      .start,
-                                  children: [
-                                    Text(
-                                      searchedBatsman![index].playerName ?? '-',
-                                      style: fontMedium.copyWith(
-                                        fontSize: 12.sp,
-                                        color: AppColor.blackColour,
-                                      ),),
-                                    Row(
-                                      children: [
-                                        Container(
-                                          height: 1.h,
-                                          width: 2.w,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius
-                                                .circular(50),
-                                            color: AppColor.pri,
-                                          ),
-                                        ),
-                                        SizedBox(width: 2.w,),
-                                        Text(
-                                          searchedBatsman![index].battingStyle ??
-                                              '-', style: fontMedium.copyWith(
-                                            fontSize: 11.sp,
-                                            color: const Color(0xff555555)
-                                        ),),
-                                      ],
-                                    ),
-
-                                  ],
-                                ),
-                                const Spacer(),
-
-                              ],
-                            ),
-                          ),
-                        ),
-
+                        child: isPlayerOut ?
+                        Opacity(
+                          opacity: 0.4,
+                          child: BatsmanListItem(
+                              index,
+                              localBatsmanIndex,
+                              itemsBatsman![index].playerName,
+                              itemsBatsman![index].battingStyle,
+                              itemsBatsman![index].runsScored,
+                              itemsBatsman![index].ballsFaced,
+                              itemsBatsman![index].isOut == 0),
+                        ) : PlayerListItem(
+                            index,
+                            localBatsmanIndex,
+                            itemsBatsman![index].playerName,
+                            itemsBatsman![index].battingStyle),
                       );
                     }
 
@@ -396,27 +286,38 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
                 GestureDetector(
                     onTap:(){
                       Navigator.pop(context);
-                    },child: const CancelBtn("Cancel")),
+                    },
+                    child: const CancelBtn("Cancel")),
                 SizedBox(width: 2.w,),
-                GestureDetector(onTap:()async {
-                  if(localBowlerIndex!=null){
+                GestureDetector(
+                    onTap:()async {
+                  if(localBatsmanIndex!=-1){
+                    final player = Provider.of<PlayerSelectionProvider>(context, listen: false);
                     bool striker=(widget.player=='striker_id')?true:false;
                     SaveBatsmanDetailRequestModel requestModel = SaveBatsmanDetailRequestModel(
                       batsman: [
                         Batsman(
                             matchId:int.parse(widget.matchId),
                             teamId: int.parse(widget.team1Id),
-                            playerId: searchedBatsman![localBowlerIndex!].playerId,
+                            playerId: searchedBatsman![localBatsmanIndex!].playerId,
                             striker: striker
                         ),
                       ],
                     );
-
-                    await ScoringProvider().saveBatsman(requestModel);
-                    SharedPreferences prefs = await SharedPreferences.getInstance();
-                    await prefs.setInt(widget.player, searchedBatsman![localBowlerIndex!].playerId!);
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      Navigator.pop(context);
+                    await ScoringProvider().saveBatsman(requestModel)
+                    .then((value) {
+                      if(value.status == true){
+                        if(striker == true){
+                          print("setting new striker after wicket");
+                          player.setStrikerId(batsmanId, batsmanName);
+                        } else {
+                          print("setting new non-striker after wicket");
+                          player.setNonStrikerId(batsmanId, batsmanName);
+                        }
+                        widget.revertForceCancel();
+                        widget.refresh();
+                        Navigator.pop(context);
+                      }
                     });
                   }else{
                     Dialogs.snackBar("Select one player", context, isError: true);

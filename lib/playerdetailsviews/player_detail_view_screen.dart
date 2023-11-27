@@ -71,7 +71,7 @@ class _PlayerDetailViewScreenState extends State<PlayerDetailViewScreen>with Sin
                         child: Icon(Icons.arrow_back,size: 7.w,color: AppColor.lightColor,)),
                     Column(
                       children: [
-                        Image.asset(Images.playersImage,width: 18.w,),
+                        Image.network(Images.playersImage,width: 18.w,),
                         Text('${playerOverview!.data!.playerInfo!.playerName}',
                           style: fontMedium.copyWith(fontSize: 15.sp,color: AppColor.lightColor),),
                         SizedBox(height: 0.5.h,),
@@ -108,7 +108,7 @@ class _PlayerDetailViewScreenState extends State<PlayerDetailViewScreen>with Sin
                               SvgPicture.asset(Images.batIcon,width: 5.w,),
                             ],
                           ),
-                          Text("${playerOverview!.data!.playerInfo!.battingStyle}",style: fontMedium.copyWith(
+                          Text("${playerOverview!.data!.playerInfo!.battingStyle??'-'}",style: fontMedium.copyWith(
                             fontSize: 12.sp,
                             color: AppColor.lightColor,
                           ),),
@@ -128,7 +128,7 @@ class _PlayerDetailViewScreenState extends State<PlayerDetailViewScreen>with Sin
                               SvgPicture.asset(Images.ballIcon,width: 5.w,),
                             ],
                           ),
-                          Text("${playerOverview!.data!.playerInfo!.bowlingStyle}",style: fontMedium.copyWith(
+                          Text("${playerOverview!.data!.playerInfo!.bowlingStyle??'-'}",style: fontMedium.copyWith(
                             fontSize: 12.sp,
                             color: AppColor.lightColor,
                           ),),

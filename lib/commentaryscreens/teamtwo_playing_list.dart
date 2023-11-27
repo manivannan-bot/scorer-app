@@ -36,14 +36,14 @@ class _TeamTwoPlayingListState extends State<TeamTwoPlayingList> {
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 6.w),
           width: double.infinity,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30)),
               color: AppColor.lightColor
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Captain',style: fontMedium.copyWith(fontSize: 14.sp,color: AppColor.pri),),
+              (playersCapDetails!.isNotEmpty)?Text('Captain',style: fontMedium.copyWith(fontSize: 14.sp,color: AppColor.pri),):const Text(''),
               SizedBox(height: 0.5.h,),
               ListView.separated(
                   shrinkWrap: true,
@@ -76,7 +76,7 @@ class _TeamTwoPlayingListState extends State<TeamTwoPlayingList> {
                                 color: AppColor.blackColour,
                               ),),
                               SizedBox(height: 0.5.h,),
-                              Row(
+                              (item.battingStyle!=null)? Row(
                                 children: [
                                   const CircleAvatar(
                                     backgroundColor: AppColor.pri,
@@ -88,7 +88,7 @@ class _TeamTwoPlayingListState extends State<TeamTwoPlayingList> {
                                     color: Color(0xff555555),
                                   ),),
                                 ],
-                              ),
+                              ):const Text(''),
                             ],),
 
                           Spacer(),
@@ -98,7 +98,7 @@ class _TeamTwoPlayingListState extends State<TeamTwoPlayingList> {
                       ),
                     );
                   }),
-              Divider(
+              const Divider(
                 color: Color(0xffD3D3D3),
               ),
               Text(' Players',style: fontMedium.copyWith(fontSize: 14.sp,color: AppColor.pri),),
@@ -131,9 +131,9 @@ class _TeamTwoPlayingListState extends State<TeamTwoPlayingList> {
                                 color: AppColor.blackColour,
                               ),),
                               SizedBox(height: 0.5.h,),
-                              Row(
+                              (item.battingStyle!=null|| item.battingStyle.toString().isNotEmpty)? Row(
                                 children: [
-                                  CircleAvatar(
+                                  const CircleAvatar(
                                     backgroundColor: AppColor.pri,
                                     radius: 4,
                                   ),
@@ -143,7 +143,7 @@ class _TeamTwoPlayingListState extends State<TeamTwoPlayingList> {
                                     color: Color(0xff555555),
                                   ),),
                                 ],
-                              )
+                              ):const Text('')
                             ],),
                           Spacer(),
                             GestureDetector(

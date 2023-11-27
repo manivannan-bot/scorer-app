@@ -28,9 +28,10 @@ class _CommentaryScreenState extends State<CommentaryScreen>with SingleTickerPro
   late TabController tabController;
   ScoreCardResponseModel? scoreCardResponseModel;
 
-  int? currentIndex;
+  int? currentIndex = 0;
 
 
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -54,9 +55,12 @@ class _CommentaryScreenState extends State<CommentaryScreen>with SingleTickerPro
 
     return Scaffold(
       body: Container(
+        margin: EdgeInsets.only(
+          top: 1.5.h
+        ),
         padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 0.w),
         width: double.infinity,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(topRight: Radius.circular(20),topLeft: Radius.circular(20)),
         color: AppColor.lightColor
         ),
@@ -66,19 +70,9 @@ class _CommentaryScreenState extends State<CommentaryScreen>with SingleTickerPro
                 labelPadding: EdgeInsets.symmetric(vertical: 0.1.h,horizontal: 4.w),
                 labelColor: Colors.white,
                 indicatorPadding: EdgeInsets.zero,
-                // unselectedLabelColor: AppColor.textColor,
-                // unselectedLabelStyle: TextStyle(
-                //   backgroundColor: Colors.grey, // Background color of inactive tabs
-                // ),
                 indicatorColor: Colors.transparent,
                 isScrollable: true,
-                // dividerColor: Colors.transparent,
-                // labelPadding: EdgeInsets.only
-                //   (bottom: 0.5.h) + EdgeInsets.symmetric(
-                //     horizontal: 4.w
-                // ),
                 indicatorSize: TabBarIndicatorSize.tab,
-                // indicatorColor: AppColor.secondaryColor,
                 controller: tabController,
                 tabs: [
                   Tab(
@@ -119,7 +113,7 @@ class _CommentaryScreenState extends State<CommentaryScreen>with SingleTickerPro
                       padding:  EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.4.h),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
-                          color: currentIndex == 3 ? AppColor.primaryColor : Color(0xffFBFAF7),
+                          color: currentIndex == 3 ? AppColor.primaryColor : const Color(0xffFBFAF7),
                           border: currentIndex == 3 ? null : Border.all(color: Colors.black12)
                       ),
                       child: Text('4s & 6s',style: fontMedium.copyWith(fontSize: 13.sp,color: AppColor.blackColour),),
@@ -127,7 +121,6 @@ class _CommentaryScreenState extends State<CommentaryScreen>with SingleTickerPro
                   ),
                 ]
             ),
-            SizedBox(height: 1.h,),
             const Divider(
               color: Color(0xffD3D3D3),
             ),
@@ -135,18 +128,16 @@ class _CommentaryScreenState extends State<CommentaryScreen>with SingleTickerPro
               child: TabBarView(
                   controller: tabController,
                   children:  [
-
-                    CommentaryAllScreen(),
-                    CommentryOvers(widget.matchId,widget.team1Id),
+                    const CommentaryAllScreen(),
+                    CommentaryOvers(widget.matchId,widget.team2Id),
                     CommentaryWicketScreen(widget.matchId,widget.team1Id),
-                    CommentaryFourSix(widget.matchId,widget.team1Id),
-
-
+                    CommentaryFourSix(widget.matchId,widget.team2Id),
                   ]),
             ),
           ],
         ),
       ),
+
 
     );
   }

@@ -4,6 +4,9 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:scorer/models/commentary/commentary_wicket_model.dart';
 import 'package:scorer/models/match_info_model.dart';
+import 'package:scorer/models/matches/completed_matches_model.dart';
+import 'package:scorer/models/matches/umpire_matches_model.dart';
+import 'package:scorer/models/matches/user_information_model.dart';
 
 import '../models/commentary/commentary_four_six_model.dart';
 import '../models/commentary/commentary_overs_model.dart';
@@ -18,7 +21,43 @@ class MatchProvider extends ChangeNotifier{
   CommentaryOversModel commentaryOversModel=CommentaryOversModel();
   CommentaryWicketModel commentaryWicketModel=CommentaryWicketModel();
   CommentaryFourSixModel commentaryFoursSixesModel =CommentaryFourSixModel();
+  UserInformationModel userInformationModel=UserInformationModel();
+  UmpireMatchesModel umpireMatchesModel=UmpireMatchesModel();
+  CompletedMatchesModel completedMatchesModel=CompletedMatchesModel();
 
+
+  Future<CompletedMatchesModel> getCompletedMatches() async {
+
+    // SharedPreferences preferences = await SharedPreferences.getInstance();
+    // String? accToken = preferences.getString("access_token");
+    try {
+      final response = await http.get(
+        Uri.parse(AppConstants.completedMatches),
+        // headers: {
+        //   // 'Content-Type': 'application/json; charset=UTF-8',
+        //   // 'Authorization': 'Bearer $accToken',
+        // },
+      );
+      var decodedJson = json.decode(response.body);
+      print(decodedJson);
+      if (response.statusCode == 200) {
+        completedMatchesModel = CompletedMatchesModel.fromJson(decodedJson);
+
+        notifyListeners();
+      } else {
+        throw const HttpException('Failed to load data');
+      }
+    } on SocketException {
+      print('No internet connection');
+    } on HttpException {
+      print('Failed to load data');
+    } on FormatException {
+      print('Completed Matches  - Invalid data format');
+    } catch (e) {
+      print(e);
+    }
+    return completedMatchesModel;
+  }
 
   Future<MatchInfoModel> getMatchInfo(String matchId) async {
 
@@ -182,5 +221,71 @@ class MatchProvider extends ChangeNotifier{
     return commentaryFoursSixesModel;
   }
 
+
+  Future<UserInformationModel> getUserDetails(String userId) async {
+
+    // SharedPreferences preferences = await SharedPreferences.getInstance();
+    // String? accToken = preferences.getString("access_token");
+    try {
+      final response = await http.get(
+        Uri.parse('${AppConstants.userDetails}/$userId'),
+        // headers: {
+        //   // 'Content-Type': 'application/json; charset=UTF-8',
+        //   // 'Authorization': 'Bearer $accToken',
+        // },
+      );
+      var decodedJson = json.decode(response.body);
+      print(decodedJson);
+      if (response.statusCode == 200) {
+        userInformationModel = UserInformationModel.fromJson(decodedJson);
+
+        notifyListeners();
+      } else {
+        throw const HttpException('Failed to load data');
+      }
+    } on SocketException {
+      print('No internet connection');
+    } on HttpException {
+      print('Failed to load data');
+    } on FormatException {
+      print('All Matches  - Invalid data format');
+    } catch (e) {
+      print(e);
+    }
+    return userInformationModel;
+  }
+
+  Future<UmpireMatchesModel> getScorerMatches(String userId) async {
+
+    // SharedPreferences preferences = await SharedPreferences.getInstance();
+    // String? accToken = preferences.getString("access_token");
+    try {
+      final response = await http.get(
+        Uri.parse('${AppConstants.scorerMatches}/$userId'),
+        // headers: {
+        //   // 'Content-Type': 'application/json; charset=UTF-8',
+        //   // 'Authorization': 'Bearer $accToken',
+        // },
+      );
+      var decodedJson = json.decode(response.body);
+      print(decodedJson);
+      if (response.statusCode == 200) {
+        umpireMatchesModel = UmpireMatchesModel.fromJson(decodedJson);
+
+        notifyListeners();
+      } else {
+        throw const HttpException('Failed to load data');
+      }
+    } on SocketException {
+      print('No internet connection');
+    } on HttpException {
+      print('Failed to load data');
+    } on FormatException {
+      print('All Matches  - Invalid data format');
+    } catch (e) {
+      print(e);
+    }
+    return umpireMatchesModel;
+  }
 
 }

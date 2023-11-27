@@ -1,6 +1,7 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:scorer/models/matches/user_information_model.dart';
 import 'package:sizer/sizer.dart';
 
 import '../utils/colours.dart';
@@ -8,7 +9,8 @@ import '../utils/images.dart';
 import '../utils/sizes.dart';
 
 class AboutDetailScreen extends StatefulWidget {
-  const AboutDetailScreen({super.key});
+  final List<Data>? userData;
+  const AboutDetailScreen(this.userData, {super.key});
 
   @override
   State<AboutDetailScreen> createState() => _AboutDetailScreenState();
@@ -17,6 +19,10 @@ class AboutDetailScreen extends StatefulWidget {
 class _AboutDetailScreenState extends State<AboutDetailScreen> {
   @override
   Widget build(BuildContext context) {
+    if(widget.userData==null){
+      return const SizedBox(height: 100,width: 100,
+          child: Center(child: CircularProgressIndicator(),));
+    }
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -25,7 +31,7 @@ class _AboutDetailScreenState extends State<AboutDetailScreen> {
               padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 4.w),
               width: double.infinity,
               height: 70.h,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30)),
                   color: AppColor.lightColor
               ),
@@ -51,7 +57,7 @@ class _AboutDetailScreenState extends State<AboutDetailScreen> {
                     ],
                   ),
                   SizedBox(height: 1.h,),
-                  Divider(
+                  const Divider(
                     color: Color(0xffCCC6C6),
                   ),
                   SizedBox(height: 1.h,),
@@ -66,23 +72,23 @@ class _AboutDetailScreenState extends State<AboutDetailScreen> {
                     ),
                     child: Column(
                       children: [
-                        _buildRow("Name", "Sathish durai pandian"),
+                        _buildRow("Name", "${widget.userData!.first.name??'-'}"),
                         _buildDivider(),
-                        _buildRow("Matches Umpired", "Batting"),
+                        _buildRow("Matches Umpired", "${widget.userData!.first.matches??'-'}"),
                         _buildDivider(),
-                        _buildRow("Phone number", "Right hand batsman"),
+                        _buildRow("Phone number", "${widget.userData!.first.mobileNo??'-'}"),
                         _buildDivider(),
-                        _buildRow("Experience", "Top Order"),
+                        _buildRow("Experience", "${widget.userData!.first.experience??'-'}"),
                         _buildDivider(),
-                        _buildRow("Date of birth", "Left arm"),
+                        _buildRow("Date of birth", "${widget.userData!.first.dob??'-'}"),
                         _buildDivider(),
-                        _buildRow("Location", "Off Spin"),
+                        _buildRow("Location", "${widget.userData!.first.location??'-'}"),
                         _buildDivider(),
-                        _buildRow("State", "Others"),
+                        _buildRow("State", "${widget.userData!.first.state??'-'}"),
                         _buildDivider(),
-                        _buildRow("City", "28/09/1994"),
+                        _buildRow("City", "${widget.userData!.first.city??'-'}"),
                         _buildDivider(),
-                        _buildRow("Pincode", "Medavakkam"),
+                        _buildRow("Pincode", "${widget.userData!.first.pincode??'-'}"),
 
                       ],
 

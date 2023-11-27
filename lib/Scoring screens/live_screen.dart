@@ -5,6 +5,7 @@ import 'package:flutter_dash/flutter_dash.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:scorer/models/all_matches_model.dart';
+import 'package:scorer/provider/score_update_provider.dart';
 import 'package:scorer/provider/scoring_provider.dart';
 import 'package:scorer/utils/colours.dart';
 import 'package:scorer/widgets/do_scoring_btn.dart';
@@ -44,6 +45,25 @@ class _LiveScreenState extends State<LiveScreen> {
   }
 
   void _refreshData() {
+    final players = Provider.of<PlayerSelectionProvider>(context, listen: false);
+    final score = Provider.of<ScoreUpdateProvider>(context, listen: false);
+    if(matchList?.first.currentInnings == 2){
+      score.setInnings(2);
+      if(!players.firstInningsIdsCleared){
+        debugPrint("ids already cleared for 1st innings");
+      } else {
+        debugPrint("clearing ids for 1st innings");
+        players.clearAllSelectedIdsAfter1stInnings();
+        score.clearOverAndBallNumberAfterFirstInnings();
+      }
+    } else if(matchList?.first.currentInnings == 1){
+      score.setInnings(1);
+    } else if(matchList?.first.currentInnings == 3){
+      score.setInnings(3);
+      debugPrint("clearing all ids - match ended");
+      players.clearAllSelectedIdsAfter1stInnings();
+      score.clearOverAndBallNumberAfterFirstInnings();
+    }
     ScoringProvider().getScoringDetail(matchList!.first.matchId.toString()).then((value) async {
       setState(() {
         scoringData = value;
@@ -93,10 +113,10 @@ class _LiveScreenState extends State<LiveScreen> {
                 },
                 itemCount:matchList!.length ,
                 itemBuilder: (context, int index) {
-                  final item = matchList![index];
                   return InkWell(
+
                     onTap: (){
-                      _displayMatchPreviewBottomSheet(context);
+                      // _displayMatchPreviewBottomSheet(context);
                     },
                     child: Padding(
                       padding:  EdgeInsets.symmetric(horizontal: 3.w),
@@ -127,12 +147,13 @@ class _LiveScreenState extends State<LiveScreen> {
                                                   matchList![index].team1Name??'',
                                                   style: fontMedium.copyWith(
                                                     fontSize: 13.sp,
-                                                    color: AppColor.pri,
+                                                    color: AppColor.textColor,
                                                   )
                                               ),
                                               SizedBox(width: 2.w,),
                                               RichText(
-                                                  text: TextSpan(children: [
+                                                text: TextSpan(
+                                                  children: [
                                                     TextSpan(
                                                         text: ('${matchList![index].teams!.first.totalRuns??''}'),
                                                         style: fontMedium.copyWith(
@@ -151,11 +172,13 @@ class _LiveScreenState extends State<LiveScreen> {
                                                             fontSize: 13.sp,
                                                             color: AppColor.pri
                                                         )),
-                                                  ])),
+                                                  ],
+                                                ),
+                                              ),
                                               SizedBox(width: 2.w,),
                                               RichText(text: TextSpan(children: [
                                                 TextSpan(
-                                                    text: ("${matchList![index].teams!.first.overNumber??''}.${matchList![index].teams!.first.ballNumber??''}"),
+                                                    text: ("${matchList![index].teams!.first.currentOverDetails??'0'}"),
                                                     style: fontMedium.copyWith(
                                                         fontSize: 13.sp,
                                                         color: const Color(0xff444444)
@@ -193,7 +216,7 @@ class _LiveScreenState extends State<LiveScreen> {
                                                 color:const Color(0xff555555),
                                               ),),
                                               SizedBox(width: 2.w,),
-                                              if(matchList![index].currentInnings==2) ...[
+                                              if(matchList![index].currentInnings==2 || matchList![index].currentInnings==3) ...[
                                                 Row(children: [
                                                   RichText(
                                                       text: TextSpan(children: [
@@ -298,7 +321,9 @@ class _LiveScreenState extends State<LiveScreen> {
                                         SizedBox(
                                           height: 1.h,
                                         ),
-                                        Padding(
+                                        matchList![index].currentInnings==3
+                                        ? const SizedBox()
+                                        : Padding(
                                           padding:  EdgeInsets.symmetric(horizontal: 1.w)+EdgeInsets.only(top: 2.h),
                                           child: GestureDetector(
                                               onTap: (){
@@ -308,14 +333,14 @@ class _LiveScreenState extends State<LiveScreen> {
                                                   if(((scoringData!.data!.batting!.length<2) || scoringData!.data!.bowling==null)){
                                                     //if team 1 won the toss & chose to bat
                                                     if(matchList!.first.tossWonBy==matchList![index].team1Id && matchList!.first.choseTo=='Bat' ) {
-                                                      // Provider.of<PlayerSelectionProvider>(context, listen: false).clearAllSelectedIds();
+                                                      debugPrint("do scoring check 1");
                                                       Navigator.push(context, MaterialPageRoute(builder: (context) =>
                                                           DOScoring(matchList![index].matchId.toString(),
                                                               matchList![index].team1Id.toString(),
                                                               matchList![index].team2Id.toString())))
                                                           .then((value) {getData();});
                                                     }else{ //if team 2 won the toss & chose to bat
-                                                      // Provider.of<PlayerSelectionProvider>(context, listen: false).clearAllSelectedIds();
+                                                      debugPrint("do scoring check 2");
                                                       Navigator.push(context, MaterialPageRoute(builder: (context) =>
                                                           DOScoring(matchList![index].matchId.toString(),
                                                               matchList![index].team2Id.toString(),
@@ -350,34 +375,34 @@ class _LiveScreenState extends State<LiveScreen> {
                                                 else if(matchList!.first.currentInnings==2){
                                                   if(((scoringData!.data!.batting!.length<2) || scoringData!.data!.bowling==null)){
                                                     if(matchList!.first.tossWonBy==matchList![index].team1Id && matchList!.first.choseTo=='Bat' ) {
-                                                      // Provider.of<PlayerSelectionProvider>(context, listen: false).clearAllSelectedIds();
-                                                      Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                                                          DOScoring(matchList![index].matchId.toString(),
-                                                              matchList![index].team1Id.toString(),
-                                                              matchList![index].team2Id.toString())))
-                                                          .then((value) {getData();});
-                                                    }else{
-                                                      // Provider.of<PlayerSelectionProvider>(context, listen: false).clearAllSelectedIds();
+                                                      debugPrint("do scoring check 3");
                                                       Navigator.push(context, MaterialPageRoute(builder: (context) =>
                                                           DOScoring(matchList![index].matchId.toString(),
                                                               matchList![index].team2Id.toString(),
                                                               matchList![index].team1Id.toString())))
+                                                          .then((value) {getData();});
+                                                    }else{
+                                                      debugPrint("do scoring check 4");
+                                                      Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                                                          DOScoring(matchList![index].matchId.toString(),
+                                                              matchList![index].team1Id.toString(),
+                                                              matchList![index].team2Id.toString())))
                                                           .then((value) {getData();});
                                                     }
                                                   }else{
                                                     if(matchList!.first.tossWonBy==matchList![index].team1Id && matchList!.first.choseTo=='Bat' ) {
                                                       Navigator.push(context, MaterialPageRoute(builder: (context) =>
                                                           ScoreUpdateScreen(matchList!.first.matchId.toString(),
-                                                              matchList!.first.team1Id.toString(),
-                                                              matchList!.first.team2Id.toString()
+                                                              matchList!.first.team2Id.toString(),
+                                                              matchList!.first.team1Id.toString()
                                                           )
                                                       ))
                                                           .then((value) {getData();});
                                                     }else{
                                                       Navigator.push(context, MaterialPageRoute(builder: (context) =>
                                                           ScoreUpdateScreen(matchList!.first.matchId.toString(),
-                                                              matchList!.first.team2Id.toString(),
-                                                              matchList!.first.team1Id.toString()
+                                                              matchList!.first.team1Id.toString(),
+                                                              matchList!.first.team2Id.toString()
                                                           )
                                                       ))
                                                           .then((value) {getData();});
@@ -397,12 +422,12 @@ class _LiveScreenState extends State<LiveScreen> {
                                 const DottedLine(
                                   dashColor: Color(0xffD2D2D2),
                                 ),
-                                SizedBox(height: 1.h,),
+                                SizedBox(height: 1.5.h,),
                                 //toss line
                                 Padding(
-                                  padding:  EdgeInsets.only(left: 2.w,bottom: 1.h),
+                                  padding: EdgeInsets.only(left: 3.w,bottom: 1.5.h),
                                   child: Text('${matchList![index].tossWinnerName} won the toss choose to ${matchList![index].choseTo}',style: fontRegular.copyWith(
-                                      fontSize: 12.sp,
+                                      fontSize: 10.sp,
                                       color: AppColor.pri
                                   ),),
                                 ),

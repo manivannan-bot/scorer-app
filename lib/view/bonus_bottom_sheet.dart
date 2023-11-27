@@ -1,11 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:scorer/models/scoring_detail_response_model.dart';
+import 'package:scorer/widgets/snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 import '../models/score_update_request_model.dart';
+import '../provider/player_selection_provider.dart';
+import '../provider/score_update_provider.dart';
 import '../provider/scoring_provider.dart';
 import '../utils/colours.dart';
 import '../utils/sizes.dart';
@@ -14,7 +18,8 @@ import '../widgets/ok_btn.dart';
 class BonusBottomSheet extends StatefulWidget {
   final int? ballType;
   final ScoringDetailResponseModel? scoringData;
-  const BonusBottomSheet(this.ballType, this.scoringData, {super.key});
+  final VoidCallback refresh;
+  const BonusBottomSheet(this.ballType, this.scoringData, this.refresh, {super.key});
 
   @override
   State<BonusBottomSheet> createState() => _BonusBottomSheetState();
@@ -23,7 +28,7 @@ class BonusBottomSheet extends StatefulWidget {
 class _BonusBottomSheetState extends State<BonusBottomSheet> {
 
   int? isOffSideSelected=1 ;
-  int? isWideSelected ;
+  int? isOptionSelected ;
   bool showError=false;
   List<Map<String, dynamic>> chipData=[
     {
@@ -164,13 +169,14 @@ class _BonusBottomSheetState extends State<BonusBottomSheet> {
               spacing: 5.w, // Horizontal spacing between items
               runSpacing: 0.5.h, // Vertical spacing between lines
               alignment: WrapAlignment.center, // Alignment of items
-              children:displayedChipData.map((data) {
+              children: displayedChipData.map((data) {
                 final index = displayedChipData.indexOf(data);
                 return GestureDetector(
                   onTap: (){
                     setState(() {
-                      isWideSelected=index;
+                      isOptionSelected=index;
                     });
+                    print(isOptionSelected);
                   },
                   child: Chip(
                     padding: EdgeInsets.symmetric(horizontal: 2.w,vertical: 0.8.h),
@@ -184,7 +190,7 @@ class _BonusBottomSheetState extends State<BonusBottomSheet> {
                         color: Color(0xffDADADA),
                       ),
                     ),
-                    backgroundColor: isWideSelected==index? AppColor.primaryColor : const Color(0xffF8F9FA),
+                    backgroundColor: isOptionSelected==index? AppColor.primaryColor : const Color(0xffF8F9FA),
                     // backgroundColor:AppColor.lightColor
                   ),
                 );
@@ -207,6 +213,8 @@ class _BonusBottomSheetState extends State<BonusBottomSheet> {
                     ),
                   ),
                   GestureDetector(onTap:()async{
+                    final player = Provider.of<PlayerSelectionProvider>(context, listen: false);
+                    final score = Provider.of<ScoreUpdateProvider>(context, listen: false);
                     SharedPreferences prefs = await SharedPreferences.getInstance();
                     var overNumber= prefs.getInt('over_number');
                     var ballNumber= prefs.getInt('ball_number');
@@ -217,19 +225,25 @@ class _BonusBottomSheetState extends State<BonusBottomSheet> {
                     var keeperId=prefs.getInt('wicket_keeper_id')??0;
                     var bowlerPosition=prefs.getInt('bowlerPosition')??0;
 
-                    if(isWideSelected!=null){
+                    if(isOptionSelected!=null){
+                      print("striker id ${player.selectedStrikerId}");
+                      print("non striker id ${player.selectedNonStrikerId}");
+                      print("passing over number to score update api ${score.overNumberInnings}");
+                      print("passing ball number to score update api ${score.ballNumberInnings}");
+                      score.trackOvers(score.overNumberInnings, score.ballNumberInnings);
+
                       ScoreUpdateRequestModel scoreUpdateRequestModel=ScoreUpdateRequestModel();
                       scoreUpdateRequestModel.ballTypeId=widget.ballType;
                       scoreUpdateRequestModel.matchId=widget.scoringData!.data!.batting![0].matchId;
-                      scoreUpdateRequestModel.scorerId=1;
-                      scoreUpdateRequestModel.strikerId=strikerId;
-                      scoreUpdateRequestModel.nonStrikerId=nonStrikerId;
-                      scoreUpdateRequestModel.wicketKeeperId=keeperId;
-                      scoreUpdateRequestModel.bowlerId=bowlerId;
-                      scoreUpdateRequestModel.overNumber=overNumber;
-                      scoreUpdateRequestModel.ballNumber=ballNumber;
-                      scoreUpdateRequestModel.runsScored=(isWideSelected==null)?0:(isWideSelected??0)+1;
-                      scoreUpdateRequestModel.extras=(isWideSelected==null)?0:(isWideSelected??0)+1;
+                      scoreUpdateRequestModel.scorerId=46;
+                      scoreUpdateRequestModel.strikerId=int.parse(player.selectedStrikerId.toString());
+                      scoreUpdateRequestModel.nonStrikerId=int.parse(player.selectedNonStrikerId.toString());
+                      scoreUpdateRequestModel.wicketKeeperId=int.parse(player.selectedWicketKeeperId.toString());
+                      scoreUpdateRequestModel.bowlerId=int.parse(player.selectedBowlerId.toString());
+                      scoreUpdateRequestModel.overNumber=score.overNumberInnings;
+                      scoreUpdateRequestModel.ballNumber=score.ballNumberInnings;
+                      scoreUpdateRequestModel.runsScored=(isOptionSelected==null)?0:(isOptionSelected??0)+1;
+                      scoreUpdateRequestModel.extras=(isOptionSelected==null)?0:(isOptionSelected??0)+1;
                       scoreUpdateRequestModel.wicket=0;
                       scoreUpdateRequestModel.dismissalType=0;
                       scoreUpdateRequestModel.commentary=0;
@@ -255,20 +269,13 @@ class _BonusBottomSheetState extends State<BonusBottomSheet> {
                         WidgetsBinding.instance.addPostFrameCallback((_) {
                           Navigator.pop(context);
                         });
+                        widget.refresh();
                       });
 
                     }else{
-                      setState(() {
-                        showError = true;
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        Dialogs.snackBar("Select one option", context, isError: true);
                       });
-                      if (showError) {
-                        Timer(const Duration(seconds: 4), () {
-                          setState(() {
-                            showError = false;
-                          });
-                        });
-                      }
-
                     }
                   },child: const OkBtn("Save")),
                 ],

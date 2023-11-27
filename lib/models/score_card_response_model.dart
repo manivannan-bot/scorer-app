@@ -24,6 +24,7 @@ class ScoreCardResponseModel {
 
 class Data {
   List<TeamsName>? teamsName;
+  CurrRunRate? currRunRate;
   List<Batting>? batting;
   List<YetToBatPlayers>? yetToBatPlayers;
   List<Bowling>? bowling;
@@ -33,6 +34,7 @@ class Data {
 
   Data(
       {this.teamsName,
+        this.currRunRate,
         this.batting,
         this.yetToBatPlayers,
         this.bowling,
@@ -47,6 +49,9 @@ class Data {
         teamsName!.add(new TeamsName.fromJson(v));
       });
     }
+    currRunRate = json['currRunRate'] != null
+        ? new CurrRunRate.fromJson(json['currRunRate'])
+        : null;
     if (json['batting'] != null) {
       batting = <Batting>[];
       json['batting'].forEach((v) {
@@ -86,6 +91,9 @@ class Data {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.teamsName != null) {
       data['teamsName'] = this.teamsName!.map((v) => v.toJson()).toList();
+    }
+    if (this.currRunRate != null) {
+      data['currRunRate'] = this.currRunRate!.toJson();
     }
     if (this.batting != null) {
       data['batting'] = this.batting!.map((v) => v.toJson()).toList();
@@ -132,6 +140,28 @@ class TeamsName {
   }
 }
 
+class CurrRunRate {
+  dynamic runRate;
+  dynamic reqRunRate;
+  dynamic targetScore;
+
+  CurrRunRate({this.runRate, this.reqRunRate, this.targetScore});
+
+  CurrRunRate.fromJson(Map<String, dynamic> json) {
+    runRate = json['run_rate'];
+    reqRunRate = json['req_run_rate'];
+    targetScore = json['target_score'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['run_rate'] = this.runRate;
+    data['req_run_rate'] = this.reqRunRate;
+    data['target_score'] = this.targetScore;
+    return data;
+  }
+}
+
 class Batting {
   dynamic runsScored;
   dynamic ballsFaced;
@@ -139,7 +169,9 @@ class Batting {
   dynamic sixes;
   dynamic strikeRate;
   dynamic isOut;
+  dynamic stricker;
   dynamic outType;
+  dynamic outName;
   dynamic wicketBowlerName;
   dynamic wicketerName;
   dynamic playerName;
@@ -151,7 +183,9 @@ class Batting {
         this.sixes,
         this.strikeRate,
         this.isOut,
+        this.stricker,
         this.outType,
+        this.outName,
         this.wicketBowlerName,
         this.wicketerName,
         this.playerName});
@@ -163,7 +197,9 @@ class Batting {
     sixes = json['sixes'];
     strikeRate = json['strike_rate'];
     isOut = json['is_out'];
+    stricker = json['stricker'];
     outType = json['out_type'];
+    outName = json['out_name'];
     wicketBowlerName = json['wicket_bowler_name'];
     wicketerName = json['wicketer_name'];
     playerName = json['player_name'];
@@ -177,7 +213,9 @@ class Batting {
     data['sixes'] = this.sixes;
     data['strike_rate'] = this.strikeRate;
     data['is_out'] = this.isOut;
+    data['stricker'] = this.stricker;
     data['out_type'] = this.outType;
+    data['out_name'] = this.outName;
     data['wicket_bowler_name'] = this.wicketBowlerName;
     data['wicketer_name'] = this.wicketerName;
     data['player_name'] = this.playerName;

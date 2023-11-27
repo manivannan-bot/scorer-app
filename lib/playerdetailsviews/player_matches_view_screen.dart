@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dash/flutter_dash.dart';
 import 'package:scorer/models/players/player_matches_model.dart';
+import 'package:scorer/playerdetailsviews/player_completed_matches.dart';
 import 'package:scorer/provider/player_details_provider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -20,21 +21,7 @@ class PlayerMatchesViewScreen extends StatefulWidget {
 }
 
 class _PlayerMatchesViewScreenState extends State<PlayerMatchesViewScreen> {
-  final List<Map<String, dynamic>> itemList = [
-    {
-      'type': 'live',
 
-
-    },
-    {
-      'type': 'upcoming',
-
-    },
-    {
-      'type': 'completed',
-
-    },
-  ];
   PlayerMatchesModel? playerMatchesModel;
 
   @override
@@ -60,6 +47,9 @@ class _PlayerMatchesViewScreenState extends State<PlayerMatchesViewScreen> {
         child: Center(child: CircularProgressIndicator()),
       );
     }
+    if(playerMatchesModel!.data!.isEmpty){
+      return const Center(child: Text('No data found'),);
+    }
     return Container(
         padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 2.w),
         width: double.infinity,
@@ -83,14 +73,15 @@ class _PlayerMatchesViewScreenState extends State<PlayerMatchesViewScreen> {
                 itemBuilder: (context, int index) {
                   final item = playerMatchesModel!.data![index];
 
-                  if (playerMatchesModel!.data![index].teams!.matchStatus == 0) {
+                  if (playerMatchesModel!.data![index].teams!.matchStatus == 1) {
                     return IndividualPlayerLiveMatches(playerMatchesModel!.data![index].teams,playerMatchesModel!.data![index].teamInnings);
                   } else if (playerMatchesModel!.data![index].teams!.matchStatus == 1) {
                     return IndividualPlayerUpcomingMatches();
                   }  else if (playerMatchesModel!.data![index].teams!.matchStatus == 2) {
-                    return IndividualPlayerCompletedMatches();
+                    return PlayerCompletedMatches(playerMatchesModel!.data![index].teams,playerMatchesModel!.data![index].teamInnings);
+                    //return Container();
                   }
-                  return Container();
+
                 }),
           ),
         )

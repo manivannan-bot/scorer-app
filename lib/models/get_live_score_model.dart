@@ -2,23 +2,50 @@ class GetLiveScoreResponseModel {
   bool? status;
   String? message;
   Matches? matches;
+  dynamic target;
+  RunRate? runRate;
 
-  GetLiveScoreResponseModel({this.status, this.message, this.matches});
+  GetLiveScoreResponseModel({this.status, this.message, this.matches, this.target, this.runRate});
 
   GetLiveScoreResponseModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    matches =
-    json['matches'] != null ? new Matches.fromJson(json['matches']) : null;
+    matches = json['matches'] != null ? new Matches.fromJson(json['matches']) : null;
+    target = json['target'];
+    runRate = json['batting_val'] != null ? new RunRate.fromJson(json['batting_val']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['status'] = this.status;
     data['message'] = this.message;
     if (this.matches != null) {
       data['matches'] = this.matches!.toJson();
     }
+    data['target'] = this.target;
+    data['batting_val'] = this.runRate;
+    return data;
+  }
+}
+
+class RunRate {
+  dynamic reqRunRate;
+  dynamic currentRunRate;
+
+  RunRate({
+    this.reqRunRate,
+    this.currentRunRate
+  });
+
+  RunRate.fromJson(Map<String, dynamic> json) {
+    reqRunRate = json['req_run_rate'];
+    currentRunRate = json['cur_run_rate'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['req_run_rate'] = this.reqRunRate;
+    data['cur_run_rate'] = this.currentRunRate;
     return data;
   }
 }
@@ -147,15 +174,15 @@ class Matches {
 }
 
 class Teams {
-  String? teamName;
-  String? totalRuns;
-  String? totalWickets;
-  int? ballNumber;
-  int? overNumber;
-  int? overs;
-  String? currentOverDetails;
-  int? ballRecordCheck;
-  String? teamLogo;
+  dynamic teamName;
+  dynamic totalRuns;
+  dynamic totalWickets;
+  dynamic ballNumber;
+  dynamic overNumber;
+  dynamic overs;
+  dynamic currentOverDetails;
+  dynamic ballRecordCheck;
+  dynamic teamLogo;
 
   Teams(
       {this.teamName,

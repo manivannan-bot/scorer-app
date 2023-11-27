@@ -1,5 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.scorer">
+    package="com.eleven.scorer">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
    <application
         android:label="scorer"
         android:name="${applicationName}"

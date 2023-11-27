@@ -3,19 +3,23 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:scorer/provider/scoring_provider.dart';
 import 'package:scorer/widgets/cancel_btn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 import '../models/score_update_request_model.dart';
+import '../provider/player_selection_provider.dart';
+import '../provider/score_update_provider.dart';
 import '../utils/colours.dart';
 import '../utils/sizes.dart';
 import '../widgets/ok_btn.dart';
 
 
 class UndoScreen extends StatefulWidget {
-  const UndoScreen({super.key});
+  final VoidCallback refresh;
+  const UndoScreen(this.refresh, {super.key});
 
   @override
   State<UndoScreen> createState() => _UndoScreenState();
@@ -24,14 +28,18 @@ class UndoScreen extends StatefulWidget {
 class _UndoScreenState extends State<UndoScreen> {
   @override
   Widget build(BuildContext context) {
-    return  Dialog(
+    return Dialog(
+      alignment: Alignment.bottomCenter,
+      insetPadding: EdgeInsets.symmetric(
+        horizontal: 5.w,
+        vertical: 4.h
+      ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(25),
       ),
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
-        height: 18.h,
-        width: 80.w,
+        padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+        height: 20.h,
         decoration: BoxDecoration(
           color: AppColor.lightColor,
           borderRadius: BorderRadius.circular(30),
@@ -45,19 +53,26 @@ class _UndoScreenState extends State<UndoScreen> {
                 color: AppColor.blackColour,
               ),),
             ),
-            SizedBox(height: 1.5.h,),
+            SizedBox(height: 1.h,),
             Text("Are you sure ?",style: fontRegular.copyWith(
                 fontSize: 11.sp,
-                color: Color(0xff808080)
+                color: const Color(0xff808080)
             ),),
+            SizedBox(height: 2.h,),
             Expanded(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  CancelBtn("Cancel"),
+                  InkWell(
+                      onTap:(){
+                        Navigator.pop(context);
+                      },
+                      child: const CancelBtn("Cancel")),
                   SizedBox(width: 4.w,),
                   GestureDetector(onTap: ()async{
+                    final player = Provider.of<PlayerSelectionProvider>(context, listen: false);
+                    final score = Provider.of<ScoreUpdateProvider>(context, listen: false);
                     ScoreUpdateRequestModel? scoreUpdate = await retrieveScoreUpdateFromSharedPreferences();
                           if (scoreUpdate != null) {
                             scoreUpdate.ballTypeId = 31;
@@ -65,21 +80,22 @@ class _UndoScreenState extends State<UndoScreen> {
 
                               ScoreUpdateRequestModel? scoreUpdate = await retrieveScoreUpdateFromSharedPreferences();
                               if(scoreUpdate!=null) {
+                                score.setOverNumber(value.data?.overNumber??0);
+                                score.setBallNumber(value.data?.ballNumber??0);
+                                score.setBowlerChangeValue(value.data?.bowlerChange??0);
+                                player.setStrikerId(value.data!.strikerId.toString(), "");
+                                player.setNonStrikerId(value.data!.nonStrikerId.toString(), "");
                                 SharedPreferences prefs = await SharedPreferences.getInstance();
-                                await prefs.setInt('over_number', scoreUpdate.overNumber??0);
-                                await prefs.setInt('ball_number', scoreUpdate.ballNumber??0);
-                                await prefs.setInt('striker_id', scoreUpdate.strikerId ?? 0);
-                                await prefs.setInt('non_striker_id', scoreUpdate.nonStrikerId ?? 0);
-                                await prefs.setInt('bowler_id', scoreUpdate.bowlerId ?? 0);
-                                await prefs.setInt('wicket_keeper_id', scoreUpdate.wicketKeeperId ?? 0);
                                 await prefs.setInt('bowlerPosition', 0);
+                                widget.refresh();
+                                WidgetsBinding.instance.addPostFrameCallback((_) {
+                                  Navigator.pop(context);
+                                });
                               }
-
-                              Navigator.pop(context);
                             });
                           }
                     },
-                      child: OkBtn("ok")),
+                      child: const OkBtn("Ok")),
                 ],
               ),
             ),

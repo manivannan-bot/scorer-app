@@ -1,10 +1,14 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:scorer/models/get_live_score_model.dart';
-import 'package:scorer/view/scoring_tab.dart';
 import 'package:scorer/utils/colours.dart';
 import 'package:scorer/utils/sizes.dart';
+import 'package:scorer/view/scoring_tab.dart';
+import 'package:scorer/widgets/snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import '../Scoring screens/home_screen.dart';
@@ -14,6 +18,7 @@ import '../provider/score_update_provider.dart';
 import '../provider/scoring_provider.dart';
 import '../scorecardScreens/scorecard_screen.dart';
 import '../utils/images.dart';
+import 'new_update_bottom_sheet.dart';
 
 class ScoreUpdateScreen extends StatefulWidget  {
   final String matchId;
@@ -28,10 +33,15 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
 
    late TabController tabController;
    Matches? matchList;
+   String currentRunRate = "";
+   String requiredRunRate = "";
    RefreshController refreshController = RefreshController();
    int? batTeamId;
    int? bowlTeamId;
+   int currentInning=1;
    bool loading = false;
+   String currentOverData = "";
+   String? target;
 
    setDelay() async{
      if(mounted){
@@ -53,7 +63,81 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
     super.initState();
     tabController = TabController(length: 4, vsync: this);
     fetchData();
+    // checkForUpdate();
   }
+
+  checkForUpdate() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    String appName = packageInfo.appName;
+    String packageName = packageInfo.packageName;
+    String version = packageInfo.version;
+    String buildNumber = packageInfo.buildNumber;
+    debugPrint(appName);
+    debugPrint(packageName);
+    debugPrint(version);
+    debugPrint(buildNumber);
+    FirebaseFirestore fireStore = FirebaseFirestore.instance;
+
+    // Get the reference to the "version" collection and document "1"
+    DocumentReference docRef = fireStore.collection('version').doc('1');
+
+    // Fetch the document
+    DocumentSnapshot snapshot = await docRef.get();
+
+    String versionName = "";
+    String versionNumber = "";
+    String versionReleaseNotes = "";
+    bool versionPriority = false;
+    String versionType = "";
+
+    if (snapshot.exists) {
+      // Access the data in the snapshot
+      versionName = snapshot['version_name'].toString();
+      versionNumber = snapshot['version'].toString();
+      versionReleaseNotes = snapshot['release_notes'].toString();
+      versionPriority = snapshot['priority'];
+      versionType = snapshot['type'].toString();
+
+      // Print or use the retrieved data
+      debugPrint('Version Name: $versionName');
+      debugPrint('Version number: $versionNumber');
+      debugPrint('Release Notes: $versionReleaseNotes');
+      debugPrint('Release priority: $versionPriority');
+      debugPrint('Release type: $versionType');
+    } else {
+      debugPrint('Document does not exist');
+    }
+
+    int versionCheck = compareVersions(version, versionNumber.toString());
+    if(versionCheck == -1){
+      showUpdateBottomSheet(versionName, versionReleaseNotes, versionPriority, versionType, versionNumber);
+      // Dialogs.snackBar("Please update your app", context);
+    } else if(versionCheck == 1){
+      Dialogs.snackBar("You are already upto date", context);
+      debugPrint("You are already up to date");
+    }
+  }
+
+   // Function to compare version strings
+   int compareVersions(String version1, String version2) {
+     List<String> v1 = version1.split('.');
+     List<String> v2 = version2.split('.');
+
+     int length = v1.length > v2.length ? v1.length : v2.length;
+
+     for (int i = 0; i < length; i++) {
+       int num1 = i < v1.length ? int.parse(v1[i]) : 0;
+       int num2 = i < v2.length ? int.parse(v2[i]) : 0;
+
+       if (num1 < num2) {
+         return -1; // Version 1 is less than version 2
+       } else if (num1 > num2) {
+         return 1; // Version 1 is greater than version 2
+       }
+     }
+
+     return 0; // Versions are equal
+   }
 
    Future<void> fetchData() async {
      final score = Provider.of<ScoreUpdateProvider>(context, listen: false);
@@ -65,75 +149,63 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
          bowlTeamId = int.parse(widget.team2id);
        });
      });
+     debugPrint("team1 id ${widget.team1id} team 2 id ${widget.team2id}");
      //getting live score
      await ScoringProvider().getLiveScore(widget.matchId, widget.team1id).then((data) async{
        //setting match list
      setState(() {
        matchList = data.matches;
+       currentInning=data.matches!.currentInnings!;
+       target = data.target.toString();
+       currentOverData = data.matches!.teams!.currentOverDetails.toString();
+       currentRunRate = data.runRate!.currentRunRate.toString();
+       requiredRunRate = data.runRate!.reqRunRate.toString();
      });
      int overNumber = 0;
      int ballNumber = 0;
 
      if(score.overNumberInnings != 0 || score.ballNumberInnings != 0){
-       print("crossed 0th over - ON ${score.overNumberInnings} BN ${score.ballNumberInnings}");
-       print("getting the over number and ball number from score update response");
+       debugPrint("crossed 0th over - ON ${score.overNumberInnings} BN ${score.ballNumberInnings}");
+       debugPrint("getting the over number and ball number from previous score update response for next ball");
        overNumber = score.overNumberInnings;
        ballNumber = score.ballNumberInnings;
      } else {
-       print("0th over of the innings");
-       print("getting the over number and ball number from getlive score api - ON $overNumber BN $ballNumber");
+       debugPrint("0th over of the innings - over number and ball number are 0");
+       debugPrint("getting the over number and ball number from getlive score api - ON $overNumber BN $ballNumber");
        overNumber = data.matches!.teams!.overNumber ?? 0;
        ballNumber = data.matches!.teams!.ballNumber ?? 0;
      }
-     //incrementing over number and ball number
+     //setting over number and ball number values for next ball
          if (overNumber == 0 && ballNumber == 0) {
            overNumber = 0;
            ballNumber = 1;
-           print("over number and ball number are 0");
+           debugPrint("over number and ball number are 0");
          }
-         // else if (ballNumber >= 6) {
-         //   overNumber += 1;
-         //   ballNumber = 0;
-         //   print("ball number >= 6");
-         // }
-         else if(ballNumber == 1){
-           print("ball number is 1");
-           ballNumber = 1;
-         }
-
-         else if(overNumber != 0 && ballNumber == 2){
-           print("ball number is 2");
-           ballNumber = 2;
-         } else if(ballNumber == 3){
-           print("ball number is 3");
-           ballNumber = 3;
-         } else if(ballNumber == 4){
-           print("ball number is 4");
-           ballNumber = 4;
-         } else if(ballNumber == 5){
-           print("ball number is 5");
-           ballNumber = 5;
-         } else if (ballNumber == 6) {
-           ballNumber == 6;
-           print("next ball is 6");
-         }
-     WidgetsBinding.instance.addPostFrameCallback((_) {
-       print("while setting value to provider");
+     debugPrint("while setting value to provider");
        score.setOverNumber(overNumber);
        score.setBallNumber(ballNumber);
-     });
-         await Future.delayed(const Duration(seconds: 2));
-     print("over number and ball number after conditions - ON ${score.overNumberInnings} BN ${score.ballNumberInnings}");
      await prefs.setInt('current_innings',data.matches!.currentInnings??1);
 
      refreshController.refreshCompleted();
      });
    }
 
+   String calculateRequiredRuns(String target, String currentRuns){
+     int requiredRuns = int.parse(target) - int.parse(currentRuns);
+     String result = requiredRuns.toString();
+     return result;
+   }
+
+   String calculateRemainingWickets(String wicketsGone){
+     int remWickets = 10 - int.parse(wicketsGone);
+     String result = remWickets.toString();
+     return result;
+   }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async{
+      onWillPop:() async{
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
@@ -178,7 +250,22 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
                                           builder: (context) => const HomeScreen()));
                                 },
                                 child: Icon(Icons.arrow_back,color: AppColor.lightColor, size: 7.w,)),
-                            Text(
+                            currentInning == 2
+                                ? Container(
+                              padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.8.h),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: AppColor.lightColor,
+                              ),
+                              child: Text(
+                                'Target: $target',
+                                style: fontSemiBold.copyWith(
+                                  fontSize: 10.sp,
+                                  color: AppColor.blackColour,
+                                ),
+                              ),
+                            )
+                            : Text(
                               'Team',
                               style: fontMedium.copyWith(
                                 fontSize: 18.sp,
@@ -207,42 +294,100 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
                                 ),
                               ],
                             ),
-                            Column(
-                              children: [
-                                Text(
-                                  '${matchList!.tossWinnerName} won the Toss\nand Choose to ${matchList!.choseTo} ',
-                                  textAlign: TextAlign.center,
-                                  style: fontRegular.copyWith(
-                                      fontSize: 11.sp,
-                                      color: AppColor.lightColor
-                                  )
-                                ),
-                                Text('${matchList!.teams!.totalRuns}/${matchList!.teams!.totalWickets}',
-                                    style: fontMedium.copyWith(
-                                    fontSize: 25.sp,
-                                    color: AppColor.lightColor
-                                )),
-                                Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.8.h),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: AppColor.primaryColor,
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  currentInning == 2 ? const SizedBox() : Text(
+                                    '${matchList!.tossWinnerName} won the Toss\nand Choose to ${matchList!.choseTo} ',
+                                    textAlign: TextAlign.center,
+                                    style: fontRegular.copyWith(
+                                        fontSize: 11.sp,
+                                        color: AppColor.lightColor
+                                    )
                                   ),
-                                  child: Text(
-                                    'Overs: ${matchList!.teams!.currentOverDetails}/${matchList!.overs}',
-                                    style: fontMedium.copyWith(
-                                      fontSize: 11.sp,
-                                      color: AppColor.blackColour,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Text('${matchList!.teams!.totalRuns}',
+                                          style: fontMedium.copyWith(
+                                              fontSize: 22.sp,
+                                              color: AppColor.lightColor
+                                          )),
+                                      Text('/',
+                                          style: fontMedium.copyWith(
+                                              fontSize: 23.sp,
+                                              color: AppColor.lightColor
+                                          )),
+                                      Text('${matchList!.teams!.totalWickets}',
+                                          style: fontMedium.copyWith(
+                                              fontSize: 22.sp,
+                                              color: AppColor.lightColor
+                                          )),
+                                    ],
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.8.h),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: AppColor.primaryColor,
+                                    ),
+                                    child: Text(
+                                      'Overs: ${matchList!.teams!.currentOverDetails}/${matchList!.overs}',
+                                      style: fontMedium.copyWith(
+                                        fontSize: 10.sp,
+                                        color: AppColor.blackColour,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                SizedBox(height: 1.h,),
-                                Text("Innings ${matchList!.currentInnings??'0'}",
-                                  style: fontRegular.copyWith(
-                                  fontSize: 12.sp,
-                                  color: AppColor.lightColor,
-                                ),)
-                              ],
+                                  currentInning == 2
+                                      ? Padding(
+                                        padding: EdgeInsets.only(top: 2.h),
+                                        child: Text("${matchList!.teams!.teamName.toString()} "
+                                        "need ${calculateRequiredRuns(target.toString(), matchList!.teams!.totalRuns.toString())} more"
+                                        " ${int.parse(calculateRequiredRuns(target.toString(), matchList!.teams!.totalRuns.toString())) > 1 ? "runs" : "run"} to win",
+                                    textAlign: TextAlign.center,
+                                    style: fontRegular.copyWith(
+                                        fontSize: 10.sp,
+                                        color: AppColor.lightColor,
+                                    ),),
+                                      ) : const SizedBox(),
+                                  if(currentInning == 2)...[
+                                    AnimatedTextKit(
+                                      pause: const Duration(milliseconds: 1500),
+                                      repeatForever: true,
+                                      stopPauseOnTap: false,
+                                      animatedTexts: [
+                                        RotateAnimatedText("CRR - $currentRunRate",
+                                          textAlign: TextAlign.center,
+                                          duration: const Duration(milliseconds: 2000),
+                                          textStyle: fontRegular.copyWith(
+                                            fontSize: 11.sp,
+                                            color: AppColor.lightColor,
+                                          ),),
+                                        RotateAnimatedText("RRR - $requiredRunRate",
+                                          textAlign: TextAlign.center,
+                                          duration: const Duration(milliseconds: 2000),
+                                          textStyle: fontRegular.copyWith(
+                                            fontSize: 11.sp,
+                                            color: AppColor.lightColor,
+                                          ),),
+                                      ],
+                                    ),
+                                  ] else...[
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 2.h),
+                                      child: Text("CRR - $currentRunRate",
+                                        textAlign: TextAlign.center,
+                                        style: fontRegular.copyWith(
+                                          fontSize: 10.sp,
+                                          color: AppColor.lightColor,
+                                        ),),
+                                    ),
+                                  ],
+                                ],
+                              ),
                             ),
                             Column(
                               children: [
@@ -263,39 +408,56 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
                 ],
               ),
               SizedBox(height: 1.h,),
-              Padding(
-                padding:  EdgeInsets.only(bottom: 2.h,),
-                child: TabBar(
-                    unselectedLabelColor: AppColor.unselectedTabColor,
-                    labelColor:  const Color(0xffD78108),
-                    indicatorColor: const Color(0xffD78108),
-                    isScrollable: true,
-                    indicatorWeight: 2.0,
-                     labelPadding: EdgeInsets.symmetric(vertical: 0.4.h, horizontal: 3.5.w),
-                    indicatorSize: TabBarIndicatorSize.tab,
-                    controller: tabController,
-                    tabs: [
-                      Text('Scoring',style: fontRegular.copyWith(fontSize: 12.sp,),),
-                      Text('Score Card',style: fontRegular.copyWith(fontSize: 12.sp,),),
-                      Text('Commentary',style: fontRegular.copyWith(fontSize: 12.sp,),),
-                      Text('Info',style: fontRegular.copyWith(fontSize: 12.sp,),),
-                    ]
-                ),
+              TabBar(
+                  unselectedLabelColor: AppColor.unselectedTabColor,
+                  labelColor:  const Color(0xffD78108),
+                  indicatorColor: const Color(0xffD78108),
+                  isScrollable: true,
+                  indicatorWeight: 2.0,
+                   labelPadding: EdgeInsets.symmetric(vertical: 0.4.h, horizontal: 3.5.w),
+                  indicatorSize: TabBarIndicatorSize.label,
+                  controller: tabController,
+                  tabs: [
+                    Text('Scoring',style: fontRegular.copyWith(fontSize: 12.sp,),),
+                    Text('Scorecard',style: fontRegular.copyWith(fontSize: 12.sp,),),
+                    Text('Commentary',style: fontRegular.copyWith(fontSize: 12.sp,),),
+                    Text('Info',style: fontRegular.copyWith(fontSize: 12.sp,),),
+                  ]
               ),
-              Expanded(
-                child: TabBarView(
-                    controller: tabController,
-                    children:  [
-                      ScoringTab(widget.matchId,batTeamId.toString(),bowlTeamId.toString(), fetchData),
-                      ScorecardScreen(widget.matchId,batTeamId.toString(),fetchData),
-                      CommentaryScreen(widget.matchId,batTeamId.toString(),bowlTeamId.toString(),fetchData),
-                      InfoScreen(widget.matchId),
-                    ]),
-              )
-            ],
+              Theme(
+                  data: ThemeData(
+                    dividerTheme: const DividerThemeData(
+                      space: 0,
+                      thickness: 0.5,
+                      indent: 0,
+                      endIndent: 0,
+                    ),
+                  ),
+                  child: const Divider()),
+                Expanded(
+                  child: TabBarView(
+                      controller: tabController,
+                      children: [
+                        ScoringTab(widget.matchId,batTeamId.toString(),bowlTeamId.toString(), fetchData, currentOverData),
+                        ScorecardScreen(widget.matchId,batTeamId.toString(),bowlTeamId.toString(),currentInning.toString(),fetchData),
+                        CommentaryScreen(widget.matchId,batTeamId.toString(),bowlTeamId.toString(),fetchData),
+                        InfoScreen(widget.matchId),
+                      ]),
+                )
+              ],
+            ),
           ),
         ),
-      ),
+    );
+  }
+
+  showUpdateBottomSheet(String versionHeading, String releaseNotes, bool priority, String type, String versionNumber){
+    showModalBottomSheet(context: context,
+        isScrollControlled: true,
+        enableDrag: false,
+        isDismissible: false,
+        backgroundColor: Colors.transparent,
+        builder: (context)=> NewUpdateBottomSheet(versionHeading, releaseNotes, priority, type, versionNumber)
     );
   }
 }

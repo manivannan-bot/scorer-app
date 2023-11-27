@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:scorer/models/user_profile_model.dart';
+import 'package:scorer/provider/player_details_provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../playerdetailsviews/player_detail_view_screen.dart';
@@ -18,8 +20,25 @@ class MoreScreen extends StatefulWidget {
 }
 
 class _MoreScreenState extends State<MoreScreen> {
+  UserProfileModel? userProfileModel;
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+        fetchData(){
+            PlayerDetailsProvider().getUserProfile('3').then((value){
+              setState(() {
+                userProfileModel=value;
+              });
+            });
+        }
   @override
   Widget build(BuildContext context) {
+    if(userProfileModel==null){
+      return const SizedBox(height: 100,width: 100,
+          child: Center(child: CircularProgressIndicator(),));
+    }
     return Scaffold(
       backgroundColor: AppColor.bgColor,
       body: Stack(
@@ -73,13 +92,13 @@ class _MoreScreenState extends State<MoreScreen> {
                             crossAxisAlignment: CrossAxisAlignment
                                 .start,
                             children: [
-                              Text("Prasanth",
+                              Text("${userProfileModel!.data!.first.name}",
                                 style: fontMedium.copyWith(
                                     fontSize: 18.sp,
                                     color: AppColor.lightColor
                                 ),),
                               SizedBox(height: 0.2.h),
-                              Text("9856235665",
+                              Text("${userProfileModel!.data!.first.mobileNo}",
                                 style: fontRegular.copyWith(
                                     fontSize: 10.sp,
                                     color: AppColor.lightColor
@@ -126,8 +145,8 @@ class _MoreScreenState extends State<MoreScreen> {
                                     ClipRRect(
                                       borderRadius: BorderRadius
                                           .circular(3.0),
-                                      child: LinearProgressIndicator(
-                                        color: const Color(0xffF9D700),
+                                      child: const LinearProgressIndicator(
+                                        color: Color(0xffF9D700),
                                         backgroundColor: AppColor
                                             .lightColor,
                                         value: 0.5,

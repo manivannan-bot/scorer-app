@@ -1,65 +1,82 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:lecle_yoyo_player/lecle_yoyo_player.dart';
 import 'package:scorer/utils/colours.dart';
 import 'package:scorer/utils/sizes.dart';
 import 'package:sizer/sizer.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
-class SampleScreen extends StatelessWidget {
+class SampleScreen extends StatefulWidget {
   const SampleScreen({super.key});
 
   @override
+  State<SampleScreen> createState() => _SampleScreenState();
+}
+
+class _SampleScreenState extends State<SampleScreen> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 5.w,
-          vertical: 10.h
-        ),
-        child: Column(
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
           children: [
-            Container(
-              width: double.maxFinite,
-              decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Color(0xff454545),
-                      Color(0xff8C8C8C),
-                    ],
+            YoYoPlayer(
+                aspectRatio: 16 / 9,
+                // Url (Video streaming links)
+                // 'https://dsqqu7oxq6o1v.cloudfront.net/preview-9650dW8x3YLoZ8.webm',
+                // "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4",
+                // "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                url:  "https://player.mslivestream.net/mslive/5de51b96f0ce068d74abece2cd57527b.sdp/playlist.m3u8",
+                videoStyle: const VideoStyle(
+                  qualityStyle: TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
                   ),
-                borderRadius: BorderRadius.circular(15.0)
-              ),
-              child: Stack(
-                children: [
-                  SvgPicture.asset("assets/images/bowling_spell_img.svg", fit: BoxFit.cover, width: 90.w,),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 7.w,
-                      vertical: 0.8.h
-                    ),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        bottomRight: Radius.circular(25.0),
-                        topLeft: Radius.circular(15.0),
-                      ),
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          AppColor.primaryColor,
-                          AppColor.secondaryColor,
-                        ],
-                      ),
-                    ),
-                    child: Text("New Bowling Spell",
-                    style: fontRegular.copyWith(
-                      color: AppColor.textColor,
-                      fontSize: 11.sp
-                    ),),
+                  forwardAndBackwardBtSize: 30.0,
+                  playButtonIconSize: 40.0,
+                  playIcon: Icon(
+                    Icons.add_circle_outline_outlined,
+                    size: 40.0, color: Colors.white,
                   ),
-                ],
-              ),
+                  pauseIcon: Icon(
+                    Icons.remove_circle_outline_outlined,
+                    size: 40.0, color: Colors.white,
+                  ),
+                  videoQualityPadding: EdgeInsets.all(5.0),
+                ),
+                videoLoadingStyle: const VideoLoadingStyle(
+                  loading: Center(
+                    child: Text("Loading video"),
+                  ),
+                ),
+                allowCacheFile: true,
+                onCacheFileCompleted: (files) {
+                  print('Cached file length ::: ${files?.length}');
+
+                  if (files != null && files.isNotEmpty) {
+                    for (var file in files) {
+                      print('File path ::: ${file.path}');
+                    }
+                  }
+                },
+                onCacheFileFailed: (error) {
+                  print('Cache file error ::: $error');
+                },
+                onFullScreen: (value) {
+                  setState(() {
+                    // if (fullscreen != value) {
+                    //   fullscreen = value;
+                    // }
+                  });
+                }
             ),
           ],
         ),

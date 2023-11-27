@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dash/flutter_dash.dart';
+import 'package:scorer/models/matches/umpire_matches_model.dart';
 import 'package:sizer/sizer.dart';
 
 import '../utils/colours.dart';
@@ -7,7 +8,8 @@ import '../utils/images.dart';
 import '../utils/sizes.dart';
 
 class IndividualPlayerCompletedMatches extends StatefulWidget {
-  const IndividualPlayerCompletedMatches({super.key});
+  final Matches item;
+  const IndividualPlayerCompletedMatches(this.item, {super.key});
 
   @override
   State<IndividualPlayerCompletedMatches> createState() => _IndividualPlayerCompletedMatchesState();
@@ -47,29 +49,17 @@ class _IndividualPlayerCompletedMatchesState extends State<IndividualPlayerCompl
                                 RichText(
                                     text: TextSpan(children: [
                                       TextSpan(
-                                          text: ('T'),
+                                          text: ('${widget.item.teams!.team1Name}'),
                                           style: fontMedium.copyWith(
                                             fontSize: 13.sp,
                                             color: AppColor.blackColour,
-                                          )),
-                                      TextSpan(
-                                          text: "&",
-                                          style: fontMedium.copyWith(
-                                              fontSize: 13.sp,
-                                              color: AppColor.blackColour
-                                          )),
-                                      TextSpan(
-                                          text: "T",
-                                          style: fontMedium.copyWith(
-                                              fontSize: 13.sp,
-                                              color: AppColor.blackColour
                                           )),
                                     ])),
                                 SizedBox(width: 3.w,),
                                 RichText(
                                     text: TextSpan(children: [
                                       TextSpan(
-                                          text: ('0'),
+                                          text: ('${widget.item.teamInnings!.first.totalScore}'),
                                           style: fontMedium.copyWith(
                                             fontSize: 13.sp,
                                             color: AppColor.pri,
@@ -81,7 +71,7 @@ class _IndividualPlayerCompletedMatchesState extends State<IndividualPlayerCompl
                                               color: AppColor.pri
                                           )),
                                       TextSpan(
-                                          text: "0",
+                                          text: "${widget.item.teamInnings!.first.totalWickets}",
                                           style: fontMedium.copyWith(
                                               fontSize: 13.sp,
                                               color: AppColor.pri
@@ -91,7 +81,7 @@ class _IndividualPlayerCompletedMatchesState extends State<IndividualPlayerCompl
                                 RichText(
                                     text: TextSpan(children: [
                                       TextSpan(
-                                          text: ('0.0'),
+                                          text: ('${widget.item.teamInnings!.first.currOvers}'),
                                           style: fontMedium.copyWith(
                                               fontSize: 13.sp,
                                               color: Color(0xff444444)
@@ -103,7 +93,7 @@ class _IndividualPlayerCompletedMatchesState extends State<IndividualPlayerCompl
                                               color: Color(0xff444444)
                                           )),
                                       TextSpan(
-                                          text: "10",
+                                          text: "${widget.item.teamInnings!.first.totalOvers}",
                                           style: fontMedium.copyWith(
                                               fontSize: 13.sp,
                                               color: Color(0xff444444)
@@ -123,29 +113,18 @@ class _IndividualPlayerCompletedMatchesState extends State<IndividualPlayerCompl
                                 RichText(
                                     text: TextSpan(children: [
                                       TextSpan(
-                                          text: ('T'),
+                                          text: ('${widget.item.teams!.team2Name}'),
                                           style: fontMedium.copyWith(
                                             fontSize: 13.sp,
                                             color: AppColor.blackColour,
                                           )),
-                                      TextSpan(
-                                          text: "&",
-                                          style: fontMedium.copyWith(
-                                              fontSize: 13.sp,
-                                              color: AppColor.blackColour
-                                          )),
-                                      TextSpan(
-                                          text: "T",
-                                          style: fontMedium.copyWith(
-                                              fontSize: 13.sp,
-                                              color: AppColor.blackColour
-                                          )),
+
                                     ])),
                                 SizedBox(width: 3.w,),
                                 RichText(
                                     text: TextSpan(children: [
                                       TextSpan(
-                                          text: ('0'),
+                                          text: ('${widget.item.teamInnings![1].totalScore}'),
                                           style: fontMedium.copyWith(
                                             fontSize: 13.sp,
                                             color: AppColor.pri,
@@ -157,17 +136,17 @@ class _IndividualPlayerCompletedMatchesState extends State<IndividualPlayerCompl
                                               color: AppColor.pri
                                           )),
                                       TextSpan(
-                                          text: "0",
+                                          text: "${widget.item.teamInnings![1].totalWickets}",
                                           style: fontMedium.copyWith(
                                               fontSize: 13.sp,
                                               color: AppColor.pri
                                           )),
                                     ])),
-                                SizedBox(width: 3.w,),
+                                SizedBox(width: 1.w,),
                                 RichText(
                                     text: TextSpan(children: [
                                       TextSpan(
-                                          text: ('0.0'),
+                                          text: ('${widget.item.teamInnings![1].currOvers}'),
                                           style: fontMedium.copyWith(
                                               fontSize: 13.sp,
                                               color: Color(0xff444444)
@@ -179,7 +158,7 @@ class _IndividualPlayerCompletedMatchesState extends State<IndividualPlayerCompl
                                               color: Color(0xff444444)
                                           )),
                                       TextSpan(
-                                          text: "10",
+                                          text: "${widget.item.teamInnings![1].totalOvers}",
                                           style: fontMedium.copyWith(
                                               fontSize: 13.sp,
                                               color: Color(0xff444444)
@@ -207,11 +186,11 @@ class _IndividualPlayerCompletedMatchesState extends State<IndividualPlayerCompl
                       width: 1.w,
                     ),
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
                           padding: EdgeInsets.symmetric(
-                              horizontal: 5.w,
+                              horizontal: 2.w,
                               vertical: 0.2.h
                           ),
                           decoration: const BoxDecoration(
@@ -232,34 +211,32 @@ class _IndividualPlayerCompletedMatchesState extends State<IndividualPlayerCompl
                           height: 1.h,
                         ),
                         Padding(
-                          padding:  EdgeInsets.only(right: 4.w,top: 1.h),
+                          padding:  EdgeInsets.only(top: 1.h),
                           child: Column(
                             children: [
                               RichText(
                                   text: TextSpan(children: [
                                     TextSpan(
-                                        text: ('T&T '),
+                                        text: ('${widget.item.teams!.wonTeam} '),
                                         style: fontMedium.copyWith(
                                           fontSize: 13.sp,
                                           color: AppColor.pri,
                                         )),
                                     TextSpan(
-                                        text: "won",
+                                        text: ('${widget.item.teams!.resultDescription?.split(' ')[0]??''} \n'),
                                         style: fontMedium.copyWith(
-                                            fontSize: 13.sp,
-                                            color: AppColor.pri
+                                          fontSize: 13.sp,
+                                          color: AppColor.pri,
                                         )),
                                     TextSpan(
-                                        text: "\nby 9 runs",
+                                        text: ('${widget.item.teams!.resultDescription?.split(' ')[1]??''} ${widget.item.teams!.resultDescription?.split(' ')[2]??''} ${widget.item.teams!.resultDescription?.split(' ')[3]??''}'),
                                         style: fontMedium.copyWith(
-                                            fontSize: 13.sp,
-                                            color: AppColor.blackColour
+                                          fontSize: 13.sp,
+                                          color: AppColor.pri,
                                         )),
+
                                   ])),
-                              // Text("T&T won\nby 9 runs",style: fontRegular.copyWith(
-                              //     fontSize: 12.sp,
-                              //     color: Color(0xff666666)
-                              // ),),
+
                             ],
                           ),
                         ),

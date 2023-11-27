@@ -354,7 +354,7 @@ class _keeperInjuryState extends State<keeperInjury> {
                                     ),
                                   ),
                                 ), SizedBox(width: 3.w,),
-                                Image.asset(Images.playersImage,width: 10.w,),
+                                Image.network(Images.playersImage,width: 10.w,),
                                 SizedBox(width: 2.w,),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,

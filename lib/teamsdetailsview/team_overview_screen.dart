@@ -18,17 +18,7 @@ class TeamOverviewScreen extends StatefulWidget {
 }
 
 class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
-  List<Map<String,dynamic>> itemList=[
-    {
-      "image":'assets/images/req_list.png',
-      "name":"Akash",
-      "team":"(Toss and Tails)",
-      "dot":".",
-      "batsman":"Right hand batsman",
-      "button":"Connect",
-    },
-    {}, {}, {}, {},
-  ];
+
   TeamOverview? teamOverview;
   @override
   void initState() {
@@ -42,9 +32,10 @@ class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
         });
       });
   }
+
   @override
   Widget build(BuildContext context) {
-    if(teamOverview==null||teamOverview!.data==null){
+    if(teamOverview==null){
       return const SizedBox(
         height: 50,
         width: 50,
@@ -54,6 +45,9 @@ class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
           ),
         ),
       );
+    }
+    if(teamOverview!.data==null){
+      return const Center(child: Text('No data found'),);
     }
     return Scaffold(
       body: SingleChildScrollView(
@@ -158,10 +152,40 @@ class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
                 ),
                 child: Row(
                   children: [
-                    Text("Team stats",style: fontMedium.copyWith(
-                      fontSize: 14.sp,
-                      color: AppColor.blackColour,
-                    ),),
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        SizedBox(width: 20.w,
+                          height: 20.w,
+                          child: CircularProgressIndicator(
+                            value: teamOverview!.data!.teamStats!.matchWonCount! /
+                                (teamOverview!.data!.teamStats!.matchWonCount! +
+                                    teamOverview!.data!.teamStats!.matchLossCount!),
+                            valueColor: const AlwaysStoppedAnimation<Color>(Color(0xff008000)),  // Color for "Won"
+                            backgroundColor: AppColor.redColor,  // Color for "Lost"
+                            strokeWidth: 6.0,
+                          ),
+                        ),
+                        Positioned(
+                          left: 6.w,
+                            child: Text(
+                            "   ${teamOverview!.data!.teamStats!.matchCount}\n",
+                            style: fontMedium.copyWith(
+                              fontSize: 10.sp,  // Adjust the font size as needed
+                              color: AppColor.blackColour,
+                        ))),
+                        SizedBox(height: 1.h,),
+                        Positioned(
+                          top: 4.h,
+                            child: Text(
+                                "matches",
+                                style: fontMedium.copyWith(
+                                  fontSize: 10.sp,  // Adjust the font size as needed
+                                  color: AppColor.blackColour,
+                                ))),
+                      ],
+                    ),
+
                     SizedBox(width: 10.w,),
                     Expanded(
                       child: Column(
@@ -212,7 +236,7 @@ class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
                             ],
                           ),
                           SizedBox(height: 1.h,),
-                          DottedLine(
+                          const DottedLine(
                             dashColor: Color(0xffD2D2D2),
                           ),
                           SizedBox(height: 1.h,),
@@ -253,7 +277,7 @@ class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
               SizedBox(height: 2.h,),
               Row(
                 children: [
-                  Container(
+                  (teamOverview!.data!.mostRun!=null)?Container(
                     width: 44.w,
                     padding: EdgeInsets.symmetric(horizontal: 2.w,vertical: 2.h),
                     decoration: BoxDecoration(
@@ -285,7 +309,7 @@ class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
                                 SizedBox(height: 0.5.h,),
                                 Row(
                                   children: [
-                                    CircleAvatar(
+                                    const CircleAvatar(
                                       backgroundColor: AppColor.pri,
                                       radius: 4,
                                     ),
@@ -300,7 +324,7 @@ class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
                           ],
                         ),
                         SizedBox(height: 1.h,),
-                        DottedLine(
+                        const DottedLine(
                           dashColor: Color(0xffD2D2D2),
                         ),
                         SizedBox(height: 1.h,),
@@ -319,9 +343,9 @@ class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
                         ),
                       ],
                     ),
-                  ),
+                  ):const Text(''),
                   SizedBox(width: 4.w,),
-                  Container(
+                  (teamOverview!.data!.mostWicket!=null)?Container(
                     width: 44.w,
                     padding: EdgeInsets.symmetric(horizontal: 2.w,vertical: 2.h),
                     decoration: BoxDecoration(
@@ -387,7 +411,7 @@ class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
                         ),
                       ],
                     ),
-                  ),
+                  ):const Text(''),
 
                 ],
               )

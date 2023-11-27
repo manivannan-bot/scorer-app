@@ -2,8 +2,12 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dash/flutter_dash.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:scorer/models/matches/completed_matches_model.dart';
+import 'package:scorer/provider/match_provider.dart';
 import 'package:sizer/sizer.dart';
 
+import '../models/all_matches_model.dart';
+import '../provider/scoring_provider.dart';
 import '../utils/colours.dart';
 import '../utils/images.dart';
 import '../utils/styles.dart';
@@ -19,11 +23,32 @@ class CompletedScreen extends StatefulWidget {
 }
 
 class _CompletedScreenState extends State<CompletedScreen> {
-  final List<Map<String,dynamic>>itemList=[
-    {},{},{},
-  ];
+
+
+  List<Data>? matchList=[];
+  Future<List<Data>?>? futureData;
+  getData(){
+    futureData = MatchProvider().getCompletedMatches().then((value) {
+      setState(() {
+        matchList=[];
+        matchList=value.data;
+      });
+
+      return matchList;
+    } );
+  }
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
   @override
   Widget build(BuildContext context) {
+    if(matchList!.isEmpty){
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return ListView.separated(
         physics: const BouncingScrollPhysics(),
         separatorBuilder: (context, _) {
@@ -31,9 +56,12 @@ class _CompletedScreenState extends State<CompletedScreen> {
             padding: EdgeInsets.only(bottom: 2.h),
           );
         },
-        itemCount:itemList.length ,
-        itemBuilder: (BuildContext, int index) {
-          final item = itemList[index];
+        itemCount:matchList!.length ,
+        itemBuilder: (context, int index) {
+          final item = matchList![index];
+          if(item.teamInnings!.isEmpty){
+            return const Center(child: Text('No data Innings data founs'));
+          }
           return Padding(
             padding:  EdgeInsets.symmetric(horizontal: 3.w),
             child: Column(
@@ -62,29 +90,18 @@ class _CompletedScreenState extends State<CompletedScreen> {
                                     RichText(
                                         text: TextSpan(children: [
                                           TextSpan(
-                                              text: ('T'),
+                                              text: ('${item.teams!.team1Name}'),
                                               style: fontMedium.copyWith(
                                                 fontSize: 13.sp,
                                                 color: AppColor.blackColour,
                                               )),
-                                          TextSpan(
-                                              text: "&",
-                                              style: fontMedium.copyWith(
-                                                  fontSize: 13.sp,
-                                                  color: AppColor.blackColour
-                                              )),
-                                          TextSpan(
-                                              text: "T",
-                                              style: fontMedium.copyWith(
-                                                  fontSize: 13.sp,
-                                                  color: AppColor.blackColour
-                                              )),
+
                                         ])),
                                     SizedBox(width: 3.w,),
                                     RichText(
                                         text: TextSpan(children: [
                                           TextSpan(
-                                              text: ('0'),
+                                              text: ('${item.teamInnings!.first.totalScore}'),
                                               style: fontMedium.copyWith(
                                                 fontSize: 13.sp,
                                                 color: AppColor.pri,
@@ -96,7 +113,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
                                                   color: AppColor.pri
                                               )),
                                           TextSpan(
-                                              text: "0",
+                                              text: "${item.teamInnings!.first.totalWickets}",
                                               style: fontMedium.copyWith(
                                                   fontSize: 13.sp,
                                                   color: AppColor.pri
@@ -106,7 +123,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
                                     RichText(
                                         text: TextSpan(children: [
                                           TextSpan(
-                                              text: ('0.0'),
+                                              text: ('${item.teamInnings!.first.currOvers}'),
                                               style: fontMedium.copyWith(
                                                   fontSize: 13.sp,
                                                   color: Color(0xff444444)
@@ -118,7 +135,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
                                                   color: Color(0xff444444)
                                               )),
                                           TextSpan(
-                                              text: "10",
+                                              text: "${item.teamInnings!.first.totalOvers}",
                                               style: fontMedium.copyWith(
                                                   fontSize: 13.sp,
                                                   color: Color(0xff444444)
@@ -138,29 +155,18 @@ class _CompletedScreenState extends State<CompletedScreen> {
                                     RichText(
                                         text: TextSpan(children: [
                                           TextSpan(
-                                              text: ('T'),
+                                              text: ('${item.teams!.team2Name}'),
                                               style: fontMedium.copyWith(
                                                 fontSize: 13.sp,
                                                 color: AppColor.blackColour,
                                               )),
-                                          TextSpan(
-                                              text: "&",
-                                              style: fontMedium.copyWith(
-                                                  fontSize: 13.sp,
-                                                  color: AppColor.blackColour
-                                              )),
-                                          TextSpan(
-                                              text: "T",
-                                              style: fontMedium.copyWith(
-                                                  fontSize: 13.sp,
-                                                  color: AppColor.blackColour
-                                              )),
+
                                         ])),
                                     SizedBox(width: 3.w,),
                                     RichText(
                                         text: TextSpan(children: [
                                           TextSpan(
-                                              text: ('0'),
+                                              text: ('${item.teamInnings![1].totalScore}'),
                                               style: fontMedium.copyWith(
                                                 fontSize: 13.sp,
                                                 color: AppColor.pri,
@@ -172,7 +178,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
                                                   color: AppColor.pri
                                               )),
                                           TextSpan(
-                                              text: "0",
+                                              text: "${item.teamInnings![1].totalWickets}",
                                               style: fontMedium.copyWith(
                                                   fontSize: 13.sp,
                                                   color: AppColor.pri
@@ -182,7 +188,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
                                     RichText(
                                         text: TextSpan(children: [
                                           TextSpan(
-                                              text: ('0.0'),
+                                              text: ('${item.teamInnings![1].currOvers}'),
                                               style: fontMedium.copyWith(
                                                   fontSize: 13.sp,
                                                   color: Color(0xff444444)
@@ -194,7 +200,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
                                                   color: Color(0xff444444)
                                               )),
                                           TextSpan(
-                                              text: "10",
+                                              text: "${item.teamInnings![1].totalOvers}",
                                               style: fontMedium.copyWith(
                                                   fontSize: 13.sp,
                                                   color: Color(0xff444444)
@@ -230,28 +236,29 @@ class _CompletedScreenState extends State<CompletedScreen> {
                                     RichText(
                                         text: TextSpan(children: [
                                           TextSpan(
-                                              text: ('T&T '),
-                                              style: fontMedium.copyWith(
-                                                fontSize: 13.sp,
-                                                color: AppColor.pri,
-                                              )),
+                                            text: '${item.teams!.wonTeam??''} ',
+                                            style: fontMedium.copyWith(
+                                              fontSize: 13.sp,
+                                              color: AppColor.pri,
+                                            ),
+                                          ),
                                           TextSpan(
-                                              text: "won",
-                                              style: fontMedium.copyWith(
-                                                  fontSize: 13.sp,
-                                                  color: AppColor.pri
-                                              )),
+                                            text: '${item.teams!.resultDescription?.split(' ')[0] ?? ''} \n',
+                                            style: fontMedium.copyWith(
+                                              fontSize: 13.sp,
+                                              color: AppColor.pri,
+                                            ),
+                                          ),
                                           TextSpan(
-                                              text: "\nby 9 runs",
-                                              style: fontMedium.copyWith(
-                                                  fontSize: 13.sp,
-                                                  color: AppColor.blackColour
-                                              )),
+                                            text: '${item.teams!.resultDescription?.split(' ')[1] ?? ''} ${item.teams!.resultDescription?.split(' ')[2]??''} ${item.teams!.resultDescription?.split(' ')[3]??''}',
+                                            style: fontMedium.copyWith(
+                                              fontSize: 13.sp,
+                                              color: AppColor.pri,
+                                            ),
+                                          ),
+
                                         ])),
-                                    // Text("T&T won\nby 9 runs",style: fontRegular.copyWith(
-                                    //     fontSize: 12.sp,
-                                    //     color: Color(0xff666666)
-                                    // ),),
+
                                   ],
                                 ),
                               ),

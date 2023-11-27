@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../utils/colours.dart';
 import '../../utils/sizes.dart';
 
 class ScorerGridItem extends StatelessWidget {
@@ -12,20 +13,30 @@ class ScorerGridItem extends StatelessWidget {
     return Container(
       height: 12.h,
       width: 19.w,
-      decoration: const BoxDecoration(shape: BoxShape.rectangle,color: Colors.black,),
+      padding: EdgeInsets.symmetric(vertical: 1.5.h),
+      decoration: const BoxDecoration(shape: BoxShape.rectangle,color: AppColor.scoreUpdateBg,),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(height: 2.h,),
-          CircleAvatar(
-            radius: 6.w, // Adjust the radius as needed for the circle size
-            backgroundColor: Colors.white,
-            child: Text(
-              "$index",
-              style:  fontRegular.copyWith(color: Colors.black, fontSize: 2.h),
+          if(text == "UNDO" || text == "OTHER")...[
+            const SizedBox()
+          ] else ...[
+            CircleAvatar(
+              radius: 6.w, // Adjust the radius as needed for the circle size
+              backgroundColor: Colors.white,
+              child: Text(
+                index,
+                style: fontMedium.copyWith(
+                    color: AppColor.textColor, fontSize: 16.sp),
+              ),
             ),
-          ),
-          SizedBox(height:  0.5.h,),
-          Text('$text', style: fontRegular.copyWith(color: Colors.white)),
+            SizedBox(height: 1.h,),
+          ],
+          text == "" ? const SizedBox() : Text(text == "UNDO" ? "Undo" : text == "OTHER" ? "Other" : text,
+              style: fontSemiBold.copyWith(
+              color: AppColor.lightColor,
+              fontSize: text == "UNDO" || text == "OTHER" ?  14.sp : 9.sp)),
         ],
       ),
     );
