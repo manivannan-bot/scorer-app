@@ -49,7 +49,7 @@ class _LiveScreenState extends State<LiveScreen> {
     final score = Provider.of<ScoreUpdateProvider>(context, listen: false);
     if(matchList?.first.currentInnings == 2){
       score.setInnings(2);
-      if(players.firstInningsIdsCleared){
+      if(!players.firstInningsIdsCleared){
         debugPrint("ids already cleared for 1st innings");
       } else {
         debugPrint("clearing ids for 1st innings");

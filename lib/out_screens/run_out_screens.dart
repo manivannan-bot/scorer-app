@@ -552,6 +552,7 @@ class _RunOutScreenState extends State<RunOutScreen> {
                         widget.refresh();
                         WidgetsBinding.instance.addPostFrameCallback((_) {
                           Navigator.pop(context);
+                          Navigator.pop(context);
                         });
                       }
                     });
@@ -685,7 +686,11 @@ class _RunOutScreenState extends State<RunOutScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        const CancelBtn("Cancel"),
+                        InkWell(
+                            onTap:(){
+                              Navigator.pop(context);
+                            },
+                            child: const CancelBtn("Cancel")),
                         SizedBox(width: 2.w,),
                         GestureDetector(onTap:()async {
                           Navigator.pop(context);

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:scorer/view/widgets/batsman_list_item.dart';
 import 'package:scorer/view/widgets/player_list_item.dart';
 import 'package:scorer/widgets/snackbar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 import '../models/player_list_model.dart';
@@ -19,7 +19,8 @@ import '../widgets/ok_btn.dart';
 class BatsmanListBottomSheet extends StatefulWidget {
   final String matchId, team1Id, player;
   final VoidCallback refresh;
-  const BatsmanListBottomSheet(this.matchId, this.team1Id, this.player, this.refresh, {super.key});
+  final VoidCallback revertForceCancel;
+  const BatsmanListBottomSheet(this.matchId, this.team1Id, this.player, this.refresh, this.revertForceCancel, {super.key});
 
   @override
   State<BatsmanListBottomSheet> createState() => _BatsmanListBottomSheetState();
@@ -206,13 +207,22 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
                           });
                         }
                       },
-                      child: isPlayerOut ? const SizedBox()
-                      : PlayerListItem(
+                      child: isPlayerOut ?
+                      Opacity(
+                        opacity: 0.4,
+                        child: BatsmanListItem(
+                            index,
+                            localBatsmanIndex,
+                            searchedBatsman![index].playerName,
+                            searchedBatsman![index].battingStyle,
+                            searchedBatsman![index].runsScored,
+                            searchedBatsman![index].ballsFaced,
+                            searchedBatsman![index].isOut == 0),
+                      ) : PlayerListItem(
                           index,
                           localBatsmanIndex,
                           searchedBatsman![index].playerName,
-                          searchedBatsman![index].battingStyle)
-
+                          searchedBatsman![index].battingStyle),
                     );
                   }
 
@@ -243,12 +253,22 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
                             });
                           }
                         },
-                        child: isPlayerOut ? const SizedBox()
-                            : PlayerListItem(
+                        child: isPlayerOut ?
+                        Opacity(
+                          opacity: 0.4,
+                          child: BatsmanListItem(
+                              index,
+                              localBatsmanIndex,
+                              itemsBatsman![index].playerName,
+                              itemsBatsman![index].battingStyle,
+                              itemsBatsman![index].runsScored,
+                              itemsBatsman![index].ballsFaced,
+                              itemsBatsman![index].isOut == 0),
+                        ) : PlayerListItem(
                             index,
                             localBatsmanIndex,
                             itemsBatsman![index].playerName,
-                            itemsBatsman![index].battingStyle)
+                            itemsBatsman![index].battingStyle),
                       );
                     }
 
@@ -294,6 +314,7 @@ class _BatsmanListBottomSheetState extends State<BatsmanListBottomSheet> {
                           print("setting new non-striker after wicket");
                           player.setNonStrikerId(batsmanId, batsmanName);
                         }
+                        widget.revertForceCancel();
                         widget.refresh();
                         Navigator.pop(context);
                       }

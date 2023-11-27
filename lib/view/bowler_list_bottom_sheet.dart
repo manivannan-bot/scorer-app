@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,6 +38,7 @@ class _BowlerListBottomSheetState extends State<BowlerListBottomSheet> {
   String? selectedBTeamName ="";
   String playerId = "";
   int? oversBowled;
+  bool loading = false;
 
   onSearchCategory(String search) {
     setState(() {
@@ -185,99 +187,101 @@ class _BowlerListBottomSheetState extends State<BowlerListBottomSheet> {
           ]
           else if(!isResultEmpty&&searching)...[
             Expanded(
-              child: ListView.builder(
-                itemCount: searchedList.length,
-                itemBuilder: (context, index) {
-                  final isActive=searchedList[index].active??0;
-                  return Consumer<PlayerSelectionProvider>(
-                      builder: (context, player, child) {
-                        return player.selectedWicketKeeperId == searchedList[index].playerId.toString() || isActive == 1
-                            ? const SizedBox()
-                            : Column(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                if(isActive == 1){
+              child: FadeIn(
+                child: ListView.builder(
+                  itemCount: searchedList.length,
+                  itemBuilder: (context, index) {
+                    final isActive=searchedList[index].active??0;
+                    return Consumer<PlayerSelectionProvider>(
+                        builder: (context, player, child) {
+                          return player.selectedWicketKeeperId == searchedList[index].playerId.toString()
+                              ? const SizedBox()
+                              : Column(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  if(isActive == 1){
 
-                                } else {
-                                  setState(() {
-                                    playerId = searchedList[index].playerId.toString();
-                                    oversBowled = searchedList[index].oversBowled;
-                                    if (localBowlerIndex  == index) {
-                                      localBowlerIndex  = null; // Deselect the item if it's already selected
-                                    } else {
-                                      localBowlerIndex  = index; // Select the item if it's not selected
-                                    }
-                                  });
-                                }
-                              },
-                              child:Opacity(opacity: isActive==1?0.3:1,
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 5.w,vertical: 1.h),
-                                  child: Row(
-                                    children: [
-                                      //circular button
-                                      Container(
-                                        height: 20.0, // Adjust the height as needed
-                                        width: 20.0,  // Adjust the width as needed
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: localBowlerIndex  == index ? AppColor.pri : Colors.grey, // Change colors based on selected index
-                                        ),
-                                        child: const Center(
-                                          child: Icon(
-                                            Icons.circle_outlined, // You can change the icon as needed
-                                            color: Colors.white, // Icon color
-                                            size: 20.0, // Icon size
+                                  } else {
+                                    setState(() {
+                                      playerId = searchedList[index].playerId.toString();
+                                      oversBowled = searchedList[index].oversBowled;
+                                      if (localBowlerIndex  == index) {
+                                        localBowlerIndex  = null; // Deselect the item if it's already selected
+                                      } else {
+                                        localBowlerIndex  = index; // Select the item if it's not selected
+                                      }
+                                    });
+                                  }
+                                },
+                                child:Opacity(opacity: isActive==1?0.3:1,
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 5.w,vertical: 1.h),
+                                    child: Row(
+                                      children: [
+                                        //circular button
+                                        Container(
+                                          height: 20.0, // Adjust the height as needed
+                                          width: 20.0,  // Adjust the width as needed
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: localBowlerIndex  == index ? AppColor.pri : Colors.grey, // Change colors based on selected index
+                                          ),
+                                          child: const Center(
+                                            child: Icon(
+                                              Icons.circle_outlined, // You can change the icon as needed
+                                              color: Colors.white, // Icon color
+                                              size: 20.0, // Icon size
+                                            ),
+                                          ),
+                                        ), SizedBox(width: 3.w,),
+                                        Image.network(Images.playersImage,width: 10.w,),
+                                        SizedBox(width: 2.w,),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(searchedList[index].playerName?.toUpperCase()??'-',style: fontMedium.copyWith(
+                                                fontSize: 10.sp,
+                                                color: AppColor.blackColour,
+                                              ),),
+                                              searchedList[index].bowlingStyle == null
+                                              ? const SizedBox() : Row(
+                                                children: [
+                                                  const CircleAvatar(
+                                                    radius: 3.0,
+                                                    backgroundColor: AppColor.pri,
+                                                  ),
+                                                  SizedBox(width: 2.w,),
+                                                  Text(searchedList[index].bowlingStyle?.toUpperCase()??'-',style: fontRegular.copyWith(
+                                                      fontSize: 9.sp,
+                                                      color: const Color(0xff555555)
+                                                  ),),
+                                                ],
+                                              ),
+
+                                            ],
                                           ),
                                         ),
-                                      ), SizedBox(width: 3.w,),
-                                      Image.network(Images.playersImage,width: 10.w,),
-                                      SizedBox(width: 2.w,),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(searchedList[index].playerName?.toUpperCase()??'-',style: fontMedium.copyWith(
-                                              fontSize: 10.sp,
-                                              color: AppColor.blackColour,
-                                            ),),
-                                            searchedList[index].bowlingStyle == null
-                                            ? const SizedBox() : Row(
-                                              children: [
-                                                const CircleAvatar(
-                                                  radius: 3.0,
-                                                  backgroundColor: AppColor.pri,
-                                                ),
-                                                SizedBox(width: 2.w,),
-                                                Text(searchedList[index].bowlingStyle?.toUpperCase()??'-',style: fontRegular.copyWith(
-                                                    fontSize: 9.sp,
-                                                    color: const Color(0xff555555)
-                                                ),),
-                                              ],
-                                            ),
-
-                                          ],
-                                        ),
-                                      ),
-                                      Text(
-                                          '${searchedList[index].oversBowled??'0'}-'
-                                          '${searchedList[index].runsConceded??'0'}-'
-                                          '${searchedList[index].wickets??'0'}',
-                                          style: fontRegular.copyWith(
-                                              color: AppColor.textColor, fontSize: 10.sp)),
-                                    ],
+                                        Text(
+                                            '${searchedList[index].oversBowled??'0'}-'
+                                            '${searchedList[index].runsConceded??'0'}-'
+                                            '${searchedList[index].wickets??'0'}',
+                                            style: fontRegular.copyWith(
+                                                color: AppColor.textColor, fontSize: 10.sp)),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
 
-                            ),
-                            const Divider(),
-                          ],
-                        );
-                      }
-                  );
-                },
+                              ),
+                              const Divider(),
+                            ],
+                          );
+                        }
+                    );
+                  },
+                ),
               ),
             ),
           ]
@@ -291,7 +295,7 @@ class _BowlerListBottomSheetState extends State<BowlerListBottomSheet> {
                         builder: (context, player, child) {
                           return player.selectedWicketKeeperId == searchedList[index].playerId.toString()
                               ? const SizedBox()
-                              : isActive==1 ? const SizedBox() : Column(
+                              : Column(
                             children: [
                               InkWell(
                                 onTap: () {
@@ -310,60 +314,63 @@ class _BowlerListBottomSheetState extends State<BowlerListBottomSheet> {
                                   }
 
                                 },
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 5.w,vertical: 1.h),
-                                  child: Row(
-                                    children: [
-                                      //circular button
-                                      Container(
-                                        height: 20.0, // Adjust the height as needed
-                                        width: 20.0,  // Adjust the width as needed
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: localBowlerIndex  == index ? AppColor.pri : Colors.grey, // Change colors based on selected index
-                                        ),
-                                        child: const Center(
-                                          child: Icon(
-                                            Icons.circle_outlined, // You can change the icon as needed
-                                            color: Colors.white, // Icon color
-                                            size: 20.0, // Icon size
+                                child: Opacity(
+                                  opacity: isActive == 1 ? 0.3 : 1,
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 5.w,vertical: 1.h),
+                                    child: Row(
+                                      children: [
+                                        //circular button
+                                        Container(
+                                          height: 20.0, // Adjust the height as needed
+                                          width: 20.0,  // Adjust the width as needed
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: localBowlerIndex  == index ? AppColor.pri : Colors.grey, // Change colors based on selected index
+                                          ),
+                                          child: const Center(
+                                            child: Icon(
+                                              Icons.circle_outlined, // You can change the icon as needed
+                                              color: Colors.white, // Icon color
+                                              size: 20.0, // Icon size
+                                            ),
+                                          ),
+                                        ), SizedBox(width: 3.w,),
+                                        Image.network(Images.playersImage,width: 10.w,),
+                                        SizedBox(width: 2.w,),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(searchedList[index].playerName?.toUpperCase()??'-',style: fontMedium.copyWith(
+                                                fontSize: 10.sp,
+                                                color: AppColor.blackColour,
+                                              ),),
+                                              searchedList[index].bowlingStyle == null
+                                                  ? const SizedBox() : Row(
+                                                children: [
+                                                  const CircleAvatar(
+                                                    radius: 3.0,
+                                                    backgroundColor: AppColor.pri,
+                                                  ),
+                                                  SizedBox(width: 2.w,),
+                                                  Text(searchedList[index].bowlingStyle?.toUpperCase()??'-',style: fontRegular.copyWith(
+                                                      fontSize: 9.sp,
+                                                      color: const Color(0xff555555)
+                                                  ),),
+                                                ],
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                      ), SizedBox(width: 3.w,),
-                                      Image.network(Images.playersImage,width: 10.w,),
-                                      SizedBox(width: 2.w,),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(searchedList[index].playerName?.toUpperCase()??'-',style: fontMedium.copyWith(
-                                              fontSize: 10.sp,
-                                              color: AppColor.blackColour,
-                                            ),),
-                                            searchedList[index].bowlingStyle == null
-                                                ? const SizedBox() : Row(
-                                              children: [
-                                                const CircleAvatar(
-                                                  radius: 3.0,
-                                                  backgroundColor: AppColor.pri,
-                                                ),
-                                                SizedBox(width: 2.w,),
-                                                Text(searchedList[index].bowlingStyle?.toUpperCase()??'-',style: fontRegular.copyWith(
-                                                    fontSize: 9.sp,
-                                                    color: const Color(0xff555555)
-                                                ),),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Text(
-                                          '${searchedList[index].oversBowled??'0'}-'
-                                              '${searchedList[index].runsConceded??'0'}-'
-                                              '${searchedList[index].wickets??'0'}',
-                                          style: fontRegular.copyWith(
-                                              color: AppColor.textColor, fontSize: 10.sp)),
-                                    ],
+                                        Text(
+                                            '${searchedList[index].oversBowled??'0'}-'
+                                                '${searchedList[index].runsConceded??'0'}-'
+                                                '${searchedList[index].wickets??'0'}',
+                                            style: fontRegular.copyWith(
+                                                color: AppColor.textColor, fontSize: 10.sp)),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
@@ -389,21 +396,43 @@ class _BowlerListBottomSheetState extends State<BowlerListBottomSheet> {
                 },
                     child: const CancelBtn("Cancel")),
                 SizedBox(width: 2.w,),
-                GestureDetector(
+                loading
+                ? const Center(child: CircularProgressIndicator(),)
+                : GestureDetector(
                     onTap:() async {
 
                   if(localBowlerIndex!=null){
+                    setState(() {
+                      loading = true;
+                    });
                     final players = Provider.of<PlayerSelectionProvider>(context, listen: false);
                     final score = Provider.of<ScoreUpdateProvider>(context, listen: false);
-                    await ScoringProvider().saveBowler(widget.matchId, widget.team2Id, playerId);
-                    players.setBowlerId(playerId, "");
-                    score.setBowlerChangeValue(0);
-                    print("setting overs bowled value for the bowler $oversBowled");
-                    score.setOversBowledValue(oversBowled ?? 0);
-                    widget.refresh();
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      Navigator.pop(context);
+                    await ScoringProvider().saveBowler(widget.matchId, widget.team2Id, playerId)
+                    .then((value) {
+                      if(value.status == true){
+                        setState(() {
+                          loading = false;
+                        });
+                        players.setBowlerId(playerId, "");
+                        score.setBowlerChangeValue(0);
+                        print("setting overs bowled value for the bowler $oversBowled");
+                        score.setOversBowledValue(oversBowled ?? 0);
+                        widget.refresh();
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          Navigator.pop(context);
+                        });
+                      } else if(value.status == false){
+                        setState(() {
+                          loading = false;
+                        });
+                      }
+                      else {
+                        setState(() {
+                          loading = false;
+                        });
+                      }
                     });
+
                   }else{
                     Dialogs.snackBar("Select a bowler", context, isError: true);
                   }

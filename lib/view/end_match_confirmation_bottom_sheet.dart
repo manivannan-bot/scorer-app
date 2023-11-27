@@ -1,9 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../Scoring screens/home_screen.dart';
+import '../provider/player_selection_provider.dart';
+import '../provider/score_update_provider.dart';
 import '../utils/colours.dart';
 import '../utils/sizes.dart';
 
@@ -87,6 +90,10 @@ class EndMatchConfirmationBottomSheet extends StatelessWidget {
                       child: InkWell(
                         splashColor: Colors.grey,
                         onTap: () {
+                          final players = Provider.of<PlayerSelectionProvider>(context, listen: false);
+                          final score = Provider.of<ScoreUpdateProvider>(context, listen: false);
+                          players.clearAllSelectedIdsAfter1stInnings();
+                          score.clearOverAndBallNumberAfterFirstInnings();
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(

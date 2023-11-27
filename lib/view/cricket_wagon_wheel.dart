@@ -6,6 +6,8 @@ import 'dart:ui' as ui;
 
 import 'package:sizer/sizer.dart';
 
+import '../utils/colours.dart';
+
 class ThreeCircles extends StatefulWidget {
   final Function(int) onOkButtonPressed;
   const ThreeCircles({super.key, required this.onOkButtonPressed}) ;
@@ -16,6 +18,8 @@ class ThreeCircles extends StatefulWidget {
 
 class _ThreeCirclesState extends State<ThreeCircles> {
   int? fieldType=0;
+
+  String? selectedPosition;
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +86,8 @@ class _ThreeCirclesState extends State<ThreeCircles> {
               textAlign: TextAlign.center,
               style: fontMedium.copyWith(
                   fontSize: 8.sp,
-                  color: Colors.white,
+                  backgroundColor: selectedPosition == "Short Third Man" ? AppColor.lightColor : Colors.transparent,
+                  color: selectedPosition == "Short Third Man" ? AppColor.textColor : Colors.white,
               ),),
           ),
         ),
@@ -97,7 +102,8 @@ class _ThreeCirclesState extends State<ThreeCircles> {
               textAlign: TextAlign.center,
               style: fontMedium.copyWith(
                   fontSize: 8.sp,
-                  color: Colors.white,
+                backgroundColor: selectedPosition == "Point" ? AppColor.lightColor : Colors.transparent,
+                color: selectedPosition == "Point" ? AppColor.textColor : Colors.white,
               ),),
           ),
         ),
@@ -112,7 +118,8 @@ class _ThreeCirclesState extends State<ThreeCircles> {
               textAlign: TextAlign.center,
               style: fontMedium.copyWith(
                   fontSize: 8.sp,
-                  color: Colors.white,
+                backgroundColor: selectedPosition == "Fine Leg" ? AppColor.lightColor : Colors.transparent,
+                color: selectedPosition == "Fine Leg" ? AppColor.textColor : Colors.white,
               ),),
           ),
         ),
@@ -127,7 +134,8 @@ class _ThreeCirclesState extends State<ThreeCircles> {
               textAlign: TextAlign.center,
               style: fontMedium.copyWith(
                   fontSize: 8.sp,
-                  color: Colors.white,
+                backgroundColor: selectedPosition == "Square Leg" ? AppColor.lightColor : Colors.transparent,
+                color: selectedPosition == "Square Leg" ? AppColor.textColor : Colors.white,
               ),),
           ),
         ),
@@ -143,7 +151,8 @@ class _ThreeCirclesState extends State<ThreeCircles> {
               textAlign: TextAlign.center,
               style: fontMedium.copyWith(
                   fontSize: 8.sp,
-                  color: Colors.white,
+                backgroundColor: selectedPosition == "Mid Off" ? AppColor.lightColor : Colors.transparent,
+                color: selectedPosition == "Mid Off" ? AppColor.textColor : Colors.white,
               ),),
           ),
         ),
@@ -158,7 +167,8 @@ class _ThreeCirclesState extends State<ThreeCircles> {
               textAlign: TextAlign.center,
               style: fontMedium.copyWith(
                   fontSize: 8.sp,
-                  color: Colors.white,
+                backgroundColor: selectedPosition == "Cover" ? AppColor.lightColor : Colors.transparent,
+                color: selectedPosition == "Cover" ? AppColor.textColor : Colors.white,
               ),),
           ),
         ),
@@ -173,7 +183,8 @@ class _ThreeCirclesState extends State<ThreeCircles> {
               textAlign: TextAlign.center,
               style: fontMedium.copyWith(
                   fontSize: 8.sp,
-                  color: Colors.white,
+                backgroundColor: selectedPosition == "Mid On" ? AppColor.lightColor : Colors.transparent,
+                color: selectedPosition == "Mid On" ? AppColor.textColor : Colors.white,
               ),),
           ),
         ),
@@ -188,7 +199,8 @@ class _ThreeCirclesState extends State<ThreeCircles> {
               textAlign: TextAlign.center,
               style: fontMedium.copyWith(
                   fontSize: 8.sp,
-                  color: Colors.white,
+                backgroundColor: selectedPosition == "Mid Wicket" ? AppColor.lightColor : Colors.transparent,
+                color: selectedPosition == "Mid Wicket" ? AppColor.textColor : Colors.white,
               ),),
           ),
         ),
@@ -205,7 +217,8 @@ class _ThreeCirclesState extends State<ThreeCircles> {
               textAlign: TextAlign.center,
               style: fontMedium.copyWith(
                   fontSize: 8.sp,
-                  color: Colors.white,
+                backgroundColor: selectedPosition == "Long On" ? AppColor.lightColor : Colors.transparent,
+                color: selectedPosition == "Long On" ? AppColor.textColor : Colors.white,
               ),),
           ),
         ),
@@ -220,7 +233,8 @@ class _ThreeCirclesState extends State<ThreeCircles> {
               textAlign: TextAlign.center,
               style: fontMedium.copyWith(
                   fontSize: 8.sp,
-                  color: Colors.white,
+                backgroundColor: selectedPosition == "Long Off" ? AppColor.lightColor : Colors.transparent,
+                color: selectedPosition == "Long Off" ? AppColor.textColor : Colors.white,
               ),),
           ),
         ),
@@ -235,7 +249,8 @@ class _ThreeCirclesState extends State<ThreeCircles> {
               textAlign: TextAlign.center,
               style: fontMedium.copyWith(
                   fontSize: 8.sp,
-                  color: Colors.white,
+                backgroundColor: selectedPosition == "Deep Mid Wicket" ? AppColor.lightColor : Colors.transparent,
+                color: selectedPosition == "Deep Mid Wicket" ? AppColor.textColor : Colors.white,
               ),),
           ),
         ),
@@ -250,7 +265,8 @@ class _ThreeCirclesState extends State<ThreeCircles> {
               textAlign: TextAlign.center,
               style: fontMedium.copyWith(
                   fontSize: 8.sp,
-                  color: Colors.white,
+                backgroundColor: selectedPosition == "Deep Cover" ? AppColor.lightColor : Colors.transparent,
+                color: selectedPosition == "Deep Cover" ? AppColor.textColor : Colors.white,
               ),),
           ),
         ),
@@ -266,7 +282,8 @@ class _ThreeCirclesState extends State<ThreeCircles> {
               textAlign: TextAlign.center,
               style: fontMedium.copyWith(
                   fontSize: 8.sp,
-                  color: Colors.white,
+                backgroundColor: selectedPosition == "Deep Fine Leg" ? AppColor.lightColor : Colors.transparent,
+                color: selectedPosition == "Deep Fine Leg" ? AppColor.textColor : Colors.white,
               ),),
           ),
         ),
@@ -281,7 +298,8 @@ class _ThreeCirclesState extends State<ThreeCircles> {
               textAlign: TextAlign.center,
               style: fontMedium.copyWith(
                   fontSize: 8.sp,
-                  color: Colors.white,
+                backgroundColor: selectedPosition == "Third Man" ? AppColor.lightColor : Colors.transparent,
+                color: selectedPosition == "Third Man" ? AppColor.textColor : Colors.white,
               ),),
           ),
         ),
@@ -296,7 +314,8 @@ class _ThreeCirclesState extends State<ThreeCircles> {
               textAlign: TextAlign.center,
               style: fontMedium.copyWith(
                   fontSize: 8.sp,
-                  color: Colors.white,
+                backgroundColor: selectedPosition == "Deep Square Leg" ? AppColor.lightColor : Colors.transparent,
+                color: selectedPosition == "Deep Square Leg" ? AppColor.textColor : Colors.white,
               ),),
           ),
         ),
@@ -311,7 +330,8 @@ class _ThreeCirclesState extends State<ThreeCircles> {
               textAlign: TextAlign.center,
               style: fontMedium.copyWith(
                   fontSize: 8.sp,
-                  color: Colors.white,
+                backgroundColor: selectedPosition == "Deep Point" ? AppColor.lightColor : Colors.transparent,
+                color: selectedPosition == "Deep Point" ? AppColor.textColor : Colors.white,
               ),),
           ),
         ),
@@ -331,6 +351,9 @@ class _ThreeCirclesState extends State<ThreeCircles> {
         actions: <Widget>[
           InkWell(
               onTap: (){
+                setState(() {
+                  selectedPosition = position;
+                });
                 widget.onOkButtonPressed(fieldType);
                 Navigator.of(ctx).pop();
               },

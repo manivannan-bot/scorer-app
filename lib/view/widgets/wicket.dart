@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:scorer/widgets/snackbar.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../utils/colours.dart';
@@ -7,8 +6,8 @@ import '../../utils/sizes.dart';
 
 class Wicket extends StatefulWidget {
   final bool isOut;
-  final String slug, dismissalType, runsScored;
-  const Wicket(this.isOut, this.slug, this.dismissalType, this.runsScored, {super.key});
+  final String slug, dismissalType;
+  const Wicket(this.isOut, this.slug, this.dismissalType, {super.key});
 
   @override
   State<Wicket> createState() => _WicketState();
@@ -54,12 +53,7 @@ class _WicketState extends State<Wicket> {
             backgroundColor: AppColor.primaryColor,
             elevation: 5,
             content: Center(
-              child: widget.dismissalType == "20"
-                ? Text(
-                "Dismissal Type - ${getDismissalType()} - Runs scored - ${widget.runsScored}",
-                style: fontMedium.copyWith(color: AppColor.textColor),
-              )
-              : Text(
+              child: Text(
                 "Dismissal Type - ${getDismissalType()}",
                 style: fontMedium.copyWith(color: AppColor.textColor),
               ),
