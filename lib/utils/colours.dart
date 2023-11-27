@@ -38,6 +38,7 @@ class AppColor {
 
   static const Color gradient1 = Color(0xffFCF2AF);
   static const Color gradient2 = Color(0xffF9D700);
+  static const Color brown = Color(0xffB16903);
 
 
 }

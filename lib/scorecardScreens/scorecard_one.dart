@@ -187,17 +187,17 @@ class _ScoreCardOneState extends State<ScoreCardOne> {
                       color: AppColor.blackColour,
                     ),),
                     SizedBox(width: 2.w,),
-                    Text("${widget.scoreCardData.bowlingExtras!.legByes??'0'}lb,",style: fontRegular.copyWith(
+                    Text("( ${widget.scoreCardData.bowlingExtras!.legByes??'0'} lb,",style: fontRegular.copyWith(
                       fontSize: 10.sp,
                       color: const Color(0xff777777),
                     ),),
                     SizedBox(width: 2.w,),
-                    Text("${widget.scoreCardData.bowlingExtras!.wides??'0'}w,",style: fontRegular.copyWith(
+                    Text("${widget.scoreCardData.bowlingExtras!.wides??'0'} w,",style: fontRegular.copyWith(
                       fontSize: 10.sp,
                       color: const Color(0xff777777),
                     ),),
                     SizedBox(width: 2.w,),
-                    Text("${widget.scoreCardData.bowlingExtras!.noBalls??'0'}nb",style: fontRegular.copyWith(
+                    Text("${widget.scoreCardData.bowlingExtras!.noBalls??'0'} nb )",style: fontRegular.copyWith(
                       fontSize: 10.sp,
                       color: const Color(0xff777777),
                     ),),

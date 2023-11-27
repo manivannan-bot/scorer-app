@@ -50,7 +50,7 @@ class PlayerListItem extends StatelessWidget {
                       fontSize: 10.sp,
                       color: AppColor.textColor
                     ),),
-                  style.toString() == "" ? const SizedBox() : Row(
+                  style == null ? const SizedBox() : Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const CircleAvatar(

@@ -81,7 +81,6 @@ class CurrentOverData extends StatelessWidget {
                                     scoringData!.data!.over![index].slug.toString() == "OUT",
                                     scoringData!.data!.over![index].slug.toString(),
                                     scoringData!.data!.over![index].dismissalType.toString(),
-                                    scoringData!.data!.over![index].runsScored.toString()
                                 )
                               ],
                             ),

@@ -253,7 +253,7 @@ class _LegByeBottomSheetState extends State<LegByeBottomSheet> {
         isScrollControlled: true,
         builder: (context)=> StatefulBuilder(
           builder: (context, setState) {
-            return BatsmanListBottomSheet(widget.matchId, widget.team1Id, player, widget.refresh);
+            return BatsmanListBottomSheet(widget.matchId, widget.team1Id, player, widget.refresh, (){});
           },
         )
     );

@@ -12,24 +12,21 @@ class ChooseBatsmanButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: double.maxFinite,
         padding: EdgeInsets.symmetric(
-            vertical: 1.4.h
+            vertical: 1.4.h, horizontal: 3.w
         ),
         margin: EdgeInsets.symmetric(
             horizontal: 5.w
         ),
         decoration: BoxDecoration(
-            color: AppColor.availableSlot.withOpacity(0.6),
+            color: AppColor.blackColour,
             borderRadius: BorderRadius.circular(10.0)
         ),
-        child: Center(
-          child: Text("Choose Batsman",
-            style: fontMedium.copyWith(
-                color: AppColor.textColor,
-                fontSize: 10.sp
-            ),),
-        )
+        child: Text("Choose Batsman",
+          style: fontMedium.copyWith(
+              color: AppColor.lightColor,
+              fontSize: 9.sp
+          ),)
     );
   }
 }

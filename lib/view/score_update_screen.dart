@@ -204,230 +204,251 @@ class _ScoreUpdateScreenState extends State<ScoreUpdateScreen> with SingleTicker
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: matchList == null
-          ? const Center(child: CircularProgressIndicator(
-          ))
-      : loading
-          ? const Center(child: CircularProgressIndicator(
-      )) : SmartRefresher(
-        enablePullDown: true,
-        onRefresh: fetchData,
-        controller: refreshController,
-        child: Column(
-          children: [
-            Stack(
-              children: [
-                // Background image
-                Image.asset(
-                  Images.bannerBg,
-                  fit: BoxFit.cover, // You can choose how the image should be scaled
-                  width: double.infinity,
-                   height: 30.h,
-                ),
-                Positioned(
-                  top: 5.h,
-                  left: 5.w,
-                  right: 5.w,
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          InkWell(
-                              onTap:(){
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => const HomeScreen()));
-                              },
-                              child: Icon(Icons.arrow_back,color: AppColor.lightColor, size: 7.w,)),
-                          currentInning == 2
-                              ? Container(
-                            padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.8.h),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: AppColor.lightColor,
-                            ),
-                            child: Text(
-                              'Target: $target',
-                              style: fontSemiBold.copyWith(
-                                fontSize: 10.sp,
-                                color: AppColor.blackColour,
+    return WillPopScope(
+      onWillPop:() async{
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const HomeScreen()));
+        return true;
+      },
+      child: Scaffold(
+        body: matchList == null
+            ? const Center(child: CircularProgressIndicator(
+            ))
+        : loading
+            ? const Center(child: CircularProgressIndicator(
+        )) : SmartRefresher(
+          enablePullDown: true,
+          onRefresh: fetchData,
+          controller: refreshController,
+          child: Column(
+            children: [
+              Stack(
+                children: [
+                  // Background image
+                  Image.asset(
+                    Images.bannerBg,
+                    fit: BoxFit.cover, // You can choose how the image should be scaled
+                    width: double.infinity,
+                     height: 30.h,
+                  ),
+                  Positioned(
+                    top: 5.h,
+                    left: 5.w,
+                    right: 5.w,
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            InkWell(
+                                onTap:(){
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => const HomeScreen()));
+                                },
+                                child: Icon(Icons.arrow_back,color: AppColor.lightColor, size: 7.w,)),
+                            currentInning == 2
+                                ? Container(
+                              padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.8.h),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: AppColor.lightColor,
                               ),
-                            ),
-                          )
-                          : Text(
-                            'Team',
-                            style: fontMedium.copyWith(
-                              fontSize: 18.sp,
-                              color: AppColor.lightColor
+                              child: Text(
+                                'Target: $target',
+                                style: fontSemiBold.copyWith(
+                                  fontSize: 10.sp,
+                                  color: AppColor.blackColour,
+                                ),
+                              ),
                             )
-                          ),
-                          SizedBox(
-                            width: 7.w,
-                          ),
-                        ],
-                      ),
-                       SizedBox(height: 2.h,),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            children: [
-                             Image.asset(Images.teamaLogo,width: 20.w,),
-                              Text(
-                                '${matchList!.team1Name}',
-                                style: fontMedium.copyWith(
-                                    fontSize: 14.sp,
-                                    color: AppColor.lightColor
-                                ),
-                              ),
-                            ],
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                            : Text(
+                              'Team',
+                              style: fontMedium.copyWith(
+                                fontSize: 18.sp,
+                                color: AppColor.lightColor
+                              )
+                            ),
+                            SizedBox(
+                              width: 7.w,
+                            ),
+                          ],
+                        ),
+                         SizedBox(height: 2.h,),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
                               children: [
-                                currentInning == 2 ? const SizedBox() : Text(
-                                  '${matchList!.tossWinnerName} won the Toss\nand Choose to ${matchList!.choseTo} ',
-                                  textAlign: TextAlign.center,
-                                  style: fontRegular.copyWith(
-                                      fontSize: 11.sp,
+                               Image.asset(Images.teamaLogo,width: 20.w,),
+                                Text(
+                                  '${matchList!.team1Name}',
+                                  style: fontMedium.copyWith(
+                                      fontSize: 14.sp,
                                       color: AppColor.lightColor
-                                  )
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text('${matchList!.teams!.totalRuns}',
-                                        style: fontMedium.copyWith(
-                                            fontSize: 22.sp,
-                                            color: AppColor.lightColor
-                                        )),
-                                    Text('/',
-                                        style: fontMedium.copyWith(
-                                            fontSize: 23.sp,
-                                            color: AppColor.lightColor
-                                        )),
-                                    Text('${matchList!.teams!.totalWickets}',
-                                        style: fontMedium.copyWith(
-                                            fontSize: 22.sp,
-                                            color: AppColor.lightColor
-                                        )),
-                                  ],
-                                ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.8.h),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: AppColor.primaryColor,
                                   ),
-                                  child: Text(
-                                    'Overs: ${matchList!.teams!.currentOverDetails}/${matchList!.overs}',
-                                    style: fontMedium.copyWith(
-                                      fontSize: 10.sp,
-                                      color: AppColor.blackColour,
-                                    ),
-                                  ),
-                                ),
-                                currentInning == 2
-                                    ? Padding(
-                                      padding: EdgeInsets.only(top: 2.h),
-                                      child: Text("${matchList!.teams!.teamName.toString()} "
-                                      "need ${calculateRequiredRuns(target.toString(), matchList!.teams!.totalRuns.toString())} more"
-                                      " ${int.parse(calculateRequiredRuns(target.toString(), matchList!.teams!.totalRuns.toString())) > 1 ? "runs" : "run"} to win",
-                                  textAlign: TextAlign.center,
-                                  style: fontRegular.copyWith(
-                                      fontSize: 10.sp,
-                                      color: AppColor.lightColor,
-                                  ),),
-                                    ) : const SizedBox(),
-                                AnimatedTextKit(
-                                  pause: const Duration(milliseconds: 1500),
-                                  repeatForever: true,
-                                  stopPauseOnTap: false,
-                                  animatedTexts: [
-                                    RotateAnimatedText("Innings ${matchList!.currentInnings??'0'}",
-                                      textAlign: TextAlign.center,
-                                      duration: const Duration(milliseconds: 2000),
-                                      textStyle: fontRegular.copyWith(
-                                        fontSize: 11.sp,
-                                        color: AppColor.lightColor,
-                                      ),),
-                                    RotateAnimatedText(currentInning == 2 ? "CRR - $currentRunRate  RRR - $requiredRunRate" : "CRR - $currentRunRate",
-                                      textAlign: TextAlign.center,
-                                      duration: const Duration(milliseconds: 2000),
-                                      textStyle: fontRegular.copyWith(
-                                        fontSize: 11.sp,
-                                        color: AppColor.lightColor,
-                                      ),),
-                                  ],
                                 ),
                               ],
                             ),
-                          ),
-                          Column(
-                            children: [
-                              Image.asset(Images.teamaLogo,width: 20.w,),
-                               Text(
-                                   '${matchList!.team2Name}',
-                                style:fontMedium.copyWith(
-                                    fontSize: 14.sp,
-                                    color: AppColor.lightColor)
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  currentInning == 2 ? const SizedBox() : Text(
+                                    '${matchList!.tossWinnerName} won the Toss\nand Choose to ${matchList!.choseTo} ',
+                                    textAlign: TextAlign.center,
+                                    style: fontRegular.copyWith(
+                                        fontSize: 11.sp,
+                                        color: AppColor.lightColor
+                                    )
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Text('${matchList!.teams!.totalRuns}',
+                                          style: fontMedium.copyWith(
+                                              fontSize: 22.sp,
+                                              color: AppColor.lightColor
+                                          )),
+                                      Text('/',
+                                          style: fontMedium.copyWith(
+                                              fontSize: 23.sp,
+                                              color: AppColor.lightColor
+                                          )),
+                                      Text('${matchList!.teams!.totalWickets}',
+                                          style: fontMedium.copyWith(
+                                              fontSize: 22.sp,
+                                              color: AppColor.lightColor
+                                          )),
+                                    ],
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 0.8.h),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: AppColor.primaryColor,
+                                    ),
+                                    child: Text(
+                                      'Overs: ${matchList!.teams!.currentOverDetails}/${matchList!.overs}',
+                                      style: fontMedium.copyWith(
+                                        fontSize: 10.sp,
+                                        color: AppColor.blackColour,
+                                      ),
+                                    ),
+                                  ),
+                                  currentInning == 2
+                                      ? Padding(
+                                        padding: EdgeInsets.only(top: 2.h),
+                                        child: Text("${matchList!.teams!.teamName.toString()} "
+                                        "need ${calculateRequiredRuns(target.toString(), matchList!.teams!.totalRuns.toString())} more"
+                                        " ${int.parse(calculateRequiredRuns(target.toString(), matchList!.teams!.totalRuns.toString())) > 1 ? "runs" : "run"} to win",
+                                    textAlign: TextAlign.center,
+                                    style: fontRegular.copyWith(
+                                        fontSize: 10.sp,
+                                        color: AppColor.lightColor,
+                                    ),),
+                                      ) : const SizedBox(),
+                                  if(currentInning == 2)...[
+                                    AnimatedTextKit(
+                                      pause: const Duration(milliseconds: 1500),
+                                      repeatForever: true,
+                                      stopPauseOnTap: false,
+                                      animatedTexts: [
+                                        RotateAnimatedText("CRR - $currentRunRate",
+                                          textAlign: TextAlign.center,
+                                          duration: const Duration(milliseconds: 2000),
+                                          textStyle: fontRegular.copyWith(
+                                            fontSize: 11.sp,
+                                            color: AppColor.lightColor,
+                                          ),),
+                                        RotateAnimatedText("RRR - $requiredRunRate",
+                                          textAlign: TextAlign.center,
+                                          duration: const Duration(milliseconds: 2000),
+                                          textStyle: fontRegular.copyWith(
+                                            fontSize: 11.sp,
+                                            color: AppColor.lightColor,
+                                          ),),
+                                      ],
+                                    ),
+                                  ] else...[
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 2.h),
+                                      child: Text("CRR - $currentRunRate",
+                                        textAlign: TextAlign.center,
+                                        style: fontRegular.copyWith(
+                                          fontSize: 10.sp,
+                                          color: AppColor.lightColor,
+                                        ),),
+                                    ),
+                                  ],
+                                ],
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
+                            ),
+                            Column(
+                              children: [
+                                Image.asset(Images.teamaLogo,width: 20.w,),
+                                 Text(
+                                     '${matchList!.team2Name}',
+                                  style:fontMedium.copyWith(
+                                      fontSize: 14.sp,
+                                      color: AppColor.lightColor)
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+                ],
+              ),
+              SizedBox(height: 1.h,),
+              TabBar(
+                  unselectedLabelColor: AppColor.unselectedTabColor,
+                  labelColor:  const Color(0xffD78108),
+                  indicatorColor: const Color(0xffD78108),
+                  isScrollable: true,
+                  indicatorWeight: 2.0,
+                   labelPadding: EdgeInsets.symmetric(vertical: 0.4.h, horizontal: 3.5.w),
+                  indicatorSize: TabBarIndicatorSize.label,
+                  controller: tabController,
+                  tabs: [
+                    Text('Scoring',style: fontRegular.copyWith(fontSize: 12.sp,),),
+                    Text('Scorecard',style: fontRegular.copyWith(fontSize: 12.sp,),),
+                    Text('Commentary',style: fontRegular.copyWith(fontSize: 12.sp,),),
+                    Text('Info',style: fontRegular.copyWith(fontSize: 12.sp,),),
+                  ]
+              ),
+              Theme(
+                  data: ThemeData(
+                    dividerTheme: const DividerThemeData(
+                      space: 0,
+                      thickness: 0.5,
+                      indent: 0,
+                      endIndent: 0,
+                    ),
+                  ),
+                  child: const Divider()),
+                Expanded(
+                  child: TabBarView(
+                      controller: tabController,
+                      children: [
+                        ScoringTab(widget.matchId,batTeamId.toString(),bowlTeamId.toString(), fetchData, currentOverData),
+                        ScorecardScreen(widget.matchId,batTeamId.toString(),bowlTeamId.toString(),currentInning.toString(),fetchData),
+                        CommentaryScreen(widget.matchId,batTeamId.toString(),bowlTeamId.toString(),fetchData),
+                        InfoScreen(widget.matchId),
+                      ]),
+                )
               ],
             ),
-            SizedBox(height: 1.h,),
-            TabBar(
-                unselectedLabelColor: AppColor.unselectedTabColor,
-                labelColor:  const Color(0xffD78108),
-                indicatorColor: const Color(0xffD78108),
-                isScrollable: true,
-                indicatorWeight: 2.0,
-                 labelPadding: EdgeInsets.symmetric(vertical: 0.4.h, horizontal: 3.5.w),
-                indicatorSize: TabBarIndicatorSize.label,
-                controller: tabController,
-                tabs: [
-                  Text('Scoring',style: fontRegular.copyWith(fontSize: 12.sp,),),
-                  Text('Scorecard',style: fontRegular.copyWith(fontSize: 12.sp,),),
-                  Text('Commentary',style: fontRegular.copyWith(fontSize: 12.sp,),),
-                  Text('Info',style: fontRegular.copyWith(fontSize: 12.sp,),),
-                ]
-            ),
-            Theme(
-                data: ThemeData(
-                  dividerTheme: const DividerThemeData(
-                    space: 0,
-                    thickness: 0.5,
-                    indent: 0,
-                    endIndent: 0,
-                  ),
-                ),
-                child: const Divider()),
-              Expanded(
-                child: TabBarView(
-                    controller: tabController,
-                    children: [
-                      ScoringTab(widget.matchId,batTeamId.toString(),bowlTeamId.toString(), fetchData, currentOverData),
-                      ScorecardScreen(widget.matchId,batTeamId.toString(),bowlTeamId.toString(),currentInning.toString(),fetchData),
-                      CommentaryScreen(widget.matchId,batTeamId.toString(),bowlTeamId.toString(),fetchData),
-                      InfoScreen(widget.matchId),
-                    ]),
-              )
-            ],
           ),
         ),
-      );
+    );
   }
 
   showUpdateBottomSheet(String versionHeading, String releaseNotes, bool priority, String type, String versionNumber){

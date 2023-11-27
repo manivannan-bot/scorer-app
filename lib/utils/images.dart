@@ -81,6 +81,7 @@ class Images{
   static const String authCurveImg = 'assets/images/auth_curve_img.svg';
   static const String loginTopImg = 'assets/images/login_top_img.svg';
   static const String splashTop = 'assets/images/splash_top_art.svg';
+  static const String stumpImage = 'assets/images/stump_image.svg';
 //
   // //playerscorner
   //

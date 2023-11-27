@@ -170,7 +170,10 @@ class _OutMethodDialogState extends State<OutMethodDialog> {
                       scoreUpdateRequestModel.endInnings=false;
                       scoreUpdateRequestModel.bowlerPosition=score.bowlerPosition;
                       ScoringProvider().scoreUpdate(scoreUpdateRequestModel).then((value) async{
-                        if(value.data?.innings == 3){
+                        if(value.data == null){
+                          Dialogs.snackBar("Something went wrong. Please try again.", context, isError: true);
+                        }
+                        else if(value.data?.innings == 3){
                           showEndInningsConfirmationBottomSheet();
                         } else if(value.data?.inningCompleted == true){
                           print("end of innings");
