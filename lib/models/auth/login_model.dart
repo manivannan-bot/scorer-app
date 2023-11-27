@@ -1,6 +1,6 @@
 class LoginModel {
   bool? status;
-  String? message;
+  dynamic message;
   Data? data;
   LoginModel({this.status, this.message, this.data});
   LoginModel.fromJson(Map<String, dynamic> json) {
@@ -19,9 +19,9 @@ class LoginModel {
   }
 }
 class Data {
-  int? userId;
-  String? name;
-  int? otp;
+  dynamic userId;
+  dynamic name;
+  dynamic otp;
   Data({this.userId, this.name, this.otp});
   Data.fromJson(Map<String, dynamic> json) {
     userId = json['user_id'];
